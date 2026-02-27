@@ -1,0 +1,117 @@
+[versions]
+luckperms = "5.4"
+mongodb = "5.1.0"
+kotlin = "2.1.0"
+ktor = "2.3.11"
+coroutines-core = "1.8.1"
+serialization-json = "1.6.3"
+plugin-shadowjar = "8.3.0"
+placeholder = "2.11.6"
+aikar = "0.5.1-SNAPSHOT"
+paperApi = "1.21.8-R0.1-SNAPSHOT"
+shadowJar = "8.3.0"
+velocity = "3.2.0-SNAPSHOT"
+reflections8 = "0.10.2"
+screen-currencies-api = "0.2.0-SNAPSHOT"
+protocolLib = "5.4.0-SNAPSHOT"
+adventure-extra = "4.15.0"
+protocolEntities = "1.8-SNAPSHOT"
+hoplite = "1.0.3"
+hoplite-toml = "2.8.0.RC3"
+signgui = "2.3.2"
+paperweight = "1.5.11"
+pluginYml = "0.6.0"
+redisson = "3.35.0"
+rfgmi = "0.0.1-SNAPSHOT"
+jedis = "5.1.2"
+config = "1.4.3"
+fawe-bom = "1.40"
+fawe = "2.8.4"
+fawe-bukkit = "2.8.4"
+#warden = "1.0"
+discord-webhooks = "0.8.4"
+currencies = "1.0"
+inventoryFramework = "3.3.5"
+sdk = "1.0"
+accounts = "1.0"
+packets = "1.0"
+protocol = "1.0"
+groups = "1.0"
+rewards = "1.0"
+itemsadder = "4.0.10"
+player-settings = "1.0"
+credits = "1.0"
+mythicMobs = "5.6.1"
+boards = "1.0"
+mango = "1.0"
+areas = "1.0"
+
+[libraries]
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+mongodb = { module = "org.mongodb:mongodb-driver-kotlin-sync", version.ref = "mongodb" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines-core" }
+placeholder = { module = "me.clip:placeholderapi", version.ref = "placeholder" }
+aikar = { module = "co.aikar:acf-paper", version.ref = "aikar" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-stdLib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+paperApi = { module = "io.papermc.paper:paper-api", version.ref = "paperApi" }
+velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
+reflections8 = { module = "com.github.ronmamo:reflections", version.ref = "reflections8" }
+protocolLib = { module = "com.comphenix.protocol:ProtocolLib", version.ref = "protocolLib" }
+adventure-extra = { module = "net.kyori:adventure-extra-kotlin", version.ref = "adventure-extra" }
+protocolEntities = { module = "dev.redescreen:protocol-entities", version.ref = "protocolEntities" }
+hoplite = { module = "com.sksamuel.hoplite:hoplite", version.ref = "hoplite" }
+hoplite-toml = { module = "com.sksamuel.hoplite:hoplite-toml", version.ref = "hoplite-toml" }
+signgui = { module = "de.rapha149.signgui:signgui", version.ref = "signgui" }
+redisson = { module = "org.redisson:redisson", version.ref = "redisson" }
+jedis = { module = "redis.clients:jedis", version.ref = "jedis" }
+config = { module = "com.typesafe:config", version.ref = "config" }
+fawe-bom = { module = "com.intellectualsites.bom:bom-newest", version.ref = "fawe-bom" }
+fawe = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Core", version.ref = "fawe" }
+fawe-bukkit = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit", version.ref = "fawe-bukkit" }
+luckperms = { module = "net.luckperms:api", version.ref = "luckperms" }
+ktor-server-engine-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-webSockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-engine-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-webSockets = { module = "io.ktor:ktor-client-websockets", version.ref = "ktor" }
+ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinxJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+#warden-client = { module = "com.redescreen.warden:client", version.ref = "warden" }
+#warden-connector = { module = "com.redescreen.warden:connector-game", version.ref = "warden" }
+#warden-shared = { module = "com.redescreen.warden:shared", version.ref = "warden" }
+currencies = { module = "com.redescreen:currencies", version.ref = "currencies" }
+discord-webhooks = { module = "club.minnced:discord-webhooks", version.ref = "discord-webhooks" }
+inventoryFramework = { module = "me.devnatan:inventory-framework-platform-bukkit", version.ref = "inventoryFramework" }
+sdk = { module = "com.redescreen:sdk", version.ref = "sdk" }
+accounts = { module = "com.redescreen:accounts", version.ref = "accounts" }
+packets = { module = "com.redescreen:packets", version.ref = "packets" }
+protocol = { module = "com.redescreen:protocol", version.ref = "protocol" }
+groups = { module = "com.redescreen:player-groups", version.ref = "groups" }
+rewards = { module = "com.redescreen:rewards", version.ref = "rewards" }
+itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
+player-settings = { module = "com.redescreen:player-settings", version.ref = "player-settings" }
+credits = { module = "com.redescreen:credits", version.ref = "credits" }
+mythicMobs = { module = "io.lumine:Mythic-Dist", version.ref = "mythicMobs" }
+boards = { module = "com.redescreen:boards", version.ref = "boards" }
+mango-client = { module = "com.redescreen.mango:mango-client", version.ref = "mango" }
+mango-shared = { module = "com.redescreen.mango:mango-shared", version.ref = "mango" }
+mango-paper = { module = "com.redescreen.mango:mango-paper", version.ref = "mango" }
+kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
+areas-api = { module = "com.redescreen.areas:api", version.ref = "areas" }
+areas-event = { module = "com.redescreen.areas:event", version.ref = "areas" }
+areas-plugin = { module = "com.redescreen.areas:plugin", version.ref = "areas" }
+
+[bundles]
+#warden = ["warden-client", "warden-connector", "warden-shared"]
+mango = ["mango-client", "mango-shared", "mango-paper"]
+areas = ["areas-api", "areas-event", "areas-plugin"]
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+shadowJar = { id = "com.gradleup.shadow", version.ref = "shadowJar" }
+paperweight-userDev = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
+pluginYml-bukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "pluginYml" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

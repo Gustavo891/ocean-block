@@ -1,0 +1,9 @@
+pretty-name: 'Diversos'
+icon: BELL
+
+products:
+  bucket:
+    name-singular: 'Balde'
+    name-plural: 'Baldes'
+    price: 1.0
+    material: Bucket

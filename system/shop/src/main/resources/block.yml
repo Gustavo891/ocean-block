@@ -1,0 +1,15 @@
+pretty-name: '<green>Blocos'
+icon: COBBLESTONE
+
+description:
+  - '<gray>Adquira diferentes tipos de'
+  - '<gray>bloccos.'
+  - ''
+  - '<green>Clique para acessar!'
+
+products:
+  cobblestone:
+    name-singular: 'Pedregulho'
+    name-plural: 'Pedregulhos'
+    price: 1.0
+    material: COBBLESTONE

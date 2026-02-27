@@ -1,0 +1,12 @@
+package one_block.libs.translation
+
+import com.google.gson.Gson
+import one_block.libs.instance.Instance
+
+private val translations: Map<String, String> by lazy {
+    val stream = Instance.javaClass.getResourceAsStream("/pt_br.json")!!
+    val json = stream.bufferedReader().readText()
+    Gson().fromJson(json, Map::class.java) as Map<String, String>
+}
+
+fun translate(key: String) = translations[key] ?: key
