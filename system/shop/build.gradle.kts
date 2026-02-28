@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.placeholder)
-    compileOnly(libs.protocol)
+
 
     compileOnly(projects.lib.coordinate)
     compileOnly(projects.lib.instance)

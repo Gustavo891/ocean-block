@@ -1,6 +1,5 @@
 package one_block.system.shop.view
 
-import com.redescreen.sdk.extensions.sound
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.Context

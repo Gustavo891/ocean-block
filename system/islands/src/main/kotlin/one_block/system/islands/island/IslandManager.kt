@@ -4,6 +4,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.coordinate.SimpleLocation
 import one_block.libs.instance.Instance
 import one_block.libs.instance.ScheduledExecutor
+import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.position.Position
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -26,8 +27,8 @@ object IslandManager {
         repository.toList().forEach {
             islandsById[it.uuid] = it
             islandsByGrid[it.position.gridX to it.position.gridZ] = it
+            BossbarManager.initBossBar(it)
         }
-
 
         ScheduledExecutor.scheduleAtFixedRate({ onTick() }, 0, 1, TimeUnit.SECONDS)
         ScheduledExecutor.scheduleAtFixedRate({ saveDirtyIslands() }, 30, 30, TimeUnit.SECONDS)

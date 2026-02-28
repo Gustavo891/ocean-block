@@ -2,6 +2,7 @@ package one_block.system.islands.island
 
 import one_block.libs.coordinate.SimpleLocation
 import one_block.libs.instance.Instance
+import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.getRandomByWeight
 import one_block.system.islands.phase.Phase
 import one_block.system.islands.phase.PhaseManager
@@ -39,6 +40,7 @@ data class Island(
 
     fun onJoin(player: Player) {
         player.worldBorder = currentWorldBorder
+        BossbarManager.getBossBar(this)?.addViewer(player)
     }
 
     fun getCurrentPhase(): Phase? {
@@ -56,7 +58,8 @@ data class Island(
         handleMonsterParty(phase, block)
 
         val nextMaterial = phase.blockPool.getRandomByWeight() ?: Material.GRASS_BLOCK
-        Bukkit.getScheduler().runTask(Instance, Runnable { block.type = nextMaterial })
+        block.type = nextMaterial
+        player.damageItemStack(player.inventory.itemInMainHand, 1)
 
         grid++
         if (grid >= phase.blocksToNextPhase) advancePhase(player)

@@ -22,12 +22,11 @@ class PhaseView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title("Fases")
+        config.title("<shift:-8><glyph:island_phases>")
         config.layout(
-            "         ",
-            "  OOOOO  ",
-            "  OOOOO  ",
-            "  OOOOO  ",
+            " OOOOOOO ",
+            " OOOOOOO ",
+            " OOOOOOO ",
             "         "
         )
     }

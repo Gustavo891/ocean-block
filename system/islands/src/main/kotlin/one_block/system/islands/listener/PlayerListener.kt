@@ -1,5 +1,6 @@
 package one_block.system.islands.listener
 
+import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.runNextTask
 import one_block.system.islands.island.IslandManager
 import org.bukkit.Location
@@ -61,9 +62,9 @@ class PlayerListener : Listener {
         val block = event.block
         if (!island.center.isSameBlock(block.location)) return
 
-     //   event.isCancelled = true
+        event.isCancelled = true
 
-  /*      if (block.type != Material.AIR) {
+        if (block.type != Material.AIR) {
             val drops = block.getDrops(player.inventory.itemInMainHand)
             val dropLocation = block.location.add(0.5, 0.5, 0.5)
 
@@ -73,10 +74,11 @@ class PlayerListener : Listener {
             }
 
             // block.breakNaturally(player.inventory.itemInMainHand)
-        }*/
+        }
 
         island.processBlockBreak(player, block)
         IslandManager.markDirty(island.uuid)
+        BossbarManager.upgradeBossBar(island)
     }
 
     private fun handleIslandEntry(player: Player, location: Location) {

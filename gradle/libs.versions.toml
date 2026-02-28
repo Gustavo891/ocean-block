@@ -61,7 +61,6 @@ velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "vel
 reflections8 = { module = "com.github.ronmamo:reflections", version.ref = "reflections8" }
 protocolLib = { module = "com.comphenix.protocol:ProtocolLib", version.ref = "protocolLib" }
 adventure-extra = { module = "net.kyori:adventure-extra-kotlin", version.ref = "adventure-extra" }
-protocolEntities = { module = "dev.redescreen:protocol-entities", version.ref = "protocolEntities" }
 hoplite = { module = "com.sksamuel.hoplite:hoplite", version.ref = "hoplite" }
 hoplite-toml = { module = "com.sksamuel.hoplite:hoplite-toml", version.ref = "hoplite-toml" }
 signgui = { module = "de.rapha149.signgui:signgui", version.ref = "signgui" }
@@ -82,32 +81,13 @@ ktor-serialization-kotlinxJson = { module = "io.ktor:ktor-serialization-kotlinx-
 #warden-client = { module = "com.redescreen.warden:client", version.ref = "warden" }
 #warden-connector = { module = "com.redescreen.warden:connector-game", version.ref = "warden" }
 #warden-shared = { module = "com.redescreen.warden:shared", version.ref = "warden" }
-currencies = { module = "com.redescreen:currencies", version.ref = "currencies" }
 discord-webhooks = { module = "club.minnced:discord-webhooks", version.ref = "discord-webhooks" }
 inventoryFramework = { module = "me.devnatan:inventory-framework-platform-bukkit", version.ref = "inventoryFramework" }
-sdk = { module = "com.redescreen:sdk", version.ref = "sdk" }
-accounts = { module = "com.redescreen:accounts", version.ref = "accounts" }
-packets = { module = "com.redescreen:packets", version.ref = "packets" }
-protocol = { module = "com.redescreen:protocol", version.ref = "protocol" }
-groups = { module = "com.redescreen:player-groups", version.ref = "groups" }
-rewards = { module = "com.redescreen:rewards", version.ref = "rewards" }
 itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
-player-settings = { module = "com.redescreen:player-settings", version.ref = "player-settings" }
-credits = { module = "com.redescreen:credits", version.ref = "credits" }
 mythicMobs = { module = "io.lumine:Mythic-Dist", version.ref = "mythicMobs" }
-boards = { module = "com.redescreen:boards", version.ref = "boards" }
-mango-client = { module = "com.redescreen.mango:mango-client", version.ref = "mango" }
-mango-shared = { module = "com.redescreen.mango:mango-shared", version.ref = "mango" }
-mango-paper = { module = "com.redescreen.mango:mango-paper", version.ref = "mango" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
-areas-api = { module = "com.redescreen.areas:api", version.ref = "areas" }
-areas-event = { module = "com.redescreen.areas:event", version.ref = "areas" }
-areas-plugin = { module = "com.redescreen.areas:plugin", version.ref = "areas" }
-
 [bundles]
 #warden = ["warden-client", "warden-connector", "warden-shared"]
-mango = ["mango-client", "mango-shared", "mango-paper"]
-areas = ["areas-api", "areas-event", "areas-plugin"]
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

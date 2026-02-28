@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     compileOnly(libs.placeholder)
-    compileOnly(libs.protocol)
 
     implementation(libs.mongodb)
 

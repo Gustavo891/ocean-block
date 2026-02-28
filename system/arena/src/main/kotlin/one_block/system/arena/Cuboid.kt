@@ -1,6 +1,5 @@
 package one_block.system.arena
 
-import com.redescreen.sdk.world.BlockPos
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -43,16 +42,6 @@ data class Cuboid(
             return Cuboid(minX, minY, minZ, maxX, maxY, maxZ)
         }
 
-        fun from(minBlock: BlockPos, maxBlock: BlockPos): Cuboid {
-            val minX = min(minBlock.x, maxBlock.x)
-            val minY = min(minBlock.y, maxBlock.y)
-            val minZ = min(minBlock.z, maxBlock.z)
-            val maxX = max(minBlock.x, maxBlock.x)
-            val maxY = max(minBlock.y, maxBlock.y)
-            val maxZ = max(minBlock.z, maxBlock.z)
-
-            return Cuboid(minX, minY, minZ, maxX, maxY, maxZ)
-        }
     }
 
     val deltaX: Int = maxX - minX
