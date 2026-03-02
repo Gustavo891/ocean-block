@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockGrowEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityExplodeEvent
+import org.bukkit.event.player.PlayerInteractEvent
 
 class IslandListener : Listener {
 
@@ -44,9 +45,20 @@ class IslandListener : Listener {
         val player = event.player
         val island = IslandManager.getIslandAt(player.location) ?: return
 
+
         if(!isTrustAllowed(island, player)) {
-            player.sendRichMessage("<red>Você só pode colocar blocos enquanto o dono da ilha estiver online.")
+            event.isCancelled = true
             return
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    fun onInteract(event: PlayerInteractEvent) {
+        val player = event.player
+        val island = IslandManager.getIslandAt(player.location) ?: return
+
+        if(!isTrustAllowed(island, player)) {
+            event.isCancelled = true
         }
     }
 
@@ -56,24 +68,28 @@ class IslandListener : Listener {
         val island = IslandManager.getIslandAt(player.location) ?: return
 
         if(!isTrustAllowed(island, player)) {
-            player.sendRichMessage("<red>Você só pode quebrar blocos enquanto o dono da ilha estiver online.")
+            event.isCancelled = true
             return
         }
     }
 
     private fun isTrustAllowed(island: Island, player: Player) : Boolean {
-        if (island.ownerUuid == player.uniqueId) return true
 
+        if (island.ownerUuid == player.uniqueId) return true
         val islandMember = island.members[player.name.lowercase()]
         if (islandMember != null) return true
 
         if(island.isTrustedMember(player.name)) {
             val owner = Bukkit.getPlayer(island.ownerUuid);
             if(owner == null || !owner.isOnline) {
+                player.sendRichMessage("<red>Você só pode fazer ações enquanto o dono estiver online.")
                 return false
+            } else {
+                return true
             }
         }
-        return true
+        player.sendRichMessage("<red>Você não faz parte dessa ilha")
+        return false
     }
 
     private fun getPlayerAttacker(event: EntityDamageByEntityEvent): Player? {

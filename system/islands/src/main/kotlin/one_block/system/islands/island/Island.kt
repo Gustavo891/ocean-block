@@ -45,10 +45,7 @@ data class Island(
 
     fun onJoin(player: Player) {
         player.worldBorder = currentWorldBorder
-        if(BossbarManager.getBossBar(this) == null) {
-            BossbarManager.initBossBar(this)
-        }
-        BossbarManager.getBossBar(this)?.addViewer(player)
+        BossbarManager.updatePlayerBar(player, this)
 
     }
 
@@ -166,8 +163,7 @@ data class Island(
             player.sendRichMessage("<red>Erro: mundo não carregado.")
             return
         }
-
-        player.sendRichMessage("<red>Esse jogador não tem uma ilha!")
+        onJoin(player)
         player.teleport(spawn.add(0.0, 2.0, 0.0))
     }
 

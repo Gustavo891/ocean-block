@@ -2,6 +2,7 @@ package one_block.system.islands.view
 
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
+import one_block.libs.formatter.NumberFormatter
 import one_block.libs.item_builder.addLore
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
@@ -37,7 +38,7 @@ class PhaseView : View() {
                 name("<yellow>${value.prettyName}")
 
                 addLore {
-                    +"<dark_gray>Blocos necessarios: ${value.blocksToNextPhase}"
+                    +"<dark_gray>Blocos necessarios: ${NumberFormatter.format(value.blocksToNextPhase.toDouble())}"
                     +""
                     +" <white>Blocos"
                     value.blockPool.forEach { material, i ->

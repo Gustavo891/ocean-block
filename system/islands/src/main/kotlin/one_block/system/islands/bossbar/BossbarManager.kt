@@ -44,6 +44,14 @@ object BossbarManager {
         return MiniMessage.miniMessage().deserialize("<glyph:floating_islands> <font:oneblock:test>$textPlain")
     }
 
+    fun updatePlayerBar(player: Player, island: Island) {
+        player.activeBossBars().forEach { it.removeViewer(player) }
+        if(getBossBar(island) == null) {
+            initBossBar(island)
+        }
+        getBossBar(island)?.addViewer(player)
+    }
+
     fun getBossBar(island: Island): BossBar? {
         return bossbars[island.uuid]
     }

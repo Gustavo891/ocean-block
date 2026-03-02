@@ -78,6 +78,7 @@ class IslandCommand(
             sender.sendRichMessage("<red>Você não está em nenhuma ilha.")
             return
         }
+        viewFrame.open(IslandView::class.java, sender)
     }
 
     @Subcommand("visitar|v")

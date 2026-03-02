@@ -169,6 +169,7 @@ class IslandView : View() {
 
         Currencies.withdraw(player.uniqueId, "coins", price)
         island.upgradeBorderSize()
+        IslandManager.markDirty(island.uuid)
 
         player.sendRichMessage("<green>Borda evoluída com sucesso! <dark_gray>(${Island.BORDER_SIZE[size]} -> ${Island.BORDER_SIZE[size + 1]})")
         player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
@@ -193,6 +194,7 @@ class IslandView : View() {
 
         Currencies.withdraw(player.uniqueId, "coins", price)
         island.upgrades["crop"] = level + 1
+        IslandManager.markDirty(island.uuid)
 
         player.sendRichMessage("<green>Velocidade de plantação evoluída com sucesso!")
         player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
