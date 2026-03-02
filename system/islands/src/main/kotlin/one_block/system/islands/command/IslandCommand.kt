@@ -4,14 +4,20 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
+import co.aikar.commands.annotation.Optional
 import co.aikar.commands.annotation.Subcommand
 import me.devnatan.inventoryframework.ViewFrame
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.coordinate.SimpleLocation
 import one_block.system.islands.island.IslandManager
 import one_block.system.islands.island.IslandMember
+import one_block.system.islands.island.IslandMemberPermission
 import one_block.system.islands.phase.PhaseManager
+import one_block.system.islands.view.IslandView
 import one_block.system.islands.view.IslandsView
 import one_block.system.islands.view.PhaseView
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 @CommandAlias("island|is")
@@ -20,15 +26,39 @@ class IslandCommand(
 ) : BaseCommand() {
 
     @Default
-    fun onDefault(sender: Player) {
-        var island = IslandManager.islandsById.values.find { it.ownerUuid == sender.uniqueId }
+    fun onDefault(sender: Player, @Optional targetName: String?) {
 
+        if(targetName != null) {
+            val playerIsland = IslandManager.getIslandByOwner(targetName)
+            if(playerIsland == null) {
+                sender.sendRichMessage("<red>Esse jogador não tem uma ilha!")
+                return
+            }
+            if(playerIsland.isMember(sender.name) || playerIsland.isTrustedMember(sender.name)) {
+                playerIsland.teleportTo(sender)
+                return
+            }
+        }
+
+        var island = IslandManager.getIslandByOwner(sender.name)
         if (island == null) {
             sender.sendRichMessage("<green>Criando sua ilha...")
             island = IslandManager.createIsland(sender)
             sender.sendRichMessage("<green>Sua ilha foi criada com sucesso!")
-        }
+            val spawn = island.spawn.toBukkit()
 
+            if (spawn == null) {
+                sender.sendRichMessage("<red>Erro: mundo não carregado.")
+                return
+            }
+
+            sender.teleport(spawn.add(0.0, 2.0, 0.0))
+            sender.fallDistance = 0f
+            island.onJoin(sender)
+
+            sender.sendRichMessage("<green>Teleportado para sua ilha!")
+            return
+        }
         val spawn = island.spawn.toBukkit()
 
         if (spawn == null) {
@@ -37,10 +67,17 @@ class IslandCommand(
         }
 
         sender.teleport(spawn.add(0.0, 2.0, 0.0))
-        sender.fallDistance = 0f
-        island.onJoin(sender)
+        //viewFrame.open(IslandView::class.java, sender)
 
-        sender.sendRichMessage("<green>Teleportado para sua ilha!")
+    }
+
+    @Subcommand("menu")
+    fun onMenu(sender: Player) {
+        val islandAt = IslandManager.getIslandByPlayer(sender.uniqueId)
+        if(islandAt == null) {
+            sender.sendRichMessage("<red>Você não está em nenhuma ilha.")
+            return
+        }
     }
 
     @Subcommand("visitar|v")
@@ -57,6 +94,7 @@ class IslandCommand(
         }
 
         sender.teleport(island.spawn.toBukkit()!!.add(0.0, 2.0, 0.0))
+        island.onJoin(sender)
         IslandManager.playerIsland[sender.uniqueId] = island.uuid
         sender.fallDistance = 0f
 
@@ -89,9 +127,22 @@ class IslandCommand(
         sender.sendRichMessage("<green>Seu home foi definido.")
     }
 
-    @Subcommand("phases")
+    @Subcommand("phases|fases")
     fun onPhases(sender: Player) {
         viewFrame.open(PhaseView::class.java, sender)
+    }
+
+    @Subcommand("reload")
+    @CommandPermission("oneblock.admin")
+    fun onReload(sender: Player) {
+        PhaseManager.loadPhases()
+        sender.sendRichMessage("<green>Recarregado com sucesso!")
+    }
+
+    @Subcommand("all")
+    @CommandPermission("oneblock.admin")
+    fun onAll(sender: Player) {
+        viewFrame.open(IslandsView::class.java, sender)
     }
 
     @Subcommand("trust")
@@ -128,7 +179,7 @@ class IslandCommand(
             return
         }
 
-        if (!island.addMember(targetName, IslandMember(targetName, 0))) {
+        if (!island.addMember(targetName, IslandMember(targetName, mutableSetOf()))) {
             sender.sendRichMessage("<green>Este jogador já está adicionado")
             return
         }
@@ -136,28 +187,4 @@ class IslandCommand(
         sender.sendRichMessage("<green>Adicionado com sucesso!")
     }
 
-    @Subcommand("reload")
-    @CommandPermission("oneblock.admin")
-    fun onReload(sender: Player) {
-        PhaseManager.loadPhases()
-        sender.sendRichMessage("<green>Recarregado com sucesso!")
-    }
-
-    @Subcommand("all")
-    @CommandPermission("oneblock.admin")
-    fun onAll(sender: Player) {
-        viewFrame.open(IslandsView::class.java, sender)
-    }
-
-    @Subcommand("test")
-    fun onTest(sender: Player) {
-        val island = IslandManager.getIslandByPlayer(sender.uniqueId)
-        if (island == null) {
-            sender.sendRichMessage("<red>Sem ilha!")
-            return
-        }
-
-        island.refreshWorldBorder()
-        island.onJoin(sender)
-    }
 }

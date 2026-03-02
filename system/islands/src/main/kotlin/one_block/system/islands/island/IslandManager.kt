@@ -4,6 +4,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.coordinate.SimpleLocation
 import one_block.libs.instance.Instance
 import one_block.libs.instance.ScheduledExecutor
+import one_block.system.islands.IslandsSystem
 import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.position.Position
 import org.bukkit.Bukkit
@@ -11,14 +12,19 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 object IslandManager {
 
     val islandsById = mutableMapOf<UUID, Island>()
+
     private val islandsByGrid = mutableMapOf<Pair<Int, Int>, Island>()
     private val dirtyIslands = mutableSetOf<UUID>()
+
+    //
     val playerIsland = mutableMapOf<UUID, UUID>()
 
     private val repository = IslandRepository()
@@ -30,37 +36,10 @@ object IslandManager {
             BossbarManager.initBossBar(it)
         }
 
-        ScheduledExecutor.scheduleAtFixedRate({ onTick() }, 0, 1, TimeUnit.SECONDS)
         ScheduledExecutor.scheduleAtFixedRate({ saveDirtyIslands() }, 30, 30, TimeUnit.SECONDS)
     }
 
-    fun getIslandById(id: UUID): Island? {
-        return islandsById[id]
-    }
-
-    fun getIslandAt(location: Location): Island? {
-        if (location.world?.name != "world") return null
-
-        val gx = (location.x / Position.GRID_SPACING).roundToInt()
-        val gz = (location.z / Position.GRID_SPACING).roundToInt()
-        val island = islandsByGrid[gx to gz] ?: return null
-
-        val dist = island.size / 2.0
-        val centerX = island.position.originX
-        val centerZ = island.position.originZ
-
-        val inside = location.x >= centerX - dist && location.x <= centerX + dist &&
-            location.z >= centerZ - dist && location.z <= centerZ + dist
-
-        return if (inside) island else null
-    }
-
-    fun getIslandByPlayer(uuid: UUID): Island? {
-        val islandId = playerIsland[uuid] ?: return null
-        return islandsById[islandId]
-    }
-
-    fun createIsland(uuid: UUID, name: String): Island {
+   /*fun createIsland(uuid: UUID, name: String): Island {
         val index = islandsById.size
         val grid = Position.Companion.fromIndex(index)
 
@@ -98,11 +77,11 @@ object IslandManager {
         markDirty(islandId)
 
         return island
-    }
+    }*/
 
     fun createIsland(player: Player): Island {
         val index = islandsById.size
-        val grid = Position.Companion.fromIndex(index)
+        val grid = Position.fromIndex(index)
 
         val center = SimpleLocation(
             grid.originX,
@@ -140,6 +119,38 @@ object IslandManager {
         return island
     }
 
+    fun getIslandByOwner(targetName: String): Island? {
+        return islandsById.values.find {
+            it.ownerName.equals(targetName, ignoreCase = true)
+        }
+    }
+
+    fun getIslandById(id: UUID): Island? {
+        return islandsById[id]
+    }
+
+    fun getIslandAt(location: Location): Island? {
+        if (location.world?.name != "world") return null
+
+        val gx = (location.x / Position.GRID_SPACING).roundToInt()
+        val gz = (location.z / Position.GRID_SPACING).roundToInt()
+        val island = islandsByGrid[gx to gz] ?: return null
+
+        val dist = island.size / 2.0
+        val centerX = island.position.originX
+        val centerZ = island.position.originZ
+
+        val inside = location.x >= centerX - dist && location.x <= centerX + dist &&
+            location.z >= centerZ - dist && location.z <= centerZ + dist
+
+        return if (inside) island else null
+    }
+
+    fun getIslandByPlayer(uuid: UUID): Island? {
+        val islandId = playerIsland[uuid] ?: return null
+        return islandsById[islandId]
+    }
+
     fun markDirty(islandUuid: UUID) {
         dirtyIslands.add(islandUuid)
     }
@@ -168,21 +179,5 @@ object IslandManager {
 
         world.getBlockAt(x, y - 1, z).type = Material.BEDROCK
         world.getBlockAt(x, y, z).type = Material.DIRT
-    }
-
-    private fun onTick() {
-   /*     playerIsland.entries.forEach { (uuid, islandUuid) ->
-            val player = Bukkit.getPlayer(uuid) ?: return@forEach
-            if (!player.world.name.equals("world", true)) return@forEach
-
-            val island = islandsById[islandUuid] ?: return@forEach
-            val currentPhase = island.getCurrentPhase() ?: return
-
-            player.sendActionBar(
-                MiniMessage.miniMessage()
-                    .deserialize("<color:#ffd000>Dimensão ${currentPhase.prettyName} | Progresso ${island.grid}/${currentPhase.blocksToNextPhase}")
-            )
-        }*/
-
     }
 }

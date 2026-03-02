@@ -5,6 +5,8 @@ import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.Context
 import me.devnatan.inventoryframework.context.OpenContext
 import me.devnatan.inventoryframework.context.RenderContext
+import net.kyori.adventure.text.minimessage.MiniMessage
+import one_block.libs.formatter.NumberFormatter
 import one_block.libs.item_builder.addLore
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
@@ -13,6 +15,7 @@ import one_block.system.currencies.Currencies
 import one_block.system.shop.shop.Product
 import one_block.system.shop.shop.Shop
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import java.util.function.BooleanSupplier
@@ -32,37 +35,100 @@ class ProductView : View() {
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
         config.layout(
-            "         ",
-            "  OOOOO  ",
-            "< OOOOO >",
-            "  OOOOO  ",
-            "         ",
-            "         "
+            " OOOOOOO ",
+            " OOOOOOO ",
+            " OOOOOOO ",
+            "1<<<v>>>2",
         )
     }
 
     override fun onOpen(open: OpenContext) {
-        open.modifyConfig().title(shop.get(open).prettyName)
+        val prettyName = shop.get(open).prettyName
+        val fillerAmount = 19 - prettyName.length
+        val string = "-".repeat(fillerAmount)
+
+        open.modifyConfig().title(
+            MiniMessage.miniMessage()
+                .deserialize("<shift:-8><glyph:shop_category><font:oneblock:gui><shift:-170><gray>Loja ><dark_gray> $prettyName <st>$string</st>")
+        )
     }
 
     override fun onFirstRender(render: RenderContext) {
         val pagination = pagination.get(render)
 
-        render.slot(6, 5)
-            .renderWith { createBackItem() }
-            .onClick { ctx -> ctx.openForPlayer(ShopView::class.java) }
+        render.layoutSlot('1')
+            .updateOnStateChange(this.pagination)
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        itemModel = NamespacedKey("oneblock", "button_left")
+                        isHideTooltip = true
+                    }
+                }
+            }
+            .displayIf(BooleanSupplier { pagination.canBack() })
+
+        render.layoutSlot('v')
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        isHideTooltip = true
+                        itemModel = NamespacedKey("oneblock", "blank")
+                    }
+                }
+            }
+            .onClick { click ->
+                click.player.playSound(click.player, "oneblock:button.click", 1.0f, 1.0f)
+                render.openForPlayer(ShopView::class.java)
+            }
+
+        render.layoutSlot('2')
+            .updateOnStateChange(this.pagination)
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        itemModel = NamespacedKey("oneblock", "button_right")
+                        isHideTooltip = true
+                    }
+                }
+            }
+            .displayIf(BooleanSupplier { pagination.canAdvance() })
+
 
         render.layoutSlot('<')
             .updateOnStateChange(this.pagination)
-            .renderWith { ItemStack(Material.ARROW) }
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                  //      name("<white>Pagina anterior")
+                        isHideTooltip = true
+                        itemModel = NamespacedKey("oneblock", "blank")
+                    }
+                }
+            }
             .displayIf(BooleanSupplier { pagination.canBack() })
-            .onClick(pagination::back)
+            .onClick { click ->
+                pagination.back()
+                render.update()
+                click.player.playSound(click.player, "oneblock:button.click", 1.0f, 1.0f)
+            }
 
         render.layoutSlot('>')
-            .renderWith { ItemStack(Material.ARROW) }
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        isHideTooltip = true
+                        itemModel = NamespacedKey("oneblock", "blank")
+                    }
+                }
+            }
             .updateOnStateChange(this.pagination)
             .displayIf(BooleanSupplier { pagination.canAdvance() })
-            .onClick(pagination::advance)
+            .onClick { click ->
+                pagination.advance()
+                render.update()
+                click.player.playSound(click.player, "oneblock:button.click", 1.0f, 1.0f)
+            }
     }
 
     private fun createProductItem(ctx: Context, product: Product): ItemStack {
@@ -75,9 +141,9 @@ class ProductView : View() {
                 name("$colorName${product.nameSingular}")
 
                 addLore {
-                    +"<white>Preço: <green>$<white>${product.price}"
+                    +"<white>Preço: <green>$<white>${NumberFormatter.format(product.price)}"
                     +""
-                    +"${colorName}${if(hasCoins) "Clique para adquirir!" else "Sem dinheiro!"}"
+                    +"${colorName}${if (hasCoins) "Clique para adquirir!" else "Sem dinheiro!"}"
                 }
             }
         }

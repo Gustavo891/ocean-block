@@ -10,9 +10,11 @@ dependencies {
 
     compileOnly(projects.lib.connection)
     compileOnly(projects.lib.coordinate)
+    compileOnly(projects.lib.formatter)
+    compileOnly(projects.system.currencies)
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.itemBuilder)
     compileOnly(projects.lib.translation)
 
-    compileOnly("me.devnatan:inventory-framework-platform-bukkit:3.7.1")
+    compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 }

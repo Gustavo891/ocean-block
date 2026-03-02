@@ -1,12 +1,12 @@
 package one_block.system.islands.island
 
-enum class IslandMemberPermission {
+enum class IslandMemberPermission(
+    val prettyName: String,
+    val icon: Char
+) {
 
-    Containers();
+    INVITE("Adicionar jogadores", 'M'),
+    KILL("Matar mobs", 'k'),
+    KICK("Expulsar jogadores", 'x')
 
-    fun has(value: Byte) = (value.toInt() and (1 shl ordinal)) != 0
-
-    fun add(value: Byte) = (value.toInt() or (1 shl ordinal)).toByte()
-
-    fun remove(value: Byte) = (value.toInt() and (1 shl ordinal).inv()).toByte()
 }

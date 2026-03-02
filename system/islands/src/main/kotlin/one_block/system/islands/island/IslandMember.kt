@@ -4,5 +4,5 @@ import java.util.*
 
 data class IslandMember(
     var name: String,
-    val permission: Byte,
+    var permissions: MutableSet<IslandMemberPermission>,
 )

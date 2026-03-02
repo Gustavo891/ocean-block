@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.system.islands.island.Island
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import java.util.UUID
 
 object BossbarManager {
@@ -38,13 +39,21 @@ object BossbarManager {
     fun updateProgression(island: Island): Component {
         val phase = island.getCurrentPhase() ?: return Component.empty()
 
-        val textPlain = "<white>Fase: <gray>${phase.prettyName} <yellow>(${island.grid}/${phase.blocksToNextPhase})"
+        val textPlain = "<white>Fase: <gray>${phase.prettyName} <dark_gray>(${island.grid}/${phase.blocksToNextPhase})"
 
-        return MiniMessage.miniMessage().deserialize("<glyph:floating_islands> <font:minecraft:test>$textPlain")
+        return MiniMessage.miniMessage().deserialize("<glyph:floating_islands> <font:oneblock:test>$textPlain")
     }
 
     fun getBossBar(island: Island): BossBar? {
         return bossbars[island.uuid]
+    }
+
+    fun clearBossbar(island: Island) {
+        val bossbar = bossbars[island.uuid] ?: return
+        bossbar.viewers()
+            .filterIsInstance<Player>()
+            .forEach { bossbar.removeViewer(it) }
+        bossbars.remove(island.uuid)
     }
 
 }

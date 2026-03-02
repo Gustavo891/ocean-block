@@ -31,7 +31,7 @@ fawe-bukkit = "2.8.4"
 #warden = "1.0"
 discord-webhooks = "0.8.4"
 currencies = "1.0"
-inventoryFramework = "3.3.5"
+inventoryFramework = "3.7.1"
 sdk = "1.0"
 accounts = "1.0"
 packets = "1.0"
@@ -82,7 +82,7 @@ ktor-serialization-kotlinxJson = { module = "io.ktor:ktor-serialization-kotlinx-
 #warden-connector = { module = "com.redescreen.warden:connector-game", version.ref = "warden" }
 #warden-shared = { module = "com.redescreen.warden:shared", version.ref = "warden" }
 discord-webhooks = { module = "club.minnced:discord-webhooks", version.ref = "discord-webhooks" }
-inventoryFramework = { module = "me.devnatan:inventory-framework-platform-bukkit", version.ref = "inventoryFramework" }
+inventoryFramework = { module = "me.devnatan:inventory-framework-platform-paper", version.ref = "inventoryFramework" }
 itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
 mythicMobs = { module = "io.lumine:Mythic-Dist", version.ref = "mythicMobs" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }

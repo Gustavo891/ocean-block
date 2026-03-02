@@ -6,6 +6,7 @@ import me.devnatan.inventoryframework.context.Context
 import me.devnatan.inventoryframework.context.OpenContext
 import me.devnatan.inventoryframework.context.RenderContext
 import me.devnatan.inventoryframework.context.SlotClickContext
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.item_builder.addLore
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
@@ -13,6 +14,7 @@ import one_block.libs.item_builder.name
 import one_block.system.currencies.Currencies
 import one_block.system.shop.shop.Product
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.Sound
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
@@ -25,43 +27,62 @@ class PurchaseView : View() {
     private val pagination = computedPaginationState(
         { mutableListOf(1, 5, 10, 30, 64) }
     ) { context, builder, index, value ->
-        builder.renderWith { createAmountItem(context, value) }
-            .onClick { _ -> handleAmountClick(context, value) }
+        builder.renderWith { createAmountItem(context, value, product.get(context).material) }
+            .onClick { click ->
+                handleAmountClick(context, value)
+                click.update()
+            }
     }
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
         config.layout(
-            "         ",
             "  OOOOO  ",
-            "         ",
-            "         ",
+            "         "
         )
     }
 
     override fun onOpen(open: OpenContext) {
-        open.modifyConfig().title("Comprando ${product.get(open).nameSingular.lowercase()}")
+        val name = product.get(open).nameSingular
+        val avail = 16
+        val display = if (name.length > avail) name.take(avail - 3) + "..." else name
+
+        open.modifyConfig().title(
+            MiniMessage.miniMessage().deserialize("<shift:-8><glyph:shop_product><font:oneblock:gui><shift:-170><gray>Comprando > <dark_gray>$display")
+        )
     }
 
     override fun onFirstRender(render: RenderContext) {
-        render.slot(4, 4)
+
+        val product = product.get(render)
+
+        render.slot(2, 4)
             .renderWith { createBackItem() }
             .onClick { ctx -> ctx.back() }
 
-        render.slot(4, 6)
+        render.slot(2, 6)
             .watch(currentAmount)
             .renderWith { createConfirmationItem(render) }
             .onClick { ctx -> handleConfirmationClick(ctx, currentAmount.get(render)) }
+
+        render.slot(2, 5)
+            .renderWith { itemStack(product.material) {
+                meta<ItemMeta> {
+                    name("<white>${product.nameSingular}")
+                    amount = currentAmount.get(render)
+                }
+            } }
     }
 
-    private fun createAmountItem(ctx: Context, amount: Int): ItemStack {
+    private fun createAmountItem(ctx: Context, quantidade: Int, tipo: Material): ItemStack {
         val get = currentAmount.get(ctx)
 
-        return itemStack(if (get == amount) Material.LIME_STAINED_GLASS_PANE else Material.GRAY_STAINED_GLASS_PANE) {
+        return itemStack(if (get == quantidade) Material.LIME_STAINED_GLASS_PANE else Material.GRAY_STAINED_GLASS_PANE) {
             val product = product.get(ctx)
 
             meta<ItemMeta> {
-                name("<green>${amount} ${if (amount == 1) product.nameSingular else product.namePlural}")
+                amount = quantidade
+                name("<green>${quantidade} ${if (quantidade == 1) product.nameSingular else product.namePlural}")
             }
         }
     }
@@ -71,7 +92,7 @@ class PurchaseView : View() {
         pagination.get(ctx).forceUpdate()
     }
 
-    private fun createConfirmationItem(ctx: Context) = itemStack(Material.GREEN_WOOL) {
+    private fun createConfirmationItem(ctx: Context) = itemStack(Material.PAPER) {
         val product = product.get(ctx)
         val amount = currentAmount.get(ctx)
         val total = product.price * amount
@@ -82,7 +103,7 @@ class PurchaseView : View() {
 
         meta<ItemMeta> {
             name("<green>Confirmar!")
-
+            itemModel = NamespacedKey("oneblock", "accept")
             addLore {
                 +"<gray>Você está comprando"
                 +"<white>${amount} ${if (amount == 1) product.nameSingular else product.namePlural} <gray>por "
@@ -94,10 +115,10 @@ class PurchaseView : View() {
     }
 
     private fun createInsufficientCoinsItem(ctx: Context, product: Product, amount: Int, total: Double) =
-        itemStack(Material.RED_WOOL) {
+        itemStack(Material.PAPER) {
             meta<ItemMeta> {
                 name("<red>Sem dinheiro!")
-
+                itemModel = NamespacedKey("oneblock", "deny")
                 addLore {
                     +"<gray>Você está comprando"
                     +"<white>${amount} ${if (amount == 1) product.nameSingular else product.namePlural} <gray>por "
@@ -123,9 +144,10 @@ class PurchaseView : View() {
         player.sendRichMessage("<green>Produto adquirido com sucesso.")
     }
 
-    private fun createBackItem() = itemStack(Material.ARROW) {
+    private fun createBackItem() = itemStack(Material.PAPER) {
         meta<ItemMeta> {
             name("<green>Voltar!")
+            itemModel = NamespacedKey("oneblock", "blank")
         }
     }
 }

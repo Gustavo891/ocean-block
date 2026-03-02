@@ -21,14 +21,11 @@ class ShopView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title("Categorias")
+        config.title("<shift:-8><glyph:shop>")
         config.layout(
-            "         ",
             "  OOOOO  ",
             "  OOOOO  ",
-            "  OOOOO  ",
-            "         ",
-            "         "
+
         )
     }
 

@@ -6,13 +6,18 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
+import me.devnatan.inventoryframework.ViewFrame
 import one_block.system.currencies.Currencies
 import one_block.system.sell.Sell
+import one_block.system.sell.SellSystem
 import one_block.system.sell.manager.SellManager
+import one_block.system.sell.view.SellView
 import org.bukkit.entity.Player
 
 @CommandAlias("sell|vender")
-class SellCommand : BaseCommand() {
+class SellCommand(
+    private val viewFrame: ViewFrame,
+) : BaseCommand() {
 
     @Default
     fun onDefault(sender: Player) {
@@ -39,6 +44,11 @@ class SellCommand : BaseCommand() {
         target.player.inventory.addItem(createSellItem)
 
         sender.sendRichMessage("<green>Deu o item ggggggggggggg")
+    }
+
+    @Subcommand("gui")
+    fun onGui(sender: Player) {
+        viewFrame.open(SellView::class.java, sender)
     }
 
     @Subcommand("reload")

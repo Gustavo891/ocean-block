@@ -32,6 +32,7 @@ class PlayerListener : Listener {
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
+        event.joinMessage(null);
         handleIslandEntry(event.player, event.player.location)
     }
 
@@ -84,7 +85,6 @@ class PlayerListener : Listener {
     private fun handleIslandEntry(player: Player, location: Location) {
         runNextTask {
             val islandAt = IslandManager.getIslandAt(location) ?: return@runNextTask
-
             IslandManager.playerIsland[player.uniqueId] = islandAt.uuid
             islandAt.onJoin(player)
         }

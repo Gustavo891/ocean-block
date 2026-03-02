@@ -21,8 +21,8 @@ import kotlin.random.nextInt
 
 data class Island(
     val uuid: UUID,
-    val ownerUuid: UUID,
-    val ownerName: String,
+    var ownerUuid: UUID,
+    var ownerName: String,
     val center: SimpleLocation,
     val position: Position,
     var spawn: SimpleLocation,
@@ -35,12 +35,21 @@ data class Island(
     var isPublic: Boolean,
 ) {
 
+    val invites = mutableSetOf<String>()
+    companion object {
+        val BORDER_SIZE = listOf(30, 50, 70, 100)
+    }
+
     private val borderInstance by lazy { Bukkit.createWorldBorder() }
     var currentWorldBorder = getWorldBorder()
 
     fun onJoin(player: Player) {
         player.worldBorder = currentWorldBorder
+        if(BossbarManager.getBossBar(this) == null) {
+            BossbarManager.initBossBar(this)
+        }
         BossbarManager.getBossBar(this)?.addViewer(player)
+
     }
 
     fun getCurrentPhase(): Phase? {
@@ -125,16 +134,41 @@ data class Island(
 
     }
 
+    fun getBorderSize(): Int {
+        return upgrades["size"] ?: 0
+    }
+
+    fun getCropLevel(): Int {
+        return upgrades["crop"] ?: 0
+    }
+
+    fun upgradeBorderSize() {
+        val currentSize = upgrades["size"] ?: 0
+        val newSize = currentSize + 1
+        upgrades["size"] = newSize
+        refreshWorldBorder()
+    }
+
     private fun getWorldBorder(): WorldBorder {
-        val size = upgrades["size"] ?:0
-        val sizes = listOf(30, 50, 70, 100)
-        val a = sizes[size]
-    //    IslandUpgrade.Size.apply(this, size)
+        val curentSize = upgrades["size"] ?:0
+        val borderAmount = BORDER_SIZE[curentSize]
 
         borderInstance.center = center.toBukkit()!!
-        borderInstance.size = a.toDouble()
+        borderInstance.size = borderAmount.toDouble()
         borderInstance.warningDistance = -1
         return borderInstance
+    }
+
+    fun teleportTo(player: Player) {
+        val spawn = spawn.toBukkit()
+
+        if (spawn == null) {
+            player.sendRichMessage("<red>Erro: mundo não carregado.")
+            return
+        }
+
+        player.sendRichMessage("<red>Esse jogador não tem uma ilha!")
+        player.teleport(spawn.add(0.0, 2.0, 0.0))
     }
 
     private fun chance(percent: Double): Boolean {
