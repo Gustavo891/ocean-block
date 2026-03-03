@@ -1,12 +1,16 @@
 package one_block.system.items.sell
 
 import net.kyori.adventure.text.Component
+import one_block.libs.formatter.NumberFormatter
+import one_block.libs.instance.Instance
 import one_block.libs.instance.ScheduledExecutor
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
 import one_block.system.items.SpecialItemSystem
 import one_block.system.items.listener.BeaconListener
 import one_block.system.items.tasks.AnimationTask
+import one_block.system.items.tasks.BeamTask
+import one_block.system.items.tasks.SellTask
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -26,60 +30,92 @@ import kotlin.collections.set
 
 object SellBeaconManager {
 
-    val hopperbyLoc = ConcurrentHashMap<String, SellBeacon>()
-    val hopperbyUUID = ConcurrentHashMap<UUID, SellBeacon>()
+    val beaconbyLoc = ConcurrentHashMap<String, SellBeacon>()
+    val beaconbyUUID = ConcurrentHashMap<UUID, SellBeacon>()
 
-    private val keyMarker = NamespacedKey(SpecialItemSystem.plugin, "sell_beacon_marker")
-    private val keyOwner = NamespacedKey(SpecialItemSystem.plugin, "sell_beacon_owner")
-    private val keyDisplay = NamespacedKey(SpecialItemSystem.plugin, "sell_beacon_display_uuid")
+    val keyMarker = NamespacedKey(SpecialItemSystem.plugin, "sell_beacon_marker")
+    val keyOwner = NamespacedKey(SpecialItemSystem.plugin, "sell_beacon_owner")
+    val coinsAmount = NamespacedKey(SpecialItemSystem.plugin, "sell_beacon_coins")
 
-    private val repository = BeaconRepository()
+    private val dirtyBeacons = mutableSetOf<UUID>()
+
+    val repository = BeaconRepository()
+    private lateinit var sellTask: SellTask
 
     fun onInit() {
         load(repository.toList())
         AnimationTask()
+        sellTask = SellTask()
+        BeamTask(sellTask)
+
+        ScheduledExecutor.scheduleAtFixedRate({ saveDirtyBeacons() }, 30, 30, TimeUnit.SECONDS)
     }
-    fun load(hoppers: List<SellBeacon>) {
-        hoppers.forEach {
-            add(it)
+
+    fun load(beacons: List<SellBeacon>) {
+        beacons.forEach { add(it, persist = false) }
+    }
+
+    fun markDirty(beaconUUID: UUID) {
+        dirtyBeacons.add(beaconUUID)
+    }
+
+    private fun saveDirtyBeacons() {
+        if (dirtyBeacons.isEmpty()) return
+
+        val toSave = dirtyBeacons.toSet()
+        dirtyBeacons.clear()
+
+        toSave.forEach { uuid ->
+            val beacon = beaconbyUUID[uuid] ?: return@forEach
+            repository.save(beacon)
+        }
+
+        Instance.logger.info("[Beacons] Salvos ${toSave.size} beacons que sofreram alterações.")
+    }
+
+    fun add(beacon: SellBeacon, persist: Boolean = true) {
+        beaconbyLoc[beacon.key()] = beacon
+        beaconbyUUID[beacon.uuid] = beacon
+        spawnBeaconDisplay(beacon.coordinate.toBukkit(), beacon)
+
+        if (persist) {
+            repository.save(beacon)
+            Instance.logger.info("[Beacons] Beacon ${beacon.uuid} salvo ao ser colocado.")
         }
     }
 
-    fun add(hopper: SellBeacon) {
-        hopperbyLoc[hopper.key()] = hopper
-        hopperbyUUID[hopper.uuid] = hopper
-        spawnBeaconDisplay(hopper.coordinate.toBukkit(), hopper)
-    }
 
-    fun remove(hopper: SellBeacon) {
-        hopperbyUUID.remove(hopper.uuid)
-        hopperbyLoc.remove(hopper.key())
+    fun remove(beacon: SellBeacon) {
+        beaconbyUUID.remove(beacon.uuid)
+        beaconbyLoc.remove(beacon.key())
+        dirtyBeacons.remove(beacon.uuid)
+        repository.remove(beacon.uuid)
     }
 
     fun getByLocation(worldName: String, x: Int, y: Int, z: Int): SellBeacon? {
-        return hopperbyLoc["$worldName:$x:$y:$z"]
+        return beaconbyLoc["$worldName:$x:$y:$z"]
     }
 
-    fun createBeaconItem() = itemStack(Material.BEACON) {
+    fun createBeaconItem(sellBeacon: SellBeacon?) = itemStack(Material.BEACON) {
         meta<ItemMeta> {
             displayName(Component.text("§aBeacon vendedor"))
-            persistentDataContainer.set(BeaconListener.BEACON_KEY, PersistentDataType.STRING, "'-'")
+            persistentDataContainer.set(BeaconListener.BEACON_KEY, PersistentDataType.BOOLEAN, true)
+            persistentDataContainer.set(coinsAmount, PersistentDataType.DOUBLE, sellBeacon?.coinsAmount ?: 0.0)
         }
     }
 
     fun spawnBeaconDisplay(baseBlockLoc: Location?, sellBeacon: SellBeacon): Boolean {
-
-        if(baseBlockLoc == null) return false
+        if (baseBlockLoc == null) return false
         val world = baseBlockLoc.world ?: return false
         val spawnLoc = baseBlockLoc.clone().add(0.5, 2.0, 0.5)
 
-        val display = world.spawn(spawnLoc, ItemDisplay::class.java).apply {
+        sellBeacon.originalY = spawnLoc.y
 
+        val display = world.spawn(spawnLoc, ItemDisplay::class.java).apply {
             setItemStack(ItemStack(Material.BEACON))
             val t = transformation
             t.scale.set(Vector3f(0.5f, 0.5f, 0.5f))
             transformation = t
-
             setGravity(false)
             isPersistent = true
         }
@@ -88,10 +124,8 @@ object SellBeaconManager {
             interactionWidth = 0.8f
             interactionHeight = 0.8f
             isResponsive = true
-
             persistentDataContainer.set(keyMarker, PersistentDataType.BYTE, 1)
             persistentDataContainer.set(keyOwner, PersistentDataType.STRING, sellBeacon.uuid.toString())
-            persistentDataContainer.set(keyDisplay, PersistentDataType.STRING, display.uniqueId.toString())
         }
 
         sellBeacon.display = display
@@ -103,49 +137,38 @@ object SellBeaconManager {
     fun handleRightClick(player: Player, interaction: Interaction) {
         if (!isSellBeacon(interaction)) return
 
-        val uuid = getUUID(interaction)
-        val sellBeacon = hopperbyUUID[uuid] ?: return
+        val uuid = getInteractionUUID(interaction) ?: return
+        val sellBeacon = beaconbyUUID[uuid] ?: return
         if (sellBeacon.ownerUUID != player.uniqueId) {
             player.sendMessage("§cVocê não é o dono desse beacon.")
             return
         }
 
-        player.sendMessage("§aVocê clicou no beacon de venda!")
+        player.sendMessage("§aO seu beacon de venda possui: §2$§f${NumberFormatter.format(sellBeacon.coinsAmount)}")
     }
 
     fun handleLeftHit(player: Player, interaction: Interaction) {
         if (!isSellBeacon(interaction)) return
 
-        val uuid = getUUID(interaction)
-        val sellBeacon = hopperbyUUID[uuid] ?: return
+        val uuid = getInteractionUUID(interaction) ?: return
+        val sellBeacon = beaconbyUUID[uuid] ?: return
         if (sellBeacon.ownerUUID != player.uniqueId) {
             player.sendMessage("§cVocê não é o dono desse beacon.")
             return
         }
 
-        val displayUuid = interaction.persistentDataContainer
-            .get(keyDisplay, PersistentDataType.STRING)
-            ?.let { runCatching { UUID.fromString(it) }.getOrNull() }
-
-        if (displayUuid != null) {
-            val entity = Bukkit.getEntity(displayUuid)
-            if (entity is ItemDisplay) entity.remove()
-        }
-
+        sellBeacon.display?.remove()
         interaction.remove()
-
-        player.inventory.addItem(createBeaconItem())
+        remove(sellBeacon) // now also deletes from MongoDB
+        player.inventory.addItem(createBeaconItem(sellBeacon))
         player.sendMessage("§eBeacon removido e devolvido.")
     }
 
     fun isSellBeacon(interaction: Interaction): Boolean =
         interaction.persistentDataContainer.has(keyMarker, PersistentDataType.BYTE)
 
-    private fun getUUID(interaction: Interaction): UUID? =
+    private fun getInteractionUUID(interaction: Interaction): UUID? =
         interaction.persistentDataContainer
             .get(keyOwner, PersistentDataType.STRING)
             ?.let { runCatching { UUID.fromString(it) }.getOrNull() }
-
-
-
 }

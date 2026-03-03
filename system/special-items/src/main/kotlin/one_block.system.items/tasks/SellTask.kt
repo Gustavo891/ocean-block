@@ -3,6 +3,7 @@ package one_block.system.items.tasks
 import one_block.system.items.SpecialItemSystem
 import one_block.system.items.sell.ParticleBeam
 import one_block.system.items.sell.SellBeaconManager
+import one_block.system.sell.manager.SellManager
 import org.bukkit.Particle
 import org.bukkit.entity.Item
 import org.bukkit.scheduler.BukkitRunnable
@@ -13,25 +14,35 @@ class SellTask : BukkitRunnable() {
     private val taskInterval = 60L
     val beamMap: CopyOnWriteArrayList<ParticleBeam> = CopyOnWriteArrayList()
 
-    fun start() {
-        BeamTask().start()
+    init {
         runTaskTimer(SpecialItemSystem.plugin, 0L, taskInterval)
     }
 
     override fun run() {
+        SellBeaconManager.beaconbyUUID.forEach { hop ->
+            val beacon = hop.value
+            val loc = beacon.coordinate.toBukkit() ?: return@forEach
 
-        SellBeaconManager.hopperbyUUID.forEach { hop ->
-            val hopper = hop.value
-//            val island = IslandManager.getIslandById(hopper.islandUUID) ?: return@forEach
-//            val player = plugin.server.getPlayer(hopper.ownerUUID) ?: return@forEach
-            val loc = hopper.coordinate.toBukkit() ?: return@forEach
-            val dropItems = loc.getNearbyEntitiesByType(Item::class.java, 10.0)
-            val drop = dropItems.random() ?: return@forEach
+            val drop = loc.getNearbyEntitiesByType(Item::class.java, 10.0)
+                .filter { it.isOnGround && SellManager.getPrice(it.itemStack.type) != 0.0 }
+                .randomOrNull() ?: return@forEach
 
-            val element = ParticleBeam(loc, loc.distance(drop.location), Particle.COMPOSTER)
+            val startLoc = beacon.display?.location ?: loc.clone().add(0.5, 2.0, 0.5)
+
+            val element = ParticleBeam(startLoc, drop.location, Particle.COMPOSTER) {
+                if (!drop.isValid || drop.isDead || !drop.isOnGround) return@ParticleBeam
+
+                val price = SellManager.getPrice(drop.itemStack.type)
+                if (price == 0.0) return@ParticleBeam
+
+                val total = price * drop.itemStack.amount
+                drop.remove()
+
+                beacon.coinsAmount += total
+                SellBeaconManager.markDirty(beacon.uuid)
+            }
+
             beamMap.add(element)
-
         }
-
     }
 }

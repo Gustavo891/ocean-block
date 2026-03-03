@@ -12,7 +12,7 @@ class ItemCommand() : BaseCommand() {
 
     @Default
     fun onDefault(sender: Player, @Optional targetName: String?) {
-        val item = SellBeaconManager.createBeaconItem()
+        val item = SellBeaconManager.createBeaconItem(null)
         sender.inventory.addItem(item)
     }
 }

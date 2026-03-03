@@ -7,6 +7,7 @@ import com.mongodb.client.model.ReplaceOneModel
 import com.mongodb.client.model.ReplaceOptions
 import com.mongodb.kotlin.client.MongoCollection
 import one_block.libs.connection.Mongo
+import one_block.system.islands.island.Island
 import java.util.UUID
 
 class BeaconRepository {
@@ -41,7 +42,7 @@ class BeaconRepository {
         return collection.find(Filters.eq("islandUUID", islandUUID)).toList()
     }
 
-    fun remove(uuid: String) {
+    fun remove(uuid: UUID) {
         collection.deleteOne(Filters.eq("uuid", uuid))
     }
 

@@ -2,29 +2,26 @@ package one_block.system.items.listener
 
 import one_block.libs.coordinate.SimpleLocation
 import one_block.system.islands.island.IslandManager
+import one_block.system.items.sell.BeaconRepository
 import one_block.system.items.sell.SellBeacon
 import one_block.system.items.sell.SellBeaconManager
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Interaction
-import org.bukkit.entity.ItemDisplay
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
-import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityInteractEvent
-import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.event.server.PluginDisableEvent
+import org.bukkit.persistence.PersistentDataType
 import java.util.UUID
 
-class BeaconListener(plugin: JavaPlugin) : Listener {
+class BeaconListener : Listener {
 
     companion object {
         val BEACON_KEY = NamespacedKey("oneblock", "sellbeacon")
@@ -37,25 +34,37 @@ class BeaconListener(plugin: JavaPlugin) : Listener {
         val player = event.player
         val item = event.item ?: return
         if (item.type != Material.BEACON) return
+        if (!item.persistentDataContainer.has(BEACON_KEY, PersistentDataType.BOOLEAN)) return
 
         val clicked = event.clickedBlock ?: return
         event.isCancelled = true
+
         val island = IslandManager.getIslandAt(clicked.location)
-        if(island == null) {
+        if (island == null) {
             player.sendRichMessage("<red>Necessário estar em uma ilha.")
             return
         }
 
         player.inventory.remove(item)
 
+        val coinsAmount = item.persistentDataContainer
+            .get(SellBeaconManager.coinsAmount, PersistentDataType.DOUBLE) ?: 0.0
+
         val sellBeacon = SellBeacon(
-            UUID.randomUUID(),
-            SimpleLocation(clicked.location.x, clicked.location.y, clicked.location.z, 0F, 0F, clicked.location.world.name),
-            player.uniqueId,
-            IslandManager.getIslandAt(clicked.location)!!.uuid
+            uuid = UUID.randomUUID(),
+            coordinate = SimpleLocation(
+                clicked.location.x,
+                clicked.location.y,
+                clicked.location.z,
+                0F,
+                0F,
+                clicked.location.world.name
+            ),
+            ownerUUID = player.uniqueId,
+            islandUUID = island.uuid,
+            coinsAmount = coinsAmount
         )
 
-        sellBeacon.originalY = clicked.location.y + 2
         SellBeaconManager.add(sellBeacon)
     }
 
@@ -83,6 +92,12 @@ class BeaconListener(plugin: JavaPlugin) : Listener {
         SellBeaconManager.handleLeftHit(player, interaction)
     }
 
-
-
+    @EventHandler
+    fun onDisable(event: PluginDisableEvent) {
+        SellBeaconManager.beaconbyUUID.values.forEach { beacon ->
+            beacon.display?.remove()
+            beacon.interaction?.remove()
+            SellBeaconManager.repository.save(beacon)
+        }
+    }
 }

@@ -5,26 +5,30 @@ import org.bukkit.Particle
 
 data class ParticleBeam(
     private val startLocation: Location,
-    private val maxLenght: Double,
+    private val targetLocation: Location,
     private val particle: Particle,
-    private var speed: Double = 0.5,
+    private var speed: Double = 0.0,
+    private val onFinish: () -> Unit
 ) {
-
-    val position = startLocation.clone()
-    val direction = startLocation.direction.normalize()
+    private val maxLength: Double = startLocation.distance(targetLocation)
+    private val direction = targetLocation.clone().subtract(startLocation).toVector().normalize()
+    private val position = startLocation.clone()
 
     fun tick(): Boolean {
-        if (speed >= maxLenght) return true
+        if (speed >= maxLength) {
+            onFinish.invoke()
+            return false
+        }
 
         speed += 0.3
 
-        val x: Double = direction.x * speed
-        val y: Double = direction.y * speed + 1.5
-        val z: Double = direction.z * speed
+        val x = direction.x * speed
+        val y = direction.y * speed
+        val z = direction.z * speed
 
-        position.add(x, y, z)
-        startLocation.world.spawnParticle(particle, position, 1)
-        position.subtract(x, y, z)
-        return false
+        position.set(startLocation.x + x, startLocation.y + y, startLocation.z + z)
+        startLocation.world.spawnParticle(particle, position, 1, 0.0, 0.0, 0.0, 0.0)
+
+        return true
     }
 }

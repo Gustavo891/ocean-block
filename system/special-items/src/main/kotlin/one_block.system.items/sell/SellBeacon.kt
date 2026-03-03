@@ -10,6 +10,7 @@ data class SellBeacon(
     val coordinate: SimpleLocation,
     val ownerUUID: UUID,
     val islandUUID: UUID,
+    var coinsAmount: Double = 0.0,
 ) {
 
     @Transient
@@ -19,10 +20,10 @@ data class SellBeacon(
     var tick: Int = 0
 
     @Transient
-    var originalY: Double = 0.0;
+    var originalY: Double = 0.0
 
     @Transient
     var interaction: Interaction? = null
 
-    fun key(): String = "${coordinate.world}:$coordinate.x:${coordinate.y}:$coordinate.z"
+    fun key(): String = "${coordinate.world}:${coordinate.x}:${coordinate.y}:${coordinate.z}"
 }

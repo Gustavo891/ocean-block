@@ -4,19 +4,15 @@ import one_block.system.items.SpecialItemSystem
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
-class BeamTask : BukkitRunnable() {
+class BeamTask(private val sellTask: SellTask) : BukkitRunnable() {
 
     override fun run() {
-        val iterator = SellTask().beamMap.iterator()
-        while (iterator.hasNext()) {
-            val beam = iterator.next()
-            if(beam.tick()) {
-                iterator.remove()
-            }
+        sellTask.beamMap.removeIf { beam ->
+            !beam.tick()
         }
     }
 
-    fun start() {
+    init {
         runTaskTimer(SpecialItemSystem.plugin, 0L, 1L)
     }
 }
