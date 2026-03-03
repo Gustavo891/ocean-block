@@ -17,6 +17,8 @@ import one_block.system.islands.IslandsSystem
 import one_block.system.islands.command.IslandCommand
 import one_block.system.islands.listener.IslandListener
 import one_block.system.islands.listener.PlayerListener
+import one_block.system.items.SpecialItemSystem
+import one_block.system.items.commands.ItemCommand
 import one_block.system.playtime.PlaytimeSystem
 import one_block.system.sell.SellSystem
 import one_block.system.sell.command.SellCommand
@@ -63,6 +65,7 @@ class OneBlockPlugin : JavaPlugin() {
         StarterKitSystem.init(this)
         TopsSystem.init(this, viewFrame)
         WorldsSystem.init(this)
+        SpecialItemSystem.init(this)
     }
 
     private fun setupCommands() {
@@ -75,6 +78,7 @@ class OneBlockPlugin : JavaPlugin() {
             registerCommand(ShopCommand(viewFrame))
             registerCommand(TopsCommand(viewFrame))
             registerCommand(WorldCommand())
+            registerCommand(ItemCommand())
 
             ArenaSystem.setupCommands(this)
         }

@@ -28,6 +28,7 @@ dependencies {
     implementation(projects.system.starterKit)
     implementation(projects.system.tops)
     implementation(projects.system.worlds)
+    implementation(projects.system.specialItems)
 
     implementation("de.rapha149.signgui:signgui:2.5.4")
     implementation(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))

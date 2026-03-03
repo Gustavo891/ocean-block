@@ -7,54 +7,153 @@ import me.devnatan.inventoryframework.context.RenderContext
 import me.devnatan.inventoryframework.context.SlotClickContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.formatter.NumberFormatter
 import one_block.libs.instance.Instance
+import one_block.libs.item_builder.addLore
+import one_block.libs.item_builder.itemStack
+import one_block.libs.item_builder.meta
+import one_block.libs.item_builder.name
 import one_block.system.currencies.Currencies
 import one_block.system.sell.manager.SellManager
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 
 class SellView : View() {
 
     companion object {
-        val SELL_SLOTS = (0..53).toList()
+        val SELL_SLOTS = (0..26).toList()
+        val LINE_SLOTS = listOf(
+            (1..7).toList(),
+            (10..16).toList(),
+            (19..25).toList()
+        )
+
+        fun getLineAmount(player: Player): Int = when {
+            player.hasPermission("sell.line.2") -> 2
+            player.hasPermission("sell.line.3") -> 3
+            else -> 1
+        }
+
+        fun getSellSlots(player: Player): List<Int> =
+            LINE_SLOTS.take(getLineAmount(player)).flatten()
+
+        fun getLockedSlots(player: Player): List<Int> =
+            LINE_SLOTS.drop(getLineAmount(player)).flatten()
+
+        val BORDER_SLOTS = setOf(0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 32, 33, 34, 35)
     }
 
     override fun onInit(config: ViewConfigBuilder) {
-        config.title(Component.text("Venda seus itens"))
-            .size(6)
+        config.title(
+            MiniMessage.miniMessage()
+                .deserialize("<shift:-8><glyph:sell_menu><font:oneblock:gui><shift:-170><dark_gray>Venda")
+        )
+            .layout(
+                "V       V",
+                "V       V",
+                "V       V",
+                "VVVVSVVVV"
+            )
+
+    }
+
+    override fun onFirstRender(render: RenderContext) {
+        render.layoutSlot('V')
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        isHideTooltip = true
+                        itemModel = NamespacedKey("oneblock", "blank")
+                    }
+                }
+            }
+        render.layoutSlot('S')
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        itemModel = NamespacedKey("oneblock", "blank")
+                        displayName(Component.text("§aConfirmar"))
+                        addLore {
+                            +"<gray>Você está vendendo seus"
+                            +"<gray>itens por <dark_green>R$<white>${calcTotal(render.inventory)}<gray>."
+                            +""
+                            +"<green>Clique para vender!"
+                        }
+                    }
+                }
+            }
+            .onClick { click ->
+                click.isCancelled = true
+                click.closeForPlayer()
+                sellItems(click.parent.inventory, click.player)
+            }
+
+        getLockedSlots(render.player).forEach { slot ->
+            render.slot(slot)
+                .renderWith { itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        displayName(Component.text("§cBloqueado"))
+                        addLore {
+                            + "<gray>Adquira seu <white>VIP<gray> em"
+                            + "<white>loja.redescreen.com"
+                            + "<gray>para liberar mais slots."
+                        }
+                        itemModel = NamespacedKey("oneblock", "locked")
+                    }
+                } }
+        }
     }
 
     override fun onClick(click: SlotClickContext) {
+
         val player = click.player
+        val slot = click.slot
+
+        if(slot in BORDER_SLOTS || slot in getLockedSlots(player)) {
+            click.isCancelled = true
+            return
+        }
+
         Bukkit.getScheduler().runTaskLaterAsynchronously(Instance, Runnable {
             val total = calcTotal(click.parent.inventory)
             val title = if (total > 0.0) {
-                println("Total: R$${NumberFormatter.formatNumber(total)}")
-                "§8Venda de Itens > §2R$§f${NumberFormatter.formatNumber(total)}"
+                "<shift:-8><glyph:sell_menu><font:oneblock:gui><shift:-170><dark_gray>Venda > R$${
+                    NumberFormatter.formatNumber(
+                        total
+                    )
+                }"
             } else
-                "<dark_gray>Venda de Itens"
-            click.updateTitleForPlayer(title, player)
+                "<shift:-8><glyph:sell_menu><font:oneblock:gui><shift:-170><dark_gray>Venda"
+            click.updateTitleForPlayer(MiniMessage.miniMessage().deserialize(title))
+            click.parent.update()
         }, 1L)
     }
 
     override fun onClose(close: CloseContext) {
-        val player = close.player as? Player ?: return
+        val player = close.player
         val viewInventory = close.parent.inventory
 
+        sellItems(viewInventory, player)
+    }
 
+    private fun sellItems(viewInventory: Inventory, player: Player) {
         var totalMoney = 0.0
         val unsellable = mutableListOf<ItemStack>()
+        val sellSlots = getSellSlots(player)
 
-        SELL_SLOTS.forEach { slot ->
+        sellSlots.forEach { slot ->
             val item = viewInventory.getItem(slot) ?: return@forEach
             if (item.type == Material.AIR) return@forEach
 
+            if(item.itemMeta.itemModel == NamespacedKey("oneblock", "blank")) return@forEach
             val price = SellManager.getPrice(item.type)
             if (price <= 0.0) {
                 unsellable.add(item.clone())

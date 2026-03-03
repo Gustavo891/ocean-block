@@ -15,6 +15,7 @@ include(
     ":lib:item-builder:",
     ":lib:translation",
 
+    ":system:special-items:",
     ":system:arena:",
     ":system:auction-house:",
     ":system:chats:",
@@ -22,6 +23,7 @@ include(
     ":system:combat-log:",
     ":system:currencies:",
     ":system:islands:",
+    ":system:minions:",
     ":system:playtime:",
     ":system:sell:",
     ":system:shop:",

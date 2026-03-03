@@ -21,20 +21,7 @@ class SellCommand(
 
     @Default
     fun onDefault(sender: Player) {
-        val itemInMainHand = sender.inventory.itemInMainHand
-        if (itemInMainHand.isEmpty) {
-            sender.sendRichMessage("<color:#b00f00>Você não pode vender sua mão né bobinho....")
-            return
-        }
-
-        val sellHand = Sell.sellHand(sender)
-        if (sellHand == 0.0) {
-            sender.sendRichMessage("<color:#b00f00>Você não pode vender este item.")
-            return
-        }
-
-        Currencies.deposit(sender.uniqueId, "coins", sellHand)
-        sender.sendRichMessage("<green>Você recebeu <green>$<white>${sellHand}</white></green> com suas vendas.")
+        viewFrame.open(SellView::class.java, sender)
     }
 
     @Subcommand("item")
@@ -44,11 +31,6 @@ class SellCommand(
         target.player.inventory.addItem(createSellItem)
 
         sender.sendRichMessage("<green>Deu o item ggggggggggggg")
-    }
-
-    @Subcommand("gui")
-    fun onGui(sender: Player) {
-        viewFrame.open(SellView::class.java, sender)
     }
 
     @Subcommand("reload")

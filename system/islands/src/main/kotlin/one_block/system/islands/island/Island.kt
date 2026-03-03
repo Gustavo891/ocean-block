@@ -143,6 +143,7 @@ data class Island(
         val currentSize = upgrades["size"] ?: 0
         val newSize = currentSize + 1
         upgrades["size"] = newSize
+        size = BORDER_SIZE[newSize]
         refreshWorldBorder()
     }
 
