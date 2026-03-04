@@ -3,7 +3,6 @@ package one_block.system.auction_house.view
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.Context
-import me.devnatan.inventoryframework.context.OpenContext
 import me.devnatan.inventoryframework.context.RenderContext
 import me.devnatan.inventoryframework.context.SlotClickContext
 import one_block.libs.item_builder.addLore
@@ -30,6 +29,7 @@ class AuctionView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
+        config.title("Mercado")
         config.layout(
             "         ",
             "  OOOOO  ",
@@ -38,10 +38,6 @@ class AuctionView : View() {
             "         ",
             "         "
         )
-    }
-
-    override fun onOpen(open: OpenContext) {
-        //open.modifyConfig().title(shop.get(open).prettyName)
     }
 
     override fun onFirstRender(render: RenderContext) {
@@ -58,6 +54,10 @@ class AuctionView : View() {
             .updateOnStateChange(this.pagination)
             .displayIf(BooleanSupplier { pagination.canAdvance() })
             .onClick(pagination::advance)
+
+        render.slot(3, 5)
+            .renderWith { createEmptyItem() }
+            .displayIf(BooleanSupplier { AuctionManager.auctions.values.isEmpty() })
     }
 
     private fun createAuctionItem(ctx: Context, auction: Auction) = itemStack(auction.item) {
@@ -74,19 +74,30 @@ class AuctionView : View() {
 
     private fun handleAuctionClick(ctx: SlotClickContext, auction: Auction) {
         val player = ctx.player
-        if (Currencies.has(player.uniqueId, "coins", auction.price)) {
+        if (!Currencies.has(player.uniqueId, "coins", auction.price)) {
             player.sendRichMessage("<red>Sem dinheiro!")
             return
         }
 
-        val removed = AuctionManager.auctions.remove(auction.uuid) ?: return
-        Currencies.withdraw(player.uniqueId, "coins", auction.price)
+        val removed = AuctionManager.unregister(auction.uuid) ?: return
+        Currencies.withdraw(player.uniqueId, "coins", removed.price)
+        Currencies.deposit(removed.sellerUuid, "coins", removed.price)
 
         pagination.get(ctx).forceUpdate()
         player.playSound(player, Sound.ENTITY_ARMADILLO_BRUSH, 1.0f, 1.0f)
-        player.sendRichMessage("<green>Você adquiriu x por <green>$<white>${removed.price}<green>.")
+        player.sendRichMessage("<green>Você adquiriu por <green>$<white>${removed.price}<green>.")
 
         player.inventory.addItem(removed.item)
+    }
+
+    private fun createEmptyItem() = itemStack(Material.COBWEB) {
+        meta<ItemMeta> {
+            name("<white>Vazio!")
+
+            addLore {
+                +"<white>Nenhum item aqui!"
+            }
+        }
     }
 
     private fun createBackItem() = itemStack(Material.ARROW) {

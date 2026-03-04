@@ -4,14 +4,15 @@ import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoDatabase
+import com.redescreen.sdk.connection.createMongoDatabase
 import org.bson.UuidRepresentation
 import org.bson.codecs.configuration.CodecRegistries
 import org.bson.codecs.pojo.Conventions
 import org.bson.codecs.pojo.PojoCodecProvider
 
-val Mongo by lazy { createMongoDatabase() }
+val Mongo by lazy { createMongoDatabase("one-block") }
 
-
+/*
 fun createMongoDatabase(): MongoDatabase {
     val connectionString = "mongodb://localhost:27017/"
 
@@ -39,4 +40,4 @@ fun createMongoDatabase(): MongoDatabase {
 
     return MongoClient.create(settings).getDatabase("one-block")
 }
-
+*/

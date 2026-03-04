@@ -103,7 +103,7 @@ class IslandView : View() {
     }
 
     private fun buildBorderLore(island: Island, player: Player): List<String> {
-        val size = island.getBorderSize()
+        val size = island.getUpgradeLevel(IslandUpgrade.Size)
         val atMax = size == IslandUpgrade.Size.maxLevel
 
         val currentSize = Island.BORDER_SIZE[size]
@@ -128,7 +128,7 @@ class IslandView : View() {
     }
 
     private fun buildPlantingSpeedLore(island: Island, player: Player): List<String> {
-        val level = island.getCropLevel()
+        val level = island.getUpgradeLevel(IslandUpgrade.CropGrowth)
         val atMax = level == IslandUpgrade.CropGrowth.maxLevel
 
         val nextSpeed = if (atMax) "Máximo" else "${level + 1}"
@@ -152,7 +152,7 @@ class IslandView : View() {
     }
 
     private fun handleBorderUpgrade(render: RenderContext, player: Player, island: Island) {
-        val size = island.getBorderSize()
+        val size = island.getUpgradeLevel(IslandUpgrade.Size)
 
         if (size == IslandUpgrade.Size.maxLevel) {
             player.sendRichMessage("<red>Você já chegou ao nível máximo.")
@@ -176,7 +176,7 @@ class IslandView : View() {
     }
 
     private fun handlePlantingSpeedUpgrade(render: RenderContext, player: Player, island: Island) {
-        val level = island.getCropLevel()
+        val level = island.getUpgradeLevel(IslandUpgrade.CropGrowth)
 
         if (level == IslandUpgrade.CropGrowth.maxLevel) {
             player.sendRichMessage("<red>Você já chegou ao nível máximo.")
@@ -192,7 +192,7 @@ class IslandView : View() {
         }
 
         Currencies.withdraw(player.uniqueId, "coins", price)
-        island.upgrades["crop"] = level + 1
+        island.setUpgradeLevel(IslandUpgrade.CropGrowth, level + 1)
         IslandManager.markDirty(island.uuid)
 
         player.sendRichMessage("<green>Velocidade de plantação evoluída com sucesso!")

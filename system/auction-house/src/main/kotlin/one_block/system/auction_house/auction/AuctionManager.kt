@@ -16,4 +16,11 @@ object AuctionManager {
         auctions[auction.uuid] = auction
         repository.update(auction)
     }
+
+    fun unregister(uuid: UUID): Auction? {
+        val remove = auctions.remove(uuid) ?: return null
+        repository.remove(uuid)
+
+        return remove
+    }
 }

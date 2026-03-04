@@ -11,6 +11,7 @@ dependencies {
     compileOnly(projects.lib.coordinate)
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.itemBuilder)
+    compileOnly(projects.lib.formatter)
 
     compileOnly(projects.system.currencies)
 

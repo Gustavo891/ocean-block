@@ -1,8 +1,10 @@
 package one_block.system.islands.listener
 
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.runNextTask
 import one_block.system.islands.island.IslandManager
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -17,7 +19,7 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent
 
 class PlayerListener : Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     fun onPlayerSpawnLocation(event: PlayerSpawnLocationEvent) {
         val player = event.player
 
@@ -26,6 +28,8 @@ class PlayerListener : Listener {
             island = IslandManager.createIsland(player)
 
             val spawn = island.spawn.add(.0, 2.0, .0).toBukkit()!!
+            Bukkit.broadcast(MiniMessage.miniMessage().deserialize("spawn-${spawn.world.name} { x: ${spawn.x}, y: ${spawn.y}, z: ${spawn.z}"))
+
             event.spawnLocation = spawn
         }
     }

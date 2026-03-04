@@ -6,8 +6,8 @@ plugins {
 
 dependencies {
     compileOnly(libs.placeholder)
-
-    implementation(libs.mongodb)
+    compileOnly("com.redescreen:sdk:1.0")
+    compileOnly(libs.mongodb)
 
     implementation(projects.lib.connection)
     implementation(projects.lib.coordinate)
@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.system.coinflip)
     implementation(projects.system.currencies)
     implementation(projects.system.islands)
+    implementation(projects.system.minions)
     implementation(projects.system.playtime)
     implementation(projects.system.sell)
     implementation(projects.system.shop)

@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Optional
 import co.aikar.commands.annotation.Subcommand
+import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import me.devnatan.inventoryframework.ViewFrame
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -13,6 +14,7 @@ import one_block.libs.coordinate.SimpleLocation
 import one_block.system.islands.island.IslandManager
 import one_block.system.islands.island.IslandMember
 import one_block.system.islands.island.IslandMemberPermission
+import one_block.system.islands.island.IslandUpgrade
 import one_block.system.islands.phase.PhaseManager
 import one_block.system.islands.view.IslandView
 import one_block.system.islands.view.IslandsView
@@ -134,32 +136,39 @@ class IslandCommand(
     }
 
     @Subcommand("reload")
-    @CommandPermission("oneblock.admin")
+    @CommandPermission("screen.dev")
     fun onReload(sender: Player) {
         PhaseManager.loadPhases()
         sender.sendRichMessage("<green>Recarregado com sucesso!")
     }
 
     @Subcommand("all")
-    @CommandPermission("oneblock.admin")
+    @CommandPermission("screen.dev")
     fun onAll(sender: Player) {
         viewFrame.open(IslandsView::class.java, sender)
     }
 
     @Subcommand("trust")
-    fun onTrust(sender: Player, targetName: String) {
+    fun onTrust(sender: Player,  targetOnline: OnlinePlayer) {
+        val target = targetOnline.player
+
         val island = IslandManager.getIslandByPlayer(sender.uniqueId)
         if (island == null) {
             sender.sendRichMessage("<red>Você não tem ilha!")
             return
         }
 
-        if (sender.name.equals(targetName, true)) {
+        if (island.ownerUuid != sender.uniqueId) {
+            sender.sendRichMessage("<red>Você não é o dono desta ilha!")
+            return
+        }
+
+        if (sender.name.equals(target.name, true)) {
             sender.sendRichMessage("<red>Você quer se adicionar? Não entendi.")
             return
         }
 
-        if (!island.addTrustedMember(targetName)) {
+        if (!island.addTrustedMember(target.name)) {
             sender.sendRichMessage("<green>Este jogador já está adicionado")
             return
         }
@@ -168,24 +177,36 @@ class IslandCommand(
     }
 
     @Subcommand("member")
-    fun onMember(sender: Player, targetName: String) {
+    fun onMember(sender: Player, targetOnline: OnlinePlayer) {
+        val target = targetOnline.player
+
         val island = IslandManager.getIslandByPlayer(sender.uniqueId)
         if (island == null) {
             sender.sendRichMessage("<red>Você não tem ilha!")
             return
         }
 
-        if (sender.name.equals(targetName, true)) {
+        if (island.ownerUuid != sender.uniqueId) {
+            sender.sendRichMessage("<red>Você não é o dono desta ilha!")
+            return
+        }
+
+        if (sender.name.equals(target.name, true)) {
             sender.sendRichMessage("<red>Você quer se adicionar? Não entendi.")
             return
         }
 
-        if (!island.addMember(targetName, IslandMember(targetName, mutableSetOf()))) {
+       if ( island.members.size >= (island.getUpgradeLevel(IslandUpgrade.Members) * 3)){
+           sender.sendRichMessage("<red>Sua ilha está lotada de membros.")
+           return
+       }
+
+        if (!island.addMember(target.name, IslandMember(target.name, mutableSetOf()))) {
             sender.sendRichMessage("<green>Este jogador já está adicionado")
             return
         }
 
-        sender.sendRichMessage("<green>Adicionado com sucesso!")
+        sender.sendRichMessage("<green>${target.name} foi adicionado como membro!")
     }
 
 }

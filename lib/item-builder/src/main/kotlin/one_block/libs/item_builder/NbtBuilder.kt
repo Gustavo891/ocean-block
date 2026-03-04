@@ -16,9 +16,11 @@ class NbtBuilder(
         container.set(NamespacedKey(namespace, key), PersistentDataType.INTEGER, value)
     }
 
+    fun int(key: NamespacedKey, value: Int) {
+        container.set(key, PersistentDataType.INTEGER, value)
+    }
+
     fun double(namespace: String, key: String, value: Double) {
         container.set(NamespacedKey(namespace, key), PersistentDataType.DOUBLE, value)
     }
-
-
 }

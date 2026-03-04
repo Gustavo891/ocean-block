@@ -1,7 +1,6 @@
 package one_block.system.islands.island
 
 import one_block.libs.coordinate.SimpleLocation
-import one_block.libs.instance.Instance
 import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.getRandomByWeight
 import one_block.system.islands.phase.Phase
@@ -16,8 +15,6 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 data class Island(
     val uuid: UUID,
@@ -35,10 +32,11 @@ data class Island(
     var isPublic: Boolean,
 ) {
 
-    val invites = mutableSetOf<String>()
     companion object {
         val BORDER_SIZE = listOf(30, 50, 70, 100)
     }
+
+    val invites = mutableSetOf<String>()
 
     private val borderInstance by lazy { Bukkit.createWorldBorder() }
     var currentWorldBorder = getWorldBorder()
@@ -105,6 +103,33 @@ data class Island(
         return members.put(playerName.lowercase(), member) == null
     }
 
+    fun setUpgradeLevel(upgrade: IslandUpgrade, level: Int) {
+        upgrades[upgrade.name.lowercase()] = level
+    }
+
+    fun getUpgradeLevel(upgrade: IslandUpgrade, def: Int = 0) = upgrades.getOrDefault(upgrade.name.lowercase(), def)
+
+    fun isTrustAllowed(island: Island, player: Player): Boolean {
+        if (player.hasPermission("screen.dev")) return true
+        if (island.ownerUuid == player.uniqueId) return true
+
+        val islandMember = island.members[player.name.lowercase()]
+        if (islandMember != null) return true
+
+        if (!island.isTrustedMember(player.name)) {
+            player.sendRichMessage("<red>Você não faz parte dessa ilha")
+            return false
+        }
+
+        val ownerPlayer = Bukkit.getPlayer(island.ownerUuid)
+        return if (ownerPlayer == null || !ownerPlayer.isOnline) {
+            player.sendRichMessage("<red>Você só pode fazer ações enquanto o dono estiver online.")
+            false
+        } else {
+            true
+        }
+    }
+
     private fun handleMobSpawn(phase: Phase, block: Block) {
         if (!chance(2.0)) return
 
@@ -131,24 +156,16 @@ data class Island(
 
     }
 
-    fun getBorderSize(): Int {
-        return upgrades["size"] ?: 0
-    }
-
-    fun getCropLevel(): Int {
-        return upgrades["crop"] ?: 0
-    }
-
     fun upgradeBorderSize() {
-        val currentSize = upgrades["size"] ?: 0
+        val currentSize = getUpgradeLevel(IslandUpgrade.Size)
         val newSize = currentSize + 1
-        upgrades["size"] = newSize
+        setUpgradeLevel(IslandUpgrade.Size, newSize)
         size = BORDER_SIZE[newSize]
         refreshWorldBorder()
     }
 
     private fun getWorldBorder(): WorldBorder {
-        val curentSize = upgrades["size"] ?:0
+        val curentSize = getUpgradeLevel(IslandUpgrade.Size)
         val borderAmount = BORDER_SIZE[curentSize]
 
         borderInstance.center = center.toBukkit()!!

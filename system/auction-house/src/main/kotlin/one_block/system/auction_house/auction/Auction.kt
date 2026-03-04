@@ -5,6 +5,7 @@ import java.util.*
 
 data class Auction(
     val uuid: UUID,
+    val sellerUuid: UUID,
     val sellerName: String,
     val price: Double,
     val itemBase64: String,

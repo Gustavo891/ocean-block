@@ -17,10 +17,10 @@ class PlayerListener : Listener {
 
         val formattedMessage = Component.empty()
             .append(
-                MiniMessage.miniMessage().deserialize("<white>${event.player.name}: ")
+                MiniMessage.miniMessage().deserialize("<#868E96>${event.player.name}: <#CED4DA>")
                     .decoration(TextDecoration.ITALIC, false)
             )
-            .append(event.originalMessage().color(NamedTextColor.GRAY))
+            .append(event.originalMessage())
 
         Bukkit.getOnlinePlayers().forEach { it.sendMessage(formattedMessage) }
     }

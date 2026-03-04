@@ -3,6 +3,7 @@ package one_block.system.islands.listener
 import one_block.system.islands.island.Island
 import one_block.system.islands.island.IslandManager
 import one_block.system.islands.island.IslandMemberPermission
+import one_block.system.islands.island.IslandUpgrade
 import org.bukkit.Bukkit
 import org.bukkit.Particle
 import org.bukkit.block.data.Ageable
@@ -46,7 +47,7 @@ class IslandListener : Listener {
         val island = IslandManager.getIslandAt(player.location) ?: return
 
 
-        if(!isTrustAllowed(island, player)) {
+        if(!island.isTrustAllowed(island, player)) {
             event.isCancelled = true
             return
         }
@@ -57,7 +58,7 @@ class IslandListener : Listener {
         val player = event.player
         val island = IslandManager.getIslandAt(player.location) ?: return
 
-        if(!isTrustAllowed(island, player)) {
+        if(!island.isTrustAllowed(island, player)) {
             event.isCancelled = true
         }
     }
@@ -67,48 +68,19 @@ class IslandListener : Listener {
         val player = event.player
         val island = IslandManager.getIslandAt(player.location) ?: return
 
-        if(!isTrustAllowed(island, player)) {
+        if(!island.isTrustAllowed(island, player)) {
             event.isCancelled = true
             return
         }
     }
 
-    private fun isTrustAllowed(island: Island, player: Player) : Boolean {
-
-        if (island.ownerUuid == player.uniqueId) return true
-        val islandMember = island.members[player.name.lowercase()]
-        if (islandMember != null) return true
-
-        if(island.isTrustedMember(player.name)) {
-            val owner = Bukkit.getPlayer(island.ownerUuid);
-            if(owner == null || !owner.isOnline) {
-                player.sendRichMessage("<red>Você só pode fazer ações enquanto o dono estiver online.")
-                return false
-            } else {
-                return true
-            }
-        }
-        player.sendRichMessage("<red>Você não faz parte dessa ilha")
-        return false
-    }
-
-    private fun getPlayerAttacker(event: EntityDamageByEntityEvent): Player? {
-        return when (val damager = event.damager) {
-            is Player -> damager
-            is Projectile -> damager.shooter as? Player
-            is TNTPrimed -> damager.source as? Player
-            is Tameable -> if (damager.isTamed) damager.owner as? Player else null
-            else -> null
-        }
-    }
-
     @EventHandler
-    fun cropGrowth(event: BlockGrowEvent) {
+    fun onBlockGrowth(event: BlockGrowEvent) {
         val data = event.newState.blockData
         if (data !is Ageable) return
 
         val island = IslandManager.getIslandAt(event.block.location) ?: return
-        val level = island.upgrades["crop"] ?: 0
+        val level = island.getUpgradeLevel(IslandUpgrade.CropGrowth)
 
         val cancelChance = when (level) {
             0 -> 0.50
@@ -125,4 +97,13 @@ class IslandListener : Listener {
         }
     }
 
+    private fun getPlayerAttacker(event: EntityDamageByEntityEvent): Player? {
+        return when (val damager = event.damager) {
+            is Player -> damager
+            is Projectile -> damager.shooter as? Player
+            is TNTPrimed -> damager.source as? Player
+            is Tameable -> if (damager.isTamed) damager.owner as? Player else null
+            else -> null
+        }
+    }
 }

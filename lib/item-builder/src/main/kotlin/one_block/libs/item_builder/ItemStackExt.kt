@@ -11,6 +11,7 @@ inline fun itemStack(material: Material, builder: ItemStack.() -> Unit) = ItemSt
 
 inline fun itemStack(base: ItemStack, builder: ItemStack.() -> Unit) = base.clone().apply(builder)
 
+@JvmName("metaTyped")
 inline fun <reified T : ItemMeta> ItemStack.meta(builder: T.() -> Unit) {
     val meta = itemMeta as? T
     itemMeta = if (meta != null) {
@@ -19,6 +20,12 @@ inline fun <reified T : ItemMeta> ItemStack.meta(builder: T.() -> Unit) {
     } else {
         itemMeta(type, builder)
     }
+}
+
+inline fun ItemStack.meta(builder: ItemMeta.() -> Unit) {
+    val meta = itemMeta ?: return
+    meta.apply(builder)
+    itemMeta = meta
 }
 
 inline fun <reified T : ItemMeta> itemMeta(material: Material, builder: T.() -> Unit): T? {
