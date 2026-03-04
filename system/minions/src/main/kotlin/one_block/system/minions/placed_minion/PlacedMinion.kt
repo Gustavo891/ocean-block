@@ -8,4 +8,18 @@ data class PlacedMinion(
     val uuid: UUID,
     val location: SimpleLocation,
     val type: MinionType,
-)
+    var energy: Int
+) {
+
+    fun hasEnergy() = energy > 0
+
+    fun hasEnoughEnergy(amount: Int) = energy >= amount
+
+    fun addEnergy(amount: Int) {
+        energy += amount
+    }
+
+    fun consumeEnergy(amount: Int) {
+        energy -= amount
+    }
+}

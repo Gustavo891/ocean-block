@@ -15,8 +15,8 @@ class MinionCommand : BaseCommand() {
 
     @Default
     fun onDefault(sender: Player) {
-        val placedMinion = PlacedMinion(UUID.randomUUID(), SimpleLocation.fromBukkit(sender.location), MinionType.Terminator)
-        MinionType.Terminator.spawn(sender.location)
+        val placedMinion = PlacedMinion(UUID.randomUUID(), SimpleLocation.fromBukkit(sender.location), MinionType.Farmer, 0)
+        MinionType.Farmer.spawn(sender.location)
 
         PlacedMinionManager.register(placedMinion)
     }
