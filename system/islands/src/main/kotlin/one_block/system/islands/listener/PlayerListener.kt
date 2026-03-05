@@ -1,7 +1,6 @@
 package one_block.system.islands.listener
 
 import net.kyori.adventure.text.minimessage.MiniMessage
-import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.runNextTask
 import one_block.system.islands.island.IslandManager
 import org.bukkit.Bukkit
@@ -83,7 +82,6 @@ class PlayerListener : Listener {
 
         island.processBlockBreak(player, block)
         IslandManager.markDirty(island.uuid)
-        BossbarManager.upgradeBossBar(island)
     }
 
     private fun handleIslandEntry(player: Player, location: Location) {

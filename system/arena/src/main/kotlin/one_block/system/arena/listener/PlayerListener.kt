@@ -140,7 +140,7 @@ class PlayerListener : Listener {
         val island = IslandManager.islandsById.values.find { it.ownerUuid == player.uniqueId }
         if (island == null) return
 
-        event.respawnLocation =  island.spawn.add(.0, 2.0, .0).toBukkit()!!
+        event.respawnLocation = island.spawn.add(.0, 2.0, .0).toBukkit()!!
     }
 
     fun isProtected(location: Location): Boolean {

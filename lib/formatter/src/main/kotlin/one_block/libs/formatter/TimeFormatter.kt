@@ -36,7 +36,7 @@ object TimeFormatter {
             if (days > 0) append("${days}d ")
             if (hours > 0) append("${hours}h ")
             if (minutes > 0) append("${minutes}m ")
-            if (seconds > 0) append("${seconds}s")
+            if (seconds > 0 && days < 0) append("${seconds}s")
             if (isEmpty()) append("${time / 100}s")
         }.trim()
     }

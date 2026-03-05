@@ -1,7 +1,6 @@
 package one_block.system.islands.island
 
 import one_block.libs.coordinate.SimpleLocation
-import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.getRandomByWeight
 import one_block.system.islands.phase.Phase
 import one_block.system.islands.phase.PhaseManager
@@ -24,6 +23,7 @@ data class Island(
     val position: Position,
     var spawn: SimpleLocation,
     val trustedNames: MutableSet<String> = mutableSetOf(),
+    val blackList: MutableSet<String> = mutableSetOf(),
     val members: MutableMap<String, IslandMember> = mutableMapOf(),
     val upgrades: MutableMap<String, Int> = mutableMapOf(),
     var currentPhaseId: String = "origin",
@@ -43,7 +43,6 @@ data class Island(
 
     fun onJoin(player: Player) {
         player.worldBorder = currentWorldBorder
-        BossbarManager.updatePlayerBar(player, this)
 
     }
 
@@ -53,6 +52,19 @@ data class Island(
 
     fun refreshWorldBorder() {
         currentWorldBorder = getWorldBorder()
+    }
+
+    fun addBlacklist(target: Player) {
+        blackList.add(target.name)
+        val targetIsland = IslandManager.playerIsland[target.uniqueId]
+        if (targetIsland == this.uuid) {
+            val island = IslandManager.getIslandByOwnerUUID(target.uniqueId)
+            island?.teleportTo(target)
+        }
+    }
+
+    fun removeBlacklist(playerName: String): Boolean {
+        return blackList.remove(playerName.lowercase())
     }
 
     fun processBlockBreak(player: Player, block: Block) {
@@ -130,7 +142,7 @@ data class Island(
         }
     }
 
-    fun markDirty(){
+    fun markDirty() {
         IslandManager.markDirty(uuid)
     }
 
@@ -180,6 +192,11 @@ data class Island(
 
     fun teleportTo(player: Player) {
         val spawn = spawn.toBukkit()
+
+        if (blackList.contains(player.name)) {
+            player.sendRichMessage("<red>Você está bloqueado de acessar essa ilha.")
+            return
+        }
 
         if (spawn == null) {
             player.sendRichMessage("<red>Erro: mundo não carregado.")

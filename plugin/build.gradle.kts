@@ -6,8 +6,8 @@ plugins {
 
 dependencies {
     compileOnly(libs.placeholder)
-    compileOnly("com.redescreen:sdk:1.0")
-    compileOnly(libs.mongodb)
+    //compileOnly("com.redescreen:sdk:1.0")
+    implementation(libs.mongodb)
 
     implementation(projects.lib.connection)
     implementation(projects.lib.coordinate)

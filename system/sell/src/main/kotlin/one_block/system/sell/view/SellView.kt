@@ -25,6 +25,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+import java.util.function.BooleanSupplier
 
 class SellView : View() {
 
@@ -90,6 +91,7 @@ class SellView : View() {
                     }
                 }
             }
+            .displayIf(BooleanSupplier { calcTotal(render.inventory) > 0.0 } )
             .onClick { click ->
                 click.isCancelled = true
                 click.closeForPlayer()

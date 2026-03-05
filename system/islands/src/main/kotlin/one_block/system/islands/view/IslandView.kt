@@ -1,28 +1,48 @@
 package one_block.system.islands.view
 
+import com.destroystokyo.paper.profile.ProfileProperty
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.OpenContext
 import me.devnatan.inventoryframework.context.RenderContext
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.formatter.NumberFormatter
 import one_block.libs.item_builder.*
 import one_block.system.currencies.Currencies
 import one_block.system.islands.island.Island
 import one_block.system.islands.island.IslandManager
 import one_block.system.islands.island.IslandUpgrade
+import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.inventory.meta.SkullMeta
+import java.util.UUID
 
 class IslandView : View() {
 
     override fun onOpen(open: OpenContext) {
-        open.modifyConfig().title("Island")
+        val player = open.player
+        val island = IslandManager.getIslandByPlayer(player.uniqueId) ?: return
+
+        val name = Bukkit.getOfflinePlayer(island.ownerUuid).name ?: island.ownerName
+        val avail = 20
+        val display = if (name.length > avail) name.take(avail - 3) + "..." else name
+
+        open.modifyConfig().title(
+            MiniMessage.miniMessage().deserialize("<shift:-8><glyph:island_menu><font:oneblock:gui><shift:-170><gray>Ilha > <dark_gray>$display")
+        )
     }
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
+        config.layout(
+            "1aa      ",
+            "aaa      ",
+            "aaa      "
+        )
     }
 
     override fun onFirstRender(render: RenderContext) {
@@ -30,35 +50,26 @@ class IslandView : View() {
         val island = IslandManager.getIslandByPlayer(player.uniqueId) ?: return
 
         setupTeleportSlot(render, player, island)
-     //   setupBorderUpgradeSlot(render, player, island)
-     //   setupPlantingSpeedSlot(render, player, island)
-        setupMembersSlot(render, player, island)
+        //setupBorderUpgradeSlot(render, player, island)
+        //setupPlantingSpeedSlot(render, player, island)
+        //setupMembersSlot(render, player, island)
     }
 
     private fun setupMembersSlot(render: RenderContext, player: Player, island: Island) {
-        render.slot(2, 3)
-            .renderWith {
-                itemStack(Material.PLAYER_HEAD) {
-                    meta<ItemMeta> {
-                        name("<yellow>Membros")
-                    }
-                }
-            }
-            .onClick { click ->
-                render.openForPlayer(IslandMembersView::class.java)
-            }
+
+
 
     }
 
     private fun setupTeleportSlot(render: RenderContext, player: Player, island: Island) {
-        render.slot(2, 2)
-            .renderWith {
-                itemStack(Material.ENDER_PEARL) {
-                    meta<ItemMeta> {
-                        name("<yellow>Teleporte para a ilha!")
-                    }
+
+        render.layoutSlot('a')
+            .renderWith { itemStack(Material.PAPER) {
+                meta<ItemMeta> {
+                    itemModel = NamespacedKey("oneblock", "blank")
+                    name("<yellow>Ir para sua ilha")
                 }
-            }
+            } }
             .onClick { click ->
                 val spawn = island.spawn.toBukkit()
 
@@ -69,6 +80,20 @@ class IslandView : View() {
 
                 player.teleport(spawn.add(0.0, 2.0, 0.0))
                 render.closeForPlayer()
+            }
+
+        render.layoutSlot('1')
+            .renderWith {
+                itemStack(Material.PLAYER_HEAD) {
+                    meta<SkullMeta> {
+                        itemModel = NamespacedKey("oneblock", "head2d")
+                        name("<yellow>Membros")
+                        //playerProfile = Bukkit.createProfile(island.ownerUuid, island.ownerName)
+                        playerProfile = Bukkit.createProfile(UUID.randomUUID(), "1").apply {
+                            setProperty(ProfileProperty("textures", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWMwZTNjNGNlMDFmYjNhMmI4MjQ2MDBhZjAzODhlNDVjYzcxYjQ5MmQ2NGZiZTMxOTA4M2RiNjE1OWQxNGUzZCJ9fX0="))
+                        }
+                    }
+                }
             }
     }
 
