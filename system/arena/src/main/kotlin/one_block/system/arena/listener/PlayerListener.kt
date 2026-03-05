@@ -1,6 +1,9 @@
 package one_block.system.arena.listener
 
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.system.arena.ArenaSystem
+import one_block.system.islands.island.IslandManager
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.entity.WindCharge
@@ -13,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerFishEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 
 class PlayerListener : Listener {
 
@@ -127,6 +131,16 @@ class PlayerListener : Listener {
                 event.isCancelled = true
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    fun onPlayerRespawn(event: PlayerRespawnEvent) {
+        val player = event.player
+
+        val island = IslandManager.islandsById.values.find { it.ownerUuid == player.uniqueId }
+        if (island == null) return
+
+        event.respawnLocation =  island.spawn.add(.0, 2.0, .0).toBukkit()!!
     }
 
     fun isProtected(location: Location): Boolean {

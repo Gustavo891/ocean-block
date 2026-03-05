@@ -176,6 +176,35 @@ class IslandCommand(
         sender.sendRichMessage("<green>Adicionado com sucesso!")
     }
 
+    @Subcommand("untrust")
+    fun onUntrust(sender: Player,  targetName: String) {
+        val island = IslandManager.getIslandByPlayer(sender.uniqueId)
+        if (island == null) {
+            sender.sendRichMessage("<red>Você não tem ilha!")
+            return
+        }
+
+        if (island.ownerUuid != sender.uniqueId) {
+            sender.sendRichMessage("<red>Você não é o dono desta ilha!")
+            return
+        }
+
+        if (sender.name.equals(targetName, true)) {
+            sender.sendRichMessage("<red>Você quer se remover? Não entendi.")
+            return
+        }
+
+        if (targetName.lowercase() !in island.trustedNames) {
+            sender.sendRichMessage("<red>Este jogador não está adicionado em sua ilha.")
+            return
+        }
+
+        island.trustedNames -= targetName.lowercase()
+        island.markDirty()
+
+        sender.sendRichMessage("<green>Removido com sucesso!")
+    }
+
     @Subcommand("member")
     fun onMember(sender: Player, targetOnline: OnlinePlayer) {
         val target = targetOnline.player
@@ -196,7 +225,7 @@ class IslandCommand(
             return
         }
 
-       if ( island.members.size >= (island.getUpgradeLevel(IslandUpgrade.Members) * 3)){
+       if ( island.members.size >= (island.getUpgradeLevel(IslandUpgrade.Members, 1) * 3)){
            sender.sendRichMessage("<red>Sua ilha está lotada de membros.")
            return
        }

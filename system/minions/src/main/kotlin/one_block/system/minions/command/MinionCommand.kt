@@ -2,6 +2,7 @@ package one_block.system.minions.command
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import one_block.libs.coordinate.SimpleLocation
 import one_block.system.minions.enums.MinionType
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player
 import java.util.UUID
 
 @CommandAlias("minion")
+@CommandPermission("screen.dev")
 class MinionCommand : BaseCommand() {
 
     @Default

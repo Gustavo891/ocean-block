@@ -30,8 +30,8 @@ class IslandView : View() {
         val island = IslandManager.getIslandByPlayer(player.uniqueId) ?: return
 
         setupTeleportSlot(render, player, island)
-        setupBorderUpgradeSlot(render, player, island)
-        setupPlantingSpeedSlot(render, player, island)
+     //   setupBorderUpgradeSlot(render, player, island)
+     //   setupPlantingSpeedSlot(render, player, island)
         setupMembersSlot(render, player, island)
     }
 

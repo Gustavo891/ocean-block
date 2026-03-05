@@ -130,6 +130,10 @@ data class Island(
         }
     }
 
+    fun markDirty(){
+        IslandManager.markDirty(uuid)
+    }
+
     private fun handleMobSpawn(phase: Phase, block: Block) {
         if (!chance(2.0)) return
 
