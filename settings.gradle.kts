@@ -22,6 +22,7 @@ include(
     ":system:coinflip:",
     ":system:combat-log:",
     ":system:currencies:",
+    ":system:fly-timer:",
     ":system:islands:",
     ":system:minions:",
     ":system:playtime:",

@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.system.chats)
     implementation(projects.system.coinflip)
     implementation(projects.system.currencies)
+    implementation(projects.system.flyTimer)
     implementation(projects.system.islands)
     implementation(projects.system.minions)
     implementation(projects.system.playtime)

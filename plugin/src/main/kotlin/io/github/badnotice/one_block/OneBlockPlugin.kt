@@ -13,6 +13,7 @@ import one_block.system.coin_flip.CoinFlipSystem
 import one_block.system.coin_flip.coin_flip.CoinFlipManager
 import one_block.system.coin_flip.command.CoinFlipCommand
 import one_block.system.currencies.CurrenciesSystem
+import one_block.system.fly_timer.FlyTimerSystem
 import one_block.system.islands.IslandsSystem
 import one_block.system.islands.command.IslandCommand
 import one_block.system.islands.listener.IslandListener
@@ -56,9 +57,10 @@ class OneBlockPlugin : JavaPlugin() {
     private fun setupSystems() {
         ArenaSystem.init(this, viewFrame)
         AuctionHouseSystem.init(this, viewFrame)
-        ChatsSystem.init(this)
+      //  ChatsSystem.init(this)
         CoinFlipSystem.init(this, viewFrame)
         CurrenciesSystem.init(this, paperCommandManager)
+        FlyTimerSystem.init(paperCommandManager)
         IslandsSystem.init(this, viewFrame)
         MinionsSystem.init(viewFrame, paperCommandManager)
         PlaytimeSystem.init(this)

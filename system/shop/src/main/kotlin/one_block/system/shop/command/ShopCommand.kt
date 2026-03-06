@@ -21,7 +21,7 @@ class ShopCommand(
     }
 
     @Subcommand("reload")
-    @CommandPermission("oneblock.admin")
+    @CommandPermission("screen.dev")
     fun onReload(sender: Player) {
         ShopManager.load()
         sender.sendRichMessage("<green>Recarregado com sucesso!")

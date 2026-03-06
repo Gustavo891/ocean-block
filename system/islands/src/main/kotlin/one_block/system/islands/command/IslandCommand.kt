@@ -119,7 +119,7 @@ class IslandCommand(
             return
         }
 
-        if (!island.blackList.contains(target)) {
+        if (!island.blackListNames().contains(target)) {
             sender.sendRichMessage("<red>Esse jogador não está bloqueado de acessar sua ilha.")
             return
         }
@@ -154,7 +154,7 @@ class IslandCommand(
             return
         }
 
-        if (island.blackList.contains(target.player.name)) {
+        if (island.blackListNames().contains(target.player.name)) {
             sender.sendRichMessage("<red>Esse jogador já está bloqueado de acessar sua ilha.")
             return
         }
@@ -173,7 +173,7 @@ class IslandCommand(
             return
         }
 
-        if (island.blackList.contains(sender.name)) {
+        if (island.blackListNames().contains(sender.name)) {
             sender.sendRichMessage("<red>Você está proibido de acessar esta ilha.")
             return
         }

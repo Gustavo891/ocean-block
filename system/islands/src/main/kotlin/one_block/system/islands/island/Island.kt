@@ -23,7 +23,7 @@ data class Island(
     val position: Position,
     var spawn: SimpleLocation,
     val trustedNames: MutableSet<String> = mutableSetOf(),
-    val blackList: MutableSet<String> = mutableSetOf(),
+    var blackList: MutableSet<String>? = null,
     val members: MutableMap<String, IslandMember> = mutableMapOf(),
     val upgrades: MutableMap<String, Int> = mutableMapOf(),
     var currentPhaseId: String = "origin",
@@ -55,7 +55,11 @@ data class Island(
     }
 
     fun addBlacklist(target: Player) {
-        blackList.add(target.name)
+        if (blackList == null) {
+            blackList = mutableSetOf()
+        }
+
+        blackList!!.add(target.name)
         val targetIsland = IslandManager.playerIsland[target.uniqueId]
         if (targetIsland == this.uuid) {
             val island = IslandManager.getIslandByOwnerUUID(target.uniqueId)
@@ -64,7 +68,11 @@ data class Island(
     }
 
     fun removeBlacklist(playerName: String): Boolean {
-        return blackList.remove(playerName.lowercase())
+        if (blackList == null) {
+            blackList = mutableSetOf()
+        }
+
+        return blackList!!.remove(playerName.lowercase())
     }
 
     fun processBlockBreak(player: Player, block: Block) {
@@ -193,7 +201,7 @@ data class Island(
     fun teleportTo(player: Player) {
         val spawn = spawn.toBukkit()
 
-        if (blackList.contains(player.name)) {
+        if (blackListNames().contains(player.name)) {
             player.sendRichMessage("<red>Você está bloqueado de acessar essa ilha.")
             return
         }
@@ -204,6 +212,14 @@ data class Island(
         }
         onJoin(player)
         player.teleport(spawn.add(0.0, 2.0, 0.0))
+    }
+
+    fun blackListNames(): MutableSet<String> {
+        if (blackList == null) {
+            blackList = mutableSetOf()
+        }
+
+        return blackList!!
     }
 
     private fun chance(percent: Double): Boolean {
