@@ -1,7 +1,11 @@
 package one_block.system.islands.listener
 
+import kr.toxicity.hud.api.bukkit.event.HudPlayerJoinEvent
+import one_block.system.islands.IslandsSystem
 import one_block.system.islands.ext.runNextTask
+import one_block.system.islands.hud.HudManager
 import one_block.system.islands.island.IslandManager
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -33,11 +37,17 @@ class PlayerListener : Listener {
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.joinMessage(null);
         handleIslandEntry(event.player, event.player.location)
+        Bukkit.getScheduler().runTaskLater(IslandsSystem.plugin, Runnable {
+            HudManager.updatePlayerHud(event.player)
+        }, 1L)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onTeleport(event: PlayerTeleportEvent) {
         handleIslandEntry(event.player, event.to)
+        Bukkit.getScheduler().runTaskLater(IslandsSystem.plugin, Runnable {
+            HudManager.updatePlayerHud(event.player)
+        }, 1L)
     }
 
     @EventHandler
@@ -52,6 +62,11 @@ class PlayerListener : Listener {
         player.fallDistance = 0f
 
         runNextTask(2L) { islandAt.onJoin(player) }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    fun test(event: HudPlayerJoinEvent) {
+        HudManager.updatePlayerHud(event.player)
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

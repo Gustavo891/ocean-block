@@ -2,6 +2,7 @@ package one_block.system.islands.island
 
 import one_block.libs.coordinate.SimpleLocation
 import one_block.system.islands.ext.getRandomByWeight
+import one_block.system.islands.hud.HudManager
 import one_block.system.islands.phase.Phase
 import one_block.system.islands.phase.PhaseManager
 import one_block.system.islands.position.Position
@@ -43,7 +44,6 @@ data class Island(
 
     fun onJoin(player: Player) {
         player.worldBorder = currentWorldBorder
-
     }
 
     fun getCurrentPhase(): Phase? {

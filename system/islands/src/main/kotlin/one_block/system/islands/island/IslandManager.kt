@@ -23,7 +23,6 @@ object IslandManager {
     private val islandsByGrid = mutableMapOf<Pair<Int, Int>, Island>()
     private val dirtyIslands = mutableSetOf<UUID>()
 
-    //
     val playerIsland = mutableMapOf<UUID, UUID>()
 
     private val repository = IslandRepository()

@@ -1,7 +1,7 @@
 [versions]
 luckperms = "5.4"
 mongodb = "5.1.0"
-kotlin = "2.1.0"
+kotlin = "2.3.0"
 ktor = "2.3.11"
 coroutines-core = "1.8.1"
 serialization-json = "1.6.3"

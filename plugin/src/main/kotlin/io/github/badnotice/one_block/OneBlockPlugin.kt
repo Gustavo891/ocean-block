@@ -16,6 +16,7 @@ import one_block.system.currencies.CurrenciesSystem
 import one_block.system.fly_timer.FlyTimerSystem
 import one_block.system.islands.IslandsSystem
 import one_block.system.islands.command.IslandCommand
+import one_block.system.islands.command.TestCommand
 import one_block.system.islands.listener.IslandListener
 import one_block.system.islands.listener.PlayerListener
 import one_block.system.items.SpecialItemSystem

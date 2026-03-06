@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.system.worlds)
     implementation(projects.system.specialItems)
 
+
     implementation("de.rapha149.signgui:signgui:2.5.4")
     implementation(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 
@@ -42,7 +43,7 @@ bukkit {
     apiVersion = "1.21"
     main = "io.github.badnotice.one_block.OneBlockPlugin"
     author = "badoff"
-    depend = listOf("PlaceholderAPI")
+    depend = listOf("PlaceholderAPI", "BetterHud")
 }
 
 tasks.named<ShadowJar>("shadowJar") {
