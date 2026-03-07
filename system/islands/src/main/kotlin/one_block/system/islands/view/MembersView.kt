@@ -9,7 +9,7 @@ import one_block.system.islands.island.IslandMember
 import org.bukkit.Material
 import org.bukkit.inventory.meta.ItemMeta
 
-class IslandMembersView() : View() {
+class MembersView : View() {
 
     private val pagination = lazyPaginationState(
         { ctx ->

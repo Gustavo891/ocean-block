@@ -4,10 +4,11 @@ import me.devnatan.inventoryframework.ViewFrame
 import one_block.system.islands.expansion.IslandExpansion
 import one_block.system.islands.island.IslandManager
 import one_block.system.islands.phase.PhaseManager
-import one_block.system.islands.view.IslandMembersView
+import one_block.system.islands.view.MembersView
 import one_block.system.islands.view.IslandView
 import one_block.system.islands.view.IslandsView
 import one_block.system.islands.view.PhaseView
+import one_block.system.islands.view.UpgradeView
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -23,7 +24,8 @@ object IslandsSystem {
             PhaseView(),
             IslandsView(),
             IslandView(),
-            IslandMembersView()
+            MembersView(),
+            UpgradeView()
         )
 
         IslandExpansion().register()

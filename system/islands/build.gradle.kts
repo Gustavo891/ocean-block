@@ -20,5 +20,4 @@ dependencies {
     compileOnly("io.github.toxicity188:BetterHud-bukkit-api:1.14.1")
     compileOnly("io.github.toxicity188:BetterCommand:1.4.3")
 
-    compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 }

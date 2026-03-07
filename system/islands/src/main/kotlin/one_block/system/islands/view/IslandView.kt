@@ -5,9 +5,15 @@ import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.OpenContext
 import me.devnatan.inventoryframework.context.RenderContext
+import me.devnatan.inventoryframework.context.SlotClickContext
 import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.formatter.NumberFormatter
-import one_block.libs.item_builder.*
+import one_block.libs.item_builder.Items
+import one_block.libs.item_builder.Items.createEmptyRender
+import one_block.libs.item_builder.itemStack
+import one_block.libs.item_builder.meta
+import one_block.libs.item_builder.name
+import one_block.libs.item_builder.setLore
 import one_block.system.currencies.Currencies
 import one_block.system.islands.island.Island
 import one_block.system.islands.island.IslandManager
@@ -19,9 +25,18 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
-import java.util.UUID
+import java.util.*
 
 class IslandView : View() {
+
+    override fun onInit(config: ViewConfigBuilder) {
+        config.cancelInteractions()
+        config.layout(
+            "1aa   mmm",
+            "aaa   uuu",
+            "aaa   ppp"
+        )
+    }
 
     override fun onOpen(open: OpenContext) {
         val player = open.player
@@ -32,16 +47,8 @@ class IslandView : View() {
         val display = if (name.length > avail) name.take(avail - 3) + "..." else name
 
         open.modifyConfig().title(
-            MiniMessage.miniMessage().deserialize("<shift:-8><glyph:island_menu><font:oneblock:gui><shift:-170><gray>Ilha > <dark_gray>$display")
-        )
-    }
-
-    override fun onInit(config: ViewConfigBuilder) {
-        config.cancelInteractions()
-        config.layout(
-            "1aa      ",
-            "aaa      ",
-            "aaa      "
+            MiniMessage.miniMessage()
+                .deserialize("<shift:-8><glyph:island_menu><font:oneblock:gui><shift:-170><gray>Ilha > <dark_gray>$display")
         )
     }
 
@@ -53,23 +60,28 @@ class IslandView : View() {
         //setupBorderUpgradeSlot(render, player, island)
         //setupPlantingSpeedSlot(render, player, island)
         //setupMembersSlot(render, player, island)
+
+        render.createEmptyRender('m') { handleMemberClick(this, island) }
+        render.createEmptyRender('u') { handleUpgradeClick(this, island) }
+        render.createEmptyRender('p') { handlePhaseClick(this, island) }
+
     }
 
     private fun setupMembersSlot(render: RenderContext, player: Player, island: Island) {
 
 
-
     }
 
     private fun setupTeleportSlot(render: RenderContext, player: Player, island: Island) {
-
         render.layoutSlot('a')
-            .renderWith { itemStack(Material.PAPER) {
-                meta<ItemMeta> {
-                    itemModel = NamespacedKey("oneblock", "blank")
-                    name("<yellow>Ir para sua ilha")
+            .renderWith {
+                itemStack(Material.PAPER) {
+                    meta<ItemMeta> {
+                        itemModel = NamespacedKey("oneblock", "blank")
+                        name("<yellow>Ir para sua ilha")
+                    }
                 }
-            } }
+            }
             .onClick { click ->
                 val spawn = island.spawn.toBukkit()
 
@@ -90,11 +102,28 @@ class IslandView : View() {
                         name("<yellow>Membros")
                         //playerProfile = Bukkit.createProfile(island.ownerUuid, island.ownerName)
                         playerProfile = Bukkit.createProfile(UUID.randomUUID(), "1").apply {
-                            setProperty(ProfileProperty("textures", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWMwZTNjNGNlMDFmYjNhMmI4MjQ2MDBhZjAzODhlNDVjYzcxYjQ5MmQ2NGZiZTMxOTA4M2RiNjE1OWQxNGUzZCJ9fX0="))
+                            setProperty(
+                                ProfileProperty(
+                                    "textures",
+                                    "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWMwZTNjNGNlMDFmYjNhMmI4MjQ2MDBhZjAzODhlNDVjYzcxYjQ5MmQ2NGZiZTMxOTA4M2RiNjE1OWQxNGUzZCJ9fX0="
+                                )
+                            )
                         }
                     }
                 }
             }
+    }
+
+    private fun handleMemberClick(click: SlotClickContext, island: Island) {
+        click.openForPlayer(MembersView::class.java)
+    }
+
+    private fun handleUpgradeClick(click: SlotClickContext, island: Island) {
+        click.openForPlayer(UpgradeView::class.java, island)
+    }
+
+    private fun handlePhaseClick(click: SlotClickContext, island: Island) {
+        click.openForPlayer(PhaseView::class.java)
     }
 
     private fun setupBorderUpgradeSlot(render: RenderContext, player: Player, island: Island) {
@@ -133,11 +162,17 @@ class IslandView : View() {
 
         val currentSize = Island.BORDER_SIZE[size]
         val nextSize = if (atMax) "Máximo" else Island.BORDER_SIZE[size + 1].toString()
-        val costLine = if (atMax) "<red>N/A" else "<dark_green>$<white>${NumberFormatter.format(IslandUpgrade.Size.getPrice(size + 1))}"
+        val costLine =
+            if (atMax) "<red>N/A" else "<dark_green>$<white>${NumberFormatter.format(IslandUpgrade.Size.getPrice(size + 1))}"
 
         val statusLine = when {
             atMax -> "<red>Você chegou ao nível máximo."
-            Currencies.has(player.uniqueId, "coins", IslandUpgrade.Size.getPrice(size + 1)) -> "<green>Clique para EVOLUIR!"
+            Currencies.has(
+                player.uniqueId,
+                "coins",
+                IslandUpgrade.Size.getPrice(size + 1)
+            ) -> "<green>Clique para EVOLUIR!"
+
             else -> "<red>Você não possui dinheiro suficiente."
         }
 
@@ -157,11 +192,20 @@ class IslandView : View() {
         val atMax = level == IslandUpgrade.CropGrowth.maxLevel
 
         val nextSpeed = if (atMax) "Máximo" else "${level + 1}"
-        val costLine = if (atMax) "<red>N/A" else "<dark_green>$<white>${NumberFormatter.format(IslandUpgrade.CropGrowth.getPrice(level + 1))}"
+        val costLine = if (atMax) "<red>N/A" else "<dark_green>$<white>${
+            NumberFormatter.format(
+                IslandUpgrade.CropGrowth.getPrice(level + 1)
+            )
+        }"
 
         val statusLine = when {
             atMax -> "<red>Você chegou ao nível máximo."
-            Currencies.has(player.uniqueId, "coins", IslandUpgrade.CropGrowth.getPrice(level + 1)) -> "<green>Clique para EVOLUIR!"
+            Currencies.has(
+                player.uniqueId,
+                "coins",
+                IslandUpgrade.CropGrowth.getPrice(level + 1)
+            ) -> "<green>Clique para EVOLUIR!"
+
             else -> "<red>Você não possui dinheiro suficiente."
         }
 
