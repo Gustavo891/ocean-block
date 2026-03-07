@@ -26,7 +26,8 @@ object FlyPlayerManager {
     }
 
     fun unregister(uuid: UUID) {
-        val flyPlayer = players.remove(uuid)
+        val flyPlayer = players.remove(uuid) ?: return
+        repository.update(flyPlayer)
     }
 
     fun get(uuid: UUID) = players[uuid]
@@ -35,7 +36,7 @@ object FlyPlayerManager {
         for (player in players.values) {
             val bukkit = Bukkit.getPlayer(player.uuid) ?: continue
             if (player.hasTime()){
-                bukkit.sendActionBar(MiniMessage.miniMessage().deserialize("<yellow>Tempo de vôo ${player.getRemainingSeconds()}s"))
+                bukkit.sendActionBar(MiniMessage.miniMessage().deserialize("<yellow>Tempo de vôo ${player.getRemainingSeconds1()}s"))
                 continue
             }
 

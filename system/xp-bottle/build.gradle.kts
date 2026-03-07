@@ -1,0 +1,11 @@
+plugins {
+    id("paper-common")
+}
+
+dependencies {
+    compileOnly(libs.placeholder)
+
+    compileOnly(projects.lib.coordinate)
+    compileOnly(projects.lib.instance)
+    compileOnly(projects.lib.itemBuilder)
+}

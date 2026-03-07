@@ -13,5 +13,4 @@ dependencies {
 
     compileOnly(projects.system.currencies)
 
-    compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 }

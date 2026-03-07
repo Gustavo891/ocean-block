@@ -16,5 +16,4 @@ dependencies {
     compileOnly(projects.system.currencies)
 
     compileOnly("de.rapha149.signgui:signgui:2.5.4")
-    compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 }

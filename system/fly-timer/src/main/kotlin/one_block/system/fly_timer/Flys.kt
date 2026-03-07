@@ -18,22 +18,20 @@ object Flys {
     private val UUID_KEY = NamespacedKey("flys", "uuid")
     private val TIMER_KEY = NamespacedKey("flys", "timer")
 
-    fun createFlyItem() = itemStack(Material.FEATHER) {
+    fun createFlyItem(timer: Long = 60) = itemStack(Material.FEATHER) {
         meta {
             name("<yellow>Pena de Voo")
 
             addLore {
                 +"<gray>Ative esta pena mágica"
                 +"<gray>e receba o <yellow>poder de voar"
-                +"<gray>por <yellow>1 minuto<gray>."
-                +""
-                +"<dark_gray>Use sabiamente!"
+                +"<gray>por <yellow>1m<gray>."
                 +""
                 +"<green>Clique para ativar"
             }
 
             nbt {
-                long(TIMER_KEY, 60)
+                long(TIMER_KEY, timer)
                 string(UUID_KEY, UUID.randomUUID().toString())
             }
         }

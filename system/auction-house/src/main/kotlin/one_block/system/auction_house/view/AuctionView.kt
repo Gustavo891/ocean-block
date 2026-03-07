@@ -79,6 +79,8 @@ class AuctionView : View() {
             return
         }
 
+// verificar se o inventario está cheio
+
         val removed = AuctionManager.unregister(auction.uuid) ?: return
         Currencies.withdraw(player.uniqueId, "coins", removed.price)
         Currencies.deposit(removed.sellerUuid, "coins", removed.price)

@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import java.util.function.BooleanSupplier
 
-
 class ProductView : View() {
 
     private val shop = initialState<Shop>()

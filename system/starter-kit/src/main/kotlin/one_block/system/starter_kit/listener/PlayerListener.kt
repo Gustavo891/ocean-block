@@ -34,10 +34,6 @@ class PlayerListener : Listener {
 
     private fun createItemStack(material: Material, key: NamespacedKey): ItemStack {
         val itemStack = ItemStack(material)
-        itemStack.editMeta {
-            it.itemModel = key
-        }
-
         return itemStack
     }
 }

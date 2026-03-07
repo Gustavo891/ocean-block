@@ -26,7 +26,7 @@ object PlayerPlaytimeManager {
     fun get(uuid: UUID) = players[uuid]
 
     fun save(uuid: UUID) {
-        val playerPlaytime = players[uuid] ?: return
+        val playerPlaytime = players.remove(uuid) ?: return
         playerPlaytime.updateElapsedSeconds()
 
         repository.update(playerPlaytime)

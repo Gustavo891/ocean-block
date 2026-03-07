@@ -6,7 +6,7 @@ import java.util.UUID
 data class FlyPlayer(
     val uuid: UUID,
     val name: String,
-    private var remainingSeconds: Long,
+    var remainingSeconds: Long,
 ) {
 
     var flyingSince: Instant? = null
@@ -30,7 +30,7 @@ data class FlyPlayer(
         flyingSince = null
     }
 
-    fun getRemainingSeconds(): Long {
+    fun getRemainingSeconds1(): Long {
         val start = flyingSince ?: return remainingSeconds
         val used = Instant.now().epochSecond - start.epochSecond
 
@@ -38,5 +38,5 @@ data class FlyPlayer(
         return if (current < 0) 0 else current
     }
 
-    fun hasTime() = getRemainingSeconds() > 0
+    fun hasTime() = getRemainingSeconds1() > 0
 }

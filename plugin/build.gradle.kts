@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.placeholder)
-    //compileOnly("com.redescreen:sdk:1.0")
+  //  compileOnly("com.redescreen:sdk:1.0")
     implementation(libs.mongodb)
 
     implementation(projects.lib.connection)
@@ -16,26 +16,13 @@ dependencies {
     implementation(projects.lib.itemBuilder)
     implementation(projects.lib.translation)
 
-    implementation(projects.system.arena)
-    implementation(projects.system.auctionHouse)
-    implementation(projects.system.chats)
-    implementation(projects.system.coinflip)
-    implementation(projects.system.currencies)
-    implementation(projects.system.flyTimer)
-    implementation(projects.system.islands)
-    implementation(projects.system.minions)
-    implementation(projects.system.playtime)
-    implementation(projects.system.sell)
-    implementation(projects.system.shop)
-    implementation(projects.system.starterKit)
-    implementation(projects.system.tops)
-    implementation(projects.system.worlds)
-    implementation(projects.system.specialItems)
-
+    // Automatically include all system modules
+    rootProject.subprojects.filter { it.path.startsWith(":system:") }.forEach {
+        implementation(it)
+    }
 
     implementation("de.rapha149.signgui:signgui:2.5.4")
     implementation(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
-
 }
 
 bukkit {

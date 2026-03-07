@@ -19,9 +19,9 @@ class FlyPlayerRepository {
         return collection.find(Filters.eq("uuid", uuid)).firstOrNull()
     }
 
-    fun update(playtime: FlyPlayer) {
-        val filter = Filters.eq("uuid", playtime.uuid)
-        collection.replaceOne(filter, playtime, replaceOptions)
+    fun update(flyPlayer: FlyPlayer) {
+        val filter = Filters.eq("uuid", flyPlayer.uuid)
+        collection.replaceOne(filter, flyPlayer, replaceOptions)
     }
 
     fun updateAll(list: List<FlyPlayer>) {
@@ -33,10 +33,5 @@ class FlyPlayerRepository {
         }
 
         collection.bulkWrite(models)
-    }
-
-    fun remove(uuid: UUID) {
-        val filter = Filters.eq("uuid", uuid)
-        collection.deleteOne(filter)
     }
 }

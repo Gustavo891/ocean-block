@@ -1,4 +1,4 @@
-package one_block.system.minions.forge
+package one_block.system.craft.forge
 
 import org.bukkit.inventory.ItemStack
 

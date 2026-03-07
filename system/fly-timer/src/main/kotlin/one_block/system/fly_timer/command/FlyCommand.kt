@@ -15,8 +15,12 @@ class FlyCommand: BaseCommand() {
 
     @Default
     fun onDefault(sender: Player) {
-        val flyPlayer = FlyPlayerManager.get(sender.uniqueId)
+        if (sender.world.name != "world") {
+            sender.sendRichMessage("<red>Você só pode usar fly no mundo world.</red>")
+            return
+        }
 
+        val flyPlayer = FlyPlayerManager.get(sender.uniqueId)
         if (flyPlayer == null) {
             sender.sendRichMessage("<red>Dados de fly não carregados.</red>")
             return

@@ -6,11 +6,25 @@ import one_block.system.fly_timer.fly_player.FlyPlayerManager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
 
 class PlayerListener : Listener {
+
+    @EventHandler
+    fun onWorldChange(event: PlayerChangedWorldEvent) {
+        val player = event.player
+        val flyPlayer = FlyPlayerManager.get(player.uniqueId) ?: return
+
+        if (player.world.name != "world") {
+            player.allowFlight = false
+            player.isFlying = false
+
+            flyPlayer.stopFlying()
+        }
+    }
 
     @EventHandler
     fun onAsyncPlayerPreLogin(event: AsyncPlayerPreLoginEvent) {
@@ -35,7 +49,6 @@ class PlayerListener : Listener {
         val flyPlayer = FlyPlayerManager.get(player.uniqueId) ?: return
 
         if (event.isFlying) {
-            // jogador começou a voar
             if (!flyPlayer.hasTime()) {
                 event.isCancelled = true
                 player.isFlying = false
@@ -44,7 +57,6 @@ class PlayerListener : Listener {
 
             flyPlayer.startFlying()
         } else {
-            // jogador parou de voar
             flyPlayer.stopFlying()
         }
     }

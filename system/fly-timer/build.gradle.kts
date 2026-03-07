@@ -16,5 +16,5 @@ dependencies {
     compileOnly(projects.lib.itemBuilder)
     compileOnly(projects.lib.translation)
 
-    compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
+    compileOnly(projects.system.mobDrops)
 }

@@ -4,8 +4,10 @@ import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.persistence.PersistentDataType
 
 inline fun itemStack(material: Material, builder: ItemStack.() -> Unit) = ItemStack(material).apply(builder)
 
@@ -50,3 +52,24 @@ inline fun ItemMeta.addLore(builder: LoreBuilder.() -> Unit) {
 inline fun ItemMeta.nbt(builder: NbtBuilder.() -> Unit) {
     NbtBuilder(persistentDataContainer).apply(builder)
 }
+
+fun ItemStack.getNbtInt(key: NamespacedKey, def: Int = 0): Int {
+    return itemMeta.persistentDataContainer.get(key, PersistentDataType.INTEGER) ?: def
+}
+
+fun ItemStack.getNbtString(key: NamespacedKey, def: String = ""): String {
+    return itemMeta.persistentDataContainer.get(key, PersistentDataType.STRING) ?: def
+}
+
+fun ItemStack.getNbtDouble(key: NamespacedKey, def: Double = 0.0): Double {
+    return itemMeta.persistentDataContainer.get(key, PersistentDataType.DOUBLE) ?: def
+}
+
+fun ItemStack.getNbtLong(key: NamespacedKey, def: Long = 0L): Long {
+    return itemMeta.persistentDataContainer.get(key, PersistentDataType.LONG) ?: def
+}
+
+fun ItemStack.getNbtBoolean(key: NamespacedKey, def: Boolean = false): Boolean {
+    return itemMeta.persistentDataContainer.get(key, PersistentDataType.BOOLEAN) ?: def
+}
+

@@ -1,4 +1,4 @@
-package one_block.system.minions.view
+package one_block.system.craft.view
 
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
@@ -8,15 +8,15 @@ import one_block.libs.item_builder.addLore
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
 import one_block.libs.item_builder.name
-import one_block.system.minions.MinionsSystem
-import one_block.system.minions.forge.ForgeRecipe
-import one_block.system.minions.forge.ForgeRequirement
+import one_block.system.craft.forge.ForgeRecipe
+import one_block.system.craft.forge.ForgeRecipeManager
+import one_block.system.craft.forge.ForgeRequirement
 import org.bukkit.entity.Player
 
-class MinionsView : View() {
+class CraftView : View() {
 
     private val pagination = computedPaginationState(
-        { MinionsSystem.recipes }
+        { ForgeRecipeManager.recipes }
     ) { context, builder, index, value ->
         builder.renderWith { createMinionItem(context, value) }
             .onClick { click -> handleMinionClick(context, click, value) }
@@ -24,9 +24,10 @@ class MinionsView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title("Fabricação de minion")
+        config.title("Fabricações")
         config.layout(
             "         ",
+            "  OOOOO  ",
             "  OOOOO  ",
             "         ",
         )
@@ -68,6 +69,7 @@ class MinionsView : View() {
         player.inventory.addItem(forgeRecipe.result.clone())
 
         player.sendMessage("<green>Minion fabricado com sucesso!")
+        pagination.get(ctx).forceUpdate()
     }
 
     fun hasAllRequirements(player: Player, recipe: ForgeRecipe): Boolean {

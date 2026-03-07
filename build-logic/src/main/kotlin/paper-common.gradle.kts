@@ -21,8 +21,8 @@ val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 dependencies {
     compileOnly(libs.findLibrary("paperApi").get())
-  //  compileOnly(libs.findLibrary("sdk").get())
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 
     implementation(libs.findLibrary("aikar").get())
 }

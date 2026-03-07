@@ -10,7 +10,6 @@ dependencies {
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.itemBuilder)
-    compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 
     compileOnly(projects.system.currencies)
 }
