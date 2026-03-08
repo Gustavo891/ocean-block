@@ -115,7 +115,7 @@ class IslandView : View() {
     }
 
     private fun handleMemberClick(click: SlotClickContext, island: Island) {
-        click.openForPlayer(MembersView::class.java)
+        click.openForPlayer(MembersView::class.java, island)
     }
 
     private fun handleUpgradeClick(click: SlotClickContext, island: Island) {

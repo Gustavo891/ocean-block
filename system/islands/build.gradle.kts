@@ -19,5 +19,6 @@ dependencies {
     compileOnly("io.github.toxicity188:BetterHud-standard-api:1.14.1")
     compileOnly("io.github.toxicity188:BetterHud-bukkit-api:1.14.1")
     compileOnly("io.github.toxicity188:BetterCommand:1.4.3")
+    compileOnly("de.rapha149.signgui:signgui:2.5.4")
 
 }
