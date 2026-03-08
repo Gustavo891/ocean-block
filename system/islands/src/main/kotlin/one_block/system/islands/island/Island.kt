@@ -1,6 +1,7 @@
 package one_block.system.islands.island
 
 import one_block.libs.coordinate.SimpleLocation
+import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.getRandomByWeight
 import one_block.system.islands.hud.HudManager
 import one_block.system.islands.phase.Phase
@@ -44,6 +45,7 @@ data class Island(
 
     fun onJoin(player: Player) {
         player.worldBorder = currentWorldBorder
+        BossbarManager.updatePlayerBar(player, this)
     }
 
     fun getCurrentPhase(): Phase? {

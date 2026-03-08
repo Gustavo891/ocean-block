@@ -2,6 +2,7 @@ package one_block.system.islands.listener
 
 import kr.toxicity.hud.api.bukkit.event.HudPlayerJoinEvent
 import one_block.system.islands.IslandsSystem
+import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.runNextTask
 import one_block.system.islands.hud.HudManager
 import one_block.system.islands.island.IslandManager
@@ -92,6 +93,7 @@ class PlayerListener : Listener {
         }
 
         island.processBlockBreak(player, block)
+        BossbarManager.upgradeBossBar(island)
         IslandManager.markDirty(island.uuid)
     }
 
