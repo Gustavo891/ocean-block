@@ -1,5 +1,6 @@
 package one_block.system.sell.listener
 
+import one_block.libs.formatter.NumberFormatter
 import one_block.system.currencies.Currencies
 import one_block.system.sell.Sell
 import org.bukkit.Sound
@@ -23,7 +24,7 @@ class PlayerListener : Listener {
         Sell.updateUsesByItem(item, usesByItem - 1)
         Currencies.deposit(player.uniqueId, "coins", sellContainer)
 
-        player.sendRichMessage("<green>Você recebeu <white>${sellContainer}</white> com suas vendas.")
+        player.sendRichMessage("<green>Você recebeu <white>${NumberFormatter.format(sellContainer)}</white> com suas vendas.")
         player.playSound(player, Sound.ENTITY_GOAT_MILK, 1f, 1f)
     }
 }
