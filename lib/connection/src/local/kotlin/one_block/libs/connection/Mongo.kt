@@ -38,4 +38,3 @@ fun createMongoDatabase(): MongoDatabase {
 
     return MongoClient.create(settings).getDatabase("one-block")
 }
-

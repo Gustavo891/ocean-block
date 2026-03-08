@@ -18,20 +18,20 @@ object FlyTimerSystem {
 
         MobDrops.addDrop(
             EntityType.ZOMBIE,
-            Flys.createFlyItem(),
-            0.00005
+            { Flys.createFlyItem() } ,
+            0.005
         )
 
         MobDrops.addDrop(
             EntityType.CREEPER,
-            Flys.createFlyItem(),
-            0.00005
+            { Flys.createFlyItem() },
+            0.005
         )
 
         MobDrops.addDrop(
             EntityType.SKELETON,
-            Flys.createFlyItem(),
-            0.00005
+            { Flys.createFlyItem() },
+            0.005
         )
     }
 

@@ -3,6 +3,7 @@ package one_block.system.fly_timer.listener
 import one_block.system.fly_timer.Flys
 import one_block.system.fly_timer.fly_player.FlyPlayer
 import one_block.system.fly_timer.fly_player.FlyPlayerManager
+import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
@@ -12,6 +13,10 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
 
 class PlayerListener : Listener {
+
+    companion object {
+        val ALLOWED_GAMEMODE = listOf(GameMode.CREATIVE, GameMode.SPECTATOR)
+    }
 
     @EventHandler
     fun onWorldChange(event: PlayerChangedWorldEvent) {
@@ -46,6 +51,8 @@ class PlayerListener : Listener {
     @EventHandler
     fun onToggleFlight(event: PlayerToggleFlightEvent) {
         val player = event.player
+        if (player.gameMode in ALLOWED_GAMEMODE) return
+
         val flyPlayer = FlyPlayerManager.get(player.uniqueId) ?: return
 
         if (event.isFlying) {
@@ -77,7 +84,7 @@ class PlayerListener : Listener {
             return
         }
 
-        flyPlayer.addSeconds(60)
+        flyPlayer.addSeconds((60 * item.amount.toLong()))
         item.amount = 0
 
         player.sendRichMessage("<green>+1m de vôoW")

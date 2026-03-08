@@ -2,7 +2,9 @@ package one_block.system.islands.view
 
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
+import me.devnatan.inventoryframework.context.RenderContext
 import one_block.libs.formatter.NumberFormatter
+import one_block.libs.item_builder.Items.createEmptyRender
 import one_block.libs.item_builder.addLore
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
@@ -28,8 +30,14 @@ class PhaseView : View() {
             " OOOOOOO ",
             " OOOOOOO ",
             " OOOOOOO ",
-            "         "
+            "    v    "
         )
+    }
+
+    override fun onFirstRender(render: RenderContext) {
+        render.createEmptyRender('v') {
+            back()
+        }
     }
 
     private fun createPhaseItem(value: Phase) = itemStack(value.iconMaterial) {

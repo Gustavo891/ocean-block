@@ -42,7 +42,7 @@ class CoinFlipView : View() {
                 +"<gray>Valor: <green>$<white>${value.amount}"
                 +""
                 if (sameOwner) {
-                    +"<red>Sua posta!"
+                    +"<red>Sua aposta!"
                 } else {
                     +"<green>Clique para jogar!"
                 }

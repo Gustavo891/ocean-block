@@ -59,22 +59,22 @@ inline fun ItemMeta.nbt(builder: NbtBuilder.() -> Unit) {
 }
 
 fun ItemStack.getNbtInt(key: NamespacedKey, def: Int = 0): Int {
-    return itemMeta.persistentDataContainer.get(key, PersistentDataType.INTEGER) ?: def
+    return itemMeta?.persistentDataContainer?.get(key, PersistentDataType.INTEGER) ?: def
 }
 
 fun ItemStack.getNbtString(key: NamespacedKey, def: String = ""): String {
-    return itemMeta.persistentDataContainer.get(key, PersistentDataType.STRING) ?: def
+    return itemMeta?.persistentDataContainer?.get(key, PersistentDataType.STRING) ?: def
 }
 
 fun ItemStack.getNbtDouble(key: NamespacedKey, def: Double = 0.0): Double {
-    return itemMeta.persistentDataContainer.get(key, PersistentDataType.DOUBLE) ?: def
+    return itemMeta?.persistentDataContainer?.get(key, PersistentDataType.DOUBLE) ?: def
 }
 
 fun ItemStack.getNbtLong(key: NamespacedKey, def: Long = 0L): Long {
-    return itemMeta.persistentDataContainer.get(key, PersistentDataType.LONG) ?: def
+    return itemMeta?.persistentDataContainer?.get(key, PersistentDataType.LONG) ?: def
 }
 
 fun ItemStack.getNbtBoolean(key: NamespacedKey, def: Boolean = false): Boolean {
-    return itemMeta.persistentDataContainer.get(key, PersistentDataType.BOOLEAN) ?: def
+    return itemMeta?.persistentDataContainer?.get(key, PersistentDataType.BOOLEAN) ?: def
 }
 

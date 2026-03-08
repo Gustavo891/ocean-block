@@ -65,6 +65,7 @@ class MembersView : View() {
                 }
             } }
             .onClick { click ->
+                click.closeForPlayer()
                 addMember(click, island)
             }
 
@@ -90,7 +91,6 @@ class MembersView : View() {
             )
             .setHandler { player, result ->
                 val playerName = result.getLine(2) ?: return@setHandler emptyList()
-
 
                 val target = Bukkit.getPlayer(playerName)
                 if (target == null || !target.isOnline) {

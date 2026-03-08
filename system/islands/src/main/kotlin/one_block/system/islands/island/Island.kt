@@ -1,5 +1,8 @@
 package one_block.system.islands.island
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.coordinate.SimpleLocation
 import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.getRandomByWeight
@@ -61,7 +64,7 @@ data class Island(
             blackList = mutableSetOf()
         }
 
-        blackList!!.add(target.name)
+        blackList!!.add(target.name.lowercase())
         val targetIsland = IslandManager.playerIsland[target.uniqueId]
         if (targetIsland == this.uuid) {
             val island = IslandManager.getIslandByOwnerUUID(target.uniqueId)
@@ -99,11 +102,14 @@ data class Island(
             this.currentPhaseId = nextPhase.id
             this.grid = 0
 
-            player.apply {
-                sendMessage("§a§lNOVA FASE! §fAgora você está em: ${nextPhase.prettyName}")
-                playSound(location, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f)
-                sendTitle("§a§lNOVA FASE", nextPhase.prettyName, 10, 70, 20)
+            val content = Component.text {
+                it.appendNewline()
+                it.append(MiniMessage.miniMessage().deserialize("<green>Nova fase desbloqueada!").decoration(TextDecoration.ITALIC, false))
+                it.appendNewline()
             }
+
+            val players = Bukkit.getOnlinePlayers().filter { IslandManager.playerIsland[it.uniqueId] == this.uuid }
+            players.forEach { it.sendMessage(content) }
         }
 
         this.grid = 0

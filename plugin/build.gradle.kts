@@ -4,10 +4,18 @@ plugins {
     id("paper-plugin")
 }
 
+val isLocal = gradle.startParameter.taskNames.any { it.contains("local", ignoreCase = true) }
+
 dependencies {
     compileOnly(libs.placeholder)
-  //  compileOnly("com.redescreen:sdk:1.0")
-    implementation(libs.mongodb)
+    compileOnly("com.redescreen:sdk:1.0")
+    
+    if (isLocal) {
+        implementation(libs.mongodb)
+    } else {
+        compileOnly(libs.mongodb)
+    }
+
 
     implementation(projects.lib.connection)
     implementation(projects.lib.coordinate)
@@ -16,7 +24,6 @@ dependencies {
     implementation(projects.lib.itemBuilder)
     implementation(projects.lib.translation)
 
-    // Automatically include all system modules
     rootProject.subprojects.filter { it.path.startsWith(":system:") }.forEach {
         implementation(it)
     }
@@ -36,3 +43,16 @@ bukkit {
 tasks.named<ShadowJar>("shadowJar") {
     archiveBaseName.set("one-block")
 }
+
+tasks.register("localJar") {
+    group = "env"
+    description = "Builds the plugin for local testing"
+    dependsOn("shadowJar")
+}
+
+tasks.register("productionJar") {
+    group = "env"
+    description = "Builds the plugin for production"
+    dependsOn("shadowJar")
+}
+

@@ -8,7 +8,7 @@ object MobDrops {
 
     private val extraDrops = mutableMapOf<EntityType, MutableList<MobDrop>>()
 
-    fun addDrop(type: EntityType, item: ItemStack, chance: Double) {
+    fun addDrop(type: EntityType, item: () -> ItemStack, chance: Double) {
         extraDrops
             .computeIfAbsent(type) { mutableListOf() }
             .add(MobDrop(item, chance))

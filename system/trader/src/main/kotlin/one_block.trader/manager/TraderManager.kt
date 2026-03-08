@@ -3,11 +3,11 @@ package one_block.trader.manager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.system.islands.island.Island
-import one_block.trader.models.ActiveTrader
-import one_block.trader.models.TraderItem
+import one_block.trader.model.ActiveTrader
+import one_block.trader.model.TraderItem
 import org.bukkit.Bukkit
 import org.bukkit.entity.WanderingTrader
-import java.util.UUID
+import java.util.*
 
 object TraderManager {
 
@@ -41,8 +41,14 @@ object TraderManager {
         island.getIslandOnlinePlayers().forEach { player ->
             val message = Component.text()
                 .appendNewline()
-                .append(MiniMessage.miniMessage().deserialize("  <sprite:items:item/bell> <gray>O <white>Mercador<gray> chegou em sua ilha!")).appendNewline()
-                .append(MiniMessage.miniMessage().deserialize("  <white>Aproveite e compre seu estoque de produtos.").appendNewline())
+                .append(
+                    MiniMessage.miniMessage()
+                        .deserialize("  <sprite:items:item/bell> <gray>O <white>Mercador<gray> chegou em sua ilha!")
+                ).appendNewline()
+                .append(
+                    MiniMessage.miniMessage().deserialize("  <white>Aproveite e compre seu estoque de produtos.")
+                        .appendNewline()
+                )
             player.sendMessage(message)
         }
 
@@ -64,13 +70,16 @@ object TraderManager {
         island.getIslandOnlinePlayers().forEach { player ->
             val message = Component.text()
                 .appendNewline()
-                .append(MiniMessage.miniMessage().deserialize("  <sprite:items:item/oak_boat> <gray>O <white>Mercador<gray> foi embora!")).appendNewline()
-                .append(MiniMessage.miniMessage().deserialize("  <white>Aproveite mais da próxima vez.").appendNewline())
+                .append(
+                    MiniMessage.miniMessage()
+                        .deserialize("  <sprite:items:item/oak_boat> <gray>O <white>Mercador<gray> foi embora!")
+                ).appendNewline()
+                .append(
+                    MiniMessage.miniMessage().deserialize("  <white>Aproveite mais da próxima vez.").appendNewline()
+                )
             player.sendMessage(message)
         }
 
     }
-
-
 
 }

@@ -30,6 +30,7 @@ include(
     ":system:mob-drops:",
     ":system:offhand-pets:",
     ":system:playtime:",
+    ":system:repair:",
     ":system:sell:",
     ":system:shop:",
     ":system:starter-kit:",

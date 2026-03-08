@@ -7,17 +7,14 @@ import one_block.trader.manager.TraderManager
 import one_block.trader.view.TraderView
 import org.bukkit.Bukkit
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
 import org.bukkit.entity.WanderingTrader
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
-import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.server.PluginDisableEvent
 
-class TraderListener(private val viewFrame: ViewFrame): Listener {
+class TraderListener(private val viewFrame: ViewFrame) : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onTraderInteract(event: PlayerInteractEntityEvent) {
@@ -26,7 +23,7 @@ class TraderListener(private val viewFrame: ViewFrame): Listener {
         if (entity.type != EntityType.WANDERING_TRADER) return
         val trader = entity as WanderingTrader
 
-        val activeTrader= TraderManager.activeTraders[trader.uniqueId] ?: return
+        val activeTrader = TraderManager.activeTraders[trader.uniqueId] ?: return
         event.isCancelled = true
 
         val player = event.player

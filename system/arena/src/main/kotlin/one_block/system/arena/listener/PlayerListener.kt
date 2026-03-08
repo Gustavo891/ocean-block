@@ -20,6 +20,8 @@ import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.event.player.PlayerBucketEmptyEvent
+import org.bukkit.event.player.PlayerBucketFillEvent
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 
@@ -151,6 +153,18 @@ class PlayerListener : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onPlayerDeath(event: PlayerDeathEvent) {
         dispatchDeathMessage(event)
+    }
+
+    @EventHandler
+    fun onBucketEmpty(event: PlayerBucketEmptyEvent) {
+        if (event.player.world.name != "spawn") return
+        event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onBucketFill(event: PlayerBucketFillEvent) {
+        if (event.player.world.name != "spawn") return
+        event.isCancelled = true
     }
 
     fun isProtected(location: Location): Boolean {

@@ -11,6 +11,8 @@ import one_block.system.auction_house.command.AuctionCommand
 import one_block.system.coin_flip.CoinFlipSystem
 import one_block.system.coin_flip.coin_flip.CoinFlipManager
 import one_block.system.coin_flip.command.CoinFlipCommand
+import one_block.system.combatlog.CombatLogSystem
+import one_block.system.combatlog.combat_player.CombatPlayerManager
 import one_block.system.craft.CraftSystem
 import one_block.system.currencies.CurrenciesSystem
 import one_block.system.fly_timer.FlyTimerSystem
@@ -23,6 +25,7 @@ import one_block.system.items.commands.ItemCommand
 import one_block.system.minions.MinionsSystem
 import one_block.system.mobdrops.MobDropsSystem
 import one_block.system.playtime.PlaytimeSystem
+import one_block.system.repair.RepairsSystem
 import one_block.system.sell.SellSystem
 import one_block.system.sell.command.SellCommand
 import one_block.system.shop.ShopSystem
@@ -34,7 +37,7 @@ import one_block.system.worlds.WorldsSystem
 import one_block.system.worlds.command.WorldCommand
 import one_block.system.xpbottle.XpBottleSystem
 import one_block.trader.TraderSystem
-import one_block.trader.commands.TraderCommand
+import one_block.trader.command.TraderCommand
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.concurrent.Executors
 
@@ -63,6 +66,7 @@ class OneBlockPlugin : JavaPlugin() {
             { ArenaSystem.init(this, viewFrame) },
             { AuctionHouseSystem.init(this, viewFrame) },
             // { ChatsSystem.init(this) },
+            { CombatLogSystem.init(this, viewFrame)},
             { CoinFlipSystem.init(this, viewFrame) },
             { CraftSystem.init(viewFrame, paperCommandManager) },
             { CurrenciesSystem.init(this, paperCommandManager) },
@@ -71,6 +75,7 @@ class OneBlockPlugin : JavaPlugin() {
             { MinionsSystem.init(viewFrame, paperCommandManager) },
             { MobDropsSystem.init(viewFrame, paperCommandManager) },
             { PlaytimeSystem.init(this) },
+            { RepairsSystem.init(this, paperCommandManager)},
             { SellSystem.init(this, viewFrame) },
             { ShopSystem.init(this, viewFrame) },
             { SpecialItemSystem.init(this) },

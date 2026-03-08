@@ -1,18 +1,17 @@
-package one_block.trader.commands
+package one_block.trader.command
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
-import co.aikar.commands.annotation.Optional
 import co.aikar.commands.annotation.Subcommand
 import one_block.system.islands.island.IslandManager
 import one_block.trader.manager.TraderManager
 import org.bukkit.entity.Player
 
 @CommandAlias("trader")
-@CommandPermission("trader.admin")
-class TraderCommand: BaseCommand() {
+@CommandPermission("screen.dev")
+class TraderCommand : BaseCommand() {
 
     @Default
     fun onDefault(sender: Player) {

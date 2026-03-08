@@ -14,4 +14,8 @@ class LoreBuilder {
     operator fun String.unaryPlus() {
         lore += MiniMessage.miniMessage().deserialize(this).decoration(TextDecoration.ITALIC, false)
     }
+
+    operator fun List<String>.unaryPlus() {
+        lore += this.map { MiniMessage.miniMessage().deserialize(it).decoration(TextDecoration.ITALIC, false) }
+    }
 }

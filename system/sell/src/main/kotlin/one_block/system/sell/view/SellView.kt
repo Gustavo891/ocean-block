@@ -115,7 +115,6 @@ class SellView : View() {
     }
 
     override fun onClick(click: SlotClickContext) {
-
         val player = click.player
         val slot = click.slot
 
@@ -181,7 +180,7 @@ class SellView : View() {
         }
 
         Currencies.deposit(player.uniqueId, "coins", totalMoney)
-        player.sendRichMessage("<green>Você recebeu <dark_green>$<white>${NumberFormatter.format(totalMoney)}}</white> <green>com suas vendas!")
+        player.sendRichMessage("<green>Você recebeu <dark_green>$<white>${NumberFormatter.format(totalMoney)}</white> <green>com suas vendas!")
         player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f)
     }
 

@@ -3,21 +3,15 @@ package one_block.trader.view
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.Context
-import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.formatter.NumberFormatter
+import one_block.libs.item_builder.addLore
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
-import one_block.libs.item_builder.*
 import one_block.system.currencies.Currencies
-import one_block.system.currencies.currency.Currency
-import one_block.system.currencies.currency.CurrencyManager
-import one_block.system.islands.island.Island
-import one_block.system.islands.island.IslandUpgrade
-import one_block.trader.models.ActiveTrader
-import one_block.trader.models.TraderItem
-import org.bukkit.inventory.ItemStack
+import one_block.trader.model.ActiveTrader
+import one_block.trader.model.TraderItem
 
-class TraderView: View() {
+class TraderView : View() {
 
     private val traderState = initialState<ActiveTrader>()
 
@@ -57,8 +51,8 @@ class TraderView: View() {
                 +"  <white>Preço: ${getSymbol(value.id)}${NumberFormatter.format(value.price)}"
                 +"  <white>Estoque: <gray>${value.stock}"
                 +""
-                if(value.hasStock()) {
-                    if(Currencies.has(player.uniqueId, currency, value.price)) {
+                if (value.hasStock()) {
+                    if (Currencies.has(player.uniqueId, currency, value.price)) {
                         +"<green>Clique para adquiri-lo."
                     } else {
                         +"<red>Você não possui dinheiro suficiente."
@@ -70,12 +64,11 @@ class TraderView: View() {
         }
     }
 
-    fun getSymbol(currency: String) : String {
-        if(currency.equals("euro", true)) return "<gold>£"
+    fun getSymbol(currency: String): String {
+        if (currency.equals("euro", true)) return "<gold>£"
         return "<dark_green>$<white>"
 
     }
-
 
 
 }

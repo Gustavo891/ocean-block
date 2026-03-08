@@ -77,8 +77,7 @@ class IslandCommand(
     }
 
     @Subcommand("remove")
-    fun onMenu(sender: Player, targetName: String) {
-
+    fun onRemove(sender: Player, targetName: String) {
         val island = IslandManager.getIslandByPlayer(sender.uniqueId)
         if (island == null) {
             sender.sendRichMessage("<red>Você não tem ilha!")
@@ -127,7 +126,6 @@ class IslandCommand(
         island.removeBlacklist(target)
         island.markDirty()
         sender.sendRichMessage("<green>O jogador <white>${target} <green>foi liberado de acessar sua ilha.")
-
     }
 
     @Subcommand("deny")

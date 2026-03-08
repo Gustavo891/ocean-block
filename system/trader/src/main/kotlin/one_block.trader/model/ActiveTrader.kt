@@ -1,6 +1,6 @@
-package one_block.trader.models
+package one_block.trader.model
 
-import java.util.UUID
+import java.util.*
 
 data class ActiveTrader(
     val islandId: UUID,

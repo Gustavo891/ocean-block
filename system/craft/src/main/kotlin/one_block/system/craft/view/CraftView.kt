@@ -81,7 +81,7 @@ class CraftView : View() {
             var remaining = requirement.amount
 
             for (item in inventoryItems) {
-                if (!item.isSimilar(requirement.item)) continue
+                if (!requirement.matches(item))  continue
 
                 remaining -= item.amount
                 if (remaining <= 0) break
@@ -94,14 +94,12 @@ class CraftView : View() {
     }
 
     fun removeAllRequirements(player: Player, recipe: ForgeRecipe) {
-
         for (requirement in recipe.requirements) {
-
             var remaining = requirement.amount
 
             for (item in player.inventory.contents) {
                 if (item == null) continue
-                if (!item.isSimilar(requirement.item)) continue
+                if (!requirement.matches(item))  continue
 
                 val remove = minOf(item.amount, remaining)
 

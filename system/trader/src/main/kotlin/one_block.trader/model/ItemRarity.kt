@@ -1,6 +1,6 @@
-package one_block.trader.models
+package one_block.trader.model
 
-enum class ItemRarity (
+enum class ItemRarity(
     val displayName: String,
     val color: String,
     val weight: Int,

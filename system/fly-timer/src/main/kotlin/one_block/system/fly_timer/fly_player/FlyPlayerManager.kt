@@ -2,6 +2,7 @@ package one_block.system.fly_timer.fly_player
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.instance.Instance
+import one_block.system.fly_timer.listener.PlayerListener.Companion.ALLOWED_GAMEMODE
 import org.bukkit.Bukkit
 import java.util.*
 import java.util.concurrent.Executors
@@ -35,11 +36,14 @@ object FlyPlayerManager {
     private fun processPlayers() {
         for (player in players.values) {
             val bukkit = Bukkit.getPlayer(player.uuid) ?: continue
-            if (player.hasTime()){
-                bukkit.sendActionBar(MiniMessage.miniMessage().deserialize("<yellow>Tempo de vôo ${player.getRemainingSeconds1()}s"))
+            if (player.hasTime()) {
+                bukkit.sendActionBar(
+                    MiniMessage.miniMessage().deserialize("<yellow>Tempo de vôo ${player.getRemainingSeconds1()}s")
+                )
                 continue
             }
 
+            if (bukkit.gameMode in ALLOWED_GAMEMODE) continue
             if (!bukkit.isFlying) continue
 
             if (!player.hasTime()) {

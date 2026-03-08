@@ -22,7 +22,7 @@ class MobDropListener : Listener {
 
         for (drop in customDrops) {
             if (Math.random() <= drop.chance) {
-                drops.add(drop.item.clone())
+                drops.add(drop.item())
             }
         }
     }

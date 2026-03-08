@@ -1,11 +1,11 @@
-package one_block.trader.tasks
+package one_block.trader.task
 
+import one_block.libs.instance.Instance
 import one_block.system.islands.island.IslandManager
-import one_block.trader.TraderSystem
 import one_block.trader.manager.TraderManager
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
 class TraderTask : BukkitRunnable() {
@@ -14,7 +14,7 @@ class TraderTask : BukkitRunnable() {
     private val islandFailedAttempts = mutableMapOf<UUID, Int>()
 
     init {
-        runTaskTimer(TraderSystem.plugin, taskInterval, taskInterval)
+        runTaskTimer(Instance, taskInterval, taskInterval)
     }
 
     override fun run() {
@@ -22,9 +22,7 @@ class TraderTask : BukkitRunnable() {
         if (onlinePlayers.isEmpty()) return
 
         val randomPlayer = onlinePlayers.random()
-
         val island = IslandManager.getIslandByPlayer(randomPlayer.uniqueId) ?: return
-
         if (TraderManager.hasTrader(island.uuid)) return
 
         val failedAttempts = islandFailedAttempts.getOrDefault(island.uuid, 0)
@@ -32,7 +30,6 @@ class TraderTask : BukkitRunnable() {
         val rolled = ThreadLocalRandom.current().nextDouble(100.0)
 
         if (rolled < chance) {
-            println("executed")
             TraderManager.spawnTrader(island)
             islandFailedAttempts[island.uuid] = 0
         } else {

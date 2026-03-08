@@ -34,7 +34,7 @@ enum class IslandUpgrade(
     },
     CropGrowth("Plantação",
         "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTY3MGJhNmNiY2Q2MGNjYTI5MDZiMGM0YWJiNzE2ODIwODUxZDVjMjhhNDJlYmY5NTQ3YTE1ZTc2MTE3NjhkMSJ9fX0=",
-        1,
+        0,
         listOf("Aumente a velocidade que as", "plantações crescem.")) {
         override fun execute(player: Player, island: Island) {
         }
@@ -65,7 +65,7 @@ enum class IslandUpgrade(
             }
 
             CropGrowth -> when (level) {
-                   0 -> 500000.0
+                   0 -> 5000000.0
                 /*    1 -> 20_000.0
                     2 -> 30_000.0
                     3 -> 40_000.0
