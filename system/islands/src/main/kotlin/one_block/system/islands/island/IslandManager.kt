@@ -36,6 +36,7 @@ object IslandManager {
         ScheduledExecutor.scheduleAtFixedRate({ saveDirtyIslands() }, 30, 30, TimeUnit.SECONDS)
     }
 
+
    /*fun createIsland(uuid: UUID, name: String): Island {
         val index = islandsById.size
         val grid = Position.Companion.fromIndex(index)

@@ -115,6 +115,10 @@ data class Island(
         return trustedNames.add(playerName.lowercase())
     }
 
+    fun getMaxMembers(size: Int): Int {
+        return (size * 3)
+    }
+
     fun isMember(playerName: String): Boolean {
         return playerName.lowercase() in members.keys
     }
@@ -196,6 +200,17 @@ data class Island(
         borderInstance.size = borderAmount.toDouble()
         borderInstance.warningDistance = -1
         return borderInstance
+    }
+
+    fun getIslandOnlinePlayers(): List<Player> {
+        val memberPlayers = IslandManager.playerIsland
+            .filter { (_, islandId) -> islandId == uuid }
+            .mapNotNull { (playerUuid, _) -> Bukkit.getPlayer(playerUuid) }
+            .filter { it.isOnline }
+
+        val owner = Bukkit.getPlayer(ownerUuid)
+
+        return (memberPlayers + listOfNotNull(owner)).distinctBy { it.uniqueId }
     }
 
     fun teleportTo(player: Player) {

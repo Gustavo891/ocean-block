@@ -22,7 +22,6 @@ object CurrencyManager {
         }, 30, 30, TimeUnit.SECONDS)
     }
 
-
     fun find(id: String) = currencies[id.lowercase()]
 
     fun load(commandManager: PaperCommandManager) {

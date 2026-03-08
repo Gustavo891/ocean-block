@@ -33,6 +33,8 @@ import one_block.system.tops.command.TopsCommand
 import one_block.system.worlds.WorldsSystem
 import one_block.system.worlds.command.WorldCommand
 import one_block.system.xpbottle.XpBottleSystem
+import one_block.trader.TraderSystem
+import one_block.trader.commands.TraderCommand
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.concurrent.Executors
 
@@ -75,7 +77,8 @@ class OneBlockPlugin : JavaPlugin() {
             { StarterKitSystem.init(this) },
             { TopsSystem.init(this, viewFrame) },
             { WorldsSystem.init(this) },
-            { XpBottleSystem.init(this, paperCommandManager) }
+            { XpBottleSystem.init(this, paperCommandManager) },
+            { TraderSystem.init(this, viewFrame) },
         )
 
         systems.forEach { it.invoke() }
@@ -86,6 +89,7 @@ class OneBlockPlugin : JavaPlugin() {
             registerCommand(AuctionCommand(viewFrame))
             registerCommand(CoinFlipCommand(viewFrame))
             registerCommand(OneBlockCommand())
+            registerCommand(TraderCommand())
             registerCommand(IslandCommand(viewFrame))
             registerCommand(SellCommand(viewFrame))
             registerCommand(ShopCommand(viewFrame))

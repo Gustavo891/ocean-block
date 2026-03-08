@@ -15,6 +15,5 @@ dependencies {
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.itemBuilder)
     compileOnly(projects.lib.translation)
-
     compileOnly(projects.system.mobDrops)
 }

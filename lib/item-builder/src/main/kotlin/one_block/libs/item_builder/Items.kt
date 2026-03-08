@@ -17,7 +17,7 @@ object Items {
     private fun createEmptyItem() = itemStack(Material.PAPER) {
         meta<ItemMeta> {
             itemModel = NamespacedKey("oneblock", "blank")
-            isHideTooltip = false
+            isHideTooltip = true
         }
     }
 }

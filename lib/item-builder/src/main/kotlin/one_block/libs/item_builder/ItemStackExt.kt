@@ -1,5 +1,6 @@
 package one_block.libs.item_builder
 
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
@@ -41,6 +42,10 @@ inline fun ItemMeta.setLore(builder: LoreBuilder.() -> Unit) {
 
 fun ItemMeta.name(name: String) {
     customName(MiniMessage.miniMessage().deserialize(name).decoration(TextDecoration.ITALIC, false))
+}
+
+fun ItemMeta.name(name: Component) {
+    customName(name)
 }
 
 inline fun ItemMeta.addLore(builder: LoreBuilder.() -> Unit) {
