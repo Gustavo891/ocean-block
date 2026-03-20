@@ -2,6 +2,7 @@ package one_block.system.sell.listener
 
 import one_block.libs.formatter.NumberFormatter
 import one_block.system.currencies.Currencies
+import one_block.system.islands.island.IslandManager
 import one_block.system.sell.Sell
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
@@ -20,6 +21,12 @@ class PlayerListener : Listener {
         val usesByItem = Sell.getUsesByItem(item) ?: return
         val sellContainer = Sell.sellContainer(event.player, clickedBlock)
         if (sellContainer == 0.0) return
+
+        val island = IslandManager.getIslandAt(player.location) ?: return
+        if(!island.isTrustAllowed(island, player)) {
+            event.isCancelled = true
+            return
+        }
 
         Sell.updateUsesByItem(item, usesByItem - 1)
         Currencies.deposit(player.uniqueId, "coins", sellContainer)

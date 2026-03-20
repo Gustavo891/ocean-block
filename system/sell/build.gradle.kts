@@ -12,4 +12,5 @@ dependencies {
     compileOnly(projects.lib.itemBuilder)
 
     compileOnly(projects.system.currencies)
+    compileOnly(projects.system.islands)
 }

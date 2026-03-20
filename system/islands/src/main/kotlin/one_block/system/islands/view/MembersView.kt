@@ -60,7 +60,7 @@ class MembersView : View() {
                     itemModel = NamespacedKey("oneblock", "blank")
                     name("<green>Adicionar Membro")
                     addLore {
-                        +"<white>Limite: <gray>${island.members.count()}/${island.getMaxMembers(island.getUpgradeLevel(IslandUpgrade.Members, 1))}"
+                        +"<white>Limite: <gray>${island.members.count()}/${((island.getUpgradeLevel(IslandUpgrade.Members) + 1) * 3)}"
                     }
                 }
             } }

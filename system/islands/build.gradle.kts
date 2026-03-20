@@ -4,8 +4,6 @@ plugins {
 
 dependencies {
     compileOnly(libs.placeholder)
-
-
     compileOnly(libs.mongodb)
 
     compileOnly(projects.lib.connection)
@@ -21,4 +19,5 @@ dependencies {
     compileOnly("io.github.toxicity188:BetterCommand:1.4.3")
     compileOnly("de.rapha149.signgui:signgui:2.5.4")
 
+    compileOnly(fileTree("$rootDir/.dep"))
 }

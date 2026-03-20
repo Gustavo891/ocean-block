@@ -26,6 +26,7 @@ class PlayerListener(
     fun onEntityDamageByEntity(event: EntityDamageByEntityEvent) {
         val victim = event.entity
         if (victim !is Player) return
+        if (victim.world.name == "world") return
 
         val attacker = getPlayerAttacker(event) ?: return
         if (attacker == victim) return

@@ -29,7 +29,6 @@ class IslandCommand(
 
     @Default
     fun onDefault(sender: Player, @Optional targetName: String?) {
-
         if (targetName != null) {
             val playerIsland = IslandManager.getIslandByOwnerName(targetName.lowercase())
             if (playerIsland == null) {
@@ -130,7 +129,6 @@ class IslandCommand(
 
     @Subcommand("deny")
     fun blackList(sender: Player, target: OnlinePlayer) {
-
         val island = IslandManager.getIslandByPlayer(sender.uniqueId)
         if (island == null) {
             sender.sendRichMessage("<red>Você não tem ilha!")
@@ -310,7 +308,7 @@ class IslandCommand(
             return
         }
 
-        if (island.members.size >= (island.getUpgradeLevel(IslandUpgrade.Members, 1) * 3)) {
+        if (island.members.size >= ((island.getUpgradeLevel(IslandUpgrade.Members) + 1) * 3)) {
             sender.sendRichMessage("<red>Sua ilha está lotada de membros.")
             return
         }
@@ -322,5 +320,4 @@ class IslandCommand(
 
         sender.sendRichMessage("<green>${target.name} foi adicionado como membro!")
     }
-
 }

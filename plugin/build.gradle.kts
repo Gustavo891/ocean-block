@@ -37,7 +37,7 @@ bukkit {
     apiVersion = "1.21"
     main = "io.github.badnotice.one_block.OneBlockPlugin"
     author = "badoff"
-    depend = listOf("PlaceholderAPI", "BetterHud")
+    depend = listOf("PlaceholderAPI", "BetterHud", "SkinsRestorer")
 }
 
 tasks.named<ShadowJar>("shadowJar") {
