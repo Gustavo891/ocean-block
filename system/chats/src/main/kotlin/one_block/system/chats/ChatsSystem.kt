@@ -10,6 +10,6 @@ object ChatsSystem {
     }
 
     private fun setupListeners(plugin: JavaPlugin) = with(plugin.server.pluginManager) {
-        registerEvents(PlayerListener(), plugin)
+     //   registerEvents(PlayerListener(), plugin)
     }
 }
