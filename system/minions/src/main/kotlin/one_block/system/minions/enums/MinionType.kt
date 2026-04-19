@@ -1,158 +1,65 @@
 package one_block.system.minions.enums
 
-import one_block.libs.item_builder.itemStack
-import one_block.libs.item_builder.meta
+import one_block.system.minions.behavior.FarmerBehavior
+import one_block.system.minions.behavior.MinerBehavior
+import one_block.system.minions.behavior.MinionBehavior
+import one_block.system.minions.behavior.TerminatorBehavior
 import one_block.system.minions.placed_minion.PlacedMinion
-import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.block.data.Ageable
 import org.bukkit.entity.ArmorStand
-import org.bukkit.entity.Mob
-import org.bukkit.inventory.meta.LeatherArmorMeta
-import org.bukkit.inventory.meta.SkullMeta
+import java.util.UUID
 
-enum class MinionType {
-    Terminator {
-        override fun spawn(location: Location): ArmorStand {
-            return spawnArmorStand(location) {
-                setHelmet(itemStack(Material.NETHERITE_HELMET) { })
-                setChestplate(itemStack(Material.NETHERITE_CHESTPLATE) { })
-                setLeggings(itemStack(Material.NETHERITE_LEGGINGS) { })
-                setBoots(itemStack(Material.NETHERITE_BOOTS) { })
-            }
-        }
+enum class MinionType(
+    val prettyName: String,
+    val headValue: String,
+    val desc: List<String> = emptyList(),
+    val acceptedToolMaterials: Set<Material>,
+    val defaultTool: Material,
+    val toolName: String,
+    private val behavior: MinionBehavior,
+) {
 
-        override fun executeAction(placedMinion: PlacedMinion) {
-            val target = placedMinion.location.toBukkit()!!
-                .getNearbyLivingEntities(5.0)
-                .filterIsInstance<Mob>()
-                .firstOrNull()
+    Miner(
+        prettyName = "Minerador",
+        headValue = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWExYjUzODk3MTdhNjFhMGU5NDIxYzk3OTg4NDA1ZDVhMzM2YTVhYzFlZThlMGYyZjM1Njc4ZDFkNjFmNDU1MCJ9fX0=",
+        desc = listOf("Minera o bloco abaixo dele", "e dropa os itens no chão."),
+        acceptedToolMaterials = setOf(
+            Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE,
+            Material.GOLDEN_PICKAXE, Material.DIAMOND_PICKAXE, Material.NETHERITE_PICKAXE,
+        ),
+        defaultTool = Material.DIAMOND_PICKAXE,
+        toolName = "Picareta",
+        behavior = MinerBehavior(),
+    ),
 
-            target?.damage(4.0)
-        }
-    },
-    Farmer {
-        override fun spawn(location: Location): ArmorStand {
-            return spawnArmorStand(location) {
-                setHelmet(itemStack(Material.HAY_BLOCK) {
-                })
+    Farmer(
+        prettyName = "Fazendeiro",
+        headValue = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2E4YWIyMjY3YWU0NDNlODNiMDVlM2E4ZDY3YjhiNzYwYWRmYWFkMzM1YzkwNDczMzhjMGUxNzc0YTY1YzM3MiJ9fX0=",
+        acceptedToolMaterials = setOf(
+            Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE,
+            Material.GOLDEN_HOE, Material.DIAMOND_HOE, Material.NETHERITE_HOE,
+        ),
+        defaultTool = Material.DIAMOND_HOE,
+        toolName = "Enxada",
+        behavior = FarmerBehavior(),
+    ),
 
-                setChestplate(itemStack(Material.LEATHER_CHESTPLATE) {
-                    meta<LeatherArmorMeta> {
-                        setColor(Color.BLUE)
-                    }
-                })
+    Terminator(
+        prettyName = "Exterminador",
+        headValue = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGQyYmQ5ZGQwYWIwNWRmM2Q4MjIyODJhNjRmZjZmMGMyZTJhMGExYTNhMWY2YzUzZmZmMDBhOTU5MzEzZTFjOCJ9fX0=",
+        acceptedToolMaterials = setOf(
+            Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD,
+            Material.GOLDEN_SWORD, Material.DIAMOND_SWORD, Material.NETHERITE_SWORD,
+        ),
+        defaultTool = Material.DIAMOND_SWORD,
+        toolName = "Espada",
+        behavior = TerminatorBehavior(),
+    );
 
-                setLeggings(itemStack(Material.LEATHER_LEGGINGS) {
-                    meta<LeatherArmorMeta> {
-                        setColor(Color.BLUE)
-                    }
-                })
+    fun spawn(placedMinion: PlacedMinion, location: Location) = behavior.spawn(placedMinion, location)
+    fun tick(placedMinion: PlacedMinion): Boolean = behavior.tick(placedMinion)
+    fun onUnregister(uuid: UUID) = behavior.onUnregister(uuid)
+    fun updateDisplay(placedMinion: PlacedMinion) = behavior.updateDisplay(placedMinion)
 
-                setBoots(itemStack(Material.LEATHER_BOOTS) {
-                    meta<LeatherArmorMeta> {
-                        setColor(Color.BLUE)
-                    }
-                })
-            }
-        }
-
-        override fun executeAction(placedMinion: PlacedMinion) {
-
-            val center = placedMinion.location.toBukkit() ?: return
-            val world = center.world
-
-            val farmY = center.blockY - 1
-
-            for (x in -4..4) {
-                for (z in -4..4) {
-
-                    val block = world.getBlockAt(
-                        center.blockX + x,
-                        farmY,
-                        center.blockZ + z
-                    )
-
-                    when (block.type) {
-
-                        Material.SUGAR_CANE,
-                        Material.BAMBOO,
-                        Material.CACTUS -> {
-
-                            val above = block.location.clone().add(0.0, 1.0, 0.0).block
-                            if (above.type == block.type) {
-
-                                var current = above
-
-                                while (current.type == block.type) {
-
-                                    val drops = current.getDrops()
-                                    current.type = Material.AIR
-
-                                    drops.forEach {
-                                        world.dropItemNaturally(current.location, it)
-                                    }
-
-                                    current = current.location.clone()
-                                        .add(0.0, 1.0, 0.0).block
-                                }
-                            }
-                        }
-
-                        Material.MELON,
-                        Material.PUMPKIN -> {
-
-                            val drops = block.getDrops()
-                            block.type = Material.AIR
-
-                            drops.forEach {
-                                world.dropItemNaturally(block.location, it)
-                            }
-                        }
-
-                        Material.WHEAT,
-                        Material.CARROTS,
-                        Material.POTATOES,
-                        Material.BEETROOTS,
-                        Material.NETHER_WART,
-                        Material.COCOA,
-                        Material.SWEET_BERRY_BUSH -> {
-
-                            val ageable = block.blockData as? Ageable ?: continue
-
-                            if (ageable.age == ageable.maximumAge) {
-
-                                val drops = block.getDrops()
-
-                                drops.forEach {
-                                    world.dropItemNaturally(block.location, it)
-                                }
-
-                                block.type = Material.AIR
-                            }
-                        }
-
-                        else -> {}
-                    }
-                }
-            }
-        }
-    };
-
-    abstract fun spawn(location: Location): ArmorStand
-
-    abstract fun executeAction(placedMinion: PlacedMinion)
-
-    fun spawnArmorStand(location: Location, block: ArmorStand.() -> Unit): ArmorStand {
-        return location.world.spawn(location, ArmorStand::class.java).apply {
-            isInvulnerable = true
-            setGravity(false)
-            setMarker(false)
-            setSmall(true)
-            setArms(true)
-
-            block(this)
-        }
-    }
 }

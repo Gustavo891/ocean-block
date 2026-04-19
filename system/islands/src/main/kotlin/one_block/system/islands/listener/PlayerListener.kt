@@ -1,13 +1,11 @@
 package one_block.system.islands.listener
 
-import kr.toxicity.hud.api.bukkit.event.HudPlayerJoinEvent
 import net.skinsrestorer.api.SkinsRestorerProvider
 import net.skinsrestorer.api.event.SkinApplyEvent
 import one_block.libs.instance.Instance
 import one_block.system.islands.IslandsSystem
 import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.runNextTask
-import one_block.system.islands.hud.HudManager
 import one_block.system.islands.island.IslandManager
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -22,6 +20,7 @@ import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.spigotmc.event.player.PlayerSpawnLocationEvent
 
+@Suppress("DEPRECATION", "removal")
 class PlayerListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -41,17 +40,11 @@ class PlayerListener : Listener {
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.joinMessage(null);
         handleIslandEntry(event.player, event.player.location)
-        Bukkit.getScheduler().runTaskLater(IslandsSystem.plugin, Runnable {
-            HudManager.updatePlayerHud(event.player)
-        }, 1L)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onTeleport(event: PlayerTeleportEvent) {
         handleIslandEntry(event.player, event.to)
-        Bukkit.getScheduler().runTaskLater(IslandsSystem.plugin, Runnable {
-            HudManager.updatePlayerHud(event.player)
-        }, 1L)
     }
 
     @EventHandler
@@ -68,10 +61,6 @@ class PlayerListener : Listener {
         runNextTask(2L) { islandAt.onJoin(player) }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    fun test(event: HudPlayerJoinEvent) {
-        HudManager.updatePlayerHud(event.player)
-    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onBlockBreak(event: BlockBreakEvent) {
@@ -95,7 +84,8 @@ class PlayerListener : Listener {
             // block.breakNaturally(player.inventory.itemInMainHand)
         }
 
-        island.processBlockBreak(player, block)
+        player.damageItemStack(player.inventory.itemInMainHand, 1)
+        island.processBlockBreak(block)
         BossbarManager.upgradeBossBar(island)
         IslandManager.markDirty(island.uuid)
     }
@@ -105,6 +95,7 @@ class PlayerListener : Listener {
             val islandAt = IslandManager.getIslandAt(location) ?: return@runNextTask
             IslandManager.playerIsland[player.uniqueId] = islandAt.uuid
             islandAt.onJoin(player)
+            BossbarManager.updatePlayerBar(player, islandAt)
         }
     }
 }

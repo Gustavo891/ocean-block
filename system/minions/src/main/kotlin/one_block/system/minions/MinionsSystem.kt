@@ -13,6 +13,8 @@ import one_block.system.minions.command.MinionCommand
 import one_block.system.minions.enums.MinionType
 import one_block.system.minions.listener.PlayerListener
 import one_block.system.minions.placed_minion.PlacedMinionManager
+import one_block.system.minions.view.MinionView
+import one_block.system.minions.view.UpgradesView
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -21,8 +23,11 @@ object MinionsSystem {
     fun init(viewFrame: ViewFrame, paperCommandManager: PaperCommandManager) {
         PlacedMinionManager.onInit()
 
+        viewFrame.with(MinionView())
+        viewFrame.with(UpgradesView())
+
         setupCommands(viewFrame, paperCommandManager)
-        setupListeners()
+        setupListeners(viewFrame)
         setupRecipes()
     }
 
@@ -32,8 +37,8 @@ object MinionsSystem {
         paperCommandManager.registerCommand(FragmentCommand())
     }
 
-    private fun setupListeners() = with(Instance.server.pluginManager){
-        registerEvents(PlayerListener(), Instance)
+    private fun setupListeners(viewFrame: ViewFrame) = with(Instance.server.pluginManager){
+		registerEvents(PlayerListener(viewFrame), Instance)
     }
 
     private fun setupRecipes() {
@@ -48,6 +53,29 @@ object MinionsSystem {
             )
         )
 
-     //   Crafts.register(farmerRecipe)
+        val minerRecipe = ForgeRecipe(
+            id = "miner_minion",
+            prettyName = "Miner",
+            icon = itemStack(Material.DIAMOND_PICKAXE) { },
+            result = Minions.createMinionItem(MinionType.Miner),
+            requirements = listOf(
+                ForgeRequirement("Fragmento I", Minions.machinePart(), 10),
+                ForgeRequirement("Picareta de diamante", ItemStack(Material.DIAMOND_PICKAXE), 1)
+            )
+        )
+
+        Crafts.register(ForgeRecipe(
+            id = "craft_minion",
+            prettyName = "Minion de Mineração" ,
+            icon = Minions.createMinionItem(MinionType.Miner),
+            result = Minions.createMinionItem(MinionType.Miner),
+            requirements = listOf(
+                ForgeRequirement("Barra de Netherite", itemStack(Material.NETHERITE_INGOT) {}, 9),
+                ForgeRequirement("Núcleo Pesado", itemStack(Material.HEAVY_CORE) {}, 1),
+                ForgeRequirement("Fragmento de Minion I", Minions.machinePart(), 8)
+            )
+
+        ))
+
     }
 }

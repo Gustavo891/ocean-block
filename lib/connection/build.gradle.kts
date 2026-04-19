@@ -2,7 +2,8 @@ plugins {
     id("paper-common")
 }
 
-val isLocal = gradle.startParameter.taskNames.any { it.contains("local", ignoreCase = true) }
+val envProperty = findProperty("env")?.toString()
+val isLocal = envProperty == "local" || gradle.startParameter.taskNames.any { it.contains("local", ignoreCase = true) }
 val env = if (isLocal) "local" else "production"
 
 sourceSets {

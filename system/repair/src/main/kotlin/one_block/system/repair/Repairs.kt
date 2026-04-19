@@ -15,7 +15,7 @@ object Repairs {
     private val FRAGMENT_KEY = NamespacedKey("repair", "fragment")
     private val REPAIR_KEY = NamespacedKey("repair", "repair")
 
-    fun createRepairItem(repair: Repair) = itemStack(Material.PAPER) {
+    fun createRepairItem(repair: Repair) = itemStack(Material.FIREWORK_STAR) {
         meta {
             name("<yellow>Reparo <b>${repair.name}</b>")
 
@@ -34,7 +34,7 @@ object Repairs {
                 string(UUID_KEY, UUID.randomUUID().toString())
             }
 
-            itemModel = NamespacedKey("oneblock", "repair_1")
+            //itemModel = NamespacedKey("oneblock", "repair_1")
         }
     }
 

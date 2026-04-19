@@ -1,6 +1,6 @@
 package one_block.system.auction_house.auction
 
-import one_block.system.auction_house.serializer.ItemSerializer
+import one_block.libs.item_builder.ItemSerializer
 import java.util.*
 
 data class Auction(

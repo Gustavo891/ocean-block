@@ -15,6 +15,8 @@ import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
 import one_block.libs.item_builder.name
 import one_block.system.currencies.Currencies
+import one_block.system.sell.SellSystem
+import one_block.system.sell.listener.SellEvent
 import one_block.system.sell.manager.SellManager
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -161,6 +163,9 @@ class SellView : View() {
             } else {
                 totalMoney += price * item.amount
             }
+
+            val sellEvent = SellEvent(player, item.clone(), totalMoney)
+            SellSystem.plugin.server.pluginManager.callEvent(sellEvent)
 
             viewInventory.setItem(slot, null)
         }

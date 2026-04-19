@@ -11,6 +11,7 @@ dependencies {
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.itemBuilder)
+    compileOnly(projects.system.islands)
 
     compileOnly(projects.system.craft)
 

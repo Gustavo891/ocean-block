@@ -136,6 +136,7 @@ class UpgradeView : View() {
                 )
             }
         }
+
     }
 
     private fun handleUpgradeClick(ctx: SlotClickContext, value: IslandUpgrade) {

@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
     id("paper-plugin")
@@ -8,11 +9,11 @@ val isLocal = gradle.startParameter.taskNames.any { it.contains("local", ignoreC
 
 dependencies {
     compileOnly(libs.placeholder)
-    compileOnly("com.redescreen:sdk:1.0")
-    
+
     if (isLocal) {
         implementation(libs.mongodb)
     } else {
+        compileOnly("com.redescreen:sdk:1.0")
         compileOnly(libs.mongodb)
     }
 
@@ -37,7 +38,8 @@ bukkit {
     apiVersion = "1.21"
     main = "io.github.badnotice.one_block.OneBlockPlugin"
     author = "badoff"
-    depend = listOf("PlaceholderAPI", "BetterHud", "SkinsRestorer")
+    load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
+    depend = listOf("PlaceholderAPI", "SkinsRestorer")
 }
 
 tasks.named<ShadowJar>("shadowJar") {

@@ -9,7 +9,7 @@ import me.devnatan.inventoryframework.ViewFrame
 import one_block.libs.formatter.ext.format
 import one_block.system.auction_house.auction.Auction
 import one_block.system.auction_house.auction.AuctionManager
-import one_block.system.auction_house.serializer.ItemSerializer
+import one_block.libs.item_builder.ItemSerializer
 import one_block.system.auction_house.view.AuctionView
 import org.bukkit.entity.Player
 import java.util.*

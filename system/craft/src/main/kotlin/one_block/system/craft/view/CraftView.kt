@@ -4,10 +4,12 @@ import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.Context
 import me.devnatan.inventoryframework.context.SlotClickContext
+import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.item_builder.addLore
 import one_block.libs.item_builder.itemStack
 import one_block.libs.item_builder.meta
 import one_block.libs.item_builder.name
+import one_block.system.craft.events.CustomCraftEvent
 import one_block.system.craft.forge.ForgeRecipe
 import one_block.system.craft.forge.ForgeRecipeManager
 import one_block.system.craft.forge.ForgeRequirement
@@ -38,7 +40,12 @@ class CraftView : View() {
         val colorName = if (allRequirements) "<#10FF47>" else "<#FF1E20>"
 
         meta {
-            name("$colorName${value.prettyName}")
+            name(
+                if (value.icon.effectiveName().equals(value.icon.type.name))
+                    MiniMessage.miniMessage().deserialize("$colorName${value.prettyName}")
+                else
+                    value.icon.effectiveName()
+            )
 
             addLore {
                 +""
@@ -68,7 +75,10 @@ class CraftView : View() {
         removeAllRequirements(player, forgeRecipe)
         player.inventory.addItem(forgeRecipe.result.clone())
 
-        player.sendMessage("<green>Minion fabricado com sucesso!")
+        val customCraftEvent = CustomCraftEvent(player, forgeRecipe.id, forgeRecipe.result.amount)
+        player.server.pluginManager.callEvent(customCraftEvent)
+
+        player.sendMessage("<white>${forgeRecipe.prettyName} <green>fabricado com sucesso!")
         pagination.get(ctx).forceUpdate()
     }
 

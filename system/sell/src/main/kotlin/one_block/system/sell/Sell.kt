@@ -3,6 +3,7 @@ package one_block.system.sell
 import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.instance.Instance
 import one_block.system.currencies.Currencies
+import one_block.system.sell.listener.SellEvent
 import one_block.system.sell.manager.SellManager
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -53,16 +54,6 @@ object Sell {
         if (price == 0.0) return 0.0
         val total = price * itemStack.amount
 
-        Currencies.deposit(player.uniqueId, "coins", total)
-        // manda o coins pro amigo
-        return total
-    }
-
-    fun sellHand(player: Player): Double {
-        val itemInMainHand = player.inventory.itemInMainHand
-        val total = sellItem(player, itemInMainHand)
-        if (total > 0) itemInMainHand.amount = 0
-
         return total
     }
 
@@ -74,11 +65,18 @@ object Sell {
         var totalMoney = 0.0
 
         inventory.contents.filterNotNull().forEach {
-            val sellItem = sellItem(player, it)
-            if (sellItem == 0.0) return@forEach
+            val sellPrice = sellItem(player, it)
+            if (sellPrice == 0.0) return@forEach
 
-            totalMoney += sellItem
-            inventory.removeItem(ItemStack(it.type, it.amount))
+            val sellEvent = SellEvent(player, it.clone(), sellPrice)
+            SellSystem.plugin.server.pluginManager.callEvent(sellEvent)
+
+            totalMoney += sellPrice
+            it.amount = 0
+        }
+
+        if (totalMoney > 0.0) {
+            Currencies.deposit(player.uniqueId, "coins", totalMoney)
         }
 
         return totalMoney

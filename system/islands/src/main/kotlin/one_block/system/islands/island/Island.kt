@@ -6,7 +6,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import one_block.libs.coordinate.SimpleLocation
 import one_block.system.islands.bossbar.BossbarManager
 import one_block.system.islands.ext.getRandomByWeight
-import one_block.system.islands.hud.HudManager
 import one_block.system.islands.phase.Phase
 import one_block.system.islands.phase.PhaseManager
 import one_block.system.islands.position.Position
@@ -80,21 +79,17 @@ data class Island(
         return blackList!!.remove(playerName.lowercase())
     }
 
-    fun processBlockBreak(player: Player, block: Block) {
+    fun processBlockBreak(block: Block) {
         val phase = getCurrentPhase() ?: return
-
         handleMobSpawn(phase, block)
         handleMonsterParty(phase, block)
-
         val nextMaterial = phase.blockPool.getRandomByWeight() ?: Material.GRASS_BLOCK
         block.type = nextMaterial
-        player.damageItemStack(player.inventory.itemInMainHand, 1)
-
         grid++
-        if (grid >= phase.blocksToNextPhase) advancePhase(player)
+        if (grid >= phase.blocksToNextPhase) advancePhase()
     }
 
-    fun advancePhase(player: Player) {
+    fun advancePhase() {
         val currentPhase = getCurrentPhase() ?: return
         val nextPhase = PhaseManager.getNextPhase(currentPhase.priority)
 

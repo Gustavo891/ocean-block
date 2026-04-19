@@ -26,6 +26,7 @@ include(
     ":system:fly-timer:",
     ":system:islands:",
     ":system:trader",
+    ":system:battle-pass:",
     ":system:minions:",
     ":system:mob-drops:",
     ":system:offhand-pets:",
