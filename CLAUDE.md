@@ -1,15 +1,17 @@
 # CLAUDE.md
 
+OceanBlock is a fork of one-block; its design lives in `docs/superpowers/specs/2026-10-18-oceanblock-design.md`. Rename rule: Kotlin packages are `ocean_block.*`, but Textura keeps `one_block.textura` (and every `one_block.textura.*` import) and the literals `"oneblock"`, `oneblock:gui`, `oneblock.admin` and `oneblock_level` are preserved.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Build & Run
 
-This is a Gradle multi-module monorepo (Kotlin/JVM 2.3.0, JDK 25 toolchain, Paper 26.3). The shippable artifact is the `one-block` Paper plugin, assembled by shading many internal modules into one jar.
+This is a Gradle multi-module monorepo (Kotlin/JVM 2.3.0, JDK 25 toolchain, Paper 26.3). The shippable artifact is the `ocean-block` Paper plugin, assembled by shading many internal modules into one jar.
 
 **Primary build+deploy command** (builds the shaded jar and copies it into `server/plugins/`):
 
 ```bash
-./gradlew :plugins:oneblock:plugin:localDeploy
+./gradlew :plugins:oceanblock:plugin:localDeploy
 ```
 
 - `localJar` / `localDeploy` come from the `paper-plugin` convention. `productionJar` builds the prod jar into `build/libs` only.
@@ -18,7 +20,7 @@ This is a Gradle multi-module monorepo (Kotlin/JVM 2.3.0, JDK 25 toolchain, Pape
 
 ### The `isLocal` mechanism — read before running any Gradle task
 
-The build mode is derived from whether **any requested task name contains the substring `local`** (case-insensitive), via `gradle.startParameter.taskNames`. This flag (`isLocal`) changes dependencies and source sets in `plugins/oneblock/plugin` and `lib/connection`:
+The build mode is derived from whether **any requested task name contains the substring `local`** (case-insensitive), via `gradle.startParameter.taskNames`. This flag (`isLocal`) changes dependencies and source sets in `plugins/oceanblock/plugin` and `lib/connection`:
 
 | | local mode (task name has "local") | production mode (anything else) |
 |---|---|---|
@@ -28,14 +30,14 @@ The build mode is derived from whether **any requested task name contains the su
 
 `lib:connection` additionally accepts `-Penv=local` as an override, so `./gradlew :lib:connection:build -Penv=local` works; the plugin module honors task names only.
 
-Consequence: a plain `./gradlew build`, `test`, or `:some:module:compileKotlin` runs in **production mode** and fails resolving `com.redescreen:sdk:1.0`. Always drive local work through a `local*` task. To compile everything locally, `:plugins:oneblock:plugin:localDeploy` transitively builds all modules.
+Consequence: a plain `./gradlew build`, `test`, or `:some:module:compileKotlin` runs in **production mode** and fails resolving `com.redescreen:sdk:1.0`. Always drive local work through a `local*` task. To compile everything locally, `:plugins:oceanblock:plugin:localDeploy` transitively builds all modules.
 
 ### Local dependency jars (not on any repo)
 
 Three paths are wired as file dependencies and must exist on disk or the build fails with unresolved symbols rather than a dependency error:
 
 - `jars/inventory-framework-paper-3.7.1.jar` — inventory-framework, `compileOnly` for every module via `paper-common`, `implementation` (shaded) in both plugin modules. The version catalog entry `inventoryFramework` is unused.
-- `jars/ModelEngine-4.1.0.jar` — ModelEngine (`com.ticxo.modelengine.api`), `compileOnly` by `system/minions` only. A runtime `softDepend`, so `MinionModel.isAvailable()` gates every call and minions fall back to armor-stand cosmetics without it.
+- `jars/ModelEngine-4.1.0.jar` — ModelEngine (`com.ticxo.modelengine.api`), `compileOnly` by `system/spawn` only (NPC models). A runtime `softDepend`, so `NpcModel.isAvailable()` gates every call and NPCs fall back to a non-model presentation without it.
 - `.dep/` — a `fileTree` of server-only APIs (currently `SkinsRestorer.jar`), consumed `compileOnly` by `system/islands`.
 
 `jars/packetevents-spigot-2.13.0.jar` is **not** one of them — packetevents resolves from Maven (`repo.codemc.io`) via the `packetevents-spigot` catalog entry. That jar is just the copy you drop into `server/plugins/`; it is a runtime `softDepend`, so the build succeeds without the server plugin but `lib:toast` silently no-ops (logs once) if PacketEvents is missing at runtime.
@@ -45,7 +47,7 @@ Three paths are wired as file dependencies and must exist on disk or the build f
 Tests use **Kotest 5.9 on the JUnit 5 platform**. `paper-common` does *not* wire testing — a module that wants tests must add `testImplementation(libs.kotest.runner)` + `libs.kotest.assertions` (plus `libs.paperApi` when the code under test touches Bukkit types) and `tasks.test { useJUnitPlatform() }` to its own `build.gradle.kts`. Only `plugins/textura`, `system/custom-items`, and `system/islands` have tests today. Tests live under `src/test/kotlin`.
 
 ```bash
-./gradlew :plugins:oneblock:system:custom-items:test
+./gradlew :plugins:oceanblock:system:custom-items:test
 ./gradlew :plugins:textura:localTest
 ./gradlew :plugins:textura:test --tests "*CooldownStore*"
 ```
@@ -61,23 +63,23 @@ Tests use **Kotest 5.9 on the JUnit 5 platform**. `paper-common` does *not* wire
 
 ### Two shippable plugins vs. shaded modules
 
-Only `:plugins:oneblock:plugin` and `:plugins:textura` are standalone plugin jars. **All `:lib:*` and `:plugins:oneblock:system:*` modules are shaded into the oneblock jar** — the plugin module `implementation`s every `:plugins:oneblock:system:*` and `:lib:*` and merges them at `shadowJar` time. `textura` is a separate jar declared in oneblock's `depend` list (`PlaceholderAPI`, `SkinsRestorer`, `Textura`), not shaded — systems that need it (e.g. `islands`) take `compileOnly(projects.plugins.textura)` and resolve it at runtime from the server.
+Only `:plugins:oceanblock:plugin` and `:plugins:textura` are standalone plugin jars. **All `:lib:*` and `:plugins:oceanblock:system:*` modules are shaded into the ocean-block jar** — the plugin module `implementation`s every `:plugins:oceanblock:system:*` and `:lib:*` and merges them at `shadowJar` time. `textura` is a separate jar declared in ocean-block's `depend` list (`PlaceholderAPI`, `SkinsRestorer`, `Textura`), not shaded — systems that need it (e.g. `islands`) take `compileOnly(projects.plugins.textura)` and resolve it at runtime from the server.
 
 ### System module pattern
 
-Each feature lives in its own module under `plugins/oneblock/system/<name>/` and exposes a singleton `object <Name>System` with an `init(...)` function. `OneBlockPlugin.onEnable()` wires everything in three phases:
+Each feature lives in its own module under `plugins/oceanblock/system/<name>/` and exposes a singleton `object <Name>System` with an `init(...)` function. `OceanBlockPlugin.onEnable()` wires everything in three phases:
 
 - `setupSystems()` — calls every `XxxSystem.init(plugin, viewFrame | paperCommandManager)`.
 - `setupCommands()` — registers Aikar ACF commands via `PaperCommandManager` (`@CommandAlias`, `@Subcommand`, `@Default`, `@CommandPermission`).
 - `setupListeners()` — registers Bukkit `Listener`s.
 
-To add a feature module: register it in `settings.gradle.kts`, add it to the plugin's dependency loop (systems under `:plugins:oneblock:system:` are auto-included), and call its `init` in `setupSystems()`. Those two steps are independent — `chats` is included and shaded but deliberately never `init`ed (its listener would reformat server chat), so it ships inert. Check `setupSystems()` before assuming a module under `system/` is live.
+To add a feature module: register it in `settings.gradle.kts`, add it to the plugin's dependency loop (systems under `:plugins:oceanblock:system:` are auto-included), and call its `init` in `setupSystems()`. Those two steps are independent — a module can be included and shaded without being `init`ed. Check `setupSystems()` before assuming a module under `system/` is live.
 
-Systems may `compileOnly` on other systems to register into them (e.g. `minions` depends on `craft` and calls `Crafts.register(ForgeRecipe(...))` from its own `init`, and on `islands` for island lookups). Keep that registration inside the depending system's `init`, not in the plugin module.
+Systems may `compileOnly` on other systems to register into them (e.g. `skills` depends on `craft` and calls `SkillRecipeGates.registerAll()` from its own `init`, and on `islands` for island lookups). Keep that registration inside the depending system's `init`, not in the plugin module.
 
 #### Custom-item framework (`system/custom-items`)
 
-Reusable in-game item behavior lives here — do **not** hand-roll per-item click listeners in other modules. Define a behavior by subclassing `CustomItem` (`api/CustomItem.kt`): override the appearance fields (`id`, `material`, `displayName`, `lore`, `itemModel`, `cooldownMillis`, `heldTickInterval`) and the hooks you need (`onRightClick`, `onLeftClick`, `onInteractEntity`, `onConsume`, `onHeldTick`; plus optional `listeners()` / `tasks()`). `build()` stamps the `id` into item NBT under `CustomItemKeys.ID`; `CustomItemRegistry.fromItemStack(...)` resolves an `ItemStack` back to its `CustomItem` by that tag. Register built-ins in `CustomItemSystem.registerBuiltInItems()` (e.g. `MagnetItem`). A single global tick task in `CustomItemSystem` drives every item's `onHeldTick` at its own `heldTickInterval`; a shared `CooldownStore` gates activations.
+Reusable in-game item behavior lives here — do **not** hand-roll per-item click listeners in other modules. Define a behavior by subclassing `CustomItem` (`api/CustomItem.kt`): override the appearance fields (`id`, `material`, `displayName`, `lore`, `itemModel`, `cooldownMillis`, `heldTickInterval`) and the hooks you need (`onRightClick`, `onLeftClick`, `onInteractEntity`, `onConsume`, `onHeldTick`; plus optional `listeners()` / `tasks()`). `build()` stamps the `id` into item NBT under `CustomItemKeys.ID`; `CustomItemRegistry.fromItemStack(...)` resolves an `ItemStack` back to its `CustomItem` by that tag. Register built-ins in `CustomItemSystem.registerBuiltInItems()` (e.g. `MultiToolItem`). A single global tick task in `CustomItemSystem` drives every item's `onHeldTick` at its own `heldTickInterval`; a shared `CooldownStore` gates activations.
 
 #### Progression systems (`system/skills`, `system/battle-pass`, `system/collections`)
 
@@ -87,18 +89,18 @@ Three separate progression tracks, all Manager+Repository backed:
 - **`battle-pass`** — `Challenges` is a **hardcoded enum** (display name, icon `ItemStack`, `xpReward`, and a sealed `ChallengeObjective` such as `BreakOneBlock`, `CustomCraft`, `SellValue`), not YAML. Adding a challenge means adding an enum entry plus the matching branch in `ChallengeListener`. `BattlePassSystem` exposes its `ChallengeListener` as a public `lateinit` so other systems can report progress into it.
 - Both, plus `collections`, render their menus with Textura fonts/glyphs — see the Textura section for `TitleApi`.
 
-`system/special-items` (package `one_block.system.special_items`, sell beacon) predates this framework and hand-rolls its own listeners/tasks — legacy; new item behavior goes in `custom-items`, don't copy that shape. `MultiTool` used to live in the plugin module and is now `content/multitool/MultiToolItem` here, registered like any other built-in; `/multitool` still hands it out, and `/citem give multitool` works too.
+`MultiTool` used to live in the plugin module and is now `content/multitool/MultiToolItem` in `custom-items`, registered like any other built-in; `/multitool` still hands it out, and `/citem give multitool` works too.
 
-The **plugin module holds no feature code** — only `OneBlockPlugin`, `OneBlockCommand` and `MobControlListener`. Anything else that lands there is misplaced.
+The **plugin module holds no feature code** — only `OceanBlockPlugin`, `OceanBlockCommand` and `MobControlListener`. Anything else that lands there is misplaced.
 
 ### Dependency direction (important)
 
-Systems depend `compileOnly` on `lib:*` and occasionally on other systems; the **plugin module** depends on all of them to shade. **Systems must never depend on the plugin module** — that inverts the graph. Cross-cutting code that a low-level system would need must live in a `lib:*` module or be passed in via `init`, not reached back up into `plugins/oneblock/plugin`.
+Systems depend `compileOnly` on `lib:*` and occasionally on other systems; the **plugin module** depends on all of them to shade. **Systems must never depend on the plugin module** — that inverts the graph. Cross-cutting code that a low-level system would need must live in a `lib:*` module or be passed in via `init`, not reached back up into `plugins/oceanblock/plugin`.
 
 ### Shared libraries (`lib/`)
 
 - **`instance`** — two global handles set in `onEnable`: `Instance` (`JavaPlugin`, backed by `PluginInstance`) for the Bukkit scheduler / `NamespacedKey` / logging, and `ScheduledExecutor` (single-thread `ScheduledExecutorService`, backed by `ScheduledExecutorInstance`) for off-main-thread periodic work such as repository flushes. Never touch the Bukkit API from `ScheduledExecutor`.
-- **`connection`** — data layer (MongoDB), with the env-split source sets described above. Exposes a single lazy `Mongo: MongoDatabase` (database `one-block`) configured with an automatic POJO codec provider, so domain classes persist without hand-written codecs.
+- **`connection`** — data layer (MongoDB), with the env-split source sets described above. Exposes a single lazy `Mongo: MongoDatabase` (database `ocean-block`) configured with an automatic POJO codec provider, so domain classes persist without hand-written codecs.
 - **`coordinate`** — `SimpleLocation` and world-coordinate helpers.
 - **`actionbar`** — the single owner of the action bar. **Never call `player.sendActionBar` directly** from a system: whoever writes last wins and short messages get erased by periodic ones. Publish with `ActionBar.send(player, Channel.X, component, durationTicks)`; a 2-tick render task shows the highest-`priority` live channel and re-sends every 20 ticks so it doesn't fade. Add a `Channel` enum entry per system that writes there (`FlyTimer` 0, `Combat` 10, `SkillXp` 20). Safe to call off the main thread.
 - **`rewards`** — shared reward model (`Reward(type, value, material, amount)`, `RewardType.Message | Item | Command`) and `RewardGranter.grant(rewards, player(s))`, which handles full inventories (drops leftovers) and `%player%` / `{player}` substitution in commands. Island phases and skill levels both pay through it — new reward-granting features reuse it instead of re-implementing delivery.
@@ -107,13 +109,13 @@ Systems depend `compileOnly` on `lib:*` and occasionally on other systems; the *
 
 ### GUIs and text
 
-- GUIs use **inventory-framework** (`me.devnatan.inventoryframework`): views are registered with `viewFrame.with(...)` and the frame is created once in `OneBlockPlugin`.
-- Text uses **Adventure MiniMessage**. Use `one_block.libs.formatter.Mini.mm` (or `Mini.deserialize(...)`), **not** `MiniMessage.miniMessage()` — `Mini.mm` is the shared instance carrying Textura's `<glyph:id>` / `<shift:n>` tags, which the default instance would emit as literal text. Remember `.decoration(TextDecoration.ITALIC, false)` on item display names.
+- GUIs use **inventory-framework** (`me.devnatan.inventoryframework`): views are registered with `viewFrame.with(...)` and the frame is created once in `OceanBlockPlugin`.
+- Text uses **Adventure MiniMessage**. Use `ocean_block.libs.formatter.Mini.mm` (or `Mini.deserialize(...)`), **not** `MiniMessage.miniMessage()` — `Mini.mm` is the shared instance carrying Textura's `<glyph:id>` / `<shift:n>` tags, which the default instance would emit as literal text. Remember `.decoration(TextDecoration.ITALIC, false)` on item display names.
 - Item behavior uses **Paper data components** (`io.papermc.paper.datacomponent.*`, e.g. `CAN_BREAK`, `TOOL`, `RegistrySet`/`RegistryKey`). Verify exact builder signatures against the paper-api jar rather than guessing — the API churns between versions.
 
 ### Runtime configuration & data
 
-- Config and runtime data live under `server/plugins/` (not shaded into jars). The oneblock progression is data-driven: `server/plugins/one-block/phases/*.yml` define ordered phases, each with a weighted `block-pool`, `mob-pool`, `monster-party`, and a `completion:` block (`announce:` lines + `rewards:` of `type: Message | Item | Command`). `PhaseManager.loadPhases()` parses them; invalid materials/entities are logged and skipped, not fatal.
+- Config and runtime data live under `server/plugins/` (not shaded into jars). The oneblock progression is data-driven: `server/plugins/ocean-block/phases/*.yml` define ordered phases, each with a weighted `block-pool`, `mob-pool`, `monster-party`, and a `completion:` block (`announce:` lines + `rewards:` of `type: Message | Item | Command`). `PhaseManager.loadPhases()` parses them; invalid materials/entities are logged and skipped, not fatal.
 
 #### Phase advancement (`system/islands/phase` + `reward`)
 
@@ -122,21 +124,21 @@ Systems depend `compileOnly` on `lib:*` and occasionally on other systems; the *
 
 ### Persistence pattern (Manager + Repository)
 
-Stateful systems follow the same shape — read `islands` or `minions` for a full example:
+Stateful systems follow the same shape — read `islands` for a full example:
 
 - `class XRepository` — owns one `Mongo.getCollection<X>("...")`, creates its unique index in `init`, and exposes `toList()` / `update(x)` / `updateAll(list)` (bulk `ReplaceOneModel` with `upsert`) / `remove(uuid)`. No business logic.
 - `object XManager` — the single source of truth at runtime. `onInit()` loads the whole collection into in-memory maps; mutations touch the maps and mark ids in a `dirtyIds` set; a `ScheduledExecutor.scheduleAtFixedRate` job flushes only the dirty entries (islands: every 30s) via `updateAll`. Lookups go through the manager's maps, never through a fresh query.
-- Managers with unsaved state expose `onDisable()` and **must be called explicitly** from `OneBlockPlugin.onDisable()` — nothing wires this automatically, so a new stateful manager that isn't added there silently loses its last flush window. Every manager that buffers writes is listed there today; if you add one, add it there in the same commit. `battle-pass` (`ProgressManager`, `BattlePassManager`) is the exception that needs nothing: it writes through to Mongo on every mutation instead of buffering.
-- A dirty-set flush must **clear the set only after the write succeeds**, and go through the repository's bulk `updateAll`/`saveAll` rather than one `update` per entry. Clearing first turns any Mongo hiccup into silent data loss — `IslandManager` and `SellBeaconManager` both had that bug.
+- Managers with unsaved state expose `onDisable()` and **must be called explicitly** from `OceanBlockPlugin.onDisable()` — nothing wires this automatically, so a new stateful manager that isn't added there silently loses its last flush window. Every manager that buffers writes is listed there today; if you add one, add it there in the same commit. `battle-pass` (`ProgressManager`, `BattlePassManager`) is the exception that needs nothing: it writes through to Mongo on every mutation instead of buffering.
+- A dirty-set flush must **clear the set only after the write succeeds**, and go through the repository's bulk `updateAll`/`saveAll` rather than one `update` per entry. Clearing first turns any Mongo hiccup into silent data loss — `IslandManager` had that bug.
 
 #### Storing `ItemStack`s
 
-`ItemStack` is not POJO-codec-friendly — **persist it as a Base64 `String`**, never as a nested object. `ItemSerializer` (`lib/item-builder`, `one_block.libs.item_builder`) wraps `BukkitObjectOutputStream` + Base64 for this; the auction house is the reference usage (`Auction` holds the item as `String`). Serialize at the model boundary (when the item enters/leaves the stored object), not inside repository read/write.
+`ItemStack` is not POJO-codec-friendly — **persist it as a Base64 `String`**, never as a nested object. `ItemSerializer` (`lib/item-builder`, `ocean_block.libs.item_builder`) wraps `BukkitObjectOutputStream` + Base64 for this; the auction house is the reference usage (`Auction` holds the item as `String`). Serialize at the model boundary (when the item enters/leaves the stored object), not inside repository read/write.
 - `XxxSystem.init` calls `XManager.onInit()`. Systems that need a fully loaded world (e.g. `IslandsSystem`) defer it with `runTaskLater`.
 
 ### Textura plugin (`plugins/textura`)
 
-Separate jar, hard `depend` of one-block, own `plugin.yml` via `plugin-yml`. It builds and serves the server resource pack at runtime using **team.unnamed `creative`**:
+Separate jar, hard `depend` of ocean-block, own `plugin.yml` via `plugin-yml`. It builds and serves the server resource pack at runtime using **team.unnamed `creative`**:
 
 Source packages: `pack/` (pack assembly), `registry/` + `model/` (config parsing), `api/` (the only surface other plugins touch), `text/` (`TextMetrics`, pixel width + spacing components), `glyph/`, `http/`, `hud/`, `block/`, `menu/`, `command/`, `listener/`, `dialog/`. There is no `util/` — new code goes in the package that owns the concern.
 
@@ -150,7 +152,7 @@ Source packages: `pack/` (pack assembly), `registry/` + `model/` (config parsing
 
 ### Design docs
 
-Feature designs written before implementation live in `docs/superpowers/specs/<date>-<feature>-design.md` (custom-item framework, miner minion, vacuum hopper, island settings, stackable spawners, glyph spritesheet, textura port, oneblock progression); the step-by-step implementation plans derived from them live in `docs/superpowers/plans/<date>-<feature>.md`. Check for an existing spec before designing a feature from scratch, and keep new specs/plans in those folders with the same naming. `.superpowers/sdd/` holds throwaway agent run artifacts — not documentation, and its `baseline-task` module is not in `settings.gradle.kts`.
+Feature designs written before implementation live in `docs/superpowers/specs/<date>-<feature>-design.md` (custom-item framework, island settings, glyph spritesheet, textura port, oneblock progression, OceanBlock fork); the step-by-step implementation plans derived from them live in `docs/superpowers/plans/<date>-<feature>.md`. Check for an existing spec before designing a feature from scratch, and keep new specs/plans in those folders with the same naming. `.superpowers/sdd/` holds throwaway agent run artifacts — not documentation, and its `baseline-task` module is not in `settings.gradle.kts`.
 
 ## Conventions
 

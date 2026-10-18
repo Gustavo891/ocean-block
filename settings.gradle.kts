@@ -4,10 +4,10 @@ pluginManagement {
     includeBuild("build-logic")
 }
 
-rootProject.name = "one-block"
+rootProject.name = "ocean-block"
 
 include(
-    ":plugins:oneblock:plugin",
+    ":plugins:oceanblock:plugin",
     ":plugins:textura",
 
     ":lib:actionbar",
@@ -21,23 +21,23 @@ include(
     ":lib:toast",
     ":lib:translation",
 
-    ":plugins:oneblock:system:custom-items",
-    ":plugins:oneblock:system:auction-house",
-    ":plugins:oneblock:system:coinflip",
-    ":plugins:oneblock:system:collections",
-    ":plugins:oneblock:system:craft",
-    ":plugins:oneblock:system:currencies",
-    ":plugins:oneblock:system:enchants",
-    ":plugins:oneblock:system:islands",
-    ":plugins:oneblock:system:trader",
-    ":plugins:oneblock:system:battle-pass",
-    ":plugins:oneblock:system:playtime",
-    ":plugins:oneblock:system:sell",
-    ":plugins:oneblock:system:shop",
-    ":plugins:oneblock:system:scoreboard",
-    ":plugins:oneblock:system:skills",
-    ":plugins:oneblock:system:spawn",
-    ":plugins:oneblock:system:starter-kit",
-    ":plugins:oneblock:system:tops",
-    ":plugins:oneblock:system:worlds",
+    ":plugins:oceanblock:system:custom-items",
+    ":plugins:oceanblock:system:auction-house",
+    ":plugins:oceanblock:system:coinflip",
+    ":plugins:oceanblock:system:collections",
+    ":plugins:oceanblock:system:craft",
+    ":plugins:oceanblock:system:currencies",
+    ":plugins:oceanblock:system:enchants",
+    ":plugins:oceanblock:system:islands",
+    ":plugins:oceanblock:system:trader",
+    ":plugins:oceanblock:system:battle-pass",
+    ":plugins:oceanblock:system:playtime",
+    ":plugins:oceanblock:system:sell",
+    ":plugins:oceanblock:system:shop",
+    ":plugins:oceanblock:system:scoreboard",
+    ":plugins:oceanblock:system:skills",
+    ":plugins:oceanblock:system:spawn",
+    ":plugins:oceanblock:system:starter-kit",
+    ":plugins:oceanblock:system:tops",
+    ":plugins:oceanblock:system:worlds",
 )
