@@ -38,7 +38,6 @@ boards:
       14: ''
       13: '<white> <glyph:floating_islands> <color:#FFD54F>Sua ilha:'
       12: '<white> Fase: <gray>%island_phasename%'
-      11: '<white> Progressão: <gray>%island_phaseprogress%'
       10: ''
       9: '<white> Tempo online: <aqua>%playtime%'
       7: ''
