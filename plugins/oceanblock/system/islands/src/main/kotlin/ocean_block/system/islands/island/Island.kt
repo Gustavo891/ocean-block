@@ -132,6 +132,7 @@ data class Island(
         setUpgradeLevel(IslandUpgrade.Size, newLevel)
         size = BORDER_SIZE[newLevel]
         refreshWorldBorder()
+        IslandHud.refresh(this)
     }
 
     fun getIslandOnlinePlayers(): List<Player> = Bukkit.getOnlinePlayers()

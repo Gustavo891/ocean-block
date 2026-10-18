@@ -88,6 +88,9 @@ object IslandResetService {
                 .filter { it !is Player && area.contains(it.location) }
                 .forEach { it.remove() }
 
+            island.spawn = RaftPlacement.spawn(island.position, island.center.world)
+            island.markDirty()
+
             StarterIsland.generate(island)
             returnPlayers(island, area)
             sender.sendRichMessage("<green>Raft de <white>${island.ownerName}</white> resetado.")

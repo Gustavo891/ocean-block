@@ -5,7 +5,6 @@ import ocean_block.system.battle_pass.challenge.ProgressManager
 import ocean_block.system.battle_pass.config.Challenges
 import ocean_block.system.battle_pass.config.ChallengeObjective
 import ocean_block.system.craft.events.CustomCraftEvent
-import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.sell.listener.SellEvent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -22,14 +21,7 @@ class ChallengeListener : Listener {
         val challenge = activeChallengeOf(player) ?: return
 
         when (val obj = challenge.objective) {
-            is ChallengeObjective.BreakOneBlock -> {
-                IslandManager.getIslandAt(event.block.location)?.let { island ->
-                    if (island.center.isSameBlock(event.block.location)) {
-                        ProgressManager.increment(player, challenge)
-                    }
-                }
-                return
-            }
+            is ChallengeObjective.BreakOneBlock -> return
 
             is ChallengeObjective.BreakBlock -> {
                 if (obj.material == event.block.type.name) {

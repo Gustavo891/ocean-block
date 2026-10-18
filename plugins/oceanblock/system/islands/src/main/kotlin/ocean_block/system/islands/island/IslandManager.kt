@@ -84,8 +84,7 @@ object IslandManager {
         }
 
         Instance.logger.warning(
-            "[islands] ${orfas.size} ilha(s) reancorada(s) em '${fallback.id}'. " +
-                "Use /is setfase <jogador> <fase> para reposicionar quem perdeu progresso."
+            "[islands] ${orfas.size} ilha(s) reancorada(s) em '${fallback.id}'."
         )
     }
 
@@ -147,7 +146,7 @@ object IslandManager {
     }
 
     private fun nextFreeIndex(): Int {
-        var index = (islandsById.values.maxOfOrNull { it.position.index } ?: -1) + 1
+        var index = maxOf((islandsById.values.maxOfOrNull { it.position.index } ?: 0) + 1, 1)
 
         while (islandsByGrid[Position.fromIndex(index).let { it.gridX to it.gridZ }] != null) {
             index++

@@ -203,7 +203,13 @@ class IslandCommand(
             return
         }
 
+        if (IslandManager.getIslandAt(sender.location)?.uuid != island.uuid) {
+            sender.sendRichMessage("<red>Você só pode definir a home dentro do seu raft.")
+            return
+        }
+
         island.spawn = SimpleLocation.fromBukkit(sender.location)
+        island.markDirty()
         sender.sendRichMessage("<green>Seu home foi definido.")
     }
 
