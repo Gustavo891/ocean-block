@@ -72,8 +72,6 @@ object IslandResetService {
             return
         }
 
-        IslandResetHooks.fireTerrainReset(island, area)
-
         sender.sendRichMessage("<gray>Restaurando o mar do raft de <white>${island.ownerName}</white>...")
 
         OceanRegen.regenerate(area) { ok ->
@@ -83,6 +81,8 @@ object IslandResetService {
                 sender.sendRichMessage("<red>Falha ao restaurar o mar do raft de <white>${island.ownerName}</white>. Nada foi alterado.")
                 return@regenerate
             }
+
+            IslandResetHooks.fireTerrainReset(island, area)
 
             area.world.entities
                 .filter { it !is Player && area.contains(it.location) }
