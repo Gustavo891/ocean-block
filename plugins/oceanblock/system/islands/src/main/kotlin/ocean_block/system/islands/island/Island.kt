@@ -99,7 +99,7 @@ data class Island(
         if (members[player.name.lowercase()] != null) return true
 
         if (!isTrustedMember(player.name)) {
-            player.sendRichMessage("<red>Você não faz parte dessa ilha")
+            player.sendRichMessage("<red>Você não faz parte desse raft")
             return false
         }
 
@@ -141,7 +141,7 @@ data class Island(
         val spawn = spawn.toBukkit()
 
         if (blackListNames().contains(player.name)) {
-            player.sendRichMessage("<red>Você está bloqueado de acessar essa ilha.")
+            player.sendRichMessage("<red>Você está bloqueado de acessar esse raft.")
             return
         }
 

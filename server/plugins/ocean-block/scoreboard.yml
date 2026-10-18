@@ -36,7 +36,7 @@ boards:
       16: ''
       15: '<white> Coins: <dark_green>$<white>%walletcoins%'
       14: ''
-      13: '<white> <glyph:floating_islands> <color:#FFD54F>Sua ilha:'
+      13: '<white> <glyph:floating_islands> <color:#FFD54F>Seu raft:'
       12: '<white> Fase: <gray>%island_phasename%'
       10: ''
       9: '<white> Tempo online: <aqua>%playtime%'

@@ -40,7 +40,7 @@ class CustomBlockListener(private val viewFrame: ViewFrame) : Listener {
         val current = PlacedBlockManager.countOnIsland(custom.id, island.uuid)
         if (current >= custom.limitPerIsland) {
             event.isCancelled = true
-            player.sendRichMessage("<red>Limite de <white>${custom.limitPerIsland}<red> por ilha atingido.")
+            player.sendRichMessage("<red>Limite de <white>${custom.limitPerIsland}<red> por raft atingido.")
             return
         }
 

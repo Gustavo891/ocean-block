@@ -43,7 +43,7 @@ object TraderManager {
                 .appendNewline()
                 .append(
                     Mini.mm
-                        .deserialize("  <sprite:items:item/bell> <gray>O <white>Mercador<gray> chegou em sua ilha!")
+                        .deserialize("  <sprite:items:item/bell> <gray>O <white>Mercador<gray> chegou em seu raft!")
                 ).appendNewline()
                 .append(
                     Mini.mm.deserialize("  <white>Aproveite e compre seu estoque de produtos.")

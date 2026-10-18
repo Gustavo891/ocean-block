@@ -26,7 +26,7 @@ class SettingsView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title(Mini.mm.deserialize("<gray>Ilha > <dark_gray>Configurações"))
+        config.title(Mini.mm.deserialize("<gray>Raft > <dark_gray>Configurações"))
         config.layout(
             "         ",
             "         ",
@@ -49,7 +49,7 @@ class SettingsView : View() {
                 .renderWith { settingItem(setting, island.isSettingEnabled(setting), isOwner) }
                 .onClick { click ->
                     if (!isOwner) {
-                        click.player.sendRichMessage("<red>Apenas o dono da ilha pode alterar as configurações.")
+                        click.player.sendRichMessage("<red>Apenas o dono do raft pode alterar as configurações.")
                         click.player.playSound(click.player, Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f)
                         return@onClick
                     }

@@ -19,7 +19,7 @@ import ocean_block.system.islands.view.IslandView
 import ocean_block.system.islands.view.IslandsView
 import org.bukkit.entity.Player
 
-@CommandAlias("island|is")
+@CommandAlias("raft|balsa|ilha|island|is")
 class IslandCommand(
     private val viewFrame: ViewFrame,
 ) : BaseCommand() {
@@ -27,11 +27,11 @@ class IslandCommand(
     private fun ownedIslandOf(sender: Player): Island? {
         val island = IslandManager.getIslandByPlayer(sender.uniqueId)
         if (island == null) {
-            sender.sendRichMessage("<red>Você não tem ilha!")
+            sender.sendRichMessage("<red>Você não tem um raft!")
             return null
         }
         if (island.ownerUuid != sender.uniqueId) {
-            sender.sendRichMessage("<red>Você não é o dono desta ilha!")
+            sender.sendRichMessage("<red>Você não é o dono deste raft!")
             return null
         }
         return island
@@ -42,7 +42,7 @@ class IslandCommand(
         if (targetName != null) {
             val playerIsland = IslandManager.getIslandByOwnerName(targetName.lowercase())
             if (playerIsland == null) {
-                sender.sendRichMessage("<red>Esse jogador não tem uma ilha!")
+                sender.sendRichMessage("<red>Esse jogador não tem um raft!")
                 return
             }
             if (playerIsland.isMember(sender.name) || playerIsland.isTrustedMember(sender.name)) {
@@ -53,15 +53,15 @@ class IslandCommand(
 
         var island = IslandManager.getIslandByOwnerUUID(sender.uniqueId)
         if (island == null) {
-            sender.sendRichMessage("<green>Criando sua ilha...")
+            sender.sendRichMessage("<green>Criando seu raft...")
             island = IslandManager.createIsland(sender)
 
             if (island == null) {
-                sender.sendRichMessage("<red>As ilhas não foram carregadas. Avise a staff antes de continuar.")
+                sender.sendRichMessage("<red>Os rafts não foram carregados. Avise a staff antes de continuar.")
                 return
             }
 
-            sender.sendRichMessage("<green>Sua ilha foi criada com sucesso!")
+            sender.sendRichMessage("<green>Seu raft foi criado com sucesso!")
             val spawn = island.spawn.toBukkit()
 
             if (spawn == null) {
@@ -73,7 +73,7 @@ class IslandCommand(
             sender.fallDistance = 0f
             island.onJoin(sender)
 
-            sender.sendRichMessage("<green>Teleportado para sua ilha!")
+            sender.sendRichMessage("<green>Teleportado para seu raft!")
             return
         }
         island.teleportTo(sender)
@@ -84,7 +84,7 @@ class IslandCommand(
     fun onMenu(sender: Player) {
         val islandAt = IslandManager.getIslandByPlayer(sender.uniqueId)
         if (islandAt == null) {
-            sender.sendRichMessage("<red>Você não está em nenhuma ilha.")
+            sender.sendRichMessage("<red>Você não está em nenhum raft.")
             return
         }
         viewFrame.open(IslandView::class.java, sender)
@@ -95,13 +95,13 @@ class IslandCommand(
         val island = ownedIslandOf(sender) ?: return
 
         if (!island.members.contains(targetName.lowercase())) {
-            sender.sendRichMessage("<red>Esse jogador não faz parte de sua ilha.")
+            sender.sendRichMessage("<red>Esse jogador não faz parte de seu raft.")
             return
         }
 
         island.members.remove(targetName.lowercase())
         island.markDirty()
-        sender.sendRichMessage("<green>O jogador <white>${targetName} <green>foi removido da sua ilha.")
+        sender.sendRichMessage("<green>O jogador <white>${targetName} <green>foi removido do seu raft.")
     }
 
     @Subcommand("undeny")
@@ -115,13 +115,13 @@ class IslandCommand(
         }
 
         if (!island.blackListNames().contains(target)) {
-            sender.sendRichMessage("<red>Esse jogador não está bloqueado de acessar sua ilha.")
+            sender.sendRichMessage("<red>Esse jogador não está bloqueado de acessar seu raft.")
             return
         }
 
         island.removeBlacklist(target)
         island.markDirty()
-        sender.sendRichMessage("<green>O jogador <white>${target} <green>foi liberado de acessar sua ilha.")
+        sender.sendRichMessage("<green>O jogador <white>${target} <green>foi liberado de acessar seu raft.")
     }
 
     @Subcommand("deny")
@@ -134,18 +134,18 @@ class IslandCommand(
         }
 
         if (island.members.contains(target.player.name) || island.trustedNames.contains(target.player.name)) {
-            sender.sendRichMessage("<red>Você não pode bloquear um membro/confiavel de sua ilha. Remova-o primeiro!")
+            sender.sendRichMessage("<red>Você não pode bloquear um membro/confiavel de seu raft. Remova-o primeiro!")
             return
         }
 
         if (island.blackListNames().contains(target.player.name)) {
-            sender.sendRichMessage("<red>Esse jogador já está bloqueado de acessar sua ilha.")
+            sender.sendRichMessage("<red>Esse jogador já está bloqueado de acessar seu raft.")
             return
         }
 
         island.addBlacklist(target.player)
         island.markDirty()
-        sender.sendRichMessage("<green>O jogador <white>${target.player.name} <green>foi bloqueado de acessar sua ilha.")
+        sender.sendRichMessage("<green>O jogador <white>${target.player.name} <green>foi bloqueado de acessar seu raft.")
 
     }
 
@@ -153,17 +153,17 @@ class IslandCommand(
     fun onVisit(sender: Player, targetName: String) {
         val island = IslandManager.getIslandByOwnerName(targetName)
         if (island == null) {
-            sender.sendRichMessage("<red>Este jogador não possui uma ilha!")
+            sender.sendRichMessage("<red>Este jogador não possui um raft!")
             return
         }
 
         if (island.blackListNames().contains(sender.name)) {
-            sender.sendRichMessage("<red>Você está proibido de acessar esta ilha.")
+            sender.sendRichMessage("<red>Você está proibido de acessar este raft.")
             return
         }
 
         if (!island.isPublic) {
-            sender.sendRichMessage("<red>A ilha deste jogador não é publica.")
+            sender.sendRichMessage("<red>O raft deste jogador não é publico.")
             return
         }
 
@@ -178,7 +178,7 @@ class IslandCommand(
         IslandManager.playerIsland[sender.uniqueId] = island.uuid
         sender.fallDistance = 0f
 
-        sender.sendRichMessage("<green>Teleportado para a ilha de ${targetName}.")
+        sender.sendRichMessage("<green>Teleportado para o raft de ${targetName}.")
     }
 
     @Subcommand("publica|pub")
@@ -194,12 +194,12 @@ class IslandCommand(
     fun onSetHome(sender: Player) {
         val island = IslandManager.getIslandByPlayer(sender.uniqueId)
         if (island == null) {
-            sender.sendRichMessage("<red>Você precisa estar em uma ilha.")
+            sender.sendRichMessage("<red>Você precisa estar em um raft.")
             return
         }
 
         if (island.ownerUuid != sender.uniqueId) {
-            sender.sendRichMessage("<red>Você não é o dono dessa ilha.")
+            sender.sendRichMessage("<red>Você não é o dono desse raft.")
             return
         }
 
@@ -212,7 +212,7 @@ class IslandCommand(
     fun onResetTerrain(sender: Player, targetName: String, @Optional flag: String?) {
         val island = IslandManager.getIslandByOwnerName(targetName.lowercase())
         if (island == null) {
-            sender.sendRichMessage("<red>Esse jogador não tem uma ilha!")
+            sender.sendRichMessage("<red>Esse jogador não tem um raft!")
             return
         }
 
@@ -229,7 +229,7 @@ class IslandCommand(
     fun onResetProgress(sender: Player, targetName: String, @Optional flag: String?) {
         val island = IslandManager.getIslandByOwnerName(targetName.lowercase())
         if (island == null) {
-            sender.sendRichMessage("<red>Esse jogador não tem uma ilha!")
+            sender.sendRichMessage("<red>Esse jogador não tem um raft!")
             return
         }
 
@@ -283,7 +283,7 @@ class IslandCommand(
         }
 
         if (targetName.lowercase() !in island.trustedNames) {
-            sender.sendRichMessage("<red>Este jogador não está adicionado em sua ilha.")
+            sender.sendRichMessage("<red>Este jogador não está adicionado em seu raft.")
             return
         }
 
@@ -305,7 +305,7 @@ class IslandCommand(
         }
 
         if (island.members.size >= ((island.getUpgradeLevel(IslandUpgrade.Members) + 1) * 3)) {
-            sender.sendRichMessage("<red>Sua ilha está lotada de membros.")
+            sender.sendRichMessage("<red>Seu raft está lotado de membros.")
             return
         }
 

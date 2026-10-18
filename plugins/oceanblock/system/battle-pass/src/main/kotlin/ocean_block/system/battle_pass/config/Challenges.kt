@@ -14,7 +14,7 @@ enum class Challenges(
 
     BREAK_200(
         displayName = "Minerador",
-        description = listOf("Quebre 200 blocos do centro de sua ilha."),
+        description = listOf("Quebre 200 blocos do centro de seu raft."),
         icon = itemStack(Material.GRASS_BLOCK) {},
         xpReward = 100,
         objective = ChallengeObjective.BreakOneBlock(goal = 200),

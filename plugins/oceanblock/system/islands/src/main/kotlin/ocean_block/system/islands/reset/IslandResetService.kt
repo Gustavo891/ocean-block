@@ -39,7 +39,7 @@ object IslandResetService {
         }
 
         sender.sendRichMessage("<yellow>Nada foi alterado. Use <white>-confirm</white> para executar.")
-        sender.sendRichMessage("<dark_gray>O progresso da ilha não é afetado por este comando.")
+        sender.sendRichMessage("<dark_gray>O progresso do raft não é afetado por este comando.")
     }
 
     fun previewProgress(sender: CommandSender, island: Island) {
@@ -56,7 +56,7 @@ object IslandResetService {
         sender.sendRichMessage("<gray>- upgrades: <white>$upgrades</white>")
 
         sender.sendRichMessage("<yellow>Nada foi alterado. Use <white>-confirm</white> para executar.")
-        sender.sendRichMessage("<dark_gray>Os blocos da ilha não são afetados por este comando.")
+        sender.sendRichMessage("<dark_gray>Os blocos do raft não são afetados por este comando.")
     }
 
     fun resetTerrain(sender: CommandSender, island: Island) {
@@ -68,7 +68,7 @@ object IslandResetService {
         }
 
         if (!running.add(island.uuid)) {
-            sender.sendRichMessage("<red>Já existe um reset de terreno em andamento nessa ilha.")
+            sender.sendRichMessage("<red>Já existe um reset de terreno em andamento nesse raft.")
             return
         }
 
@@ -130,7 +130,7 @@ object IslandResetService {
             if (IslandManager.getIslandAt(player.location)?.uuid != island.uuid) return@forEach
 
             player.teleport(player.world.spawnLocation)
-            player.sendRichMessage("<red>A ilha em que você estava foi resetada.")
+            player.sendRichMessage("<red>O raft em que você estava foi resetado.")
         }
     }
 

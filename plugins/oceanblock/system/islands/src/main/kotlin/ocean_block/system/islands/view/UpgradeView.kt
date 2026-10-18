@@ -45,7 +45,7 @@ class UpgradeView : View() {
         )
         config.title(
             Mini.mm
-                .deserialize("<white><shift:-8><glyph:island_upgrades><font:oneblock:gui><shift:-170><gray>Ilha > <dark_gray>Melhorias")
+                .deserialize("<white><shift:-8><glyph:island_upgrades><font:oneblock:gui><shift:-170><gray>Raft > <dark_gray>Melhorias")
         )
     }
 

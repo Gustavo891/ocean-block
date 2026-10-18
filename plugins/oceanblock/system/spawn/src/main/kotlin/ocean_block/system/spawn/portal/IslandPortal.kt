@@ -55,7 +55,7 @@ object IslandPortal {
             return
         }
 
-        player.sendRichMessage("<green>Criando sua ilha...")
+        player.sendRichMessage("<green>Criando seu raft...")
         IslandManager.createIsland(player)?.teleportTo(player)
     }
 
