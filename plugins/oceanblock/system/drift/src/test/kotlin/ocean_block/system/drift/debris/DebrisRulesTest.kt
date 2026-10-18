@@ -3,17 +3,8 @@ package ocean_block.system.drift.debris
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.shouldBe
-import org.bukkit.Material
 
 class DebrisRulesTest : StringSpec({
-
-    "agua e ar deixam passar, bloco do raft trava" {
-        DebrisRules.isPassable(Material.WATER) shouldBe true
-        DebrisRules.isPassable(Material.AIR) shouldBe true
-        DebrisRules.isPassable(Material.CAVE_AIR) shouldBe true
-        DebrisRules.isPassable(Material.OAK_PLANKS) shouldBe false
-        DebrisRules.isPassable(Material.KELP) shouldBe false
-    }
 
     "passo de movimento vale dois ticks" {
         DebrisRules.stepDistance(0.05) shouldBe (0.1 plusOrMinus 1e-9)

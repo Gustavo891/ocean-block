@@ -8,9 +8,8 @@ object DebrisRules {
     const val PULL_TICKS = 10
 
     private const val MILLIS_PER_SECOND = 1000L
-    private val PASSABLE = setOf(Material.WATER, Material.AIR, Material.CAVE_AIR, Material.VOID_AIR)
 
-    fun isPassable(material: Material): Boolean = material in PASSABLE
+    fun isPassable(material: Material): Boolean = !material.isSolid
 
     fun stepDistance(speedPerTick: Double): Double = speedPerTick * TICKS_PER_STEP
 
