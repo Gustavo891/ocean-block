@@ -31,7 +31,6 @@ object IslandResetService {
 
         sender.sendRichMessage("<gold>Preview do reset de terreno de <white>${island.ownerName}</white>:")
         sender.sendRichMessage("<gray>- área: <white>${area.maxX - area.minX}x${area.maxZ - area.minZ}</white> em volta do centro")
-        sender.sendRichMessage("<gray>- blocos: <white>${TerrainCleaner.count(area)}</white>")
         sender.sendRichMessage("<gray>- mobs: <white>${entities.size - items}</white>")
         sender.sendRichMessage("<gray>- itens no chão: <white>$items</white>")
 
@@ -75,22 +74,24 @@ object IslandResetService {
 
         IslandResetHooks.fireTerrainReset(island, area)
 
-        area.world.entities
-            .filter { it !is Player && area.contains(it.location) }
-            .forEach { it.remove() }
+        sender.sendRichMessage("<gray>Restaurando o mar do raft de <white>${island.ownerName}</white>...")
 
-        sender.sendRichMessage("<gray>Limpando o terreno de <white>${island.ownerName}</white>...")
+        OceanRegen.regenerate(area) { ok ->
+            running.remove(island.uuid)
 
-        TerrainCleaner.clear(
-            area,
-            onProgress = { sender.sendRichMessage("<dark_gray>Reset de ${island.ownerName}: $it%") },
-            onDone = { removed ->
-                running.remove(island.uuid)
-                restoreCenter(island)
-                returnPlayers(island, area)
-                sender.sendRichMessage("<green>Terreno de <white>${island.ownerName}</white> resetado. <gray>($removed blocos)")
-            },
-        )
+            if (!ok) {
+                sender.sendRichMessage("<red>Falha ao restaurar o mar do raft de <white>${island.ownerName}</white>. Nada foi alterado.")
+                return@regenerate
+            }
+
+            area.world.entities
+                .filter { it !is Player && area.contains(it.location) }
+                .forEach { it.remove() }
+
+            StarterIsland.generate(island)
+            returnPlayers(island, area)
+            sender.sendRichMessage("<green>Raft de <white>${island.ownerName}</white> resetado.")
+        }
     }
 
     fun resetProgress(sender: CommandSender, island: Island) {
@@ -137,9 +138,5 @@ object IslandResetService {
         island.getIslandOnlinePlayers()
             .filter { area.contains(it.location) }
             .forEach { island.teleportTo(it) }
-    }
-
-    private fun restoreCenter(island: Island) {
-        StarterIsland.generate(island)
     }
 }
