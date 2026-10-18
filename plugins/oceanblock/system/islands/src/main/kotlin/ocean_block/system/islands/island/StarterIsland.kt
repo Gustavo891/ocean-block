@@ -10,47 +10,35 @@ import ocean_block.libs.instance.Instance
 import ocean_block.system.islands.reset.IslandArea
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
-import org.bukkit.Registry
-import org.bukkit.block.Biome
 import java.io.File
 import java.io.FileInputStream
 
 object StarterIsland {
 
     private const val FOLDER = "templates"
-    private const val SCHEMATIC = "forest.schem"
-    private const val BIOME = "forest"
+    private const val SCHEMATIC = "raft.schem"
 
-    private const val BIOME_STEP = 4
-
-    private const val PASTE_Y_OFFSET = 0
+    private const val PASTE_Y_OFFSET = 1
 
     private val schematic: File
         get() = File(File(Instance.dataFolder, FOLDER), SCHEMATIC)
 
-    private val biome: Biome?
-        get() = Registry.BIOME.get(NamespacedKey.minecraft(BIOME))
-
     fun generate(island: Island) {
-        placeFloor(island)
-
         val area = IslandArea.of(island)
         val center = island.center.toBukkit()
 
         if (area == null || center == null) {
-            Instance.logger.severe("[ilha] Mundo da ilha ${island.uuid} não carregado; terreno inicial pulado.")
+            Instance.logger.severe("[raft] Mundo da ilha ${island.uuid} não carregado; raft inicial pulado.")
             return
         }
 
         val file = schematic
 
         if (!file.exists()) {
-            Instance.logger.severe("[ilha] '${file.path}' não existe; a ilha nasceu só com o bloco central.")
+            Instance.logger.severe("[raft] '${file.path}' não existe; usando a plataforma de fallback na ilha ${island.uuid}.")
+            placeFallback(island)
             return
         }
-
-        val biomeType = biome?.let { BukkitAdapter.adapt(it) }
 
         Bukkit.getScheduler().runTaskAsynchronously(Instance, Runnable {
             runCatching {
@@ -67,40 +55,24 @@ object StarterIsland {
                     val operation = ClipboardHolder(clipboard)
                         .createPaste(edit)
                         .to(BlockVector3.at(center.blockX, center.blockY + PASTE_Y_OFFSET, center.blockZ))
-                        .ignoreAirBlocks(false)
+                        .ignoreAirBlocks(true)
                         .build()
 
                     Operations.complete(operation)
-
-                    if (biomeType == null) return@use
-
-                    var x = area.minX
-                    while (x <= area.maxX) {
-                        var z = area.minZ
-                        while (z <= area.maxZ) {
-                            var y = area.minY
-                            while (y <= area.maxY) {
-                                edit.setBiome(BlockVector3.at(x, y, z), biomeType)
-                                y += BIOME_STEP
-                            }
-                            z += BIOME_STEP
-                        }
-                        x += BIOME_STEP
-                    }
                 }
             }.onFailure {
-                Instance.logger.severe("[ilha] Falha ao colar o terreno inicial da ilha ${island.uuid}: ${it.message}")
+                Instance.logger.severe("[raft] Falha ao colar o raft da ilha ${island.uuid}: ${it.message}; usando a plataforma de fallback.")
+                Bukkit.getScheduler().runTask(Instance, Runnable { placeFallback(island) })
             }
-
-            Bukkit.getScheduler().runTask(Instance, Runnable { placeFloor(island) })
         })
     }
 
-    fun placeFloor(island: Island) {
+    fun placeFallback(island: Island) {
         val center = island.center.toBukkit() ?: return
         val world = center.world ?: return
 
-        world.getBlockAt(center.blockX, center.blockY - 1, center.blockZ).type = Material.BEDROCK
-        world.getBlockAt(center.blockX, center.blockY, center.blockZ).type = Material.DIRT
+        RaftPlacement.fallbackFootprint(center.blockX, center.blockZ).forEach { (x, z) ->
+            world.getBlockAt(x, RaftPlacement.SURFACE_Y, z).type = Material.OAK_PLANKS
+        }
     }
 }
