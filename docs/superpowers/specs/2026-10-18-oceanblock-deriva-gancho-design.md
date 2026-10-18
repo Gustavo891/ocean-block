@@ -27,12 +27,12 @@ Primeiro loop jogável do OceanBlock. Detritos passam boiando pelo raft e o joga
 
 ### 2.1 Corrente
 - Direção única no servidor, configurável (`EAST` padrão), velocidade padrão `0.05` bloco/tick (1 bloco/s).
-- Cada lote ativo tem uma trilha centrada no centro do raft: comprimento `80` blocos ao longo da corrente; o detrito nasce no início da trilha com deslocamento lateral aleatório em `[-10, +10]` e some ao passar do fim.
+- Cada lote ativo tem uma trilha centrada no centro do raft: comprimento `40` blocos ao longo da corrente; o detrito nasce no início da trilha com deslocamento lateral aleatório em `[-10, +10]` e some ao passar do fim.
 - Altura: `y = 62.6` (boiando na superfície; o raft fica em Y 62).
 
 ### 2.2 Lote ativo
 - Um lote está ativo enquanto houver pelo menos um jogador online dentro dele (`IslandManager.getIslandAt(player.location)`).
-- A cada `200` ticks, cada lote ativo com menos de `8` detritos ganha um detrito novo.
+- A cada `100` ticks, cada lote ativo com menos de `8` detritos ganha um detrito novo.
 - Lote que fica inativo perde todos os seus detritos imediatamente.
 
 ### 2.3 Detrito

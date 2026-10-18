@@ -78,7 +78,13 @@ object DebrisManager {
     private fun spawnInto(lot: ActiveLot, settings: DriftSettings, pool: DebrisPool) {
         val type = DebrisPicker.pick(pool.typesFor(lot.island), Random) ?: return
         val origin = lot.island.position
-        val point = DriftLane.spawnPoint(origin.originX, origin.originZ, settings.direction, settings.laneLength, lateral(settings.laneWidth))
+        val point = DriftLane.spawnPoint(
+            origin.originX + DriftLane.BLOCK_CENTER,
+            origin.originZ + DriftLane.BLOCK_CENTER,
+            settings.direction,
+            settings.laneLength,
+            lateral(settings.laneWidth),
+        )
 
         if (!DebrisEntities.isLoaded(lot.world, floor(point.x).toInt(), floor(point.z).toInt())) return
 

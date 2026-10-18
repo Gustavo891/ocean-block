@@ -9,8 +9,13 @@ import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.StringReader
 
-private fun parse(yaml: String, warnings: MutableList<String> = mutableListOf()): DriftConfig? =
-    DriftConfigParser.parse(YamlConfiguration.loadConfiguration(StringReader(yaml))) { warnings += it }
+private fun parse(
+    yaml: String,
+    warnings: MutableList<String> = mutableListOf(),
+    isItem: (Material) -> Boolean = { true },
+    maxStack: (Material) -> Int = { 64 },
+): DriftConfig? =
+    DriftConfigParser.parse(YamlConfiguration.loadConfiguration(StringReader(yaml)), { warnings += it }, isItem, maxStack)
 
 private fun defaultYaml(): String =
     DriftConfigParser::class.java.classLoader.getResourceAsStream("drift.yml")!!
@@ -27,9 +32,9 @@ class DriftConfigParserTest : StringSpec({
         config.settings.speed shouldBe 0.05
         config.settings.maxPerLot shouldBe 8
         config.settings.surfaceY shouldBe 62.6
-        config.settings.laneLength shouldBe 80.0
+        config.settings.laneLength shouldBe 40.0
         config.settings.laneWidth shouldBe 10.0
-        config.settings.spawnIntervalTicks shouldBe 200L
+        config.settings.spawnIntervalTicks shouldBe 100L
         config.settings.stuckSeconds shouldBe 60
         config.settings.hookRadius shouldBe 2.0
         config.settings.touchRadius shouldBe 1.5
@@ -125,10 +130,10 @@ class DriftConfigParserTest : StringSpec({
         config.settings shouldBe DriftSettings(
             direction = CurrentDirection.EAST,
             speed = 0.05,
-            laneLength = 80.0,
+            laneLength = 40.0,
             laneWidth = 10.0,
             surfaceY = 62.6,
-            spawnIntervalTicks = 200L,
+            spawnIntervalTicks = 100L,
             maxPerLot = 8,
             stuckSeconds = 60,
             hookRadius = 2.0,
@@ -228,5 +233,53 @@ class DriftConfigParserTest : StringSpec({
 
         config.settings.direction shouldBe CurrentDirection.EAST
         warnings shouldHaveSize 1
+    }
+
+    "material que nao e item e ignorado com aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            detritos:
+              agua:
+                peso: 10
+                exibicao: WATER
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+              misto:
+                peso: 10
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: WATER, min: 1, max: 1, chance: 1.0}
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+            isItem = { it != Material.WATER },
+        )!!
+
+        config.types.map { it.id } shouldBe listOf("misto")
+        config.types.single().drops shouldBe listOf(DropEntry(Material.STICK, 1, 1, 1.0))
+        warnings shouldHaveSize 2
+        warnings.count { "agua" in it } shouldBe 1
+        warnings.count { "misto" in it } shouldBe 1
+    }
+
+    "max acima do tamanho da pilha e limitado com aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            detritos:
+              tabua:
+                peso: 10
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 40, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+            maxStack = { 16 },
+        )!!
+
+        config.types.single().drops shouldBe listOf(DropEntry(Material.STICK, 1, 16, 1.0))
+        warnings shouldHaveSize 1
+        warnings.single() shouldContain "STICK"
     }
 })

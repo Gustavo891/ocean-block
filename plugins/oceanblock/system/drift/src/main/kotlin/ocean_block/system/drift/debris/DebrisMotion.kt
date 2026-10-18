@@ -18,8 +18,6 @@ internal class MotionTick(val settings: DriftSettings, val activeLots: Set<UUID>
 
 internal object DebrisMotion {
 
-    private const val RAFT_BLOCK_Y = 62
-
     fun update(debris: Debris, tick: MotionTick): Boolean {
         if (!debris.entity.isValid || debris.entity.isDead) return false
         if (!debris.isFree) return pull(debris)
@@ -54,14 +52,17 @@ internal object DebrisMotion {
         val settings = tick.settings
         val next = DriftLane.advance(debris.point, settings.direction, DebrisRules.stepDistance(settings.speed))
         val origin = island.position
-        if (DriftLane.isPastEnd(next, origin.originX, origin.originZ, settings.direction, settings.laneLength)) return false
+        val centerX = origin.originX + DriftLane.BLOCK_CENTER
+        val centerZ = origin.originZ + DriftLane.BLOCK_CENTER
+        if (DriftLane.isPastEnd(next, centerX, centerZ, settings.direction, settings.laneLength)) return false
 
         val world = debris.entity.world
+        val raftY = floor(settings.surfaceY).toInt()
         val blockX = floor(next.x).toInt()
         val blockZ = floor(next.z).toInt()
         if (!DebrisEntities.isLoaded(world, blockX, blockZ)) return false
 
-        if (!DebrisRules.isPassable(world.getType(blockX, RAFT_BLOCK_Y, blockZ))) {
+        if (!DebrisRules.isPassable(world.getType(blockX, raftY, blockZ))) {
             if (debris.stuckSinceMillis == null) debris.stuckSinceMillis = tick.nowMillis
             return true
         }

@@ -63,6 +63,7 @@ class OceanBlockPlugin : JavaPlugin() {
     }
 
     override fun onDisable() {
+        DriftSystem.onDisable()
         CoinFlipManager.onDisable()
         PlacedBlockManager.onDisable()
         SkillsSystem.onDisable()
@@ -70,7 +71,6 @@ class OceanBlockPlugin : JavaPlugin() {
         SpawnSystem.onDisable()
         ScoreboardSystem.onDisable()
         IslandsSystem.onDisable()
-        DriftSystem.onDisable()
         CurrencyManager.onDisable()
         PlayerPlaytimeManager.onDisable()
     }

@@ -4,6 +4,8 @@ import ocean_block.system.drift.config.CurrentDirection
 
 object DriftLane {
 
+    const val BLOCK_CENTER = 0.5
+
     fun spawnPoint(
         originX: Double,
         originZ: Double,

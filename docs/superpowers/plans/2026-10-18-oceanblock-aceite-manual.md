@@ -45,10 +45,10 @@ Pré-requisito: raft criado e o servidor com o plugin novo. A config fica em `se
 ### Detritos
 - [ ] Em pé no raft, detritos aparecem a montante e passam boiando perto do raft, rente à água (Y ~62,6), movendo suave, na direção da corrente (leste por padrão).
 - [ ] Em ~2 minutos já passam tábuas suficientes para crescer o raft; nunca mais de 8 detritos ao mesmo tempo no lote.
-- [ ] Detrito que passa do fim da trilha (80 blocos) some sem sobrar entidade.
+- [ ] Detrito que passa do fim da trilha (40 blocos) some sem sobrar entidade.
 - [ ] Detrito que encosta em bloco sólido na altura do raft (tábua, laje, cerca) para e some em ~60 s se ninguém pegar.
 - [ ] Alga ou grama-marinha que chega à superfície NÃO para o detrito; tábua, laje e cerca param.
-- [ ] Com a distância de renderização baixa (ex.: `view-distance=2`), os detritos continuam nascendo e não forçam o carregamento de chunks.
+- [ ] Detritos nunca forçam o carregamento de chunks: com a distância de renderização baixa (ex.: `view-distance=2`), podem nascer menos detritos.
 
 ### Coleta
 - [ ] Lançar a linha do gancho perto de um detrito e recolher: o detrito desliza até o jogador em ~0,5 s, com som, respingo e action bar `+N item`.

@@ -15,7 +15,7 @@
 - Sem comentários em código, Gradle ou YAML gerado. Strings ao jogador em português.
 - Commits `type(scope): description` terminando com `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. Nunca `git commit -n` nem `--no-verify` (hook bloqueia; evite `-n` em qualquer lugar do mesmo comando do commit).
 - Build: `./gradlew :plugins:oceanblock:plugin:localJar`. Testes do módulo: `./gradlew :plugins:oceanblock:system:drift:test -Penv=local`.
-- Padrões: corrente `EAST`, velocidade `0.05` bloco/tick, trilha `80`, largura lateral `10`, `y = 62.6`, spawn a cada `200` ticks, máximo `8` por lote, preso some em `60` s, raio do gancho `2.0`, raio de toque `1.5`, puxão `10` ticks, task de movimento a cada `2` ticks, action bar `40` ticks, `Channel.Drift(15)`.
+- Padrões: corrente `EAST`, velocidade `0.05` bloco/tick, trilha `40`, largura lateral `10`, `y = 62.6`, spawn a cada `100` ticks, máximo `8` por lote, preso some em `60` s, raio do gancho `2.0`, raio de toque `1.5`, puxão `10` ticks, task de movimento a cada `2` ticks, action bar `40` ticks, `Channel.Drift(15)`.
 - Tipos, pesos e drops exatamente como a tabela 2.4 da spec. Resultado de sorteio vazio vira `STRING` x1.
 - Gancho: id `gancho`, `FISHING_ROD`, nome `<white>Gancho`, lore `<gray>Lance na água e recolha` / `<gray>para puxar detritos.`; receita `"  P" / " PS" / "P S"`, `P` = `Tag.PLANKS`, `S` = `STRING`, chave `NamespacedKey("oceanblock", "gancho")`.
 - Coleta só por dono, membro ou trust do lote (comparação de nome em minúsculas).
