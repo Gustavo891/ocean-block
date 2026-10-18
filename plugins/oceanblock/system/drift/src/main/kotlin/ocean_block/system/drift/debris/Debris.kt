@@ -22,7 +22,7 @@ class Debris(
     var landedTopY: Int = 0
     var stuckSinceMillis: Long? = null
     var fadeStartTick: Int? = null
-    var pullTarget: UUID? = null
+    var pullTarget: PullTarget? = null
     var pullTicksLeft: Int = 0
 
     val isFree: Boolean get() = pullTarget == null

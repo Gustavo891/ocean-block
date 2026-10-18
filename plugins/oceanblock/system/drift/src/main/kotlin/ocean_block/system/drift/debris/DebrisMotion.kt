@@ -6,9 +6,12 @@ import ocean_block.system.drift.config.DriftSettings
 import ocean_block.system.drift.lane.DriftLane
 import ocean_block.system.drift.lane.LanePoint
 import ocean_block.system.drift.loot.DropRoller
+import ocean_block.system.drift.net.NetCatch
+import ocean_block.system.drift.net.NetDelivery
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.UUID
 import kotlin.random.Random
@@ -29,8 +32,10 @@ internal object DebrisMotion {
             return DebrisDive.fade(debris, tick.settings)
         }
         if (!move(debris, island, tick)) return false
+        if (touchCollect(debris, island, tick.settings.touchRadius)) return false
 
-        return !touchCollect(debris, island, tick.settings.touchRadius)
+        NetCatch.tryCatch(debris, tick.settings.netRadius)
+        return true
     }
 
     private fun move(debris: Debris, island: Island, tick: MotionTick): Boolean =
@@ -40,22 +45,42 @@ internal object DebrisMotion {
             Support.GROUND -> DebrisFall.rest(debris, tick.settings, tick.nowMillis)
         }
 
-    private fun pull(debris: Debris): Boolean {
-        val player = debris.pullTarget?.let(Bukkit::getPlayer) ?: return false
+    private fun pull(debris: Debris): Boolean =
+        when (val target = debris.pullTarget) {
+            is PullTarget.Player -> pullToPlayer(debris, target)
+            is PullTarget.Net -> pullToNet(debris, target)
+            null -> false
+        }
+
+    private fun pullToPlayer(debris: Debris, target: PullTarget.Player): Boolean {
+        val player = Bukkit.getPlayer(target.uuid) ?: return false
         if (player.world != debris.entity.world) {
             deliver(debris, player)
             return false
         }
 
-        val from = debris.entity.location
-        val fraction = DebrisRules.pullFraction(debris.pullTicksLeft)
-        val offset = player.location.toVector().subtract(from.toVector()).multiply(fraction)
-        debris.entity.teleport(from.add(offset))
-        debris.pullTicksLeft -= DebrisRules.TICKS_PER_STEP
-
-        if (debris.pullTicksLeft > 0) return true
+        if (stepToward(debris, player.location)) return true
         deliver(debris, player)
         return false
+    }
+
+    private fun pullToNet(debris: Debris, target: PullTarget.Net): Boolean {
+        val placed = NetCatch.receiver(target.placedUuid) ?: return false
+        val destination = NetCatch.center(placed) ?: return false
+        if (destination.world != debris.entity.world) return false
+
+        if (stepToward(debris, destination)) return true
+        NetDelivery.deliver(placed, DropRoller.roll(debris.type, Random), destination)
+        return false
+    }
+
+    private fun stepToward(debris: Debris, destination: Location): Boolean {
+        val from = debris.entity.location
+        val fraction = DebrisRules.pullFraction(debris.pullTicksLeft)
+        val offset = destination.toVector().subtract(from.toVector()).multiply(fraction)
+        debris.entity.teleport(from.add(offset))
+        debris.pullTicksLeft -= DebrisRules.TICKS_PER_STEP
+        return debris.pullTicksLeft > 0
     }
 
     private fun drift(debris: Debris, island: Island, tick: MotionTick): Boolean {

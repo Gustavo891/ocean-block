@@ -12,6 +12,7 @@ data class DriftSettings(
     val stuckSeconds: Int,
     val hookRadius: Double,
     val touchRadius: Double,
+    val netRadius: Double,
     val streaks: Boolean,
     val streaksPerSecond: Double,
     val animation: AnimationSettings,

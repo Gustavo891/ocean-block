@@ -6,6 +6,7 @@ import ocean_block.system.drift.config.DriftSettings
 import ocean_block.system.drift.lane.DriftLane
 import ocean_block.system.drift.loot.DebrisPicker
 import ocean_block.system.drift.loot.DebrisPool
+import ocean_block.system.drift.net.NetIndex
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import org.bukkit.Bukkit
@@ -54,9 +55,13 @@ object DebrisManager {
     }
 
     fun beginPull(debris: Debris, player: Player) {
+        beginPull(debris, PullTarget.Player(player.uniqueId))
+    }
+
+    fun beginPull(debris: Debris, target: PullTarget) {
         if (!debris.isCollectable || debris !in tracked) return
 
-        debris.pullTarget = player.uniqueId
+        debris.pullTarget = target
         debris.pullTicksLeft = DebrisRules.PULL_TICKS
     }
 
@@ -66,6 +71,9 @@ object DebrisManager {
             .associateBy { it.island.uuid }
 
     private fun spawnTick(settings: DriftSettings, pool: DebrisPool) {
+        runCatching { NetIndex.rebuild() }
+            .onFailure { Instance.logger.warning("[deriva] falha ao indexar redes: ${it.message}") }
+
         activeLots().values
             .filter { lot -> tracked.count { it.islandId == lot.island.uuid } < settings.maxPerLot }
             .forEach { lot ->

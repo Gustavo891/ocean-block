@@ -66,6 +66,7 @@ class DriftConfigParserTest : StringSpec({
         config.settings.obstacle shouldBe DEFAULT_OBSTACLE
         config.settings.hookRadius shouldBe 2.0
         config.settings.touchRadius shouldBe 1.5
+        config.settings.netRadius shouldBe 3.0
 
         config.types.associate { it.id to it.display } shouldBe mapOf(
             "tabua" to Material.OAK_PLANKS,
@@ -167,6 +168,7 @@ class DriftConfigParserTest : StringSpec({
             stuckSeconds = 20,
             hookRadius = 2.0,
             touchRadius = 1.5,
+            netRadius = 3.0,
             streaks = true,
             streaksPerSecond = 6.0,
             animation = DEFAULT_ANIMATION,
@@ -174,6 +176,63 @@ class DriftConfigParserTest : StringSpec({
         )
         config.types.single().sink shouldBe 0.0
         warnings shouldHaveSize 0
+    }
+
+    "rede raio valido e lido" {
+        val config = parse(
+            """
+            rede:
+              raio: 4.5
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+        )!!
+
+        config.settings.netRadius shouldBe 4.5
+    }
+
+    "rede raio invalido usa padrao ou limite com aviso" {
+        val texto = mutableListOf<String>()
+        val invalido = parse(
+            """
+            rede:
+              raio: longe
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            texto,
+        )!!
+
+        invalido.settings.netRadius shouldBe 3.0
+        texto shouldHaveSize 1
+        texto.single() shouldContain "rede.raio"
+
+        val negativo = mutableListOf<String>()
+        val abaixo = parse(
+            """
+            rede:
+              raio: -1
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            negativo,
+        )!!
+
+        abaixo.settings.netRadius shouldBe 0.1
+        negativo shouldHaveSize 1
+        negativo.single() shouldContain "rede.raio"
     }
 
     "largura minima fora de 0 a largura e limitada com aviso" {

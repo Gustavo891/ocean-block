@@ -83,7 +83,7 @@ class OceanBlockPlugin : JavaPlugin() {
             { CollectionsSystem.init(this, viewFrame, paperCommandManager) },
             { EnchantsSystem.init(this, paperCommandManager) },
             { IslandsSystem.init(this, viewFrame) },
-            { DriftSystem.init(this) },
+            { DriftSystem.init(this, viewFrame) },
             { BattlePassSystem.init(viewFrame, paperCommandManager) },
             { PlaytimeSystem.init(this) },
             { ScoreboardSystem.init(this, paperCommandManager) },

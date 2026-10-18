@@ -32,6 +32,9 @@ coleta:
   raio-gancho: 2.0
   raio-toque: 1.5
 
+rede:
+  raio: 3.0
+
 detritos:
   tabua:
     peso: 50

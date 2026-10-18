@@ -32,6 +32,7 @@ object DriftConfigParser {
         val current = root.getConfigurationSection("corrente")
         val spawn = root.getConfigurationSection("spawn")
         val pickup = root.getConfigurationSection("coleta")
+        val net = root.getConfigurationSection("rede")
         val laneWidth = number(current?.get("largura"), "corrente.largura", DEFAULT_LANE_WIDTH, 0.0, null, warn)
 
         return DriftSettings(
@@ -53,6 +54,7 @@ object DriftConfigParser {
             stuckSeconds = number(spawn?.get("tempo-preso-segundos"), "spawn.tempo-preso-segundos", 20.0, 1.0, null, warn).toInt(),
             hookRadius = number(pickup?.get("raio-gancho"), "coleta.raio-gancho", 2.0, 0.1, null, warn),
             touchRadius = number(pickup?.get("raio-toque"), "coleta.raio-toque", 1.5, 0.1, null, warn),
+            netRadius = number(net?.get("raio"), "rede.raio", 3.0, 0.1, null, warn),
             streaks = flag(current?.get("riscos"), "corrente.riscos", true, warn),
             streaksPerSecond = number(current?.get("riscos-por-segundo"), "corrente.riscos-por-segundo", 6.0, 0.0, null, warn),
             animation = parseAnimation(root.getConfigurationSection("animacao"), warn),
