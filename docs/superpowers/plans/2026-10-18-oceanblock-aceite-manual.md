@@ -32,3 +32,36 @@ Verificações que precisam de jogador no jogo; os agentes não conseguiram roda
 - [ ] Sair e entrar de novo: volta para o raft.
 - [ ] `/locate structure minecraft:shipwreck` não encontra nada.
 - [ ] `/oceanblock reload`, `/shop`, `/sell`, `/tops` respondem.
+
+## 7. Deriva e gancho
+Pré-requisito: raft criado e o servidor com o plugin novo. A config fica em `server/plugins/ocean-block/drift.yml`.
+
+### Config e itens
+- [ ] Na primeira subida, `server/plugins/ocean-block/drift.yml` foi criado com os 4 tipos (`tabua`, `folhas`, `sucata`, `barril`).
+- [ ] Jogador novo (nunca entrou antes) recebe o gancho ao entrar; jogador antigo não recebe de novo.
+- [ ] `/citem give gancho` entrega o gancho.
+- [ ] A receita do gancho funciona na bancada (`..P / .PS / P.S`, P = qualquer tábua, S = linha) e o resultado é o gancho custom, não uma vara comum.
+
+### Detritos
+- [ ] Em pé no raft, detritos aparecem a montante e passam boiando perto do raft, rente à água (Y ~62,6), movendo suave, na direção da corrente (leste por padrão).
+- [ ] Em ~2 minutos já passam tábuas suficientes para crescer o raft; nunca mais de 8 detritos ao mesmo tempo no lote.
+- [ ] Detrito que passa do fim da trilha (80 blocos) some sem sobrar entidade.
+- [ ] Detrito que encosta em bloco sólido na altura do raft (tábua, laje, cerca) para e some em ~60 s se ninguém pegar.
+- [ ] Alga ou grama-marinha que chega à superfície NÃO para o detrito; tábua, laje e cerca param.
+- [ ] Com a distância de renderização baixa (ex.: `view-distance=2`), os detritos continuam nascendo e não forçam o carregamento de chunks.
+
+### Coleta
+- [ ] Lançar a linha do gancho perto de um detrito e recolher: o detrito desliza até o jogador em ~0,5 s, com som, respingo e action bar `+N item`.
+- [ ] Nadar até um detrito (a menos de 1,5 bloco) coleta na hora; na borda do raft também.
+- [ ] Barril dá loot variado (pão, linha, alga, muda, bacalhau etc.) e nunca vem vazio (pior caso: 1 linha).
+- [ ] Com inventário cheio, o que não cabe cai aos pés do jogador.
+- [ ] Pesca vanilla com o gancho continua dando peixe.
+- [ ] Vara de pesca comum não puxa detrito.
+- [ ] Visitante sem membro/trust perto do detrito não coleta (nem por toque, nem com gancho) e não recebe mensagem; membro e trust coletam.
+- [ ] Espectador (modo espectador) perto de um detrito: anotar o que acontece (coleta, ignora ou erro no log). O comportamento ainda não foi decidido.
+
+### Limpeza
+- [ ] Sair do lote (ou desconectar) apaga os detritos do lote, sem ficar nenhum flutuando.
+- [ ] `/raft reset terrain <dono> -confirm` não deixa detrito fantasma (somem no tick seguinte).
+- [ ] Reiniciar o servidor com detritos no mundo: depois de subir não sobra nenhum `ItemDisplay` de detrito.
+- [ ] Sem erros `[deriva]` no log durante toda a sessão.
