@@ -1,40 +1,34 @@
 # OceanBlock — Aceite manual (fork base + raft)
 
-Checks that need a player in-game. Agents could not run them. Server: `server/`, port 25566. Boot by running `java -jar paper.jar --nogui` directly; `start.bat` restarts in a loop.
+Verificações que precisam de jogador no jogo; os agentes não conseguiram rodar. Servidor: `server/`, porta 25566. Suba com `java -jar paper.jar --nogui` direto (o `start.bat` reinicia em loop).
 
 ## 1. Preparação
-- [ ] Save the raft schematic. Anywhere in the ocean, place a 3×3 of `OAK_PLANKS` at Y 62 and a chest on top of the corner plank (+1, 63, +1).
-  - `//pos1` (-1, 62, -1) and `//pos2` (+1, 63, +1), relative to the center.
-  - Stand on top of the center plank, with your feet at Y 63, then run `//copy` and `//schem save raft`.
-  - Copy `plugins/FastAsyncWorldEdit/schematics/raft.schem` to `server/plugins/ocean-block/templates/raft.schem`.
+- [ ] Salvar o schematic do raft: em qualquer ponto do oceano, 3×3 de `OAK_PLANKS` em Y 62 e um baú em cima da tábua do canto (+1, 63, +1). `//pos1` (-1, 62, -1) e `//pos2` (+1, 63, +1) relativos ao centro; em pé em cima da tábua central (pés em Y 63), `//copy` e `//schem save raft`. Copiar `plugins/FastAsyncWorldEdit/schematics/raft.schem` para `server/plugins/ocean-block/templates/raft.schem`.
 
 ## 2. Mundo
-- [ ] Fly about 2000 blocks in two directions: only water, no land.
-- [ ] Dive at (0, 0): the floor is sand/gravel at roughly Y 41–44.
-- [ ] At X=5000, Z=5000, build on the surface and dig into the floor. Then select 100×100 at full height and run `//regen`: water and floor come back.
+- [ ] Voar ~2000 blocos em duas direções: só água, nenhuma terra.
+- [ ] Mergulhar em (0, 0): fundo de areia/cascalho por volta de Y 41–44.
+- [ ] Em X=5000, Z=5000: construir na superfície e cavar o fundo, selecionar 100×100 da altura mínima à máxima e `//regen`: água e fundo voltam.
 
 ## 3. Raft
-- [ ] A new player joins (or runs `/raft`): they land on the raft, level with the water, with the chest (or the 3×3 fallback if there is no schematic).
-- [ ] Temporarily rename `raft.schem`, then create a raft with another new player: you get the 3×3 of planks plus a `[raft]` severe log. Restore the name.
-- [ ] Break the center plank: `OAK_PLANKS` drops, it does not grow back, and no mob spawns.
-- [ ] The HUD shows `Raft • 30x30`. After a border upgrade it shows `Raft • 50x50` right away.
-- [ ] The scoreboard shows the title `OCEAN BLOCK` and no raw `%placeholder%`.
-- [ ] `/raft`, `/balsa`, `/ilha`, `/island` and `/is` all open the command. `/is phases` and `/is setphase` no longer exist.
-- [ ] Messages and menus say "raft" with the right gender ("seu raft").
+- [ ] Jogador novo entra (ou `/raft`): aparece em cima do raft, rente à água, com baú (ou o 3×3 de fallback sem schematic).
+- [ ] Renomear `raft.schem` temporariamente e criar raft com outro jogador novo: 3×3 de tábuas + log `[raft]` severe. Voltar o nome.
+- [ ] Quebrar a tábua central: dropa `OAK_PLANKS`, não regenera, nenhum mob nasce.
+- [ ] HUD mostra `Raft • 30x30`; depois de um upgrade de borda mostra `Raft • 50x50` na hora.
+- [ ] Scoreboard com título `OCEAN BLOCK` e nenhum `%placeholder%` cru.
+- [ ] `/raft`, `/balsa`, `/ilha`, `/island` e `/is` abrem o comando; `/is phases` e `/is setphase` não existem mais.
+- [ ] Mensagens e menus dizem "raft" com concordância certa ("seu raft").
 
 ## 4. Construção e membros
-- [ ] Build outward from the raft's edge with dirt, cobblestone and planks. Outside the border it is blocked.
-- [ ] `/raft member <outro>` lets the other player build. Without member or trust, they cannot.
-- [ ] `/raft sethome` outside your own raft is refused. Inside it works, and survives a restart.
+- [ ] Construir para fora a partir da borda do raft com terra, pedregulho e tábua; fora da borda é bloqueado.
+- [ ] `/raft member <outro>`: o outro constrói; sem membro/trust, não.
+- [ ] `/raft sethome` fora do próprio raft é recusado; dentro funciona e sobrevive a reinício.
 
 ## 5. Reset
-- [ ] Build outward, dig into the floor, drop an item, spawn a mob, and set a home elsewhere. Then run `/raft reset terrain <dono> -confirm`.
-  - Water and floor are restored and the raft is pasted again.
-  - The item and the mob are removed.
-  - The player is back on top of the raft, and the home is back in the center.
-- [ ] Place a custom block in the lot before the reset: it is no longer tracked afterwards.
+- [ ] Construir para fora, cavar o fundo, soltar um item, spawnar um mob, definir home em outro lugar; `/raft reset terrain <dono> -confirm`: mar e fundo restaurados, raft recolado, item e mob removidos, jogador volta em cima do raft e a home volta para o centro.
+- [ ] Bloco custom colocado no lote antes do reset deixa de ser rastreado depois.
 
 ## 6. Geral
-- [ ] Log out and back in: you return to the raft.
-- [ ] `/locate structure minecraft:shipwreck` finds nothing.
-- [ ] `/oceanblock reload`, `/shop`, `/sell` and `/tops` respond.
+- [ ] Sair e entrar de novo: volta para o raft.
+- [ ] `/locate structure minecraft:shipwreck` não encontra nada.
+- [ ] `/oceanblock reload`, `/shop`, `/sell`, `/tops` respondem.
