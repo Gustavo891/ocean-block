@@ -30,11 +30,11 @@ Novo modo de jogo inspirado em **FTB OceanBlock** e **Raft**. O jogador nasce nu
 
 ### 1.2 Sistemas herdados
 
-**Mantidos:** economia (`currencies`, `shop`, `sell`, `auction-house`, `trader`, `coinflip`, `tops`), progressão paralela (`skills`, `collections`, `battle-pass`, `enchants`, `craft`), `playtime`, `starter-kit`, `scoreboard`.
+**Mantidos:** economia (`currencies`, `shop`, `sell`, `auction-house`, `trader`, `coinflip`, `tops`), progressão paralela (`collections`, `battle-pass`, `enchants`, `craft`), `playtime`, `starter-kit`, `scoreboard`.
 
 **Mantidos como infraestrutura:** `islands` (vira o raft), `worlds`, `spawn`, `custom-items` (só o framework; gancho e estações serão construídos nele), todos os `lib:*`, `plugins/textura`.
 
-**Removidos:** `arena`, `combat-log`, `fly-timer`, `xp-bottle`, `minions`, `spawners`, `mob-drops`, `repair`, `special-items`, `chats`.
+**Removidos:** `arena`, `combat-log`, `fly-timer`, `xp-bottle`, `minions`, `spawners`, `mob-drops`, `repair`, `special-items`, `chats`, `skills` (removido em 2026-10-18 a pedido do usuário).
 
 ---
 

@@ -20,7 +20,6 @@ import ocean_block.system.drift.DriftSystem
 import ocean_block.system.currencies.CurrenciesSystem
 import ocean_block.system.currencies.currency.CurrencyManager
 import ocean_block.system.enchants.EnchantsSystem
-import ocean_block.system.skills.SkillsSystem
 import ocean_block.system.islands.IslandsSystem
 import ocean_block.system.islands.command.IslandCommand
 import ocean_block.system.islands.listener.IslandListener
@@ -66,7 +65,6 @@ class OceanBlockPlugin : JavaPlugin() {
         DriftSystem.onDisable()
         CoinFlipManager.onDisable()
         PlacedBlockManager.onDisable()
-        SkillsSystem.onDisable()
         CollectionsSystem.onDisable()
         SpawnSystem.onDisable()
         ScoreboardSystem.onDisable()
@@ -82,7 +80,6 @@ class OceanBlockPlugin : JavaPlugin() {
             { CoinFlipSystem.init(this, viewFrame) },
             { CraftSystem.init(viewFrame, paperCommandManager) },
             { CurrenciesSystem.init(this, paperCommandManager) },
-            { SkillsSystem.init(this, viewFrame, paperCommandManager) },
             { CollectionsSystem.init(this, viewFrame, paperCommandManager) },
             { EnchantsSystem.init(this, paperCommandManager) },
             { IslandsSystem.init(this, viewFrame) },

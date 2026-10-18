@@ -11,5 +11,4 @@ dependencies {
     compileOnly(projects.lib.itemBuilder)
 
     compileOnly(projects.plugins.oceanblock.system.collections)
-    compileOnly(projects.plugins.oceanblock.system.skills)
 }

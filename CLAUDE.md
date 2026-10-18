@@ -75,7 +75,7 @@ Each feature lives in its own module under `plugins/oceanblock/system/<name>/` a
 
 To add a feature module: register it in `settings.gradle.kts`, add it to the plugin's dependency loop (systems under `:plugins:oceanblock:system:` are auto-included), and call its `init` in `setupSystems()`. Those two steps are independent — a module can be included and shaded without being `init`ed. Check `setupSystems()` before assuming a module under `system/` is live.
 
-Systems may `compileOnly` on other systems to register into them (e.g. `skills` depends on `craft` and calls `SkillRecipeGates.registerAll()` from its own `init`, and on `islands` for island lookups). Keep that registration inside the depending system's `init`, not in the plugin module.
+Systems may `compileOnly` on other systems to register into them (e.g. `drift` depends on `custom-items` and calls `CustomItemRegistry.register(GanchoItem)` from its own `init`, and on `islands` for island lookups). Keep that registration inside the depending system's `init`, not in the plugin module.
 
 #### Custom-item framework (`system/custom-items`)
 
@@ -101,13 +101,12 @@ Debris floats past each active island and the player pulls it in for materials. 
 - **Seam for subproject 3**: debris type selection goes through `DebrisPool.typesFor(island)`; today `ConfigDebrisPool` returns every type from `drift.yml`. Per-phase pools replace that implementation, not the manager.
 - **Testing limit**: the pure units (`DriftConfigParser`, `DebrisPicker`, `DropRoller`, `DriftLane`, `CollectorRule`, `FloatMotion`, the arithmetic in `DebrisRules`, `DiveRules` and `GravityRules` with water/solid injected as lambdas) have Kotest tests. Rules that take a `Material` (`DebrisRules.isPassable` / `Material.isSolid`, `BlockProbe`) **cannot be unit-tested**: on Paper 26.3 `Material.isSolid` needs the server registry, absent in a plain JVM test. Only the manual checklist (section 7 of `docs/superpowers/plans/2026-10-18-oceanblock-aceite-manual.md`) covers them; do not "fix" that by mocking `Material`.
 
-#### Progression systems (`system/skills`, `system/battle-pass`, `system/collections`)
+#### Progression systems (`system/battle-pass`, `system/collections`)
 
-Three separate progression tracks, all Manager+Repository backed:
+Two separate progression tracks, both Manager+Repository backed. The `skills` system was removed from OceanBlock on 2026-10-18 (its Mongo collection `skills` is left untouched and unused):
 
-- **`skills`** — five skills (`Skill` enum), leveled by XP from gameplay listeners. Perks are one `Listener` per skill (`MiningPerks`, `LumberPerks`, `FarmingPerks`, `CombatPerks`, `FishingPerks`), all registered in `SkillsSystem.init`. Levels gate crafting through `SkillRecipeGates.registerAll()` (registers into `system/craft`) and are exposed to PlaceholderAPI via `SkillExpansion` — registered only when PlaceholderAPI is present. XP feedback is **batched**: `XpFeedback` accumulates gains and flushes every 5 ticks into the `SkillXp` action-bar channel plus a floating text display, so fast mining doesn't spam. Admin commands operate on **levels** (`/skills setlevel|addxp|reset <player> <skill> ...`) with `skills` tab completion registered in `SkillsSystem.init`.
 - **`battle-pass`** — `Challenges` is a **hardcoded enum** (display name, icon `ItemStack`, `xpReward`, and a sealed `ChallengeObjective` such as `BreakOneBlock`, `CustomCraft`, `SellValue`; `BreakOneBlock` is inert, with no progress, until subproject 5), not YAML. Adding a challenge means adding an enum entry plus the matching branch in `ChallengeListener`. `BattlePassSystem` exposes its `ChallengeListener` as a public `lateinit` so other systems can report progress into it.
-- Both, plus `collections`, render their menus with Textura fonts/glyphs — see the Textura section for `TitleApi`.
+- It and `collections` render their menus with Textura fonts/glyphs — see the Textura section for `TitleApi`.
 
 `MultiTool` used to live in the plugin module and is now `content/multitool/MultiToolItem` in `custom-items`, registered like any other built-in; `/multitool` still hands it out, and `/citem give multitool` works too.
 
@@ -122,8 +121,8 @@ Systems depend `compileOnly` on `lib:*` and occasionally on other systems; the *
 - **`instance`** — two global handles set in `onEnable`: `Instance` (`JavaPlugin`, backed by `PluginInstance`) for the Bukkit scheduler / `NamespacedKey` / logging, and `ScheduledExecutor` (single-thread `ScheduledExecutorService`, backed by `ScheduledExecutorInstance`) for off-main-thread periodic work such as repository flushes. Never touch the Bukkit API from `ScheduledExecutor`.
 - **`connection`** — data layer (MongoDB), with the env-split source sets described above. Exposes a single lazy `Mongo: MongoDatabase` (database `ocean-block`) configured with an automatic POJO codec provider, so domain classes persist without hand-written codecs.
 - **`coordinate`** — `SimpleLocation` and world-coordinate helpers.
-- **`actionbar`** — the single owner of the action bar. **Never call `player.sendActionBar` directly** from a system: whoever writes last wins and short messages get erased by periodic ones. Publish with `ActionBar.send(player, Channel.X, component, durationTicks)`; a 2-tick render task shows the highest-`priority` live channel and re-sends every 20 ticks so it doesn't fade. Add a `Channel` enum entry per system that writes there (`SkillXp` 20). Safe to call off the main thread.
-- **`rewards`** — shared reward model (`Reward(type, value, material, amount)`, `RewardType.Message | Item | Command`) and `RewardGranter.grant(rewards, player(s))`, which handles full inventories (drops leftovers) and `%player%` / `{player}` substitution in commands. Island phases and skill levels both pay through it — new reward-granting features reuse it instead of re-implementing delivery.
+- **`actionbar`** — the single owner of the action bar. **Never call `player.sendActionBar` directly** from a system: whoever writes last wins and short messages get erased by periodic ones. Publish with `ActionBar.send(player, Channel.X, component, durationTicks)`; a 2-tick render task shows the highest-`priority` live channel and re-sends every 20 ticks so it doesn't fade. Add a `Channel` enum entry per system that writes there (`Drift` 15). Safe to call off the main thread.
+- **`rewards`** — shared reward model (`Reward(type, value, material, amount)`, `RewardType.Message | Item | Command`) and `RewardGranter.grant(rewards, player(s))`, which handles full inventories (drops leftovers) and `%player%` / `{player}` substitution in commands. Island phases pay through it — new reward-granting features reuse it instead of re-implementing delivery.
 - **`toast`** — advancement-toast popups, sent as raw `WrapperPlayServerUpdateAdvancements` packets through packetevents (grant then revoke 5 ticks later). Only `ToastApi.send(...)` is public; `ToastService` is `internal`. Add a `ToastType` entry per use case — the enum maps to the advancement frame.
 - **`formatter`**, **`translation`**, **`item-builder`** (`Items` / `ItemStackExt`) — text, i18n, item construction.
 
