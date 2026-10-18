@@ -48,8 +48,14 @@ Pré-requisito: raft criado e o servidor com o plugin novo. A config fica em `se
 - [ ] Detrito que passa do fim da trilha (40 blocos) some sem sobrar entidade.
 - [ ] Detrito que encosta na borda do raft com 1 bloco de profundidade (tábua, laje, cerca na altura do raft) afunda devagar, passa por baixo sem atravessar blocos, volta à superfície do outro lado e segue a corrente; submerso, solta bolhas em vez de respingo e balança menos.
 - [ ] Parede sólida da superfície até o fundo (ou mais funda que 3 blocos): o detrito para encostado e, após ~20 s, afunda meio bloco e encolhe até sumir (~1 s), sem sobrar entidade.
-- [ ] Detrito parado na parede ou sumindo não é coletado por toque nem puxado pelo gancho; submerso (mergulhando sob o raft) ainda é.
+- [ ] Detrito preso na parede pode ser pego por toque e puxado pelo gancho; submerso (mergulhando sob o raft) também. Só o detrito sumindo não é coletado.
 - [ ] Alga ou grama-marinha que chega à superfície NÃO faz o detrito mergulhar; tábua, laje e cerca fazem.
+- [ ] Tirar a água de uma área na frente da trilha com balde ou esponja: o detrito entra no buraco e cai (acelerando, sem andar para os lados). Se cair na água de baixo, volta a boiar e sobe até a superfície dela. Se cair num bloco, fica no chão, parado e sem girar.
+- [ ] Tirar a água logo embaixo de um detrito boiando faz ele cair na hora.
+- [ ] Mergulho não passa por ar: com um bolsão de ar sob a borda do raft, o detrito não mergulha por ele (cai ou fica preso).
+- [ ] Detrito no chão ou preso pode ser pego nadando ou andando até ele e com o gancho; se ninguém pegar, some em ~20 s.
+- [ ] Devolver a água sobre um detrito no chão faz ele voltar a boiar.
+- [ ] Detrito que cai num buraco muito fundo (mais de 64 blocos abaixo do raft ou fora do mundo) é removido sem erro no log.
 - [ ] Detritos nunca forçam o carregamento de chunks: com a distância de renderização baixa (ex.: `view-distance=2`), podem nascer menos detritos.
 
 ### Coleta

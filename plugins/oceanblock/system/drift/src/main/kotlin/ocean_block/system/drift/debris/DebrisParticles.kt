@@ -19,9 +19,9 @@ internal object DebrisParticles {
     private const val STREAK_LIFT = 0.1
     private const val STREAK_SPEED = 0.05
 
-    fun wake(world: World, point: LanePoint, settings: DriftSettings) {
+    fun wake(world: World, point: LanePoint, waterline: Double, settings: DriftSettings) {
         val behind = DriftLane.advance(point, settings.direction, -WAKE_BEHIND)
-        val y = settings.surfaceY + WAKE_LIFT
+        val y = waterline + WAKE_LIFT
         world.spawnParticle(Particle.SPLASH, behind.x, y, behind.z, WAKE_SPLASH_COUNT, WAKE_SPREAD, 0.0, WAKE_SPREAD, 0.0)
         world.spawnParticle(Particle.BUBBLE_POP, behind.x, y, behind.z, WAKE_POP_COUNT, 0.0, 0.0, 0.0, 0.0)
     }

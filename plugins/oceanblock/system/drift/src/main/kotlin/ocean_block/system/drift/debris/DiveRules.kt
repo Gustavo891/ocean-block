@@ -32,11 +32,15 @@ object DiveRules {
     fun fadeProgress(ticksIntoFade: Int, fadeTicks: Int): Double =
         if (fadeTicks <= 0) 1.0 else (ticksIntoFade.toDouble() / fadeTicks).coerceIn(0.0, 1.0)
 
-    fun levelY(depth: Int, surfaceY: Double, sink: Double): Double =
-        if (depth <= 0) surfaceY - sink else floor(surfaceY) - depth + BLOCK_CENTER
+    fun levelY(depth: Int, surfaceY: Double, sink: Double): Double = levelY(depth, depth <= 0, surfaceY, sink)
+
+    fun levelY(depth: Int, atSurface: Boolean, surfaceY: Double, sink: Double): Double =
+        if (atSurface) surfaceY - depth - sink else floor(surfaceY) - depth + BLOCK_CENTER
 
     fun bobScale(currentY: Double, surfaceLevelY: Double): Double =
         if (atTarget(currentY, surfaceLevelY)) 1.0 else SUBMERGED_BOB_SCALE
+
+    fun raftY(surfaceY: Double): Int = floor(surfaceY).toInt()
 
     private fun between(from: Int, to: Int): IntProgression =
         when {

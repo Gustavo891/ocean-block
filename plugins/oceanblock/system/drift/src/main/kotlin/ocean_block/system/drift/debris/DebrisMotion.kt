@@ -28,10 +28,17 @@ internal object DebrisMotion {
             DebrisDive.beginFade(debris)
             return DebrisDive.fade(debris, tick.settings)
         }
-        if (!drift(debris, island, tick)) return false
+        if (!move(debris, island, tick)) return false
 
         return !touchCollect(debris, island, tick.settings.touchRadius)
     }
+
+    private fun move(debris: Debris, island: Island, tick: MotionTick): Boolean =
+        when (debris.support) {
+            Support.FLOAT -> drift(debris, island, tick)
+            Support.FALL -> DebrisFall.fall(debris, tick.settings, tick.nowMillis)
+            Support.GROUND -> DebrisFall.rest(debris, tick.settings, tick.nowMillis)
+        }
 
     private fun pull(debris: Debris): Boolean {
         val player = debris.pullTarget?.let(Bukkit::getPlayer) ?: return false
@@ -65,9 +72,20 @@ internal object DebrisMotion {
 
         return when (val passage = DebrisDive.passage(debris, point, settings)) {
             Passage.Unloaded -> false
+            Passage.Unsupported -> startFalling(debris, settings)
+            Passage.Drop -> {
+                DebrisFall.begin(debris)
+                advanceTo(debris, next, point, settings)
+            }
             Passage.Blocked -> stall(debris, settings, tick.nowMillis)
-            is Passage.Open -> travel(debris, next, point, passage.depth, settings)
+            is Passage.Open -> travel(debris, next, point, passage, settings)
         }
+    }
+
+    private fun startFalling(debris: Debris, settings: DriftSettings): Boolean {
+        DebrisFall.begin(debris)
+        DebrisDive.hold(debris, settings)
+        return true
     }
 
     private fun stall(debris: Debris, settings: DriftSettings, nowMillis: Long): Boolean {
@@ -76,23 +94,27 @@ internal object DebrisMotion {
         return true
     }
 
-    private fun travel(debris: Debris, next: LanePoint, point: LanePoint, depth: Int, settings: DriftSettings): Boolean {
+    private fun travel(debris: Debris, next: LanePoint, point: LanePoint, open: Passage.Open, settings: DriftSettings): Boolean {
         debris.stuckSinceMillis = null
-        if (!DebrisDive.approach(debris, depth, settings)) {
-            DebrisDive.hold(debris, settings)
-            return true
-        }
+        if (DebrisDive.approach(debris, open, settings)) return advanceTo(debris, next, point, settings)
 
+        DebrisDive.hold(debris, settings)
+        return true
+    }
+
+    private fun advanceTo(debris: Debris, next: LanePoint, point: LanePoint, settings: DriftSettings): Boolean {
         debris.point = next
         val bobScale = DebrisDive.bobScale(debris, settings)
         DebrisEntities.place(debris.entity, DebrisPose.inPlace(point, debris.ageTicks, debris.float, settings, debris.levelY, bobScale))
-        if (settings.animation.wake && FloatMotion.wakeDue(debris.ageTicks)) trail(debris, point, settings)
+        if (debris.support == Support.FLOAT && settings.animation.wake && FloatMotion.wakeDue(debris.ageTicks)) {
+            trail(debris, point, settings)
+        }
         return true
     }
 
     private fun trail(debris: Debris, point: LanePoint, settings: DriftSettings) {
         val world = debris.entity.world
-        if (debris.depth == 0) DebrisParticles.wake(world, point, settings)
+        if (debris.atSurface) DebrisParticles.wake(world, point, settings.surfaceY - debris.depth, settings)
         else DebrisParticles.bubbles(world, point, debris.levelY, settings)
     }
 

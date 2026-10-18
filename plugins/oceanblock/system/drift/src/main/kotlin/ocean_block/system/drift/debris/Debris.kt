@@ -15,6 +15,10 @@ class Debris(
 ) {
     var ageTicks: Int = 0
     var depth: Int = 0
+    var atSurface: Boolean = true
+    var support: Support = Support.FLOAT
+    var velocityY: Double = 0.0
+    var restAgeTicks: Int = 0
     var stuckSinceMillis: Long? = null
     var fadeStartTick: Int? = null
     var pullTarget: UUID? = null
@@ -22,6 +26,5 @@ class Debris(
 
     val isFree: Boolean get() = pullTarget == null
     val isFading: Boolean get() = fadeStartTick != null
-    val isStuck: Boolean get() = stuckSinceMillis != null
-    val isCollectable: Boolean get() = isFree && !isFading && !isStuck
+    val isCollectable: Boolean get() = isFree && !isFading
 }

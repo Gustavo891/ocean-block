@@ -2,41 +2,41 @@ package ocean_block.system.drift.debris
 
 import ocean_block.system.drift.config.DriftSettings
 import ocean_block.system.drift.lane.LanePoint
-import org.bukkit.World
 import kotlin.math.floor
 
 internal sealed interface Passage {
     data object Unloaded : Passage
+    data object Unsupported : Passage
+    data object Drop : Passage
     data object Blocked : Passage
-    data class Open(val depth: Int) : Passage
+    data class Open(val depth: Int, val atSurface: Boolean) : Passage
 }
 
 internal object DebrisDive {
 
-    fun passage(debris: Debris, ahead: LanePoint, settings: DriftSettings): Passage {
-        val world = debris.entity.world
-        val location = debris.entity.location
-        val aheadX = floor(ahead.x).toInt()
-        val aheadZ = floor(ahead.z).toInt()
-        val hereX = location.blockX
-        val hereZ = location.blockZ
-        if (!DebrisEntities.isLoaded(world, aheadX, aheadZ)) return Passage.Unloaded
-        if (!DebrisEntities.isLoaded(world, hereX, hereZ)) return Passage.Unloaded
+    private const val SURFACE_SCAN_MARGIN = 4
 
-        val raftY = floor(settings.surfaceY).toInt()
-        val depth = DiveRules.targetDepth(
-            debris.depth,
-            settings.obstacle.maxDepth,
-            { passable(world, aheadX, raftY - it, aheadZ) },
-            { passable(world, hereX, raftY - it, hereZ) },
-        )
-        return depth?.let(Passage::Open) ?: Passage.Blocked
+    fun passage(debris: Debris, ahead: LanePoint, settings: DriftSettings): Passage {
+        val raftY = DiveRules.raftY(settings.surfaceY)
+        val here = hereColumn(debris, raftY)
+        val front = Column(debris.entity.world, floor(ahead.x).toInt(), floor(ahead.z).toInt(), raftY)
+        if (!front.isLoaded || !here.isLoaded) return Passage.Unloaded
+        if (!here.isWaterAtDepth(debris.depth)) return Passage.Unsupported
+        if (front.kindAt(raftY - debris.depth) == BlockKind.AIR) return Passage.Drop
+
+        return open(debris, here, front, settings.obstacle.maxDepth) ?: Passage.Blocked
     }
 
-    fun approach(debris: Debris, depth: Int, settings: DriftSettings): Boolean {
-        val targetY = DiveRules.levelY(depth, settings.surfaceY, debris.type.sink)
+    fun hereColumn(debris: Debris, raftY: Int): Column {
+        val location = debris.entity.location
+        return Column(debris.entity.world, location.blockX, location.blockZ, raftY)
+    }
+
+    fun approach(debris: Debris, open: Passage.Open, settings: DriftSettings): Boolean {
+        val targetY = DiveRules.levelY(open.depth, open.atSurface, settings.surfaceY, debris.type.sink)
         if (DiveRules.atTarget(debris.levelY, targetY)) {
-            debris.depth = depth
+            debris.depth = open.depth
+            debris.atSurface = open.atSurface
             debris.levelY = targetY
             return true
         }
@@ -68,14 +68,28 @@ internal object DebrisDive {
     }
 
     fun bobScale(debris: Debris, settings: DriftSettings): Double =
-        DiveRules.bobScale(debris.levelY, DiveRules.levelY(0, settings.surfaceY, debris.type.sink))
+        when {
+            debris.support != Support.FLOAT -> 0.0
+            !debris.atSurface -> DiveRules.SUBMERGED_BOB_SCALE
+            else -> DiveRules.bobScale(debris.levelY, DiveRules.levelY(debris.depth, true, settings.surfaceY, debris.type.sink))
+        }
+
+    private fun open(debris: Debris, here: Column, front: Column, maxDepth: Int): Passage.Open? {
+        val depth = DiveRules.targetDepth(
+            debris.depth,
+            maxOf(maxDepth, debris.depth),
+            front::isWaterAtDepth,
+            here::isWaterAtDepth,
+        ) ?: return null
+        val scan = maxOf(maxDepth + SURFACE_SCAN_MARGIN, depth)
+        val surface = GravityRules.surfaceDepth(scan, front::isWaterAtDepth, front::isSolidAtDepth)
+        return Passage.Open(depth, surface == depth)
+    }
 
     private fun poseHere(debris: Debris, settings: DriftSettings, levelY: Double): Pose {
         val location = debris.entity.location
         val here = LanePoint(location.x, location.z)
-        return DebrisPose.inPlace(here, debris.ageTicks, debris.float, settings, levelY, bobScale(debris, settings))
+        val age = if (debris.support == Support.GROUND) debris.restAgeTicks else debris.ageTicks
+        return DebrisPose.inPlace(here, age, debris.float, settings, levelY, bobScale(debris, settings))
     }
-
-    private fun passable(world: World, x: Int, y: Int, z: Int): Boolean =
-        DebrisRules.isPassable(world.getType(x, y, z))
 }
