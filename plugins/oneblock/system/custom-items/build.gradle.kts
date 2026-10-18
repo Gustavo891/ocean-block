@@ -16,7 +16,6 @@ dependencies {
     compileOnly(projects.plugins.oneblock.system.islands)
     compileOnly(projects.plugins.oneblock.system.craft)
     compileOnly(projects.plugins.oneblock.system.currencies)
-    compileOnly(projects.plugins.oneblock.system.minions)
 
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.assertions)

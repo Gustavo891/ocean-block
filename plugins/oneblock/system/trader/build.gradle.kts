@@ -17,5 +17,4 @@ dependencies {
 
     compileOnly(projects.plugins.oneblock.system.currencies)
     compileOnly(projects.plugins.oneblock.system.islands)
-    compileOnly(projects.plugins.oneblock.system.flyTimer)
 }

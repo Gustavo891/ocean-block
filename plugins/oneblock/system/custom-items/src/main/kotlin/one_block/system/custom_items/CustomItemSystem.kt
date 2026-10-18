@@ -7,14 +7,8 @@ import one_block.system.custom_items.block.CustomBlockCommand
 import one_block.system.custom_items.block.CustomBlockListener
 import one_block.system.custom_items.block.CustomBlockRegistry
 import one_block.system.custom_items.block.PlacedBlockManager
-import one_block.system.custom_items.content.magnet.MagnetItem
 import one_block.system.custom_items.content.multitool.MultiToolItem
 import one_block.system.custom_items.content.paxel.PaxelItem
-import one_block.system.custom_items.content.vacuum_hopper.VacuumHopper
-import one_block.system.custom_items.content.vacuum_hopper.view.HopperFilterView
-import one_block.system.custom_items.content.vacuum_hopper.view.HopperStorageView
-import one_block.system.custom_items.content.vacuum_hopper.view.HopperUpgradesView
-import one_block.system.custom_items.content.vacuum_hopper.view.VacuumHopperView
 import one_block.system.custom_items.item.CustomItemListener
 import one_block.system.custom_items.item.CustomItemRegistry
 import one_block.system.custom_items.reset.CustomBlockResetHook
@@ -38,7 +32,7 @@ object CustomItemSystem {
         startHeldTickTask()
 
         registerBuiltInItems()
-        registerBuiltInBlocks(viewFrame, commandManager)
+        registerBuiltInBlocks(commandManager)
 
         PlacedBlockManager.onInit()
 
@@ -74,7 +68,6 @@ object CustomItemSystem {
     }
 
     private fun registerBuiltInItems() {
-        CustomItemRegistry.register(MagnetItem())
         CustomItemRegistry.register(MultiToolItem())
 
         PaxelItem.all().forEach {
@@ -83,18 +76,7 @@ object CustomItemSystem {
         }
     }
 
-    private fun registerBuiltInBlocks(viewFrame: ViewFrame, commandManager: PaperCommandManager) {
-        val hopper = VacuumHopper()
-        CustomBlockRegistry.register(hopper)
-
-        viewFrame.with(
-            VacuumHopperView(),
-            HopperStorageView(),
-            HopperFilterView(),
-            HopperUpgradesView(),
-        )
-
+    private fun registerBuiltInBlocks(commandManager: PaperCommandManager) {
         commandManager.registerCommand(CustomBlockCommand())
-        Crafts.register(VacuumHopper.forgeRecipe(hopper))
     }
 }

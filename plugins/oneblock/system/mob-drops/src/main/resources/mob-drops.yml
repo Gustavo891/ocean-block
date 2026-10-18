@@ -1,8 +1,0 @@
-remove-drops:
-  ZOMBIE:
-    - IRON_INGOT
-    - CARROT
-    - POTATO
-
-  SKELETON:
-    - BOW

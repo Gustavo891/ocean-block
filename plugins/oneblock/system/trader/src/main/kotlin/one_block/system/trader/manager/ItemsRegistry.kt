@@ -1,6 +1,5 @@
 package one_block.system.trader.manager
 
-import one_block.system.fly_timer.Flys
 import one_block.system.islands.ext.getRandomByWeight
 import one_block.system.trader.model.ItemRarity
 import one_block.system.trader.model.TraderItem
@@ -31,8 +30,7 @@ object ItemsRegistry {
             6000000.0,
             2,
             ItemRarity.LEGENDARY
-        ),
-        TraderItem("tempo_voo", "Pena de Voo", Flys.createFlyItem(60), "coins", 50000.0, 10, ItemRarity.UNCOMMON)
+        )
     )
 
     fun addItem(item: TraderItem) {
