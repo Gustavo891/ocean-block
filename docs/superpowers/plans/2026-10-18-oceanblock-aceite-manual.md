@@ -11,7 +11,8 @@ Verificações que precisam de jogador no jogo; os agentes não conseguiram roda
 - [ ] Em X=5000, Z=5000: construir na superfície e cavar o fundo, selecionar 100×100 da altura mínima à máxima e `//regen`: água e fundo voltam.
 
 ## 3. Ilha
-- [ ] Jogador novo entra (ou `/ilha`): a ilha do schematic aparece no centro do lote e o jogador nasce em cima dela, no centro, com os pés em Y 64 (chão em Y 63), sem cair nem ficar preso em bloco.
+- [ ] Jogador novo entra (ou `/ilha`, ou o portal do spawn): a ilha do schematic aparece no centro do lote e o jogador é levado para cima dela só depois da colagem, no centro, com os pés em Y 64 (chão em Y 63), sem cair na água nem ficar preso em bloco.
+- [ ] Morrer e renascer: volta em cima da ilha no centro, não dentro do tronco da árvore.
 - [ ] Renomear `island.schem` temporariamente e criar ilha com outro jogador novo: 3×3 de grama sobre terra (grama em Y 63, terra em Y 62), jogador em pé na grama + log `[ilha]` severe. Voltar o nome.
 - [ ] Quebrar o bloco central: dropa normalmente, não regenera, nenhum mob nasce.
 - [ ] HUD mostra `Ilha • 30x30`; depois de um upgrade de borda mostra `Ilha • 50x50` na hora.
@@ -43,7 +44,7 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] A receita do gancho funciona na bancada (`..P / .PS / P.S`, P = qualquer tábua, S = linha) e o resultado é o gancho custom, não uma vara comum.
 
 ### Detritos
-- [ ] Em pé na ilha, detritos aparecem a montante e passam boiando ao lado da ilha, rente à água (Y ~62,6), movendo suave, na direção da corrente (leste por padrão). Passam dos dois lados, entre `largura-minima` (10) e `largura` (14) blocos do centro, rente à praia; nenhum vem pelo meio nem bate de frente na ilha.
+- [ ] Em pé na ilha, detritos aparecem a montante e passam boiando ao lado da ilha, rente à água (Y ~62,6), movendo suave, na direção da corrente (leste por padrão). Passam dos dois lados, entre `largura-minima` (8) e `largura` (13) blocos do centro, ou seja, 2 a 7 blocos fora da costa (a parte sólida da ilha vai até ~6 blocos do centro); nenhum vem pelo meio nem bate de frente na ilha.
 - [ ] Em ~2 minutos já passam tábuas suficientes para crescer a ilha; nunca mais de 8 detritos ao mesmo tempo no lote.
 - [ ] Detrito que passa do fim da trilha (40 blocos) some sem sobrar entidade.
 - [ ] Detrito que encosta numa borda construída na trilha com 1 bloco de profundidade (tábua, laje, cerca na altura da água) afunda devagar, passa por baixo sem atravessar blocos, volta à superfície do outro lado e segue a corrente; submerso, solta bolhas em vez de respingo e balança menos.

@@ -37,6 +37,24 @@ class IslandCommand(
         return island
     }
 
+    private fun enterNewIsland(sender: Player, island: Island) {
+        if (!sender.isOnline) return
+
+        sender.sendRichMessage("<green>Sua ilha foi criada com sucesso!")
+        val spawn = island.spawn.toBukkit()
+
+        if (spawn == null) {
+            sender.sendRichMessage("<red>Erro: mundo não carregado.")
+            return
+        }
+
+        sender.teleport(spawn.add(0.0, 2.0, 0.0))
+        sender.fallDistance = 0f
+        island.onJoin(sender)
+
+        sender.sendRichMessage("<green>Teleportado para sua ilha!")
+    }
+
     @Default
     fun onDefault(sender: Player, @Optional targetName: String?) {
         if (targetName != null) {
@@ -51,29 +69,14 @@ class IslandCommand(
             }
         }
 
-        var island = IslandManager.getIslandByOwnerUUID(sender.uniqueId)
+        val island = IslandManager.getIslandByOwnerUUID(sender.uniqueId)
         if (island == null) {
             sender.sendRichMessage("<green>Criando sua ilha...")
-            island = IslandManager.createIsland(sender)
+            val created = IslandManager.createIsland(sender) { ready -> enterNewIsland(sender, ready) }
 
-            if (island == null) {
+            if (created == null) {
                 sender.sendRichMessage("<red>As ilhas não foram carregadas. Avise a staff antes de continuar.")
-                return
             }
-
-            sender.sendRichMessage("<green>Sua ilha foi criada com sucesso!")
-            val spawn = island.spawn.toBukkit()
-
-            if (spawn == null) {
-                sender.sendRichMessage("<red>Erro: mundo não carregado.")
-                return
-            }
-
-            sender.teleport(spawn.add(0.0, 2.0, 0.0))
-            sender.fallDistance = 0f
-            island.onJoin(sender)
-
-            sender.sendRichMessage("<green>Teleportado para sua ilha!")
             return
         }
         island.teleportTo(sender)
@@ -134,7 +137,7 @@ class IslandCommand(
         }
 
         if (island.members.contains(target.player.name) || island.trustedNames.contains(target.player.name)) {
-            sender.sendRichMessage("<red>Você não pode bloquear um membro/confiavel de sua ilha. Remova-o primeiro!")
+            sender.sendRichMessage("<red>Você não pode bloquear um membro/confiável de sua ilha. Remova-o primeiro!")
             return
         }
 
@@ -163,7 +166,7 @@ class IslandCommand(
         }
 
         if (!island.isPublic) {
-            sender.sendRichMessage("<red>A ilha deste jogador não é publica.")
+            sender.sendRichMessage("<red>A ilha deste jogador não é pública.")
             return
         }
 

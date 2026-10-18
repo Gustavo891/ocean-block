@@ -59,8 +59,8 @@ class DriftConfigParserTest : StringSpec({
             "barril" to 0.12,
         )
         config.settings.laneLength shouldBe 40.0
-        config.settings.laneWidth shouldBe 14.0
-        config.settings.laneMinWidth shouldBe 10.0
+        config.settings.laneWidth shouldBe 13.0
+        config.settings.laneMinWidth shouldBe 8.0
         config.settings.spawnIntervalTicks shouldBe 100L
         config.settings.stuckSeconds shouldBe 20
         config.settings.obstacle shouldBe DEFAULT_OBSTACLE
@@ -159,8 +159,8 @@ class DriftConfigParserTest : StringSpec({
             direction = CurrentDirection.EAST,
             speed = 0.05,
             laneLength = 40.0,
-            laneWidth = 14.0,
-            laneMinWidth = 10.0,
+            laneWidth = 13.0,
+            laneMinWidth = 8.0,
             surfaceY = 62.85,
             spawnIntervalTicks = 100L,
             maxPerLot = 8,

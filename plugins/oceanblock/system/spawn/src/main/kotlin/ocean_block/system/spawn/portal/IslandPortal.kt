@@ -56,7 +56,7 @@ object IslandPortal {
         }
 
         player.sendRichMessage("<green>Criando sua ilha...")
-        IslandManager.createIsland(player)?.teleportTo(player)
+        IslandManager.createIsland(player) { ready -> if (player.isOnline) ready.teleportTo(player) }
     }
 
     private fun tick() {

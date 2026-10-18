@@ -11,8 +11,8 @@ object DriftConfigParser {
     private const val DEFAULT_MAX_STACK = 64
     private const val MAX_SPEED_VARIATION = 0.9
     private const val MAX_DIVE_DEPTH = 32.0
-    private const val DEFAULT_LANE_WIDTH = 14.0
-    private const val DEFAULT_LANE_MIN_WIDTH = 10.0
+    private const val DEFAULT_LANE_WIDTH = 13.0
+    private const val DEFAULT_LANE_MIN_WIDTH = 8.0
 
     private class MaterialRules(val isItem: (Material) -> Boolean, val maxStack: (Material) -> Int)
 

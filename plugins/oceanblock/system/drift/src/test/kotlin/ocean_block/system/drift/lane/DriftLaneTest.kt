@@ -36,11 +36,11 @@ class DriftLaneTest : StringSpec({
 
     "lateral fica entre o minimo e o maximo dos dois lados da ilha" {
         val random = Random(42)
-        val offsets = List(2000) { DriftLane.lateralOffset(random, 10.0, 14.0) }
+        val offsets = List(2000) { DriftLane.lateralOffset(random, 8.0, 13.0) }
 
         offsets.forEach {
-            abs(it) shouldBeGreaterThanOrEqual 10.0
-            abs(it) shouldBeLessThanOrEqual 14.0
+            abs(it) shouldBeGreaterThanOrEqual 8.0
+            abs(it) shouldBeLessThanOrEqual 13.0
         }
         offsets.any { it > 0.0 } shouldBe true
         offsets.any { it < 0.0 } shouldBe true

@@ -89,7 +89,7 @@ object IslandManager {
     }
 
 
-    fun createIsland(player: Player): Island? {
+    fun createIsland(player: Player, onReady: (Island) -> Unit = {}): Island? {
         if (!loaded) {
             Instance.logger.severe(
                 "[islands] Criação de ilha para ${player.name} recusada: as ilhas não foram carregadas."
@@ -134,7 +134,7 @@ object IslandManager {
         islandsByGrid[grid.gridX to grid.gridZ] = island
         markDirty(islandId)
 
-        StarterIsland.generate(island)
+        StarterIsland.generate(island) { onReady(island) }
 
         return island
     }

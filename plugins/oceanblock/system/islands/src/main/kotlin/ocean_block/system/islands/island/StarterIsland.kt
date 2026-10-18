@@ -10,6 +10,7 @@ import ocean_block.libs.instance.Instance
 import ocean_block.system.islands.reset.IslandArea
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.World
 import java.io.File
 import java.io.FileInputStream
 
@@ -21,12 +22,13 @@ object StarterIsland {
     private val schematic: File
         get() = File(File(Instance.dataFolder, FOLDER), SCHEMATIC)
 
-    fun generate(island: Island) {
+    fun generate(island: Island, onReady: () -> Unit = {}) {
         val area = IslandArea.of(island)
         val center = island.center.toBukkit()
 
         if (area == null || center == null) {
             Instance.logger.severe("[ilha] Mundo da ilha ${island.uuid} não carregado; ilha inicial pulada.")
+            onReady()
             return
         }
 
@@ -35,34 +37,40 @@ object StarterIsland {
         if (!file.exists()) {
             Instance.logger.severe("[ilha] '${file.path}' não existe; usando a plataforma de fallback na ilha ${island.uuid}.")
             placeFallback(island)
+            onReady()
             return
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(Instance, Runnable {
-            runCatching {
-                val format = ClipboardFormats.findByFile(file)
-                    ?: error("formato de schematic desconhecido: ${file.name}")
+            val result = runCatching { paste(file, area.world, center.blockX, center.blockZ) }
 
-                val clipboard = FileInputStream(file).use { input ->
-                    format.getReader(input).use { it.read() }
+            Bukkit.getScheduler().runTask(Instance, Runnable {
+                result.onFailure {
+                    Instance.logger.severe("[ilha] Falha ao colar a ilha ${island.uuid}: ${it.message}; usando a plataforma de fallback.")
+                    placeFallback(island)
                 }
-
-                val weWorld = BukkitAdapter.adapt(area.world)
-
-                WorldEdit.getInstance().newEditSession(weWorld).use { edit ->
-                    val operation = ClipboardHolder(clipboard)
-                        .createPaste(edit)
-                        .to(BlockVector3.at(center.blockX, IslandPlacement.PASTE_Y, center.blockZ))
-                        .ignoreAirBlocks(true)
-                        .build()
-
-                    Operations.complete(operation)
-                }
-            }.onFailure {
-                Instance.logger.severe("[ilha] Falha ao colar a ilha ${island.uuid}: ${it.message}; usando a plataforma de fallback.")
-                Bukkit.getScheduler().runTask(Instance, Runnable { placeFallback(island) })
-            }
+                onReady()
+            })
         })
+    }
+
+    private fun paste(file: File, world: World, centerX: Int, centerZ: Int) {
+        val format = ClipboardFormats.findByFile(file)
+            ?: error("formato de schematic desconhecido: ${file.name}")
+
+        val clipboard = FileInputStream(file).use { input ->
+            format.getReader(input).use { it.read() }
+        }
+
+        WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(world)).use { edit ->
+            val operation = ClipboardHolder(clipboard)
+                .createPaste(edit)
+                .to(BlockVector3.at(centerX, IslandPlacement.PASTE_Y, centerZ))
+                .ignoreAirBlocks(true)
+                .build()
+
+            Operations.complete(operation)
+        }
     }
 
     fun placeFallback(island: Island) {

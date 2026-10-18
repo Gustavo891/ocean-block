@@ -91,9 +91,10 @@ object IslandResetService {
             island.spawn = IslandPlacement.spawn(island.position, island.center.world)
             island.markDirty()
 
-            StarterIsland.generate(island)
-            returnPlayers(island, area)
-            sender.sendRichMessage("<green>Ilha de <white>${island.ownerName}</white> resetada.")
+            StarterIsland.generate(island) {
+                returnPlayers(island, area)
+                sender.sendRichMessage("<green>Ilha de <white>${island.ownerName}</white> resetada.")
+            }
         }
     }
 
