@@ -46,7 +46,7 @@ bukkit {
     author = "badoff"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
     depend = listOf("PlaceholderAPI", "SkinsRestorer", "Textura", "FastAsyncWorldEdit")
-    softDepend = listOf("packetevents")
+    softDepend = listOf("packetevents", "ModelEngine")
 }
 
 tasks.named<ShadowJar>("shadowJar") {
