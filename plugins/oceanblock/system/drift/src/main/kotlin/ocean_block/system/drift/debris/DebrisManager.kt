@@ -46,7 +46,7 @@ object DebrisManager {
     fun nearestFree(location: Location, radius: Double): Debris? {
         val radiusSquared = radius * radius
         return tracked.asSequence()
-            .filter { it.isFree && it.entity.isValid && it.entity.world == location.world }
+            .filter { it.isCollectable && it.entity.isValid && it.entity.world == location.world }
             .map { it to it.entity.location.distanceSquared(location) }
             .filter { (_, distance) -> distance <= radiusSquared }
             .minByOrNull { (_, distance) -> distance }
@@ -54,11 +54,10 @@ object DebrisManager {
     }
 
     fun beginPull(debris: Debris, player: Player) {
-        if (!debris.isFree || debris !in tracked) return
+        if (!debris.isCollectable || debris !in tracked) return
 
         debris.pullTarget = player.uniqueId
         debris.pullTicksLeft = DebrisRules.PULL_TICKS
-        debris.stuckSinceMillis = null
     }
 
     private fun activeLots(): Map<UUID, ActiveLot> =
@@ -87,11 +86,12 @@ object DebrisManager {
         )
 
         val params = FloatParams.roll(Random, settings.animation.speedVariation)
-        val pose = DebrisPose.along(point, 0, params, settings, type.sink)
+        val levelY = DiveRules.levelY(0, settings.surfaceY, type.sink)
+        val pose = DebrisPose.along(point, 0, params, settings, levelY)
         if (!DebrisEntities.isLoaded(lot.world, floor(pose.point.x).toInt(), floor(pose.point.z).toInt())) return
 
         val entity = DebrisEntities.spawn(lot.world, pose, type)
-        tracked += Debris(lot.island.uuid, type, entity, point, params)
+        tracked += Debris(lot.island.uuid, type, entity, point, params, levelY)
     }
 
     private fun lateral(halfWidth: Double): Double =

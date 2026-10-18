@@ -32,6 +32,12 @@ private val DEFAULT_ANIMATION = AnimationSettings(
     wake = true,
 )
 
+private val DEFAULT_OBSTACLE = ObstacleSettings(
+    maxDepth = 3,
+    diveSpeed = 0.08,
+    fadeTicks = 20,
+)
+
 class DriftConfigParserTest : StringSpec({
 
     "yaml padrao gera quatro tipos com pesos da spec" {
@@ -55,7 +61,8 @@ class DriftConfigParserTest : StringSpec({
         config.settings.laneLength shouldBe 40.0
         config.settings.laneWidth shouldBe 10.0
         config.settings.spawnIntervalTicks shouldBe 100L
-        config.settings.stuckSeconds shouldBe 60
+        config.settings.stuckSeconds shouldBe 20
+        config.settings.obstacle shouldBe DEFAULT_OBSTACLE
         config.settings.hookRadius shouldBe 2.0
         config.settings.touchRadius shouldBe 1.5
 
@@ -155,12 +162,13 @@ class DriftConfigParserTest : StringSpec({
             surfaceY = 62.85,
             spawnIntervalTicks = 100L,
             maxPerLot = 8,
-            stuckSeconds = 60,
+            stuckSeconds = 20,
             hookRadius = 2.0,
             touchRadius = 1.5,
             streaks = true,
             streaksPerSecond = 6.0,
             animation = DEFAULT_ANIMATION,
+            obstacle = DEFAULT_OBSTACLE,
         )
         config.types.single().sink shouldBe 0.0
         warnings shouldHaveSize 0
@@ -211,6 +219,52 @@ class DriftConfigParserTest : StringSpec({
             "riscos ", "riscos-por-segundo ", "balanco ", "periodo-balanco-ticks ", "inclinacao-graus ",
             "sinuosidade ", "periodo-sinuosidade-ticks ", "variacao-velocidade ", "afundamento ",
         ).forEach { key -> warnings.count { ".$key" in it } shouldBe 1 }
+    }
+
+    "obstaculo com valores validos e lido" {
+        val config = parse(
+            """
+            obstaculo:
+              profundidade-maxima: 5
+              velocidade-mergulho: 0.12
+              tempo-sumir-ticks: 40
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+        )!!
+
+        config.settings.obstacle shouldBe ObstacleSettings(maxDepth = 5, diveSpeed = 0.12, fadeTicks = 40)
+    }
+
+    "obstaculo com valores invalidos usa padroes e limites com aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            spawn:
+              tempo-preso-segundos: 0
+            obstaculo:
+              profundidade-maxima: -2
+              velocidade-mergulho: nada
+              tempo-sumir-ticks: 0
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+        )!!
+
+        config.settings.stuckSeconds shouldBe 1
+        config.settings.obstacle shouldBe ObstacleSettings(maxDepth = 0, diveSpeed = 0.08, fadeTicks = 1)
+        warnings shouldHaveSize 4
+        listOf("tempo-preso-segundos ", "profundidade-maxima ", "velocidade-mergulho ", "tempo-sumir-ticks ")
+            .forEach { key -> warnings.count { ".$key" in it } shouldBe 1 }
     }
 
     "afundamento valido por tipo" {

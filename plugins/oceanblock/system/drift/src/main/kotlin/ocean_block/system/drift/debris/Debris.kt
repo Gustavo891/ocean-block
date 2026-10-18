@@ -11,11 +11,17 @@ class Debris(
     val entity: ItemDisplay,
     var point: LanePoint,
     val float: FloatParams,
+    var levelY: Double,
 ) {
     var ageTicks: Int = 0
+    var depth: Int = 0
     var stuckSinceMillis: Long? = null
+    var fadeStartTick: Int? = null
     var pullTarget: UUID? = null
     var pullTicksLeft: Int = 0
 
     val isFree: Boolean get() = pullTarget == null
+    val isFading: Boolean get() = fadeStartTick != null
+    val isStuck: Boolean get() = stuckSinceMillis != null
+    val isCollectable: Boolean get() = isFree && !isFading && !isStuck
 }

@@ -14,4 +14,5 @@ data class DriftSettings(
     val streaks: Boolean,
     val streaksPerSecond: Double,
     val animation: AnimationSettings,
+    val obstacle: ObstacleSettings,
 )

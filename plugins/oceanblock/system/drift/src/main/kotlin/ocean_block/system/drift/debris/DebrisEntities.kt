@@ -26,12 +26,12 @@ internal object DebrisEntities {
             it.transformation = posed(it.transformation, pose.rotation, Vector3f(type.scale, type.scale, type.scale))
         }
 
-    fun place(entity: ItemDisplay, pose: Pose) {
+    fun place(entity: ItemDisplay, pose: Pose, scale: Float? = null) {
         entity.teleport(Location(entity.world, pose.point.x, pose.y, pose.point.z))
         entity.interpolationDelay = 0
         entity.interpolationDuration = INTERPOLATION_TICKS
         val current = entity.transformation
-        entity.transformation = posed(current, pose.rotation, current.scale)
+        entity.transformation = posed(current, pose.rotation, scale?.let { Vector3f(it, it, it) } ?: current.scale)
     }
 
     private fun posed(base: Transformation, rotation: Quaternionf, scale: Vector3f): Transformation =

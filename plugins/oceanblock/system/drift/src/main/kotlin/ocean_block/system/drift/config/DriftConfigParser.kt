@@ -8,6 +8,7 @@ object DriftConfigParser {
     private const val DEFAULT_SCALE = 0.6
     private const val DEFAULT_MAX_STACK = 64
     private const val MAX_SPEED_VARIATION = 0.9
+    private const val MAX_DIVE_DEPTH = 32.0
 
     private class MaterialRules(val isItem: (Material) -> Boolean, val maxStack: (Material) -> Int)
 
@@ -36,12 +37,13 @@ object DriftConfigParser {
             surfaceY = number(current?.get("altura"), "corrente.altura", 62.85, null, null, warn),
             spawnIntervalTicks = number(spawn?.get("intervalo-ticks"), "spawn.intervalo-ticks", 100.0, 1.0, null, warn).toLong(),
             maxPerLot = number(spawn?.get("maximo-por-lote"), "spawn.maximo-por-lote", 8.0, 1.0, null, warn).toInt(),
-            stuckSeconds = number(spawn?.get("tempo-preso-segundos"), "spawn.tempo-preso-segundos", 60.0, 1.0, null, warn).toInt(),
+            stuckSeconds = number(spawn?.get("tempo-preso-segundos"), "spawn.tempo-preso-segundos", 20.0, 1.0, null, warn).toInt(),
             hookRadius = number(pickup?.get("raio-gancho"), "coleta.raio-gancho", 2.0, 0.1, null, warn),
             touchRadius = number(pickup?.get("raio-toque"), "coleta.raio-toque", 1.5, 0.1, null, warn),
             streaks = flag(current?.get("riscos"), "corrente.riscos", true, warn),
             streaksPerSecond = number(current?.get("riscos-por-segundo"), "corrente.riscos-por-segundo", 6.0, 0.0, null, warn),
             animation = parseAnimation(root.getConfigurationSection("animacao"), warn),
+            obstacle = parseObstacle(root.getConfigurationSection("obstaculo"), warn),
         )
     }
 
@@ -55,6 +57,13 @@ object DriftConfigParser {
             meanderPeriodTicks = number(section?.get("periodo-sinuosidade-ticks"), "animacao.periodo-sinuosidade-ticks", 120.0, 1.0, null, warn).toInt(),
             speedVariation = number(section?.get("variacao-velocidade"), "animacao.variacao-velocidade", 0.2, 0.0, MAX_SPEED_VARIATION, warn),
             wake = flag(section?.get("rastro"), "animacao.rastro", true, warn),
+        )
+
+    private fun parseObstacle(section: ConfigurationSection?, warn: (String) -> Unit): ObstacleSettings =
+        ObstacleSettings(
+            maxDepth = number(section?.get("profundidade-maxima"), "obstaculo.profundidade-maxima", 3.0, 0.0, MAX_DIVE_DEPTH, warn).toInt(),
+            diveSpeed = number(section?.get("velocidade-mergulho"), "obstaculo.velocidade-mergulho", 0.08, 0.001, null, warn),
+            fadeTicks = number(section?.get("tempo-sumir-ticks"), "obstaculo.tempo-sumir-ticks", 20.0, 1.0, null, warn).toInt(),
         )
 
     private fun flag(raw: Any?, label: String, default: Boolean, warn: (String) -> Unit): Boolean {

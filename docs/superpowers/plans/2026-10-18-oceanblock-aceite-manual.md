@@ -46,8 +46,10 @@ Pré-requisito: raft criado e o servidor com o plugin novo. A config fica em `se
 - [ ] Em pé no raft, detritos aparecem a montante e passam boiando perto do raft, rente à água (Y ~62,6), movendo suave, na direção da corrente (leste por padrão).
 - [ ] Em ~2 minutos já passam tábuas suficientes para crescer o raft; nunca mais de 8 detritos ao mesmo tempo no lote.
 - [ ] Detrito que passa do fim da trilha (40 blocos) some sem sobrar entidade.
-- [ ] Detrito que encosta em bloco sólido na altura do raft (tábua, laje, cerca) para e some em ~60 s se ninguém pegar.
-- [ ] Alga ou grama-marinha que chega à superfície NÃO para o detrito; tábua, laje e cerca param.
+- [ ] Detrito que encosta na borda do raft com 1 bloco de profundidade (tábua, laje, cerca na altura do raft) afunda devagar, passa por baixo sem atravessar blocos, volta à superfície do outro lado e segue a corrente; submerso, solta bolhas em vez de respingo e balança menos.
+- [ ] Parede sólida da superfície até o fundo (ou mais funda que 3 blocos): o detrito para encostado e, após ~20 s, afunda meio bloco e encolhe até sumir (~1 s), sem sobrar entidade.
+- [ ] Detrito parado na parede ou sumindo não é coletado por toque nem puxado pelo gancho; submerso (mergulhando sob o raft) ainda é.
+- [ ] Alga ou grama-marinha que chega à superfície NÃO faz o detrito mergulhar; tábua, laje e cerca fazem.
 - [ ] Detritos nunca forçam o carregamento de chunks: com a distância de renderização baixa (ex.: `view-distance=2`), podem nascer menos detritos.
 
 ### Coleta

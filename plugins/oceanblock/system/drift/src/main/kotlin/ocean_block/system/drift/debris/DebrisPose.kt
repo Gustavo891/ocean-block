@@ -14,16 +14,26 @@ internal object DebrisPose {
     private const val ROLL_PHASE_OFFSET = PI / 2
     private const val FULL_TURN_DEGREES = 360.0
 
-    fun along(base: LanePoint, ageTicks: Int, params: FloatParams, settings: DriftSettings, sink: Double): Pose {
+    fun shifted(base: LanePoint, ageTicks: Int, params: FloatParams, settings: DriftSettings): LanePoint {
         val animation = settings.animation
         val lateral = FloatMotion.meander(ageTicks, params.meanderPhase, animation.meander, animation.meanderPeriodTicks)
-        return inPlace(DriftLane.shift(base, settings.direction, lateral), ageTicks, params, settings, sink)
+        return DriftLane.shift(base, settings.direction, lateral)
     }
 
-    fun inPlace(point: LanePoint, ageTicks: Int, params: FloatParams, settings: DriftSettings, sink: Double): Pose {
+    fun along(base: LanePoint, ageTicks: Int, params: FloatParams, settings: DriftSettings, levelY: Double): Pose =
+        inPlace(shifted(base, ageTicks, params, settings), ageTicks, params, settings, levelY, 1.0)
+
+    fun inPlace(
+        point: LanePoint,
+        ageTicks: Int,
+        params: FloatParams,
+        settings: DriftSettings,
+        levelY: Double,
+        bobScale: Double,
+    ): Pose {
         val animation = settings.animation
         val bob = FloatMotion.bob(ageTicks, params.bobPhase, animation.bobAmplitude, animation.bobPeriodTicks)
-        return Pose(point, settings.surfaceY - sink + bob, rotation(ageTicks, params, settings))
+        return Pose(point, levelY + bob * bobScale, rotation(ageTicks, params, settings))
     }
 
     private fun rotation(ageTicks: Int, params: FloatParams, settings: DriftSettings): Quaternionf {

@@ -11,7 +11,6 @@ import ocean_block.system.islands.island.IslandManager
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.UUID
-import kotlin.math.floor
 import kotlin.random.Random
 
 internal class MotionTick(val settings: DriftSettings, val activeLots: Set<UUID>, val nowMillis: Long)
@@ -24,7 +23,11 @@ internal object DebrisMotion {
 
         val island = IslandManager.islandsById[debris.islandId] ?: return false
         if (island.uuid !in tick.activeLots) return false
-        if (DebrisRules.stuckExpired(debris.stuckSinceMillis, tick.nowMillis, tick.settings.stuckSeconds)) return false
+        if (debris.isFading) return DebrisDive.fade(debris, tick.settings)
+        if (DebrisRules.stuckExpired(debris.stuckSinceMillis, tick.nowMillis, tick.settings.stuckSeconds)) {
+            DebrisDive.beginFade(debris)
+            return DebrisDive.fade(debris, tick.settings)
+        }
         if (!drift(debris, island, tick)) return false
 
         return !touchCollect(debris, island, tick.settings.touchRadius)
@@ -53,39 +56,49 @@ internal object DebrisMotion {
         val step = DebrisRules.stepDistance(settings.speed) * debris.float.speedFactor
         val next = DriftLane.advance(debris.point, settings.direction, step)
         debris.ageTicks += DebrisRules.TICKS_PER_STEP
-        val pose = DebrisPose.along(next, debris.ageTicks, debris.float, settings, debris.type.sink)
+        val point = DebrisPose.shifted(next, debris.ageTicks, debris.float, settings)
 
         val origin = island.position
         val centerX = origin.originX + DriftLane.BLOCK_CENTER
         val centerZ = origin.originZ + DriftLane.BLOCK_CENTER
-        if (DriftLane.isPastEnd(pose.point, centerX, centerZ, settings.direction, settings.laneLength)) return false
+        if (DriftLane.isPastEnd(point, centerX, centerZ, settings.direction, settings.laneLength)) return false
 
-        val world = debris.entity.world
-        val raftY = floor(settings.surfaceY).toInt()
-        val blockX = floor(pose.point.x).toInt()
-        val blockZ = floor(pose.point.z).toInt()
-        if (!DebrisEntities.isLoaded(world, blockX, blockZ)) return false
-
-        if (!DebrisRules.isPassable(world.getType(blockX, raftY, blockZ))) {
-            if (debris.stuckSinceMillis == null) debris.stuckSinceMillis = tick.nowMillis
-            hold(debris, settings)
-            return true
+        return when (val passage = DebrisDive.passage(debris, point, settings)) {
+            Passage.Unloaded -> false
+            Passage.Blocked -> stall(debris, settings, tick.nowMillis)
+            is Passage.Open -> travel(debris, next, point, passage.depth, settings)
         }
+    }
 
-        debris.stuckSinceMillis = null
-        debris.point = next
-        DebrisEntities.place(debris.entity, pose)
-        if (settings.animation.wake && FloatMotion.wakeDue(debris.ageTicks)) DebrisParticles.wake(world, pose.point, settings)
+    private fun stall(debris: Debris, settings: DriftSettings, nowMillis: Long): Boolean {
+        if (debris.stuckSinceMillis == null) debris.stuckSinceMillis = nowMillis
+        DebrisDive.hold(debris, settings)
         return true
     }
 
-    private fun hold(debris: Debris, settings: DriftSettings) {
-        val location = debris.entity.location
-        val here = LanePoint(location.x, location.z)
-        DebrisEntities.place(debris.entity, DebrisPose.inPlace(here, debris.ageTicks, debris.float, settings, debris.type.sink))
+    private fun travel(debris: Debris, next: LanePoint, point: LanePoint, depth: Int, settings: DriftSettings): Boolean {
+        debris.stuckSinceMillis = null
+        if (!DebrisDive.approach(debris, depth, settings)) {
+            DebrisDive.hold(debris, settings)
+            return true
+        }
+
+        debris.point = next
+        val bobScale = DebrisDive.bobScale(debris, settings)
+        DebrisEntities.place(debris.entity, DebrisPose.inPlace(point, debris.ageTicks, debris.float, settings, debris.levelY, bobScale))
+        if (settings.animation.wake && FloatMotion.wakeDue(debris.ageTicks)) trail(debris, point, settings)
+        return true
+    }
+
+    private fun trail(debris: Debris, point: LanePoint, settings: DriftSettings) {
+        val world = debris.entity.world
+        if (debris.depth == 0) DebrisParticles.wake(world, point, settings)
+        else DebrisParticles.bubbles(world, point, debris.levelY, settings)
     }
 
     private fun touchCollect(debris: Debris, island: Island, radius: Double): Boolean {
+        if (!debris.isCollectable) return false
+
         val location = debris.entity.location
         val radiusSquared = radius * radius
         val collector = location.getNearbyPlayers(radius).firstOrNull {

@@ -10,7 +10,7 @@ corrente:
 spawn:
   intervalo-ticks: 100
   maximo-por-lote: 8
-  tempo-preso-segundos: 60
+  tempo-preso-segundos: 20
 
 animacao:
   balanco: 0.06
@@ -21,6 +21,11 @@ animacao:
   periodo-sinuosidade-ticks: 120
   variacao-velocidade: 0.2
   rastro: true
+
+obstaculo:
+  profundidade-maxima: 3
+  velocidade-mergulho: 0.08
+  tempo-sumir-ticks: 20
 
 coleta:
   raio-gancho: 2.0

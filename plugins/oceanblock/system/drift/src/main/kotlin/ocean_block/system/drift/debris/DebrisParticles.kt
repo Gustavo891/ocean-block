@@ -15,6 +15,7 @@ internal object DebrisParticles {
     private const val WAKE_SPLASH_COUNT = 3
     private const val WAKE_SPREAD = 0.1
     private const val WAKE_POP_COUNT = 1
+    private const val BUBBLE_COUNT = 2
     private const val STREAK_LIFT = 0.1
     private const val STREAK_SPEED = 0.05
 
@@ -23,6 +24,11 @@ internal object DebrisParticles {
         val y = settings.surfaceY + WAKE_LIFT
         world.spawnParticle(Particle.SPLASH, behind.x, y, behind.z, WAKE_SPLASH_COUNT, WAKE_SPREAD, 0.0, WAKE_SPREAD, 0.0)
         world.spawnParticle(Particle.BUBBLE_POP, behind.x, y, behind.z, WAKE_POP_COUNT, 0.0, 0.0, 0.0, 0.0)
+    }
+
+    fun bubbles(world: World, point: LanePoint, y: Double, settings: DriftSettings) {
+        val behind = DriftLane.advance(point, settings.direction, -WAKE_BEHIND)
+        world.spawnParticle(Particle.BUBBLE, behind.x, y, behind.z, BUBBLE_COUNT, WAKE_SPREAD, WAKE_SPREAD, WAKE_SPREAD, 0.0)
     }
 
     fun streaks(world: World, centerX: Double, centerZ: Double, settings: DriftSettings, random: Random) {
