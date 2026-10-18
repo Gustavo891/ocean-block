@@ -1,10 +1,10 @@
 package ocean_block.system.islands.island
 
-import ocean_block.libs.coordinate.SimpleLocation
 import ocean_block.libs.instance.Instance
 import ocean_block.libs.instance.ScheduledExecutor
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.position.Position
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 object IslandManager {
+
+    private const val RAFT_WORLD = "world"
 
     val islandsById = mutableMapOf<UUID, Island>()
 
@@ -97,6 +99,13 @@ object IslandManager {
             return null
         }
 
+        if (Bukkit.getWorld(RAFT_WORLD) == null) {
+            Instance.logger.severe(
+                "[islands] Criação de ilha para ${player.name} recusada: mundo $RAFT_WORLD não carregado."
+            )
+            return null
+        }
+
         val grid = Position.fromIndex(nextFreeIndex())
 
         if (islandsByGrid[grid.gridX to grid.gridZ] != null) {
@@ -107,19 +116,8 @@ object IslandManager {
             return null
         }
 
-        val center = SimpleLocation(
-            grid.originX,
-            101.0,
-            grid.originZ,
-            world = "world"
-        )
-
-        val spawn = SimpleLocation(
-            grid.originX + 0.5,
-            100.0,
-            grid.originZ + 0.5,
-            world = "world"
-        )
+        val center = RaftPlacement.center(grid, RAFT_WORLD)
+        val spawn = RaftPlacement.spawn(grid, RAFT_WORLD)
 
         val islandId = UUID.randomUUID()
 

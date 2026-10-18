@@ -25,6 +25,7 @@ dependencies {
 
     // paper-api em runtime de teste: IslandSetting referencia org.bukkit.Material.
     testImplementation(libs.paperApi)
+    testImplementation(projects.lib.coordinate)
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.assertions)
 }

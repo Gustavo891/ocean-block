@@ -1,10 +1,10 @@
 package ocean_block.system.islands.reset
 
-import ocean_block.libs.coordinate.SimpleLocation
 import ocean_block.system.islands.hud.IslandHud
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
+import ocean_block.system.islands.island.RaftPlacement
 import ocean_block.system.islands.island.StarterIsland
 import ocean_block.system.islands.phase.PhaseAdvancement
 import ocean_block.system.islands.phase.PhaseBlocks
@@ -109,12 +109,7 @@ object IslandResetService {
         island.blackList = null
         island.settings = null
         island.isPublic = false
-        island.spawn = SimpleLocation(
-            island.position.originX + 0.5,
-            100.0,
-            island.position.originZ + 0.5,
-            world = island.center.world,
-        )
+        island.spawn = RaftPlacement.spawn(island.position, island.center.world)
         island.refreshWorldBorder()
 
         expelMembers(island)
