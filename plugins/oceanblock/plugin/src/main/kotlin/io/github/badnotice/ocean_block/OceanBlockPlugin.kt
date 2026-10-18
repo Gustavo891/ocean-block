@@ -101,10 +101,6 @@ class OceanBlockPlugin : JavaPlugin() {
 
     private fun setupCommands() {
         with(paperCommandManager) {
-            commandCompletions.registerCompletion("phases") {
-                ocean_block.system.islands.phase.PhaseManager.phases().map { phase -> phase.id }
-            }
-
             registerCommand(AuctionCommand(viewFrame))
             registerCommand(CoinFlipCommand(viewFrame))
             registerCommand(OceanBlockCommand())

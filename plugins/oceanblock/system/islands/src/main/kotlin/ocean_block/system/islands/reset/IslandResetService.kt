@@ -6,10 +6,7 @@ import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
 import ocean_block.system.islands.island.RaftPlacement
 import ocean_block.system.islands.island.StarterIsland
-import ocean_block.system.islands.phase.PhaseAdvancement
-import ocean_block.system.islands.phase.PhaseBlocks
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
@@ -52,7 +49,7 @@ object IslandResetService {
         }
 
         sender.sendRichMessage("<gold>Preview do reset de progresso de <white>${island.ownerName}</white>:")
-        sender.sendRichMessage("<gray>- fase: <white>${island.currentPhaseId}</white> (grid ${island.grid})")
+        sender.sendRichMessage("<gray>- fase: <white>${island.currentPhaseId}</white>")
         sender.sendRichMessage("<gray>- recompensas pendentes: <white>${island.pendingRewardPhases.size}</white>")
         sender.sendRichMessage("<gray>- membros: <white>${island.members.size}</white>")
         sender.sendRichMessage("<gray>- confiáveis: <white>${island.trustedNames.size}</white>")
@@ -97,10 +94,7 @@ object IslandResetService {
     }
 
     fun resetProgress(sender: CommandSender, island: Island) {
-        PhaseAdvancement.clear(island.uuid)
-
         island.currentPhaseId = DEFAULT_PHASE
-        island.grid = 0
         island.pendingRewardPhases.clear()
         island.upgrades.clear()
         island.size = Island.BORDER_SIZE.first()
@@ -147,17 +141,5 @@ object IslandResetService {
 
     private fun restoreCenter(island: Island) {
         StarterIsland.generate(island)
-
-        val center = island.center.toBukkit() ?: return
-        val phase = island.getCurrentPhase()
-
-        center.world.getBlockAt(center.blockX, center.blockY - 1, center.blockZ).type = Material.BEDROCK
-
-        if (phase == null) {
-            center.block.type = Material.STONE
-            return
-        }
-
-        PhaseBlocks.place(center.block, phase)
     }
 }

@@ -2,23 +2,13 @@ package ocean_block.system.islands.island
 
 import ocean_block.libs.coordinate.SimpleLocation
 import ocean_block.system.islands.hud.IslandHud
-import ocean_block.system.islands.ext.getRandomByWeight
-import ocean_block.system.islands.phase.MOB_SPAWN_CHANCE_PERCENT
-import ocean_block.system.islands.phase.MONSTER_PARTY_CHANCE_PERCENT
 import ocean_block.system.islands.phase.Phase
-import ocean_block.system.islands.phase.PhaseAdvancement
-import ocean_block.system.islands.phase.PhaseBlocks
 import ocean_block.system.islands.phase.PhaseManager
-import ocean_block.system.islands.phase.PhaseProgress
 import ocean_block.system.islands.position.Position
-import ocean_block.system.islands.util.MonsterParty
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.WorldBorder
-import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 
 data class Island(
     val uuid: UUID,
@@ -32,7 +22,6 @@ data class Island(
     val members: MutableMap<String, IslandMember> = mutableMapOf(),
     val upgrades: MutableMap<String, Int> = mutableMapOf(),
     var currentPhaseId: String = "planicie",
-    var grid: Int = 0,
     val pendingRewardPhases: MutableList<String> = mutableListOf(),
     var size: Int = 30,
     var isPublic: Boolean,
@@ -78,30 +67,6 @@ data class Island(
     }
 
     fun removeBlacklist(playerName: String): Boolean = blackListNames().remove(playerName.lowercase())
-
-    fun processBlockBreak(block: Block) {
-        val phase = getCurrentPhase() ?: return
-
-        handleMobSpawn(phase, block)
-        handleMonsterParty(phase, block)
-
-        PhaseBlocks.place(block, phase, Material.GRASS_BLOCK)
-
-        val target = phase.blocksToNextPhase
-        val before = grid
-        grid = PhaseProgress.increment(before, target)
-
-        if (!PhaseProgress.isComplete(grid, target)) return
-
-        val crossedNow = PhaseProgress.crossedThreshold(before, grid, target)
-        val hasNext = PhaseManager.getNextPhase(phase.priority) != null
-
-        if (crossedNow || hasNext) advancePhase()
-    }
-
-    fun advancePhase() {
-        PhaseAdvancement.advance(this)
-    }
 
     fun isTrustedMember(playerName: String): Boolean {
         return playerName.lowercase() in trustedNames
@@ -162,30 +127,6 @@ data class Island(
         return newValue
     }
 
-    private fun handleMobSpawn(phase: Phase, block: Block) {
-        if (!isSettingEnabled(IslandSetting.MobSpawn)) return
-        if (!chance(MOB_SPAWN_CHANCE_PERCENT)) return
-
-        val mobType = phase.mobPool.mapValues { it.value.weight }.getRandomByWeight() ?: return
-        val data = phase.mobPool[mobType] ?: return
-        val spawnAt = center.toBukkit()?.clone()?.add(0.5, 1.0, 0.5) ?: return
-
-        repeat((data.min..data.max).random()) {
-            block.world.spawnEntity(spawnAt, mobType)
-        }
-    }
-
-    private fun handleMonsterParty(phase: Phase, block: Block) {
-        if (!chance(MONSTER_PARTY_CHANCE_PERCENT)) return
-
-        val monsterParty = phase.monsterParty ?: return
-        val monsterConfig = monsterParty.associateWith { it.weight }.getRandomByWeight() ?: return
-
-        repeat((monsterConfig.min..monsterConfig.max).random()) {
-            MonsterParty.spawnConfigureMob(block.location, monsterConfig)
-        }
-    }
-
     fun upgradeBorderSize() {
         val newLevel = (getUpgradeLevel(IslandUpgrade.Size) + 1).coerceIn(BORDER_SIZE.indices)
         setUpgradeLevel(IslandUpgrade.Size, newLevel)
@@ -214,8 +155,4 @@ data class Island(
 
     fun blackListNames(): MutableSet<String> =
         blackList ?: mutableSetOf<String>().also { blackList = it }
-
-    private fun chance(percent: Double): Boolean {
-        return ThreadLocalRandom.current().nextDouble(100.0) < percent
-    }
 }

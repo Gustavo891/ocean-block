@@ -1,7 +1,6 @@
 package ocean_block.system.islands.expansion
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
-import ocean_block.libs.formatter.NumberFormatter
 import ocean_block.system.islands.island.IslandManager
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -21,7 +20,6 @@ class IslandExpansion(
             val ownerName = Bukkit.getOfflinePlayer(island.ownerUuid).name ?: island.ownerName
 
             return when(params) {
-                "phaseprogress" -> "${NumberFormatter.format(island.grid.toDouble())}/${NumberFormatter.format(currentPhase.blocksToNextPhase.toDouble())}"
                 "phasename" -> currentPhase.prettyName
                 "player_island" -> ownerName
                 else -> super.onPlaceholderRequest(player, params)

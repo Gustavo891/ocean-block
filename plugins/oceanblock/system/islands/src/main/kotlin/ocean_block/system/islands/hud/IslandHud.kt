@@ -12,12 +12,12 @@ object IslandHud {
     const val SLOT = "phases"
 
     fun show(player: Player, island: Island) {
-        val content = contentFor(island) ?: return
+        val content = contentFor(island)
         HudApi.show(player, SLOT, content)
     }
 
     fun refresh(island: Island) {
-        val content = contentFor(island) ?: return
+        val content = contentFor(island)
         for (player in viewersOf(island)) {
             HudApi.show(player, SLOT, content)
         }
@@ -29,16 +29,8 @@ object IslandHud {
         }
     }
 
-    private fun contentFor(island: Island): HudContent? {
-        val phase = island.getCurrentPhase() ?: return null
-        val target = phase.blocksToNextPhase
-
-        val text = "<white>Fase: <gray>${phase.prettyName} <dark_gray>(${island.grid}/$target)"
-
-        val progress = if (target > 0) island.grid.toFloat() / target.toFloat() else 1f
-
-        return HudContent(text = text, progress = progress.coerceIn(0f, 1f))
-    }
+    private fun contentFor(island: Island): HudContent =
+        HudContent(text = "<white>Raft <dark_gray>• <gray>${island.size}x${island.size}", progress = 1f)
 
     private fun viewersOf(island: Island): List<Player> =
         IslandManager.playerIsland

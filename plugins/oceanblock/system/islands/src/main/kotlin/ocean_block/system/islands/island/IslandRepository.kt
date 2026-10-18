@@ -23,7 +23,6 @@ class IslandRepository {
             "upgrades" to emptyMap<String, Any>(),
             "pendingRewardPhases" to emptyList<String>(),
             "currentPhaseId" to "planicie",
-            "grid" to 0,
             "size" to 30,
             "isPublic" to false,
         )

@@ -80,7 +80,6 @@ object IslandManager {
             )
 
             island.currentPhaseId = fallback.id
-            island.grid = 0
             markDirty(island.uuid)
         }
 

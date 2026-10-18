@@ -2,7 +2,6 @@ package ocean_block.system.islands.command
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Optional
@@ -14,12 +13,10 @@ import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandMember
 import ocean_block.system.islands.island.IslandUpgrade
-import ocean_block.system.islands.phase.PhaseAdvancement
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.reset.IslandResetService
 import ocean_block.system.islands.view.IslandView
 import ocean_block.system.islands.view.IslandsView
-import ocean_block.system.islands.view.PhaseView
 import org.bukkit.entity.Player
 
 @CommandAlias("island|is")
@@ -210,11 +207,6 @@ class IslandCommand(
         sender.sendRichMessage("<green>Seu home foi definido.")
     }
 
-    @Subcommand("phases|fases")
-    fun onPhases(sender: Player) {
-        viewFrame.open(PhaseView::class.java, sender)
-    }
-
     @Subcommand("reset terrain")
     @CommandPermission("screen.dev")
     fun onResetTerrain(sender: Player, targetName: String, @Optional flag: String?) {
@@ -254,38 +246,6 @@ class IslandCommand(
     fun onReload(sender: Player) {
         PhaseManager.loadPhases()
         sender.sendRichMessage("<green>Recarregado com sucesso!")
-    }
-
-    @Subcommand("setphase|setfase")
-    @CommandPermission("screen.dev")
-    @CommandCompletion("@players @phases")
-    fun onSetPhase(sender: Player, targetName: String, phaseId: String) {
-        val island = IslandManager.getIslandByOwnerName(targetName.lowercase())
-        if (island == null) {
-            sender.sendRichMessage("<red>Esse jogador não tem uma ilha!")
-            return
-        }
-
-        val phase = PhaseManager.get(phaseId)
-        if (phase == null) {
-            val ids = PhaseManager.phases().joinToString(", ") { it.id }
-            sender.sendRichMessage("<red>Fase desconhecida: <white>$phaseId")
-            sender.sendRichMessage("<gray>Disponíveis: <white>$ids")
-            return
-        }
-
-        val anterior = island.getCurrentPhase()
-        PhaseAdvancement.setPhase(island, phase)
-
-        val de = anterior?.prettyName ?: island.currentPhaseId
-        sender.sendRichMessage(
-            "<green>Ilha de <white>$targetName<green> movida de <white>$de<green> para <white>${phase.prettyName}<green>."
-        )
-        sender.sendRichMessage("<gray>Progresso zerado. Nenhuma recompensa foi entregue.")
-
-        PhaseAdvancement.onlineMembers(island).forEach {
-            it.sendRichMessage("<yellow>A fase da sua ilha foi alterada para <white>${phase.prettyName}<yellow>.")
-        }
     }
 
     @Subcommand("all")
