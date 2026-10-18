@@ -1,0 +1,14 @@
+package ocean_block.system.drift.config
+
+data class DriftSettings(
+    val direction: CurrentDirection,
+    val speed: Double,
+    val laneLength: Double,
+    val laneWidth: Double,
+    val surfaceY: Double,
+    val spawnIntervalTicks: Long,
+    val maxPerLot: Int,
+    val stuckSeconds: Int,
+    val hookRadius: Double,
+    val touchRadius: Double,
+)

@@ -1,0 +1,51 @@
+corrente:
+  direcao: EAST
+  velocidade: 0.05
+  comprimento: 80.0
+  largura: 10.0
+  altura: 62.6
+
+spawn:
+  intervalo-ticks: 200
+  maximo-por-lote: 8
+  tempo-preso-segundos: 60
+
+coleta:
+  raio-gancho: 2.0
+  raio-toque: 1.5
+
+detritos:
+  tabua:
+    peso: 50
+    exibicao: OAK_PLANKS
+    escala: 0.6
+    drops:
+      - {material: OAK_PLANKS, min: 1, max: 2, chance: 1.0}
+  folhas:
+    peso: 25
+    exibicao: OAK_LEAVES
+    escala: 0.6
+    drops:
+      - {material: OAK_LEAVES, min: 1, max: 2, chance: 1.0}
+      - {material: STICK, min: 1, max: 2, chance: 0.5}
+      - {material: OAK_SAPLING, min: 1, max: 1, chance: 0.1}
+      - {material: STRING, min: 1, max: 1, chance: 0.3}
+  sucata:
+    peso: 17
+    exibicao: IRON_NUGGET
+    escala: 0.8
+    drops:
+      - {material: IRON_NUGGET, min: 1, max: 3, chance: 1.0}
+      - {material: RAW_COPPER, min: 1, max: 1, chance: 0.25}
+  barril:
+    peso: 8
+    exibicao: BARREL
+    escala: 0.6
+    drops:
+      - {material: BREAD, min: 1, max: 2, chance: 0.6}
+      - {material: STRING, min: 1, max: 3, chance: 0.6}
+      - {material: KELP, min: 2, max: 4, chance: 0.5}
+      - {material: OAK_SAPLING, min: 1, max: 1, chance: 0.3}
+      - {material: COD, min: 1, max: 2, chance: 0.4}
+      - {material: IRON_INGOT, min: 1, max: 1, chance: 0.1}
+      - {material: NAME_TAG, min: 1, max: 1, chance: 0.02}

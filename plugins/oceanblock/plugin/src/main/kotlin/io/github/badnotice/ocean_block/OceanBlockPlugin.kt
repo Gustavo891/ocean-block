@@ -16,6 +16,7 @@ import ocean_block.system.custom_items.CustomItemSystem
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.custom_items.item.CustomItemCommand
 import ocean_block.system.craft.CraftSystem
+import ocean_block.system.drift.DriftSystem
 import ocean_block.system.currencies.CurrenciesSystem
 import ocean_block.system.currencies.currency.CurrencyManager
 import ocean_block.system.enchants.EnchantsSystem
@@ -69,6 +70,7 @@ class OceanBlockPlugin : JavaPlugin() {
         SpawnSystem.onDisable()
         ScoreboardSystem.onDisable()
         IslandsSystem.onDisable()
+        DriftSystem.onDisable()
         CurrencyManager.onDisable()
         PlayerPlaytimeManager.onDisable()
     }
@@ -84,6 +86,7 @@ class OceanBlockPlugin : JavaPlugin() {
             { CollectionsSystem.init(this, viewFrame, paperCommandManager) },
             { EnchantsSystem.init(this, paperCommandManager) },
             { IslandsSystem.init(this, viewFrame) },
+            { DriftSystem.init(this) },
             { BattlePassSystem.init(viewFrame, paperCommandManager) },
             { PlaytimeSystem.init(this) },
             { ScoreboardSystem.init(this, paperCommandManager) },

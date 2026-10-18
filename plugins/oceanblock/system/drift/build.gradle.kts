@@ -1,0 +1,22 @@
+plugins {
+    id("paper-common")
+}
+
+dependencies {
+    compileOnly(projects.lib.actionbar)
+    compileOnly(projects.lib.coordinate)
+    compileOnly(projects.lib.formatter)
+    compileOnly(projects.lib.instance)
+    compileOnly(projects.lib.itemBuilder)
+
+    compileOnly(projects.plugins.oceanblock.system.customItems)
+    compileOnly(projects.plugins.oceanblock.system.islands)
+
+    testImplementation(libs.paperApi)
+    testImplementation(libs.kotest.runner)
+    testImplementation(libs.kotest.assertions)
+}
+
+tasks.test {
+    useJUnitPlatform()
+}

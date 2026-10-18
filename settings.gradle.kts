@@ -26,6 +26,7 @@ include(
     ":plugins:oceanblock:system:coinflip",
     ":plugins:oceanblock:system:collections",
     ":plugins:oceanblock:system:craft",
+    ":plugins:oceanblock:system:drift",
     ":plugins:oceanblock:system:currencies",
     ":plugins:oceanblock:system:enchants",
     ":plugins:oceanblock:system:islands",
