@@ -1,0 +1,160 @@
+id: bastion
+pretty-name: "Bastião"
+icon-material: 'GILDED_BLACKSTONE'
+priority: 21
+
+settings:
+  blocks-to-next-phase: 5600
+
+block-pool:
+  BLACKSTONE: 30
+  POLISHED_BLACKSTONE: 22
+  POLISHED_BLACKSTONE_BRICKS: 20
+  CRACKED_POLISHED_BLACKSTONE_BRICKS: 14
+  CHISELED_POLISHED_BLACKSTONE: 12
+  GILDED_BLACKSTONE: 14
+  BASALT: 16
+  POLISHED_BASALT: 10
+  GOLD_BLOCK: 8
+  IRON_CHAIN: 8
+  LODESTONE: 4
+  MAGMA_BLOCK: 10
+  NETHERRACK: 14
+  NETHER_GOLD_ORE: 16
+  NETHER_QUARTZ_ORE: 12
+  ANCIENT_DEBRIS: 6
+  DEEPSLATE_IRON_ORE: 21
+  DEEPSLATE_EMERALD_ORE: 7
+  CHEST: 5
+
+chest-loot:
+  rolls-min: 6
+  rolls-max: 9
+  items:
+    - material: GOLD_INGOT
+      weight: 18
+      min: 16
+      max: 40
+    - material: GILDED_BLACKSTONE
+      weight: 14
+      min: 6
+      max: 16
+    - material: GOLD_BLOCK
+      weight: 12
+      min: 3
+      max: 9
+    - material: CROSSBOW
+      weight: 8
+      min: 1
+      max: 1
+    - textura: platinum_raw
+      weight: 20
+      min: 16
+      max: 34
+    - textura: ruby
+      weight: 16
+      min: 3
+      max: 8
+    - material: DIAMOND
+      weight: 16
+      min: 8
+      max: 18
+    - material: ANCIENT_DEBRIS
+      weight: 12
+      min: 2
+      max: 5
+    - material: NETHERITE_SCRAP
+      weight: 8
+      min: 1
+      max: 3
+    - material: ENCHANTED_GOLDEN_APPLE
+      weight: 2
+      min: 1
+      max: 1
+
+mob-pool:
+  PIGLIN_BRUTE:
+    weight: 22
+    min: 1
+    max: 2
+  PIGLIN:
+    weight: 26
+    min: 1
+    max: 4
+  HOGLIN:
+    weight: 18
+    min: 1
+    max: 3
+  ZOMBIFIED_PIGLIN:
+    weight: 18
+    min: 1
+    max: 3
+  MAGMA_CUBE:
+    weight: 14
+    min: 1
+    max: 3
+  WITHER_SKELETON:
+    weight: 14
+    min: 1
+    max: 2
+
+monster-party:
+  - id: bastion_brute
+    type: PIGLIN_BRUTE
+    weight: 60
+    min: 1
+    max: 2
+    name: "<gold>Bruto do Bastião"
+    is-glowing: true
+    attributes:
+      max-health: 400.0
+      attack-damage: 24.0
+      movement-speed: 0.32
+      knockback-resistance: 0.6
+      follow-range: 50.0
+      scale: 1.4
+    drops:
+      - type: ITEM
+        material: NETHERITE_SCRAP
+        amount: 4
+        chance: 100.0
+      - type: ITEM
+        material: GOLD_BLOCK
+        amount: 8
+        chance: 100.0
+      - type: COMMAND
+        command: "coins add %player% 160000"
+        chance: 100.0
+  - id: bastion_hoglin
+    type: HOGLIN
+    weight: 40
+    min: 2
+    max: 4
+    name: "<red>Hoglin de Guerra"
+    attributes:
+      max-health: 180.0
+      attack-damage: 16.0
+      knockback-resistance: 0.4
+      scale: 1.3
+    drops:
+      - type: ITEM
+        material: COOKED_PORKCHOP
+        amount: 12
+        chance: 100.0
+      - type: ITEM
+        material: DIAMOND
+        amount: 5
+        chance: 50.0
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Bastião<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 440000"
+    - type: Item
+      material: NETHERITE_INGOT
+      amount: 3
+    - type: Item
+      material: GOLD_BLOCK
+      amount: 32

@@ -1,0 +1,147 @@
+pretty-name: 'Minérios'
+icon: diamond
+
+products:
+  coal:
+    name-singular: 'Carvão'
+    name-plural: 'Carvões'
+    price: 65.0
+    material: coal
+    
+  block_coal:
+    name-singular: 'Bloco de carvão'
+    name-plural: 'Blocos de carvão'
+    price: 585.0
+    material: coal_block
+
+  raw_iron:
+    name-singular: 'Ferro'
+    name-plural: 'Ferros'
+    price: 200.0
+    material: 'raw_iron'
+
+  iron:
+    name-singular: 'Ferro'
+    name-plural: 'Ferros'
+    price: 200.0
+    material: "iron_ingot"
+
+  iron_block:
+    name-singular: 'Bloco de ferro'
+    name-plural: 'Blocos de ferro'
+    price: 1800.0
+    material: 'iron_block'
+
+  raw_cooper:
+    name-singular: 'Cobre'
+    name-plural: 'Cobres'
+    price: 35.0
+    material: 'raw_copper'
+
+  cooper:
+    name-singular: 'Cobre'
+    name-plural: 'Cobres'
+    price: 125
+    material: 'copper_ingot'
+
+  cooper_block:
+    name-singular: 'Bloco de cobre'
+    name-plural: 'Blocos de cobre'
+    price: 1125.0
+    material: 'copper_block'
+
+  raw_gold:
+    name-singular: 'Ouro'
+    name-plural: 'Ouros'
+    price: 600
+    material: 'raw_gold'
+
+  gold:
+    name-singular: 'Ouro'
+    name-plural: 'Ouros'
+    price: 600
+    material: 'gold_ingot'
+
+  block_gold:
+    name-singular: 'Bloco de ouro'
+    name-plural: 'Blocos de ouro'
+    price: 5400.0
+    material: 'gold_block'
+
+  redstone:
+    name-singular: 'Redstone'
+    name-plural: 'Redstones'
+    price:  65
+    material: 'redstone'
+
+  block_redstone:
+    name-singular: 'Bloco de redstone'
+    name-plural: 'Blocos de redstones'
+    price: 585
+    material: 'redstone_block'
+
+  emerald:
+    name-singular: 'Esmeralda'
+    name-plural: 'Esmeraldas'
+    price: 750
+    material: 'emerald'
+
+  block_emerald:
+    name-singular: 'Bloco de esmeralda'
+    name-plural: 'Blocos de esmeraldas'
+    price: 6750.0
+    material: 'emerald_block'
+
+  diamond:
+    name-singular: 'Diamante'
+    name-plural: 'Diamantes'
+    price: 2500.0
+    material: 'diamond'
+
+  diamond_block:
+    name-singular: 'Bloco de diamante'
+    name-plural: 'Blocos de diamantes'
+    price: 22500.0
+    material: 'diamond_block'
+
+  lapis_lazuli:
+    name-singular: 'Lápis-Lazúli'
+    name-plural: 'Lápis-Lazúli'
+    price: 150.0
+    material: LAPIS_LAZULI
+
+  netherite_scrap:
+    name-singular: 'Fragmento de Netherita'
+    name-plural: 'Fragmentos de Netherita'
+    price: 25000.0
+    material: NETHERITE_SCRAP
+
+  lapis_block:
+    name-singular: 'Bloco de Lápis-Lazúli'
+    name-plural: 'Blocos de Lápis-Lazúli'
+    price: 1250.0
+    material: LAPIS_BLOCK
+
+  netherite_block:
+    name-singular: 'Bloco de Netherita'
+    name-plural: 'Blocos de Netherita'
+    price: 225000.0
+    material: NETHERITE_BLOCK
+
+  nether_gold_ore:
+    name-singular: 'Minério de Ouro do Nether'
+    name-plural: 'Minérios de Ouro do Nether'
+    price: 600.0
+    material: NETHER_GOLD_ORE
+
+  nether_quartz_ore:
+    name-singular: 'Minério de Quartzo do Nether'
+    name-plural: 'Minérios de Quartzo do Nether'
+    price: 175.0
+    material: NETHER_QUARTZ_ORE
+
+  amethyst_shard:
+    name-singular: 'Fragmento de Ametista'
+    name-plural: 'Fragmentos de Ametista'
+    price: 350.0
+    material: AMETHYST_SHARD

@@ -1,0 +1,115 @@
+id: cherry
+pretty-name: "Bosque das Cerejeiras"
+icon-material: 'CHERRY_LOG'
+priority: 12
+
+settings:
+  blocks-to-next-phase: 1400
+
+block-pool:
+  CHERRY_LOG: 28
+  CHERRY_LEAVES: 30
+  CHERRY_WOOD: 10
+  CHERRY_PLANKS: 12
+  PINK_PETALS: 14
+  GRASS_BLOCK: 20
+  DIRT: 14
+  MOSS_BLOCK: 12
+  SHORT_GRASS: 12
+  PINK_TULIP: 8
+  ALLIUM: 6
+  LILAC: 6
+  PEONY: 6
+  ROSE_BUSH: 6
+  CHERRY_SAPLING: 6
+  SUSPICIOUS_GRAVEL: 5
+  IRON_ORE: 10
+  GOLD_ORE: 8
+  EMERALD_ORE: 6
+  DEEPSLATE_IRON_ORE: 12
+  DEEPSLATE_EMERALD_ORE: 2
+  CHEST: 3
+
+chest-loot:
+  rolls-min: 4
+  rolls-max: 7
+  items:
+    - material: CHERRY_LOG
+      weight: 22
+      min: 10
+      max: 24
+    - material: PINK_PETALS
+      weight: 18
+      min: 6
+      max: 16
+    - material: HONEYCOMB
+      weight: 14
+      min: 4
+      max: 10
+    - material: EMERALD
+      weight: 16
+      min: 4
+      max: 12
+    - textura: platinum_raw
+      weight: 16
+      min: 6
+      max: 14
+    - textura: ruby
+      weight: 6
+      min: 1
+      max: 2
+    - material: DIAMOND
+      weight: 12
+      min: 2
+      max: 6
+    - material: ENCHANTED_BOOK
+      weight: 8
+      min: 1
+      max: 1
+    - material: EXPERIENCE_BOTTLE
+      weight: 12
+      min: 10
+      max: 24
+
+mob-pool:
+  BEE:
+    weight: 22
+    min: 1
+    max: 3
+  SHEEP:
+    weight: 15
+    min: 1
+    max: 3
+  PIG:
+    weight: 12
+    min: 1
+    max: 2
+  RABBIT:
+    weight: 12
+    min: 1
+    max: 3
+  ZOMBIE:
+    weight: 18
+    min: 1
+    max: 2
+  SKELETON:
+    weight: 18
+    min: 1
+    max: 2
+  CREEPER:
+    weight: 15
+    min: 1
+    max: 2
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Bosque das Cerejeiras<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 32000"
+    - type: Item
+      material: DIAMOND
+      amount: 24
+    - type: Item
+      material: EXPERIENCE_BOTTLE
+      amount: 48

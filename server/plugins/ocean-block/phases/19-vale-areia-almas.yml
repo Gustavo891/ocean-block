@@ -1,0 +1,107 @@
+id: vale_areia_almas
+pretty-name: "Vale da Areia das Almas"
+icon-material: 'SOUL_SAND'
+priority: 19
+
+settings:
+  blocks-to-next-phase: 4100
+
+block-pool:
+  SOUL_SAND: 32
+  SOUL_SOIL: 28
+  BASALT: 24
+  SMOOTH_BASALT: 14
+  POLISHED_BASALT: 12
+  BLACKSTONE: 16
+  NETHERRACK: 14
+  SOUL_TORCH: 8
+  SOUL_LANTERN: 6
+  SOUL_FIRE: 4
+  BONE_BLOCK: 12
+  MAGMA_BLOCK: 10
+  NETHER_GOLD_ORE: 14
+  NETHER_QUARTZ_ORE: 12
+  ANCIENT_DEBRIS: 4
+  DEEPSLATE_IRON_ORE: 19
+  DEEPSLATE_EMERALD_ORE: 6
+  CHEST: 4
+
+chest-loot:
+  rolls-min: 5
+  rolls-max: 9
+  items:
+    - material: SOUL_SAND
+      weight: 18
+      min: 12
+      max: 30
+    - material: BONE
+      weight: 16
+      min: 14
+      max: 34
+    - material: SOUL_LANTERN
+      weight: 12
+      min: 3
+      max: 10
+    - material: GOLD_INGOT
+      weight: 14
+      min: 12
+      max: 30
+    - textura: platinum_raw
+      weight: 20
+      min: 12
+      max: 28
+    - textura: ruby
+      weight: 14
+      min: 2
+      max: 6
+    - material: DIAMOND
+      weight: 16
+      min: 6
+      max: 14
+    - material: ANCIENT_DEBRIS
+      weight: 8
+      min: 1
+      max: 3
+    - material: ENCHANTED_BOOK
+      weight: 12
+      min: 1
+      max: 1
+
+mob-pool:
+  SKELETON:
+    weight: 26
+    min: 1
+    max: 3
+  WITHER_SKELETON:
+    weight: 22
+    min: 1
+    max: 3
+  GHAST:
+    weight: 12
+    min: 1
+    max: 1
+  ENDERMAN:
+    weight: 18
+    min: 1
+    max: 2
+  STRIDER:
+    weight: 10
+    min: 1
+    max: 2
+  MAGMA_CUBE:
+    weight: 16
+    min: 1
+    max: 3
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Vale da Areia das Almas<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 250000"
+    - type: Item
+      material: NETHERITE_SCRAP
+      amount: 8
+    - type: Item
+      material: DIAMOND_BLOCK
+      amount: 8

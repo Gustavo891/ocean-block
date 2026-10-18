@@ -1,0 +1,117 @@
+id: oceano
+pretty-name: "Oceano"
+icon-material: 'PRISMARINE'
+priority: 7
+
+settings:
+  blocks-to-next-phase: 650
+
+block-pool:
+  SAND: 25
+  GRAVEL: 18
+  PRISMARINE: 18
+  PRISMARINE_BRICKS: 12
+  DARK_PRISMARINE: 10
+  SEA_LANTERN: 5
+  TUBE_CORAL_BLOCK: 8
+  BRAIN_CORAL_BLOCK: 8
+  HORN_CORAL_BLOCK: 8
+  FIRE_CORAL_BLOCK: 8
+  BUBBLE_CORAL_BLOCK: 8
+  DRIED_KELP_BLOCK: 8
+  SPONGE: 4
+  CLAY: 12
+  MAGMA_BLOCK: 5
+  COPPER_ORE: 12
+  IRON_ORE: 10
+  GOLD_ORE: 6
+  DEEPSLATE_IRON_ORE: 7
+  CHEST: 2
+
+chest-loot:
+  rolls-min: 3
+  rolls-max: 6
+  items:
+    - material: PRISMARINE_SHARD
+      weight: 22
+      min: 6
+      max: 16
+    - material: PRISMARINE_CRYSTALS
+      weight: 18
+      min: 4
+      max: 12
+    - material: RAW_COPPER
+      weight: 18
+      min: 8
+      max: 20
+    - material: COD
+      weight: 14
+      min: 6
+      max: 14
+    - material: NAUTILUS_SHELL
+      weight: 10
+      min: 1
+      max: 3
+    - textura: platinum_raw
+      weight: 12
+      min: 3
+      max: 7
+    - material: SPONGE
+      weight: 8
+      min: 2
+      max: 6
+    - material: HEART_OF_THE_SEA
+      weight: 2
+      min: 1
+      max: 1
+    - material: DIAMOND
+      weight: 6
+      min: 1
+      max: 3
+
+mob-pool:
+  DROWNED:
+    weight: 30
+    min: 1
+    max: 2
+  COD:
+    weight: 18
+    min: 1
+    max: 3
+  SALMON:
+    weight: 15
+    min: 1
+    max: 3
+  SQUID:
+    weight: 15
+    min: 1
+    max: 2
+  DOLPHIN:
+    weight: 8
+    min: 1
+    max: 1
+  PUFFERFISH:
+    weight: 10
+    min: 1
+    max: 2
+  TURTLE:
+    weight: 8
+    min: 1
+    max: 1
+  GUARDIAN:
+    weight: 10
+    min: 1
+    max: 1
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Oceano<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 7500"
+    - type: Item
+      material: HEART_OF_THE_SEA
+      amount: 1
+    - type: Item
+      material: DIAMOND
+      amount: 8

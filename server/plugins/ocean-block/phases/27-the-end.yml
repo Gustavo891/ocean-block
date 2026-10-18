@@ -1,0 +1,168 @@
+id: the_end
+pretty-name: "O Fim"
+icon-material: 'END_STONE'
+priority: 27
+
+settings:
+  blocks-to-next-phase: 15000
+
+block-pool:
+  END_STONE: 36
+  END_STONE_BRICKS: 26
+  PURPUR_BLOCK: 20
+  PURPUR_PILLAR: 14
+  PURPUR_STAIRS: 12
+  PURPUR_SLAB: 10
+  OBSIDIAN: 16
+  CRYING_OBSIDIAN: 8
+  END_ROD: 10
+  CHORUS_PLANT: 12
+  CHORUS_FLOWER: 10
+  MAGENTA_STAINED_GLASS: 8
+  DRAGON_EGG: 1
+  SHULKER_BOX: 4
+  DIAMOND_ORE: 12
+  EMERALD_ORE: 12
+  GOLD_ORE: 10
+  DEEPSLATE_IRON_ORE: 27
+  DEEPSLATE_EMERALD_ORE: 12
+  CHEST: 7
+
+chest-loot:
+  rolls-min: 8
+  rolls-max: 12
+  items:
+    - material: CHORUS_FRUIT
+      weight: 14
+      min: 12
+      max: 32
+    - material: SHULKER_SHELL
+      weight: 12
+      min: 2
+      max: 8
+    - material: ENDER_PEARL
+      weight: 14
+      min: 10
+      max: 24
+    - material: POPPED_CHORUS_FRUIT
+      weight: 12
+      min: 10
+      max: 26
+    - textura: platinum_raw
+      weight: 20
+      min: 26
+      max: 60
+    - textura: ruby
+      weight: 20
+      min: 8
+      max: 18
+    - material: DIAMOND
+      weight: 18
+      min: 16
+      max: 40
+    - material: NETHERITE_INGOT
+      weight: 8
+      min: 1
+      max: 3
+    - material: ELYTRA
+      weight: 2
+      min: 1
+      max: 1
+    - material: ENCHANTED_BOOK
+      weight: 16
+      min: 1
+      max: 3
+    - material: EXPERIENCE_BOTTLE
+      weight: 15
+      min: 48
+      max: 96
+
+mob-pool:
+  ENDERMAN:
+    weight: 34
+    min: 1
+    max: 4
+  SHULKER:
+    weight: 20
+    min: 1
+    max: 2
+  ENDERMITE:
+    weight: 16
+    min: 1
+    max: 4
+  PHANTOM:
+    weight: 14
+    min: 1
+    max: 2
+  BLAZE:
+    weight: 10
+    min: 1
+    max: 2
+  WITHER_SKELETON:
+    weight: 12
+    min: 1
+    max: 3
+
+monster-party:
+  - id: end_dragon_spawn
+    type: ENDERMAN
+    weight: 40
+    min: 1
+    max: 1
+    name: "<light_purple>Cria do Dragão"
+    is-glowing: true
+    attributes:
+      max-health: 800.0
+      attack-damage: 34.0
+      movement-speed: 0.34
+      knockback-resistance: 1.0
+      follow-range: 70.0
+      scale: 2.0
+    drops:
+      - type: ITEM
+        material: NETHERITE_INGOT
+        amount: 3
+        chance: 100.0
+      - type: ITEM
+        material: ELYTRA
+        amount: 1
+        chance: 20.0
+      - type: COMMAND
+        command: "coins add %player% 800000"
+        chance: 100.0
+  - id: end_shulker_elite
+    type: SHULKER
+    weight: 60
+    min: 2
+    max: 4
+    name: "<dark_purple>Guardião do Purpur"
+    attributes:
+      max-health: 300.0
+      attack-damage: 20.0
+      knockback-resistance: 1.0
+      follow-range: 60.0
+    drops:
+      - type: ITEM
+        material: SHULKER_SHELL
+        amount: 4
+        chance: 100.0
+      - type: ITEM
+        material: DIAMOND
+        amount: 12
+        chance: 60.0
+
+completion:
+  announce:
+    - "<gradient:#f7971e:#ffd200>A ilha dominou <yellow>O Fim<gradient:#f7971e:#ffd200> e concluiu todas as fases!</gradient>"
+  rewards:
+    - type: Command
+      value: "coins add %player% 2500000"
+    - type: Item
+      material: ELYTRA
+      amount: 1
+    - type: Item
+      material: NETHERITE_BLOCK
+      amount: 4
+    - type: Item
+      material: DRAGON_EGG
+      amount: 1

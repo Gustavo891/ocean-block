@@ -1,0 +1,112 @@
+id: neve
+pretty-name: "Neve"
+icon-material: 'SNOW_BLOCK'
+priority: 6
+
+settings:
+  blocks-to-next-phase: 550
+
+block-pool:
+  SNOW_BLOCK: 35
+  POWDER_SNOW: 12
+  ICE: 20
+  PACKED_ICE: 12
+  BLUE_ICE: 5
+  SPRUCE_LOG: 20
+  SPRUCE_LEAVES: 18
+  DIRT: 12
+  GRASS_BLOCK: 10
+  STONE: 12
+  GRAVEL: 8
+  SPRUCE_SAPLING: 5
+  SNOW: 8
+  COAL_ORE: 10
+  IRON_ORE: 9
+  COPPER_ORE: 7
+  LAPIS_ORE: 5
+  DEEPSLATE_IRON_ORE: 6
+  CHEST: 2
+
+chest-loot:
+  rolls-min: 3
+  rolls-max: 5
+  items:
+    - material: SNOWBALL
+      weight: 22
+      min: 8
+      max: 16
+    - material: PACKED_ICE
+      weight: 18
+      min: 4
+      max: 12
+    - material: SPRUCE_LOG
+      weight: 18
+      min: 8
+      max: 18
+    - material: RAW_IRON
+      weight: 16
+      min: 6
+      max: 14
+    - material: LAPIS_LAZULI
+      weight: 14
+      min: 6
+      max: 16
+    - textura: platinum_raw
+      weight: 12
+      min: 2
+      max: 6
+    - material: BLUE_ICE
+      weight: 8
+      min: 2
+      max: 6
+    - material: DIAMOND
+      weight: 5
+      min: 1
+      max: 3
+    - material: ENCHANTED_BOOK
+      weight: 3
+      min: 1
+      max: 1
+
+mob-pool:
+  STRAY:
+    weight: 28
+    min: 1
+    max: 2
+  POLAR_BEAR:
+    weight: 12
+    min: 1
+    max: 1
+  SNOW_GOLEM:
+    weight: 8
+    min: 1
+    max: 1
+  RABBIT:
+    weight: 15
+    min: 1
+    max: 3
+  FOX:
+    weight: 12
+    min: 1
+    max: 2
+  ZOMBIE:
+    weight: 20
+    min: 1
+    max: 2
+  SKELETON:
+    weight: 18
+    min: 1
+    max: 2
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Neve<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 5500"
+    - type: Item
+      material: DIAMOND
+      amount: 6
+    - type: Item
+      material: BLUE_ICE
+      amount: 16

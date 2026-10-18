@@ -1,0 +1,107 @@
+id: deserto
+pretty-name: "Deserto"
+icon-material: 'SAND'
+priority: 3
+
+settings:
+  blocks-to-next-phase: 350
+
+block-pool:
+  SAND: 40
+  SANDSTONE: 25
+  SMOOTH_SANDSTONE: 12
+  CUT_SANDSTONE: 10
+  CHISELED_SANDSTONE: 6
+  RED_SAND: 8
+  TERRACOTTA: 8
+  DEAD_BUSH: 8
+  CACTUS: 8
+  SUGAR_CANE: 6
+  SANDSTONE_STAIRS: 5
+  SANDSTONE_SLAB: 5
+  BONE_BLOCK: 4
+  COAL_ORE: 10
+  IRON_ORE: 8
+  GOLD_ORE: 5
+  DEEPSLATE_IRON_ORE: 3
+  CHEST: 2
+
+chest-loot:
+  rolls-min: 2
+  rolls-max: 5
+  items:
+    - material: SAND
+      weight: 25
+      min: 10
+      max: 24
+    - material: BONE
+      weight: 22
+      min: 4
+      max: 12
+    - material: CACTUS
+      weight: 18
+      min: 3
+      max: 8
+    - material: SUGAR
+      weight: 16
+      min: 4
+      max: 10
+    - material: RAW_GOLD
+      weight: 14
+      min: 3
+      max: 8
+    - material: GLASS
+      weight: 12
+      min: 6
+      max: 16
+    - textura: platinum_raw
+      weight: 6
+      min: 1
+      max: 3
+    - material: GOLDEN_APPLE
+      weight: 3
+      min: 1
+      max: 1
+    - material: DIAMOND
+      weight: 3
+      min: 1
+      max: 2
+
+mob-pool:
+  HUSK:
+    weight: 30
+    min: 1
+    max: 2
+  SKELETON:
+    weight: 20
+    min: 1
+    max: 2
+  SPIDER:
+    weight: 15
+    min: 1
+    max: 2
+  RABBIT:
+    weight: 20
+    min: 1
+    max: 3
+  CAMEL:
+    weight: 8
+    min: 1
+    max: 1
+  CREEPER:
+    weight: 12
+    min: 1
+    max: 1
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Deserto<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 2000"
+    - type: Item
+      material: GOLD_INGOT
+      amount: 16
+    - type: Item
+      material: GOLDEN_APPLE
+      amount: 2

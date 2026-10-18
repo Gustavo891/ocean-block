@@ -1,0 +1,164 @@
+id: trial_chamber
+pretty-name: "Câmara de Provações"
+icon-material: 'TRIAL_SPAWNER'
+priority: 23
+
+settings:
+  blocks-to-next-phase: 7600
+
+block-pool:
+  TUFF_BRICKS: 30
+  POLISHED_TUFF: 22
+  CHISELED_TUFF: 14
+  CHISELED_TUFF_BRICKS: 12
+  TUFF: 20
+  COPPER_BLOCK: 16
+  EXPOSED_COPPER: 12
+  OXIDIZED_COPPER: 10
+  CHISELED_COPPER: 10
+  COPPER_GRATE: 10
+  COPPER_BULB: 8
+  WAXED_COPPER_BLOCK: 6
+  VAULT: 3
+  TRIAL_SPAWNER: 3
+  COPPER_ORE: 16
+  DIAMOND_ORE: 10
+  GOLD_ORE: 10
+  DEEPSLATE_IRON_ORE: 23
+  DEEPSLATE_EMERALD_ORE: 8
+  CHEST: 5
+
+chest-loot:
+  rolls-min: 6
+  rolls-max: 10
+  items:
+    - material: COPPER_INGOT
+      weight: 18
+      min: 20
+      max: 48
+    - material: TRIAL_KEY
+      weight: 10
+      min: 1
+      max: 3
+    - material: OMINOUS_TRIAL_KEY
+      weight: 4
+      min: 1
+      max: 1
+    - material: MACE
+      weight: 1
+      min: 1
+      max: 1
+    - material: BREEZE_ROD
+      weight: 10
+      min: 2
+      max: 6
+    - textura: platinum_raw
+      weight: 20
+      min: 18
+      max: 40
+    - textura: ruby
+      weight: 17
+      min: 4
+      max: 10
+    - material: DIAMOND
+      weight: 16
+      min: 10
+      max: 22
+    - material: ENCHANTED_BOOK
+      weight: 14
+      min: 1
+      max: 2
+    - material: EXPERIENCE_BOTTLE
+      weight: 14
+      min: 24
+      max: 48
+
+mob-pool:
+  BREEZE:
+    weight: 22
+    min: 1
+    max: 2
+  BOGGED:
+    weight: 22
+    min: 1
+    max: 3
+  ZOMBIE:
+    weight: 18
+    min: 1
+    max: 4
+  SKELETON:
+    weight: 18
+    min: 1
+    max: 4
+  SPIDER:
+    weight: 14
+    min: 1
+    max: 3
+  SLIME:
+    weight: 12
+    min: 1
+    max: 3
+  CAVE_SPIDER:
+    weight: 14
+    min: 1
+    max: 4
+
+monster-party:
+  - id: trial_breeze_champion
+    type: BREEZE
+    weight: 55
+    min: 1
+    max: 2
+    name: "<aqua>Campeão da Provação"
+    is-glowing: true
+    attributes:
+      max-health: 400.0
+      attack-damage: 20.0
+      movement-speed: 0.34
+      follow-range: 55.0
+      scale: 1.4
+    drops:
+      - type: ITEM
+        material: BREEZE_ROD
+        amount: 4
+        chance: 100.0
+      - type: ITEM
+        material: OMINOUS_TRIAL_KEY
+        amount: 1
+        chance: 40.0
+      - type: COMMAND
+        command: "coins add %player% 260000"
+        chance: 100.0
+  - id: trial_bogged
+    type: BOGGED
+    weight: 45
+    min: 2
+    max: 4
+    name: "<green>Provador Apodrecido"
+    attributes:
+      max-health: 180.0
+      attack-damage: 14.0
+      follow-range: 50.0
+      scale: 1.2
+    drops:
+      - type: ITEM
+        material: TRIAL_KEY
+        amount: 1
+        chance: 70.0
+      - type: ITEM
+        material: DIAMOND
+        amount: 6
+        chance: 50.0
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Câmara de Provações<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 790000"
+    - type: Item
+      material: HEAVY_CORE
+      amount: 1
+    - type: Item
+      material: DIAMOND_BLOCK
+      amount: 16

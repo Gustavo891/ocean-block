@@ -1,0 +1,185 @@
+pretty-name: 'Diversos'
+icon: BELL
+
+description:
+  - '<gray>Adquira diferentes tipos'
+  - '<gray>de itens úteis para a'
+  - '<gray>sua jornada.'
+  - ''
+  - '<green>Clique para acessar!'
+
+
+products:
+  bucket:
+    name-singular: 'Balde'
+    name-plural: 'Baldes'
+    price: 100.0
+    material: Bucket
+
+  water_bucket:
+    name-singular: 'Balde de Água'
+    name-plural: 'Baldes de Água'
+    price: 200.0
+    material: WATER_BUCKET
+
+  lava_bucket:
+    name-singular: 'Balde de Lava'
+    name-plural: 'Baldes de Lava'
+    price: 200.0
+    material: LAVA_BUCKET
+
+  powder_snow_bucket:
+    name-singular: 'Balde de Neve Fofa'
+    name-plural: 'Baldes de Neve Fofa'
+    price: 250.0
+    material: POWDER_SNOW_BUCKET
+
+  saddle:
+    name-singular: 'Sela'
+    name-plural: 'Selas'
+    price: 2000.0
+    material: SADDLE
+
+  name_tag:
+    name-singular: 'Etiqueta'
+    name-plural: 'Etiquetas'
+    price: 500.0
+    material: NAME_TAG
+
+  lead:
+    name-singular: 'Laço'
+    name-plural: 'Laços'
+    price: 100.0
+    material: LEAD
+
+  lectern:
+    name-singular: 'Púlpito'
+    name-plural: 'Púlpitos'
+    price: 150.0
+    material: LECTERN
+
+  cartography_table:
+    name-singular: 'Mesa de Cartografia'
+    name-plural: 'Mesas de Cartografia'
+    price: 150.0
+    material: CARTOGRAPHY_TABLE
+
+  fletching_table:
+    name-singular: 'Mesa de Flechas'
+    name-plural: 'Mesas de Flechas'
+    price: 150.0
+    material: FLETCHING_TABLE
+
+  smithing_table:
+    name-singular: 'Mesa de Ferraria'
+    name-plural: 'Mesas de Ferraria'
+    price: 150.0
+    material: SMITHING_TABLE
+
+  loom:
+    name-singular: 'Tear'
+    name-plural: 'Teares'
+    price: 150.0
+    material: LOOM
+
+  grindstone:
+    name-singular: 'Rebolo'
+    name-plural: 'Rebolos'
+    price: 150.0
+    material: GRINDSTONE
+
+  stonecutter:
+    name-singular: 'Cortador de Pedra'
+    name-plural: 'Cortadores de Pedra'
+    price: 150.0
+    material: STONECUTTER
+
+  bell:
+    name-singular: 'Sino'
+    name-plural: 'Sinos'
+    price: 100.0
+    material: BELL
+
+  lantern:
+    name-singular: 'Lanterna'
+    name-plural: 'Lanternas'
+    price: 150.0
+    material: LANTERN
+
+  soul_lantern:
+    name-singular: 'Lanterna das Almas'
+    name-plural: 'Lanternas das Almas'
+    price: 150.0
+    material: SOUL_LANTERN
+
+  campfire:
+    name-singular: 'Fogueira'
+    name-plural: 'Fogueiras'
+    price: 150.0
+    material: CAMPFIRE
+
+  soul_campfire:
+    name-singular: 'Fogueira das Almas'
+    name-plural: 'Fogueiras das Almas'
+    price: 150.0
+    material: SOUL_CAMPFIRE
+
+  ender_chest:
+    name-singular: 'Baú do Ender'
+    name-plural: 'Baús do Ender'
+    price: 2500.0
+    material: ENDER_CHEST
+
+  enchanting_table:
+    name-singular: 'Mesa de Encantamentos'
+    name-plural: 'Mesas de Encantamentos'
+    price: 2500.0
+    material: ENCHANTING_TABLE
+
+  anvil:
+    name-singular: 'Bigorna'
+    name-plural: 'Bigornas'
+    price: 1500.0
+    material: ANVIL
+
+  shulker_box:
+    name-singular: 'Caixa de Shulker'
+    name-plural: 'Caixas de Shulker'
+    price: 7500.0
+    material: SHULKER_BOX
+
+  beacon:
+    name-singular: 'Farol'
+    name-plural: 'Faróis'
+    price: 500000.0
+    material: BEACON
+
+  ender_eye:
+    name-singular: 'Olho do Ender'
+    name-plural: 'Olhos do Ender'
+    price: 200.0
+    material: ENDER_EYE
+
+  clock:
+    name-singular: 'Relógio'
+    name-plural: 'Relógios'
+    price: 150.0
+    material: CLOCK
+
+  trident:
+    name-singular: 'Tridente'
+    name-plural: 'Tridentes'
+    price: 50000.0
+    material: TRIDENT
+
+  totem_of_undying:
+    name-singular: 'Totem da Imortalidade'
+    name-plural: 'Totens da Imortalidade'
+    price: 100000.0
+    material: TOTEM_OF_UNDYING
+
+  leather:
+    name-singular: 'Couro'
+    name-plural: 'Couros'
+    price: 275.0
+    material: LEATHER

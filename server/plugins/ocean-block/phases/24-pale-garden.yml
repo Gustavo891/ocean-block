@@ -1,0 +1,162 @@
+id: pale_garden
+pretty-name: "Jardim Pálido"
+icon-material: 'PALE_OAK_LOG'
+priority: 24
+
+settings:
+  blocks-to-next-phase: 8900
+
+block-pool:
+  PALE_OAK_LOG: 28
+  PALE_OAK_LEAVES: 28
+  PALE_OAK_WOOD: 12
+  PALE_OAK_PLANKS: 12
+  PALE_MOSS_BLOCK: 22
+  PALE_MOSS_CARPET: 12
+  PALE_HANGING_MOSS: 10
+  CREAKING_HEART: 5
+  RESIN_BLOCK: 10
+  RESIN_BRICKS: 8
+  CHISELED_RESIN_BRICKS: 6
+  GRAY_TERRACOTTA: 12
+  COBWEB: 12
+  DIRT: 12
+  GRASS_BLOCK: 12
+  STONE: 12
+  DIAMOND_ORE: 10
+  EMERALD_ORE: 10
+  GOLD_ORE: 10
+  DEEPSLATE_IRON_ORE: 24
+  DEEPSLATE_EMERALD_ORE: 9
+  CHEST: 5
+
+chest-loot:
+  rolls-min: 6
+  rolls-max: 10
+  items:
+    - material: RESIN_CLUMP
+      weight: 18
+      min: 10
+      max: 26
+    - material: PALE_OAK_LOG
+      weight: 16
+      min: 16
+      max: 40
+    - material: RESIN_BRICK
+      weight: 14
+      min: 8
+      max: 20
+    - material: EMERALD
+      weight: 14
+      min: 10
+      max: 26
+    - textura: platinum_raw
+      weight: 20
+      min: 18
+      max: 42
+    - textura: ruby
+      weight: 18
+      min: 5
+      max: 11
+    - material: DIAMOND
+      weight: 17
+      min: 10
+      max: 24
+    - material: ENCHANTED_BOOK
+      weight: 14
+      min: 1
+      max: 2
+    - material: EXPERIENCE_BOTTLE
+      weight: 14
+      min: 24
+      max: 52
+
+mob-pool:
+  CREAKING:
+    weight: 22
+    min: 1
+    max: 2
+  ZOMBIE:
+    weight: 20
+    min: 1
+    max: 4
+  SKELETON:
+    weight: 20
+    min: 1
+    max: 4
+  SPIDER:
+    weight: 18
+    min: 1
+    max: 3
+  ENDERMAN:
+    weight: 14
+    min: 1
+    max: 2
+  BAT:
+    weight: 12
+    min: 1
+    max: 4
+  WITCH:
+    weight: 12
+    min: 1
+    max: 2
+
+monster-party:
+  - id: pale_creaking
+    type: CREAKING
+    weight: 60
+    min: 1
+    max: 3
+    name: "<gray>Guardião do Jardim Pálido"
+    is-glowing: true
+    attributes:
+      max-health: 350.0
+      attack-damage: 22.0
+      movement-speed: 0.33
+      follow-range: 60.0
+      scale: 1.4
+    drops:
+      - type: ITEM
+        material: RESIN_CLUMP
+        amount: 12
+        chance: 100.0
+      - type: ITEM
+        material: DIAMOND
+        amount: 8
+        chance: 60.0
+      - type: COMMAND
+        command: "coins add %player% 300000"
+        chance: 100.0
+  - id: pale_wraith
+    type: ENDERMAN
+    weight: 40
+    min: 1
+    max: 3
+    name: "<dark_gray>Espectro Pálido"
+    attributes:
+      max-health: 220.0
+      attack-damage: 18.0
+      follow-range: 60.0
+      scale: 1.2
+    drops:
+      - type: ITEM
+        material: ENDER_PEARL
+        amount: 6
+        chance: 100.0
+      - type: ITEM
+        material: EMERALD
+        amount: 12
+        chance: 55.0
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Jardim Pálido<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 1050000"
+    - type: Item
+      material: RESIN_BLOCK
+      amount: 16
+    - type: Item
+      material: DIAMOND_BLOCK
+      amount: 20

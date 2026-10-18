@@ -1,0 +1,118 @@
+id: caverna_lush
+pretty-name: "Caverna Exuberante"
+icon-material: 'MOSS_BLOCK'
+priority: 15
+
+settings:
+  blocks-to-next-phase: 2200
+
+block-pool:
+  MOSS_BLOCK: 30
+  MOSS_CARPET: 12
+  ROOTED_DIRT: 20
+  CLAY: 16
+  STONE: 16
+  DRIPSTONE_BLOCK: 14
+  POINTED_DRIPSTONE: 8
+  AZALEA: 10
+  FLOWERING_AZALEA: 8
+  AZALEA_LEAVES: 12
+  FLOWERING_AZALEA_LEAVES: 8
+  BIG_DRIPLEAF: 8
+  SMALL_DRIPLEAF: 6
+  GLOW_LICHEN: 8
+  SPORE_BLOSSOM: 5
+  CAVE_VINES: 6
+  IRON_ORE: 12
+  COPPER_ORE: 14
+  GOLD_ORE: 10
+  LAPIS_ORE: 8
+  DIAMOND_ORE: 6
+  EMERALD_ORE: 5
+  DEEPSLATE_IRON_ORE: 15
+  DEEPSLATE_EMERALD_ORE: 4
+  CHEST: 3
+
+chest-loot:
+  rolls-min: 4
+  rolls-max: 8
+  items:
+    - material: GLOW_BERRIES
+      weight: 18
+      min: 8
+      max: 20
+    - material: MOSS_BLOCK
+      weight: 16
+      min: 10
+      max: 24
+    - material: AMETHYST_SHARD
+      weight: 16
+      min: 5
+      max: 14
+    - material: RAW_COPPER
+      weight: 14
+      min: 14
+      max: 32
+    - textura: platinum_raw
+      weight: 20
+      min: 8
+      max: 20
+    - textura: ruby
+      weight: 10
+      min: 1
+      max: 4
+    - material: DIAMOND
+      weight: 15
+      min: 4
+      max: 10
+    - material: ENCHANTED_BOOK
+      weight: 10
+      min: 1
+      max: 1
+    - material: EXPERIENCE_BOTTLE
+      weight: 14
+      min: 12
+      max: 30
+
+mob-pool:
+  AXOLOTL:
+    weight: 20
+    min: 1
+    max: 2
+  GLOW_SQUID:
+    weight: 16
+    min: 1
+    max: 2
+  TROPICAL_FISH:
+    weight: 10
+    min: 1
+    max: 3
+  ZOMBIE:
+    weight: 20
+    min: 1
+    max: 3
+  SKELETON:
+    weight: 20
+    min: 1
+    max: 3
+  CAVE_SPIDER:
+    weight: 18
+    min: 1
+    max: 3
+  CREEPER:
+    weight: 16
+    min: 1
+    max: 2
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Caverna Exuberante<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 78000"
+    - type: Item
+      material: DIAMOND_BLOCK
+      amount: 6
+    - type: Item
+      material: AMETHYST_SHARD
+      amount: 32

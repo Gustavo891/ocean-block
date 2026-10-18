@@ -1,0 +1,106 @@
+id: nether_wastes
+pretty-name: "Desolação do Nether"
+icon-material: 'NETHERRACK'
+priority: 16
+
+settings:
+  blocks-to-next-phase: 2600
+
+block-pool:
+  NETHERRACK: 40
+  NETHER_BRICKS: 16
+  BASALT: 16
+  SMOOTH_BASALT: 10
+  BLACKSTONE: 16
+  MAGMA_BLOCK: 12
+  GLOWSTONE: 10
+  SOUL_SAND: 12
+  SOUL_SOIL: 10
+  GRAVEL: 10
+  NETHER_GOLD_ORE: 16
+  NETHER_QUARTZ_ORE: 16
+  ANCIENT_DEBRIS: 2
+  GOLD_ORE: 8
+  DEEPSLATE_IRON_ORE: 16
+  DEEPSLATE_EMERALD_ORE: 4
+  CHEST: 3
+
+chest-loot:
+  rolls-min: 4
+  rolls-max: 8
+  items:
+    - material: QUARTZ
+      weight: 20
+      min: 12
+      max: 30
+    - material: GOLD_NUGGET
+      weight: 16
+      min: 16
+      max: 40
+    - material: GLOWSTONE_DUST
+      weight: 16
+      min: 8
+      max: 20
+    - material: MAGMA_CREAM
+      weight: 12
+      min: 4
+      max: 12
+    - material: GOLD_INGOT
+      weight: 14
+      min: 8
+      max: 20
+    - textura: platinum_raw
+      weight: 20
+      min: 10
+      max: 22
+    - textura: ruby
+      weight: 11
+      min: 1
+      max: 4
+    - material: DIAMOND
+      weight: 15
+      min: 4
+      max: 10
+    - material: ANCIENT_DEBRIS
+      weight: 4
+      min: 1
+      max: 2
+
+mob-pool:
+  ZOMBIFIED_PIGLIN:
+    weight: 28
+    min: 1
+    max: 3
+  MAGMA_CUBE:
+    weight: 20
+    min: 1
+    max: 3
+  GHAST:
+    weight: 8
+    min: 1
+    max: 1
+  PIGLIN:
+    weight: 20
+    min: 1
+    max: 2
+  STRIDER:
+    weight: 10
+    min: 1
+    max: 2
+  SKELETON:
+    weight: 14
+    min: 1
+    max: 2
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Desolação do Nether<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 105000"
+    - type: Item
+      material: ANCIENT_DEBRIS
+      amount: 4
+    - type: Item
+      material: QUARTZ_BLOCK
+      amount: 32

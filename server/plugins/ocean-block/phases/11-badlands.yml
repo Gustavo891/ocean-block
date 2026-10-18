@@ -1,0 +1,107 @@
+id: badlands
+pretty-name: "Badlands"
+icon-material: 'RED_SAND'
+priority: 11
+
+settings:
+  blocks-to-next-phase: 1200
+
+block-pool:
+  RED_SAND: 30
+  TERRACOTTA: 22
+  RED_TERRACOTTA: 16
+  ORANGE_TERRACOTTA: 16
+  YELLOW_TERRACOTTA: 14
+  WHITE_TERRACOTTA: 14
+  BROWN_TERRACOTTA: 12
+  LIGHT_GRAY_TERRACOTTA: 10
+  RED_SANDSTONE: 14
+  CUT_RED_SANDSTONE: 8
+  DEAD_BUSH: 8
+  CACTUS: 6
+  COARSE_DIRT: 8
+  GOLD_ORE: 16
+  IRON_ORE: 10
+  COAL_ORE: 10
+  DEEPSLATE_IRON_ORE: 11
+  CHEST: 3
+
+chest-loot:
+  rolls-min: 4
+  rolls-max: 7
+  items:
+    - material: RAW_GOLD
+      weight: 24
+      min: 8
+      max: 20
+    - material: TERRACOTTA
+      weight: 18
+      min: 10
+      max: 24
+    - material: GOLD_INGOT
+      weight: 18
+      min: 5
+      max: 14
+    - material: RAW_IRON
+      weight: 14
+      min: 6
+      max: 16
+    - textura: platinum_raw
+      weight: 16
+      min: 5
+      max: 12
+    - material: GOLDEN_APPLE
+      weight: 8
+      min: 1
+      max: 3
+    - material: DIAMOND
+      weight: 10
+      min: 2
+      max: 5
+    - material: EMERALD
+      weight: 10
+      min: 3
+      max: 9
+    - material: EXPERIENCE_BOTTLE
+      weight: 10
+      min: 8
+      max: 20
+
+mob-pool:
+  HUSK:
+    weight: 28
+    min: 1
+    max: 3
+  SKELETON:
+    weight: 20
+    min: 1
+    max: 2
+  SPIDER:
+    weight: 16
+    min: 1
+    max: 2
+  CREEPER:
+    weight: 16
+    min: 1
+    max: 2
+  LLAMA:
+    weight: 14
+    min: 1
+    max: 2
+  PILLAGER:
+    weight: 14
+    min: 1
+    max: 2
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Badlands<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 24000"
+    - type: Item
+      material: GOLD_BLOCK
+      amount: 6
+    - type: Item
+      material: DIAMOND
+      amount: 20

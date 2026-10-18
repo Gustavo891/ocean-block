@@ -1,0 +1,115 @@
+id: montanhas
+pretty-name: "Montanhas"
+icon-material: 'STONE'
+priority: 13
+
+settings:
+  blocks-to-next-phase: 1600
+
+block-pool:
+  STONE: 30
+  ANDESITE: 18
+  GRAVEL: 16
+  CALCITE: 14
+  TUFF: 14
+  SNOW_BLOCK: 16
+  POWDER_SNOW: 8
+  ICE: 10
+  PACKED_ICE: 8
+  SPRUCE_LOG: 12
+  SPRUCE_LEAVES: 10
+  DIRT: 10
+  COBBLESTONE: 12
+  EMERALD_ORE: 12
+  IRON_ORE: 14
+  COAL_ORE: 10
+  COPPER_ORE: 10
+  GOLD_ORE: 6
+  DIAMOND_ORE: 4
+  DEEPSLATE_IRON_ORE: 13
+  DEEPSLATE_EMERALD_ORE: 3
+  CHEST: 3
+
+chest-loot:
+  rolls-min: 4
+  rolls-max: 7
+  items:
+    - material: EMERALD
+      weight: 22
+      min: 6
+      max: 18
+    - material: RAW_IRON
+      weight: 18
+      min: 10
+      max: 24
+    - material: RAW_COPPER
+      weight: 16
+      min: 10
+      max: 26
+    - material: COAL
+      weight: 14
+      min: 12
+      max: 28
+    - textura: platinum_raw
+      weight: 18
+      min: 6
+      max: 16
+    - textura: ruby
+      weight: 8
+      min: 1
+      max: 3
+    - material: DIAMOND
+      weight: 14
+      min: 3
+      max: 8
+    - material: GOAT_HORN
+      weight: 4
+      min: 1
+      max: 1
+    - material: EXPERIENCE_BOTTLE
+      weight: 12
+      min: 10
+      max: 26
+
+mob-pool:
+  GOAT:
+    weight: 22
+    min: 1
+    max: 2
+  LLAMA:
+    weight: 14
+    min: 1
+    max: 2
+  RABBIT:
+    weight: 10
+    min: 1
+    max: 3
+  STRAY:
+    weight: 20
+    min: 1
+    max: 3
+  ZOMBIE:
+    weight: 18
+    min: 1
+    max: 2
+  SKELETON:
+    weight: 18
+    min: 1
+    max: 2
+  CREEPER:
+    weight: 15
+    min: 1
+    max: 2
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Montanhas<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 43000"
+    - type: Item
+      material: EMERALD_BLOCK
+      amount: 6
+    - type: Item
+      material: DIAMOND
+      amount: 28

@@ -1,0 +1,126 @@
+pretty-name: 'Fazenda'
+icon: WHEAT
+
+products:
+  wheat_seeds:
+    name-singular: 'Semente de trigo'
+    name-plural: 'Sementes de trigo'
+    price: 21.0
+    material: wheat_seeds
+  pumpkin_seeds:
+    name-singular: 'Semente de abóbora'
+    name-plural: 'Sementes de abóbora'
+    price: 8.33
+    material: pumpkin_seeds
+  melon_seeds:
+    name-singular: 'Semente de melancia'
+    name-plural: 'Sementes de melancia'
+    price: 21.0
+    material: melon_seeds
+  beetroot_seeds:
+    name-singular: 'Semente de beterraba'
+    name-plural: 'Sementes de beterraba'
+    price: 21.0
+    material: beetroot_seeds
+  cocoa_beans:
+    name-singular: 'Semente de cacau'
+    name-plural: 'Sementes de cacau'
+    price: 42.0
+    material: cocoa_beans
+  wheat:
+    name-singular: 'Trigo'
+    name-plural: 'Trigos'
+    price: 35.0
+    material: wheat
+  carrot:
+    name-singular: 'Cenoura'
+    name-plural: 'Cenouras'
+    price: 35.0
+    material: carrot
+  potato:
+    name-singular: 'Batata'
+    name-plural: 'Batatas'
+    price:  35.0
+    material: potato
+  beetroot:
+    name-singular: 'Beterraba'
+    name-plural: 'Beterrabas'
+    price:  42.0
+    material: beetroot
+  nether_wart:
+    name-singular: 'Fungo do Nether'
+    name-plural: 'Fungos do Nether'
+    price: 56.0
+    material: NETHER_WART
+
+  sugar_cane:
+    name-singular: 'Cana-de-açúcar'
+    name-plural: 'Canas-de-açúcar'
+    price: 28.0
+    material: SUGAR_CANE
+
+  pumpkin:
+    name-singular: 'Abóbora'
+    name-plural: 'Abóboras'
+    price: 42.0
+    material: PUMPKIN
+
+  melon_slice:
+    name-singular: 'Fatia de Melancia'
+    name-plural: 'Fatias de Melancia'
+    price: 28.0
+    material: MELON_SLICE
+
+  cactus:
+    name-singular: 'Cacto'
+    name-plural: 'Cactos'
+    price: 35.0
+    material: CACTUS
+
+  sweet_berries:
+    name-singular: 'Fruta-doce'
+    name-plural: 'Frutas-doces'
+    price: 42.0
+    material: SWEET_BERRIES
+
+  oak_sapling:
+    name-singular: 'Muda de Carvalho'
+    name-plural: 'Mudas de Carvalho'
+    price: 35.0
+    material: OAK_SAPLING
+
+  spruce_sapling:
+    name-singular: 'Muda de Pinheiro'
+    name-plural: 'Mudas de Pinheiro'
+    price: 35.0
+    material: SPRUCE_SAPLING
+
+  birch_sapling:
+    name-singular: 'Muda de Bétula'
+    name-plural: 'Mudas de Bétula'
+    price: 35.0
+    material: BIRCH_SAPLING
+
+  jungle_sapling:
+    name-singular: 'Muda de Selva'
+    name-plural: 'Mudas de Selva'
+    price: 35.0
+    material: JUNGLE_SAPLING
+
+  acacia_sapling:
+    name-singular: 'Muda de Acácia'
+    name-plural: 'Mudas de Acácia'
+    price: 35.0
+    material: ACACIA_SAPLING
+
+  dark_oak_sapling:
+    name-singular: 'Muda de Carvalho Escuro'
+    name-plural: 'Mudas de Carvalho Escuro'
+    price: 42.0
+    material: DARK_OAK_SAPLING
+
+  bamboo:
+    name-singular: 'Bambu'
+    name-plural: 'Bambus'
+    price: 28.0
+    material: BAMBOO

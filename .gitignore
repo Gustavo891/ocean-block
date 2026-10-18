@@ -6,3 +6,13 @@
 .kotlin/
 hs_err_*.log
 replay_*.log
+server/world/*
+!server/world/datapacks/
+server/world_nether/
+server/world_the_end/
+server/spawn/
+server/logs/
+server/cache/
+server/libraries/
+server/versions/
+server/.console_history

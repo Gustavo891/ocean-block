@@ -1,0 +1,110 @@
+id: floresta_nether
+pretty-name: "Floresta do Nether"
+icon-material: 'WARPED_STEM'
+priority: 18
+
+settings:
+  blocks-to-next-phase: 3500
+
+block-pool:
+  CRIMSON_NYLIUM: 22
+  WARPED_NYLIUM: 22
+  CRIMSON_STEM: 18
+  WARPED_STEM: 18
+  NETHER_WART_BLOCK: 16
+  WARPED_WART_BLOCK: 16
+  SHROOMLIGHT: 12
+  CRIMSON_FUNGUS: 10
+  WARPED_FUNGUS: 10
+  CRIMSON_ROOTS: 8
+  WARPED_ROOTS: 8
+  NETHER_SPROUTS: 8
+  TWISTING_VINES: 6
+  WEEPING_VINES: 6
+  NETHERRACK: 16
+  NETHER_GOLD_ORE: 14
+  NETHER_QUARTZ_ORE: 14
+  ANCIENT_DEBRIS: 3
+  DEEPSLATE_IRON_ORE: 18
+  DEEPSLATE_EMERALD_ORE: 5
+  CHEST: 4
+
+chest-loot:
+  rolls-min: 5
+  rolls-max: 8
+  items:
+    - material: SHROOMLIGHT
+      weight: 18
+      min: 6
+      max: 16
+    - material: CRIMSON_STEM
+      weight: 16
+      min: 10
+      max: 26
+    - material: WARPED_STEM
+      weight: 16
+      min: 10
+      max: 26
+    - material: GOLD_INGOT
+      weight: 14
+      min: 12
+      max: 28
+    - textura: platinum_raw
+      weight: 20
+      min: 12
+      max: 26
+    - textura: ruby
+      weight: 13
+      min: 2
+      max: 6
+    - material: DIAMOND
+      weight: 15
+      min: 5
+      max: 12
+    - material: ANCIENT_DEBRIS
+      weight: 7
+      min: 1
+      max: 3
+    - material: EXPERIENCE_BOTTLE
+      weight: 14
+      min: 16
+      max: 36
+
+mob-pool:
+  HOGLIN:
+    weight: 24
+    min: 1
+    max: 2
+  PIGLIN:
+    weight: 22
+    min: 1
+    max: 3
+  ZOGLIN:
+    weight: 10
+    min: 1
+    max: 1
+  STRIDER:
+    weight: 14
+    min: 1
+    max: 2
+  ENDERMAN:
+    weight: 16
+    min: 1
+    max: 2
+  ZOMBIFIED_PIGLIN:
+    weight: 18
+    min: 1
+    max: 3
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Floresta do Nether<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 185000"
+    - type: Item
+      material: ANCIENT_DEBRIS
+      amount: 8
+    - type: Item
+      material: SHROOMLIGHT
+      amount: 32

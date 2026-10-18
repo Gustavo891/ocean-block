@@ -1,0 +1,110 @@
+id: cogumelo
+pretty-name: "Ilha dos Cogumelos"
+icon-material: 'RED_MUSHROOM_BLOCK'
+priority: 9
+
+settings:
+  blocks-to-next-phase: 880
+
+block-pool:
+  MYCELIUM: 35
+  RED_MUSHROOM_BLOCK: 25
+  BROWN_MUSHROOM_BLOCK: 25
+  MUSHROOM_STEM: 20
+  RED_MUSHROOM: 12
+  BROWN_MUSHROOM: 12
+  DIRT: 14
+  PODZOL: 12
+  COARSE_DIRT: 10
+  SHROOMLIGHT: 5
+  MOSS_BLOCK: 8
+  STONE: 10
+  IRON_ORE: 10
+  GOLD_ORE: 8
+  EMERALD_ORE: 4
+  DEEPSLATE_IRON_ORE: 9
+  CHEST: 3
+
+chest-loot:
+  rolls-min: 3
+  rolls-max: 6
+  items:
+    - material: RED_MUSHROOM
+      weight: 20
+      min: 6
+      max: 16
+    - material: BROWN_MUSHROOM
+      weight: 20
+      min: 6
+      max: 16
+    - material: MUSHROOM_STEW
+      weight: 16
+      min: 3
+      max: 8
+    - material: SHROOMLIGHT
+      weight: 12
+      min: 2
+      max: 8
+    - material: IRON_INGOT
+      weight: 14
+      min: 5
+      max: 14
+    - textura: platinum_raw
+      weight: 14
+      min: 4
+      max: 9
+    - material: EMERALD
+      weight: 10
+      min: 2
+      max: 6
+    - material: DIAMOND
+      weight: 8
+      min: 1
+      max: 4
+    - material: EXPERIENCE_BOTTLE
+      weight: 10
+      min: 6
+      max: 16
+
+mob-pool:
+  MOOSHROOM:
+    weight: 35
+    min: 1
+    max: 2
+  COW:
+    weight: 15
+    min: 1
+    max: 2
+  SHEEP:
+    weight: 12
+    min: 1
+    max: 2
+  ZOMBIE:
+    weight: 18
+    min: 1
+    max: 2
+  SPIDER:
+    weight: 15
+    min: 1
+    max: 2
+  CREEPER:
+    weight: 12
+    min: 1
+    max: 2
+  WITCH:
+    weight: 10
+    min: 1
+    max: 1
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Ilha dos Cogumelos<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 13000"
+    - type: Item
+      material: DIAMOND
+      amount: 14
+    - type: Item
+      material: SHROOMLIGHT
+      amount: 16

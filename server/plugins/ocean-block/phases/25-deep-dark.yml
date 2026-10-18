@@ -1,0 +1,162 @@
+id: deep_dark
+pretty-name: "Escuridão Profunda"
+icon-material: 'SCULK_CATALYST'
+priority: 25
+
+settings:
+  blocks-to-next-phase: 10500
+
+block-pool:
+  SCULK: 34
+  SCULK_VEIN: 14
+  SCULK_CATALYST: 12
+  SCULK_SENSOR: 10
+  SCULK_SHRIEKER: 8
+  DEEPSLATE: 26
+  COBBLED_DEEPSLATE: 18
+  DEEPSLATE_BRICKS: 16
+  DEEPSLATE_TILES: 12
+  CRACKED_DEEPSLATE_BRICKS: 10
+  POLISHED_DEEPSLATE: 10
+  REINFORCED_DEEPSLATE: 4
+  COBWEB: 12
+  SOUL_LANTERN: 6
+  DIAMOND_ORE: 12
+  GOLD_ORE: 10
+  EMERALD_ORE: 10
+  REDSTONE_ORE: 10
+  DEEPSLATE_IRON_ORE: 25
+  DEEPSLATE_EMERALD_ORE: 10
+  CHEST: 6
+
+chest-loot:
+  rolls-min: 7
+  rolls-max: 11
+  items:
+    - material: ECHO_SHARD
+      weight: 14
+      min: 3
+      max: 9
+    - material: SCULK_CATALYST
+      weight: 12
+      min: 4
+      max: 10
+    - material: DISC_FRAGMENT_5
+      weight: 8
+      min: 2
+      max: 6
+    - material: EMERALD
+      weight: 14
+      min: 12
+      max: 30
+    - textura: platinum_raw
+      weight: 20
+      min: 20
+      max: 46
+    - textura: ruby
+      weight: 19
+      min: 6
+      max: 13
+    - material: DIAMOND
+      weight: 18
+      min: 12
+      max: 28
+    - material: NETHERITE_SCRAP
+      weight: 10
+      min: 2
+      max: 5
+    - material: ENCHANTED_BOOK
+      weight: 15
+      min: 1
+      max: 2
+    - material: EXPERIENCE_BOTTLE
+      weight: 14
+      min: 32
+      max: 64
+
+mob-pool:
+  WARDEN:
+    weight: 5
+    min: 1
+    max: 1
+  ENDERMAN:
+    weight: 26
+    min: 1
+    max: 3
+  SKELETON:
+    weight: 24
+    min: 1
+    max: 4
+  ZOMBIE:
+    weight: 20
+    min: 1
+    max: 4
+  CAVE_SPIDER:
+    weight: 18
+    min: 1
+    max: 4
+  SILVERFISH:
+    weight: 14
+    min: 1
+    max: 4
+
+monster-party:
+  - id: deep_dark_warden
+    type: WARDEN
+    weight: 40
+    min: 1
+    max: 1
+    name: "<dark_aqua>Sentinela das Profundezas"
+    is-glowing: true
+    attributes:
+      max-health: 600.0
+      attack-damage: 30.0
+      movement-speed: 0.32
+      knockback-resistance: 1.0
+      follow-range: 60.0
+      scale: 1.3
+    drops:
+      - type: ITEM
+        material: ECHO_SHARD
+        amount: 12
+        chance: 100.0
+      - type: ITEM
+        material: NETHERITE_INGOT
+        amount: 2
+        chance: 50.0
+      - type: COMMAND
+        command: "coins add %player% 400000"
+        chance: 100.0
+  - id: deep_dark_stalker
+    type: ENDERMAN
+    weight: 60
+    min: 2
+    max: 4
+    name: "<dark_purple>Espreitador do Sculk"
+    attributes:
+      max-health: 250.0
+      attack-damage: 20.0
+      follow-range: 60.0
+      scale: 1.2
+    drops:
+      - type: ITEM
+        material: ENDER_PEARL
+        amount: 8
+        chance: 100.0
+      - type: ITEM
+        material: DIAMOND
+        amount: 8
+        chance: 55.0
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Escuridão Profunda<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 1400000"
+    - type: Item
+      material: NETHERITE_INGOT
+      amount: 4
+    - type: Item
+      material: ECHO_SHARD
+      amount: 24

@@ -1,0 +1,532 @@
+pretty-name: 'Blocos'
+icon: COBBLESTONE
+
+description:
+  - '<gray>Adquira diferentes tipos de'
+  - '<gray>de blocos e liberte a'
+  - '<gray>sua criatividade.'
+  - ''
+  - '<green>Clique para acessar!'
+
+products:
+  grass_block:
+    name-singular: 'Bloco de Grama'
+    name-plural: 'Blocos de Grama'
+    price: 20.0
+    material: GRASS_BLOCK
+
+  dirt:
+    name-singular: 'Terra'
+    name-plural: 'Terras'
+    price: 12.0
+    material: DIRT
+
+  podzol:
+    name-singular: 'Podzol'
+    name-plural: 'Podzóis'
+    price: 25.0
+    material: PODZOL
+
+  coarse_dirt:
+    name-singular: 'Terra Grossa'
+    name-plural: 'Terras Grossas'
+    price: 20.0
+    material: COARSE_DIRT
+
+  rooted_dirt:
+    name-singular: 'Terra Enraizada'
+    name-plural: 'Terras Enraizadas'
+    price: 20.0
+    material: ROOTED_DIRT
+
+  mud:
+    name-singular: 'Lama'
+    name-plural: 'Lamas'
+    price: 100.0
+    material: MUD
+
+  blackstone:
+    name-singular: 'Blackstone'
+    name-plural: 'Blackstones'
+    price: 100.0
+    material: BLACKSTONE
+
+  tuff:
+    name-singular: 'Tufo'
+    name-plural: 'Tufos'
+    price: 100.0
+    material: TUFF
+
+
+  stone:
+    name-singular: 'Pedra'
+    name-plural: 'Pedras'
+    price: 10.0
+    material: STONE
+
+  sand:
+    name-singular: 'Areia'
+    name-plural: 'Areias'
+    price: 100.0
+    material: SAND
+
+  orange_terracotta:
+    name-singular: 'Terracota Laranja'
+    name-plural: 'Terracotas Laranja'
+    price: 100.0
+    material: ORANGE_TERRACOTTA
+
+  stone_bricks:
+    name-singular: 'Tijolo de Pedra'
+    name-plural: 'Tijolos de Pedra'
+    price: 100.0
+    material: STONE_BRICKS
+
+  stone_brick_slab:
+    name-singular: 'Laje de Tijolo de Pedra'
+    name-plural: 'Lajes de Tijolo de Pedra'
+    price: 100.0
+    material: STONE_BRICK_SLAB
+
+  stone_brick_stairs:
+    name-singular: 'Escada de Tijolo de Pedra'
+    name-plural: 'Escadas de Tijolo de Pedra'
+    price: 100.0
+    material: STONE_BRICK_STAIRS
+
+  stone_brick_wall:
+    name-singular: 'Muro de Tijolo de Pedra'
+    name-plural: 'Muros de Tijolo de Pedra'
+    price: 100.0
+    material: STONE_BRICK_WALL
+
+  cobblestone:
+    name-singular: 'Pedregulho'
+    name-plural: 'Pedregulhos'
+    price: 10.0
+    material: COBBLESTONE
+
+  cobblestone_slab:
+    name-singular: 'Laje de Pedregulho'
+    name-plural: 'Lajes de Pedregulho'
+    price: 100.0
+    material: COBBLESTONE_SLAB
+
+  cobblestone_stairs:
+    name-singular: 'Escada de Pedregulho'
+    name-plural: 'Escadas de Pedregulho'
+    price: 100.0
+    material: COBBLESTONE_STAIRS
+
+  cobblestone_wall:
+    name-singular: 'Muro de Pedregulho'
+    name-plural: 'Muros de Pedregulho'
+    price: 100.0
+    material: COBBLESTONE_WALL
+
+  mossy_cobblestone:
+    name-singular: 'Pedregulho com Musgo'
+    name-plural: 'Pedregulhos com Musgo'
+    price: 100.0
+    material: MOSSY_COBBLESTONE
+
+  mossy_stone_bricks:
+    name-singular: 'Tijolo de Pedra com Musgo'
+    name-plural: 'Tijolos de Pedra com Musgo'
+    price: 100.0
+    material: MOSSY_STONE_BRICKS
+
+  mossy_stone_brick_slab:
+    name-singular: 'Laje de Tijolo de Pedra com Musgo'
+    name-plural: 'Lajes de Tijolo de Pedra com Musgo'
+    price: 100.0
+    material: MOSSY_STONE_BRICK_SLAB
+
+  mossy_stone_brick_stairs:
+    name-singular: 'Escada de Tijolo de Pedra com Musgo'
+    name-plural: 'Escadas de Tijolo de Pedra com Musgo'
+    price: 100.0
+    material: MOSSY_STONE_BRICK_STAIRS
+
+  mossy_stone_brick_wall:
+    name-singular: 'Muro de Tijolo de Pedra com Musgo'
+    name-plural: 'Muros de Tijolo de Pedra com Musgo'
+    price: 100.0
+    material: MOSSY_STONE_BRICK_WALL
+
+  cracked_stone_bricks:
+    name-singular: 'Tijolo de Pedra Rachado'
+    name-plural: 'Tijolos de Pedra Rachados'
+    price: 100.0
+    material: CRACKED_STONE_BRICKS
+
+  chiseled_stone_bricks:
+    name-singular: 'Tijolo de Pedra Talhado'
+    name-plural: 'Tijolos de Pedra Talhados'
+    price: 100.0
+    material: CHISELED_STONE_BRICKS
+
+  polished_andesite:
+    name-singular: 'Andesito Polido'
+    name-plural: 'Andesitos Polidos'
+    price: 100.0
+    material: POLISHED_ANDESITE
+
+  andesite:
+    name-singular: 'Andesito'
+    name-plural: 'Andesitos'
+    price: 100.0
+    material: ANDESITE
+
+  polished_andesite_slab:
+    name-singular: 'Laje de Andesito Polido'
+    name-plural: 'Lajes de Andesito Polido'
+    price: 100.0
+    material: POLISHED_ANDESITE_SLAB
+
+  polished_andesite_stairs:
+    name-singular: 'Escada de Andesito Polido'
+    name-plural: 'Escadas de Andesito Polido'
+    price: 100.0
+    material: POLISHED_ANDESITE_STAIRS
+
+  polished_andesite_wall:
+    name-singular: 'Muro de Andesito Polido'
+    name-plural: 'Muros de Andesito Polido'
+    price: 100.0
+    material: POLISHED_ANDESITE_WALL
+
+  andesite_slab:
+    name-singular: 'Laje de Andesito'
+    name-plural: 'Lajes de Andesito'
+    price: 100.0
+    material: ANDESITE_SLAB
+
+  andesite_stairs:
+    name-singular: 'Escada de Andesito'
+    name-plural: 'Escadas de Andesito'
+    price: 100.0
+    material: ANDESITE_STAIRS
+
+  andesite_wall:
+    name-singular: 'Muro de Andesito'
+    name-plural: 'Muros de Andesito'
+    price: 100.0
+    material: ANDESITE_WALL
+
+  diorite:
+    name-singular: 'Diorito'
+    name-plural: 'Dioritos'
+    price: 100.0
+    material: DIORITE
+
+  polished_diorite:
+    name-singular: 'Diorito Polido'
+    name-plural: 'Dioritos Polidos'
+    price: 100.0
+    material: POLISHED_DIORITE
+
+  granite:
+    name-singular: 'Granito'
+    name-plural: 'Granitos'
+    price: 100.0
+    material: GRANITE
+
+  polished_granite:
+    name-singular: 'Granito Polido'
+    name-plural: 'Granitos Polidos'
+    price: 100.0
+    material: POLISHED_GRANITE
+
+  glass:
+    name-singular: 'Vidro'
+    name-plural: 'Vidros'
+    price: 100.0
+    material: GLASS
+
+  granite_slab:
+    name-singular: 'Laje de Granito'
+    name-plural: 'Lajes de Granito'
+    price: 100.0
+    material: GRANITE_SLAB
+
+  granite_stairs:
+    name-singular: 'Escada de Granito'
+    name-plural: 'Escadas de Granito'
+    price: 100.0
+    material: GRANITE_STAIRS
+
+  granite_wall:
+    name-singular: 'Muro de Granito'
+    name-plural: 'Muros de Granito'
+    price: 100.0
+    material: GRANITE_WALL
+
+  polished_granite_slab:
+    name-singular: 'Laje de Granito Polido'
+    name-plural: 'Lajes de Granito Polido'
+    price: 100.0
+    material: POLISHED_GRANITE_SLAB
+
+  polished_granite_stairs:
+    name-singular: 'Escada de Granito Polido'
+    name-plural: 'Escadas de Granito Polido'
+    price: 100.0
+    material: POLISHED_GRANITE_STAIRS
+
+  polished_granite_wall:
+    name-singular: 'Muro de Granito Polido'
+    name-plural: 'Muros de Granito Polido'
+    price: 100.0
+    material: POLISHED_GRANITE_WALL
+
+  cobbled_deepslate:
+    name-singular: 'Ardósia Abissal Bruta'
+    name-plural: 'Ardósias Abissais Brutas'
+    price: 100.0
+    material: COBBLED_DEEPSLATE
+
+  cobbled_deepslate_slab:
+    name-singular: 'Laje de Ardósia Abissal Bruta'
+    name-plural: 'Lajes de Ardósia Abissal Bruta'
+    price: 100.0
+    material: COBBLED_DEEPSLATE_SLAB
+
+  cobbled_deepslate_stairs:
+    name-singular: 'Escada de Ardósia Abissal Bruta'
+    name-plural: 'Escadas de Ardósia Abissal Bruta'
+    price: 100.0
+    material: COBBLED_DEEPSLATE_STAIRS
+
+  cobbled_deepslate_wall:
+    name-singular: 'Muro de Ardósia Abissal Bruta'
+    name-plural: 'Muros de Ardósia Abissal Bruta'
+    price: 100.0
+    material: COBBLED_DEEPSLATE_WALL
+
+  polished_deepslate:
+    name-singular: 'Ardósia Abissal Polida'
+    name-plural: 'Ardósias Abissais Polidas'
+    price: 100.0
+    material: POLISHED_DEEPSLATE
+
+  polished_deepslate_slab:
+    name-singular: 'Laje de Ardósia Abissal Polida'
+    name-plural: 'Lajes de Ardósia Abissal Polida'
+    price: 100.0
+    material: POLISHED_DEEPSLATE_SLAB
+
+  polished_deepslate_stairs:
+    name-singular: 'Escada de Ardósia Abissal Polida'
+    name-plural: 'Escadas de Ardósia Abissal Polida'
+    price: 100.0
+    material: POLISHED_DEEPSLATE_STAIRS
+
+  polished_deepslate_wall:
+    name-singular: 'Muro de Ardósia Abissal Polida'
+    name-plural: 'Muros de Ardósia Abissal Polida'
+    price: 100.0
+    material: POLISHED_DEEPSLATE_WALL
+
+  deepslate_bricks:
+    name-singular: 'Tijolo de Ardósia Abissal'
+    name-plural: 'Tijolos de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_BRICKS
+
+  deepslate_brick_slab:
+    name-singular: 'Laje de Tijolo de Ardósia Abissal'
+    name-plural: 'Lajes de Tijolo de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_BRICK_SLAB
+
+  deepslate_brick_stairs:
+    name-singular: 'Escada de Tijolo de Ardósia Abissal'
+    name-plural: 'Escadas de Tijolo de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_BRICK_STAIRS
+
+  deepslate_brick_wall:
+    name-singular: 'Muro de Tijolo de Ardósia Abissal'
+    name-plural: 'Muros de Tijolo de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_BRICK_WALL
+
+  deepslate_tiles:
+    name-singular: 'Ladrilho de Ardósia Abissal'
+    name-plural: 'Ladrilhos de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_TILES
+
+  deepslate_tile_slab:
+    name-singular: 'Laje de Ladrilho de Ardósia Abissal'
+    name-plural: 'Lajes de Ladrilho de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_TILE_SLAB
+
+  deepslate_tile_stairs:
+    name-singular: 'Escada de Ladrilho de Ardósia Abissal'
+    name-plural: 'Escadas de Ladrilho de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_TILE_STAIRS
+
+  deepslate_tile_wall:
+    name-singular: 'Muro de Ladrilho de Ardósia Abissal'
+    name-plural: 'Muros de Ladrilho de Ardósia Abissal'
+    price: 100.0
+    material: DEEPSLATE_TILE_WALL
+
+  cracked_deepslate_bricks:
+    name-singular: 'Tijolo de Ardósia Abissal Rachado'
+    name-plural: 'Tijolos de Ardósia Abissal Rachados'
+    price: 100.0
+    material: CRACKED_DEEPSLATE_BRICKS
+
+  cracked_deepslate_tiles:
+    name-singular: 'Ladrilho de Ardósia Abissal Rachado'
+    name-plural: 'Ladrilhos de Ardósia Abissal Rachados'
+    price: 100.0
+    material: CRACKED_DEEPSLATE_TILES
+
+  bricks:
+    name-singular: 'Tijolo'
+    name-plural: 'Tijolos'
+    price: 100.0
+    material: BRICKS
+
+  oak_log:
+    name-singular: 'Tora de Carvalho'
+    name-plural: 'Toras de Carvalho'
+    price: 65.0
+    material: OAK_LOG
+
+  oak_leaves:
+    name-singular: 'Folha de Carvalho'
+    name-plural: 'Folhas de Carvalho'
+    price: 45.0
+    material: OAK_LEAVES
+
+  spruce_log:
+    name-singular: 'Tora de Pinheiro'
+    name-plural: 'Toras de Pinheiro'
+    price: 65.0
+    material: SPRUCE_LOG
+
+  spruce_leaves:
+    name-singular: 'Folha de Pinheiro'
+    name-plural: 'Folhas de Pinheiro'
+    price: 45.0
+    material: SPRUCE_LEAVES
+
+  birch_log:
+    name-singular: 'Tora de Bétula'
+    name-plural: 'Toras de Bétula'
+    price: 65.0
+    material: BIRCH_LOG
+
+  birch_leaves:
+    name-singular: 'Folha de Bétula'
+    name-plural: 'Folhas de Bétula'
+    price: 45.0
+    material: BIRCH_LEAVES
+
+  jungle_log:
+    name-singular: 'Tora da Selva'
+    name-plural: 'Toras da Selva'
+    price: 65.0
+    material: JUNGLE_LOG
+
+  jungle_leaves:
+    name-singular: 'Folha da Selva'
+    name-plural: 'Folhas da Selva'
+    price: 45.0
+    material: JUNGLE_LEAVES
+
+  acacia_log:
+    name-singular: 'Tora de Acácia'
+    name-plural: 'Toras de Acácia'
+    price: 65.0
+    material: ACACIA_LOG
+
+  acacia_leaves:
+    name-singular: 'Folha de Acácia'
+    name-plural: 'Folhas de Acácia'
+    price: 45.0
+    material: ACACIA_LEAVES
+
+  dark_oak_log:
+    name-singular: 'Tora de Carvalho Escuro'
+    name-plural: 'Toras de Carvalho Escuro'
+    price: 65.0
+    material: DARK_OAK_LOG
+
+  dark_oak_leaves:
+    name-singular: 'Folha de Carvalho Escuro'
+    name-plural: 'Folhas de Carvalho Escuro'
+    price: 45.0
+    material: DARK_OAK_LEAVES
+
+  mangrove_log:
+    name-singular: 'Tora de Mangue'
+    name-plural: 'Toras de Mangue'
+    price: 65.0
+    material: MANGROVE_LOG
+
+  mangrove_leaves:
+    name-singular: 'Folha de Mangue'
+    name-plural: 'Folhas de Mangue'
+    price: 45.0
+    material: MANGROVE_LEAVES
+
+  cherry_log:
+    name-singular: 'Tora de Cerejeira'
+    name-plural: 'Toras de Cerejeira'
+    price: 65.0
+    material: CHERRY_LOG
+
+  cherry_leaves:
+    name-singular: 'Folha de Cerejeira'
+    name-plural: 'Folhas de Cerejeira'
+    price: 45.0
+    material: CHERRY_LEAVES
+
+  pale_oak_log:
+    name-singular: 'Tora de Carvalho Pálido'
+    name-plural: 'Toras de Carvalho Pálido'
+    price: 65.0
+    material: PALE_OAK_LOG
+
+  pale_oak_leaves:
+    name-singular: 'Folha de Carvalho Pálido'
+    name-plural: 'Folhas de Carvalho Pálido'
+    price: 45.0
+    material: PALE_OAK_LEAVES
+  ice:
+    name-singular: 'Gelo'
+    name-plural: 'Blocos de Gelo'
+    price: 50.0
+    material: ICE
+
+  packed_ice:
+    name-singular: 'Gelo Compactado'
+    name-plural: 'Blocos de Gelo Compactado'
+    price: 250.0
+    material: PACKED_ICE
+
+  blue_ice:
+    name-singular: 'Gelo Azul'
+    name-plural: 'Blocos de Gelo Azul'
+    price: 800.0
+    material: BLUE_ICE
+
+  snow:
+    name-singular: 'Neve'
+    name-plural: 'Neves'
+    price: 100.0
+    material: SNOW
+
+  snow_block:
+    name-singular: 'Bloco de Neve'
+    name-plural: 'Blocos de Neve'
+    price: 65.0
+    material: SNOW_BLOCK

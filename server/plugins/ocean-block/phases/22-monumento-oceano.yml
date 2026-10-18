@@ -1,0 +1,161 @@
+id: monumento_oceano
+pretty-name: "Monumento do Oceano"
+icon-material: 'SEA_LANTERN'
+priority: 22
+
+settings:
+  blocks-to-next-phase: 6500
+
+block-pool:
+  PRISMARINE: 32
+  PRISMARINE_BRICKS: 26
+  DARK_PRISMARINE: 22
+  SEA_LANTERN: 16
+  PRISMARINE_STAIRS: 10
+  PRISMARINE_SLAB: 10
+  DARK_PRISMARINE_STAIRS: 8
+  SPONGE: 10
+  WET_SPONGE: 6
+  GOLD_BLOCK: 6
+  SAND: 14
+  GRAVEL: 12
+  TUBE_CORAL_BLOCK: 8
+  BRAIN_CORAL_BLOCK: 8
+  SEAGRASS: 8
+  GOLD_ORE: 12
+  DIAMOND_ORE: 8
+  LAPIS_ORE: 10
+  DEEPSLATE_IRON_ORE: 22
+  DEEPSLATE_EMERALD_ORE: 7
+  CHEST: 5
+
+chest-loot:
+  rolls-min: 6
+  rolls-max: 10
+  items:
+    - material: PRISMARINE_CRYSTALS
+      weight: 18
+      min: 12
+      max: 30
+    - material: PRISMARINE_SHARD
+      weight: 18
+      min: 16
+      max: 40
+    - material: SPONGE
+      weight: 14
+      min: 4
+      max: 14
+    - material: GOLD_BLOCK
+      weight: 12
+      min: 3
+      max: 10
+    - textura: platinum_raw
+      weight: 20
+      min: 16
+      max: 36
+    - textura: ruby
+      weight: 16
+      min: 4
+      max: 9
+    - material: DIAMOND
+      weight: 16
+      min: 8
+      max: 20
+    - material: HEART_OF_THE_SEA
+      weight: 8
+      min: 1
+      max: 2
+    - material: NAUTILUS_SHELL
+      weight: 12
+      min: 3
+      max: 8
+    - material: TRIDENT
+      weight: 2
+      min: 1
+      max: 1
+
+mob-pool:
+  ELDER_GUARDIAN:
+    weight: 8
+    min: 1
+    max: 1
+  GUARDIAN:
+    weight: 30
+    min: 1
+    max: 4
+  DROWNED:
+    weight: 24
+    min: 1
+    max: 3
+  SQUID:
+    weight: 12
+    min: 1
+    max: 3
+  DOLPHIN:
+    weight: 10
+    min: 1
+    max: 2
+  PUFFERFISH:
+    weight: 10
+    min: 1
+    max: 3
+
+monster-party:
+  - id: monument_elder
+    type: ELDER_GUARDIAN
+    weight: 55
+    min: 1
+    max: 1
+    name: "<aqua>Ancião do Monumento"
+    is-glowing: true
+    attributes:
+      max-health: 500.0
+      attack-damage: 22.0
+      knockback-resistance: 0.9
+      follow-range: 55.0
+      scale: 1.3
+    drops:
+      - type: ITEM
+        material: SPONGE
+        amount: 8
+        chance: 100.0
+      - type: ITEM
+        material: HEART_OF_THE_SEA
+        amount: 1
+        chance: 60.0
+      - type: COMMAND
+        command: "coins add %player% 200000"
+        chance: 100.0
+  - id: monument_guardian
+    type: GUARDIAN
+    weight: 45
+    min: 2
+    max: 4
+    name: "<dark_aqua>Sentinela Abissal"
+    attributes:
+      max-health: 160.0
+      attack-damage: 14.0
+      follow-range: 50.0
+      scale: 1.2
+    drops:
+      - type: ITEM
+        material: PRISMARINE_CRYSTALS
+        amount: 8
+        chance: 100.0
+      - type: ITEM
+        material: DIAMOND
+        amount: 5
+        chance: 50.0
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Monumento do Oceano<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 590000"
+    - type: Item
+      material: HEART_OF_THE_SEA
+      amount: 4
+    - type: Item
+      material: SPONGE
+      amount: 32

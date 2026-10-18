@@ -1,0 +1,81 @@
+pretty-name: 'Redstone'
+icon: redstone
+
+products:
+  redstone_dust:
+    name-singular: 'Pó de Redstone'
+    name-plural: 'Pós de Redstone'
+    price: 65.0
+    material: REDSTONE
+
+  redstone_torch:
+    name-singular: 'Tocha de Redstone'
+    name-plural: 'Tochas de Redstone'
+    price: 75.0
+    material: REDSTONE_TORCH
+
+  repeater:
+    name-singular: 'Repetidor'
+    name-plural: 'Repetidores'
+    price: 185.0
+    material: REPEATER
+
+  comparator:
+    name-singular: 'Comparador'
+    name-plural: 'Comparadores'
+    price: 195.0
+    material: COMPARATOR
+
+  piston:
+    name-singular: 'Pistão'
+    name-plural: 'Pistões'
+    price: 250.0
+    material: PISTON
+
+  sticky_piston:
+    name-singular: 'Pistão Grudento'
+    name-plural: 'Pistões Grudentos'
+    price: 550.0
+    material: STICKY_PISTON
+
+  observer:
+    name-singular: 'Observador'
+    name-plural: 'Observadores'
+    price: 275.0
+    material: OBSERVER
+
+  dispenser:
+    name-singular: 'Ejetor'
+    name-plural: 'Ejetores'
+    price: 275.0
+    material: DISPENSER
+
+  dropper:
+    name-singular: 'Liberador'
+    name-plural: 'Liberadores'
+    price: 275.0
+    material: DROPPER
+
+  hopper:
+    name-singular: 'Funil'
+    name-plural: 'Funis'
+    price: 9500.0
+    material: HOPPER
+
+  target:
+    name-singular: 'Bloco Alvo'
+    name-plural: 'Blocos Alvo'
+    price: 175.0
+    material: TARGET
+
+  daylight_detector:
+    name-singular: 'Detector de Luz Solar'
+    name-plural: 'Detectores de Luz Solar'
+    price: 250.0
+    material: DAYLIGHT_DETECTOR
+
+  redstone_lamp:
+    name-singular: 'Lâmpada de Redstone'
+    name-plural: 'Lâmpadas de Redstone'
+    price: 575.0
+    material: REDSTONE_LAMP

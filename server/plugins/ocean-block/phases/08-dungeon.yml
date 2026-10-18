@@ -1,0 +1,161 @@
+id: dungeon
+pretty-name: "Masmorra"
+icon-material: 'SPAWNER'
+priority: 8
+
+settings:
+  blocks-to-next-phase: 750
+
+block-pool:
+  MOSSY_COBBLESTONE: 30
+  COBBLESTONE: 28
+  STONE_BRICKS: 20
+  MOSSY_STONE_BRICKS: 15
+  CRACKED_STONE_BRICKS: 12
+  CHISELED_STONE_BRICKS: 8
+  STONE_BRICK_STAIRS: 8
+  IRON_BARS: 8
+  COBWEB: 10
+  TORCH: 6
+  SKELETON_SKULL: 3
+  TNT: 3
+  COAL_ORE: 10
+  IRON_ORE: 12
+  GOLD_ORE: 8
+  REDSTONE_ORE: 8
+  LAPIS_ORE: 6
+  DIAMOND_ORE: 3
+  DEEPSLATE_IRON_ORE: 8
+  CHEST: 4
+
+chest-loot:
+  rolls-min: 3
+  rolls-max: 6
+  items:
+    - material: BONE
+      weight: 20
+      min: 6
+      max: 16
+    - material: ROTTEN_FLESH
+      weight: 16
+      min: 6
+      max: 16
+    - material: GUNPOWDER
+      weight: 16
+      min: 4
+      max: 12
+    - material: IRON_INGOT
+      weight: 16
+      min: 4
+      max: 12
+    - material: GOLD_INGOT
+      weight: 12
+      min: 3
+      max: 9
+    - textura: platinum_raw
+      weight: 12
+      min: 3
+      max: 8
+    - material: ENCHANTED_BOOK
+      weight: 8
+      min: 1
+      max: 1
+    - material: EXPERIENCE_BOTTLE
+      weight: 10
+      min: 5
+      max: 14
+    - material: DIAMOND
+      weight: 7
+      min: 1
+      max: 4
+    - material: GOLDEN_APPLE
+      weight: 4
+      min: 1
+      max: 2
+
+mob-pool:
+  ZOMBIE:
+    weight: 25
+    min: 1
+    max: 3
+  SKELETON:
+    weight: 25
+    min: 1
+    max: 3
+  SPIDER:
+    weight: 20
+    min: 1
+    max: 2
+  CAVE_SPIDER:
+    weight: 18
+    min: 1
+    max: 3
+  CREEPER:
+    weight: 15
+    min: 1
+    max: 2
+  SILVERFISH:
+    weight: 12
+    min: 1
+    max: 3
+
+monster-party:
+  - id: dungeon_guardian
+    type: ZOMBIE
+    weight: 60
+    min: 1
+    max: 1
+    name: "<red>Guardião da Masmorra"
+    is-glowing: true
+    attributes:
+      max-health: 120.0
+      attack-damage: 8.0
+      movement-speed: 0.26
+      knockback-resistance: 0.5
+      follow-range: 40.0
+      scale: 1.4
+    drops:
+      - type: ITEM
+        material: DIAMOND
+        amount: 5
+        chance: 100.0
+      - type: ITEM
+        material: ENCHANTED_BOOK
+        amount: 1
+        chance: 35.0
+      - type: COMMAND
+        command: "coins add %player% 5000"
+        chance: 100.0
+  - id: dungeon_archer
+    type: SKELETON
+    weight: 40
+    min: 1
+    max: 2
+    name: "<gray>Arqueiro Esquecido"
+    attributes:
+      max-health: 60.0
+      attack-damage: 6.0
+      follow-range: 45.0
+      scale: 1.2
+    drops:
+      - type: ITEM
+        material: ARROW
+        amount: 32
+        chance: 100.0
+      - type: ITEM
+        material: DIAMOND
+        amount: 2
+        chance: 40.0
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Masmorra<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 10000"
+    - type: Item
+      material: DIAMOND
+      amount: 12
+    - type: Item
+      material: EXPERIENCE_BOTTLE
+      amount: 32

@@ -1,0 +1,114 @@
+id: taiga
+pretty-name: "Taiga"
+icon-material: 'SPRUCE_LOG'
+priority: 10
+
+settings:
+  blocks-to-next-phase: 1000
+
+block-pool:
+  SPRUCE_LOG: 30
+  SPRUCE_LEAVES: 26
+  SPRUCE_WOOD: 10
+  PODZOL: 22
+  COARSE_DIRT: 14
+  DIRT: 12
+  GRASS_BLOCK: 14
+  MOSS_BLOCK: 10
+  STONE: 12
+  MOSSY_COBBLESTONE: 8
+  SWEET_BERRY_BUSH: 8
+  FERN: 10
+  LARGE_FERN: 6
+  SPRUCE_SAPLING: 6
+  PUMPKIN: 5
+  IRON_ORE: 12
+  COAL_ORE: 12
+  COPPER_ORE: 8
+  EMERALD_ORE: 5
+  DEEPSLATE_IRON_ORE: 10
+  CHEST: 3
+
+chest-loot:
+  rolls-min: 3
+  rolls-max: 6
+  items:
+    - material: SPRUCE_LOG
+      weight: 22
+      min: 10
+      max: 24
+    - material: SWEET_BERRIES
+      weight: 18
+      min: 5
+      max: 14
+    - material: COAL
+      weight: 16
+      min: 8
+      max: 20
+    - material: IRON_INGOT
+      weight: 16
+      min: 6
+      max: 16
+    - textura: platinum_raw
+      weight: 16
+      min: 4
+      max: 10
+    - material: EMERALD
+      weight: 12
+      min: 2
+      max: 8
+    - material: DIAMOND
+      weight: 9
+      min: 1
+      max: 4
+    - material: ENCHANTED_BOOK
+      weight: 6
+      min: 1
+      max: 1
+    - material: EXPERIENCE_BOTTLE
+      weight: 10
+      min: 8
+      max: 18
+
+mob-pool:
+  WOLF:
+    weight: 22
+    min: 1
+    max: 3
+  FOX:
+    weight: 18
+    min: 1
+    max: 2
+  RABBIT:
+    weight: 12
+    min: 1
+    max: 3
+  SHEEP:
+    weight: 12
+    min: 1
+    max: 2
+  ZOMBIE:
+    weight: 20
+    min: 1
+    max: 2
+  SKELETON:
+    weight: 20
+    min: 1
+    max: 2
+  PILLAGER:
+    weight: 12
+    min: 1
+    max: 2
+
+completion:
+  announce:
+    - "<gold>A ilha concluiu a fase <yellow>Taiga<gold>!"
+  rewards:
+    - type: Command
+      value: "coins add %player% 18000"
+    - type: Item
+      material: EMERALD
+      amount: 24
+    - type: Item
+      material: DIAMOND
+      amount: 16
