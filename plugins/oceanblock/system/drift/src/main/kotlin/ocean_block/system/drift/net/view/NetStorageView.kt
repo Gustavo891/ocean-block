@@ -86,7 +86,7 @@ class NetStorageView : View() {
 
     private fun save(placed: PlacedBlock, items: List<ItemStack>) {
         placed.setStorage(items)
-        PlacedBlockManager.markDirty(placed)
+        PlacedBlockManager.saveNow(placed)
         NetIndex.refresh(placed)
     }
 

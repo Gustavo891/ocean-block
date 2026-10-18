@@ -12,8 +12,7 @@ object NetRules {
             ?.first
     }
 
-    fun isFull(slots: List<NetSlot>, capacity: Int): Boolean =
-        slots.size >= capacity && slots.all { it.amount >= it.maxStack }
+    fun isFull(usedSlots: Int, capacity: Int): Boolean = usedSlots >= capacity
 
     private fun distanceSquared(x: Double, y: Double, z: Double, net: NetPoint): Double {
         val dx = net.x - x

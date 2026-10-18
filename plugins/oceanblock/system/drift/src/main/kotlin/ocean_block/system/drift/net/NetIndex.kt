@@ -7,8 +7,6 @@ import java.util.UUID
 
 internal object NetIndex {
 
-    private const val BLOCK_CENTER = 0.5
-
     private var byLot: Map<UUID, List<NetPoint>> = emptyMap()
 
     fun rebuild() {
@@ -31,21 +29,16 @@ internal object NetIndex {
         }
     }
 
-    fun isFull(placed: PlacedBlock): Boolean =
-        NetRules.isFull(placed.storageItems().map { NetSlot(it.amount, it.maxStackSize) }, NetBlock.CAPACITY)
+    fun isFull(placed: PlacedBlock): Boolean {
+        val used = placed.buildStorageInventory(NetBlock.CAPACITY).contents.count { it != null && !it.type.isAir }
+        return NetRules.isFull(used, NetBlock.CAPACITY)
+    }
 
     private fun entry(placed: PlacedBlock): Pair<UUID, NetPoint>? {
         if (!NetCatch.isLoaded(placed)) return null
-        val location = placed.location.toBukkit() ?: return null
-        val island = IslandManager.getIslandAt(location) ?: return null
+        val center = NetCatch.center(placed) ?: return null
+        val island = IslandManager.getIslandAt(center) ?: return null
 
-        val point = NetPoint(
-            placed.uuid,
-            location.blockX + BLOCK_CENTER,
-            location.blockY + BLOCK_CENTER,
-            location.blockZ + BLOCK_CENTER,
-            isFull(placed),
-        )
-        return island.uuid to point
+        return island.uuid to NetPoint(placed.uuid, center.x, center.y, center.z, isFull(placed))
     }
 }

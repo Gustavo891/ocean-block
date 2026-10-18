@@ -51,22 +51,18 @@ class NetRulesTest : StringSpec({
     }
 
     "armazenamento vazio nao esta cheio" {
-        NetRules.isFull(emptyList(), 27) shouldBe false
+        NetRules.isFull(0, 27) shouldBe false
     }
 
-    "slot livre nao esta cheio" {
-        NetRules.isFull(List(26) { NetSlot(64, 64) }, 27) shouldBe false
+    "um slot livre nao esta cheio" {
+        NetRules.isFull(26, 27) shouldBe false
     }
 
-    "todos os slots com pilha incompleta nao esta cheio" {
-        NetRules.isFull(List(26) { NetSlot(64, 64) } + NetSlot(10, 64), 27) shouldBe false
+    "sem slot livre esta cheio mesmo com pilhas incompletas" {
+        NetRules.isFull(27, 27) shouldBe true
     }
 
-    "todos os slots com pilha completa esta cheio" {
-        NetRules.isFull(List(26) { NetSlot(64, 64) } + NetSlot(16, 16), 27) shouldBe true
-    }
-
-    "pilha unica completa conta como cheia" {
-        NetRules.isFull(List(27) { NetSlot(1, 1) }, 27) shouldBe true
+    "mais pilhas que a capacidade esta cheio" {
+        NetRules.isFull(30, 27) shouldBe true
     }
 })

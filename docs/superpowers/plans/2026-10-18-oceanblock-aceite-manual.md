@@ -77,7 +77,7 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Com inventário cheio, clicar num item avisa `Seu inventário está cheio.` e o item fica na rede.
 - [ ] Duas pessoas com a tela aberta ao mesmo tempo: o item que uma tirou não sai de novo para a outra (o clique da segunda só atualiza a tela).
 - [ ] Visitante sem membro/trust clica na rede: nada abre e nenhuma mensagem aparece.
-- [ ] Rede cheia (27 pilhas completas): os detritos passam direto por ela e seguem a corrente. Encher a rede durante um puxão faz o detrito sumir sem entregar e sem dropar nada no chão; o que não cabe de uma entrega é descartado.
+- [ ] Rede cheia (os 27 slots ocupados, mesmo com pilhas incompletas): os detritos passam direto por ela e seguem a corrente. Encher a rede durante um puxão faz o detrito sumir sem entregar e sem dropar nada no chão; o que não cabe de uma entrega é descartado.
 - [ ] Quebrar a rede devolve o item com os itens guardados (`Itens guardados: N` na lore); recolocar mantém os itens. Quebrar durante um puxão faz o detrito sumir sem entregar.
 - [ ] Limite de 4 redes por ilha: a 5ª recebe `Limite de 4 por ilha atingido.`
 - [ ] Com duas redes no alcance, o detrito vai para a mais próxima que não está cheia.
