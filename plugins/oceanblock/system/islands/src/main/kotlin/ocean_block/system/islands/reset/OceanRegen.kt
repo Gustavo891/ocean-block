@@ -20,7 +20,7 @@ object OceanRegen {
                 )
                 WorldEdit.getInstance().newEditSession(weWorld).use { weWorld.regenerate(region, it) }
             }.onFailure {
-                Instance.logger.severe("[raft] Falha no regen da area ${area.minX},${area.minZ}: ${it.message}")
+                Instance.logger.severe("[ilha] Falha no regen da area ${area.minX},${area.minZ}: ${it.message}")
             }.getOrDefault(false)
 
             Bukkit.getScheduler().runTask(Instance, Runnable { onDone(ok) })

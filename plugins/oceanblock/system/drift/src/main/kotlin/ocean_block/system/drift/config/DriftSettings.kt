@@ -5,6 +5,7 @@ data class DriftSettings(
     val speed: Double,
     val laneLength: Double,
     val laneWidth: Double,
+    val laneMinWidth: Double,
     val surfaceY: Double,
     val spawnIntervalTicks: Long,
     val maxPerLot: Int,

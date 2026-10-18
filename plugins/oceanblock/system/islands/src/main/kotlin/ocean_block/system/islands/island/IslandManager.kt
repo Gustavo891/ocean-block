@@ -13,7 +13,7 @@ import kotlin.math.roundToInt
 
 object IslandManager {
 
-    private const val RAFT_WORLD = "world"
+    private const val ISLAND_WORLD = "world"
 
     val islandsById = mutableMapOf<UUID, Island>()
 
@@ -97,9 +97,9 @@ object IslandManager {
             return null
         }
 
-        if (Bukkit.getWorld(RAFT_WORLD) == null) {
+        if (Bukkit.getWorld(ISLAND_WORLD) == null) {
             Instance.logger.severe(
-                "[islands] Criação de ilha para ${player.name} recusada: mundo $RAFT_WORLD não carregado."
+                "[islands] Criação de ilha para ${player.name} recusada: mundo $ISLAND_WORLD não carregado."
             )
             return null
         }
@@ -114,8 +114,8 @@ object IslandManager {
             return null
         }
 
-        val center = RaftPlacement.center(grid, RAFT_WORLD)
-        val spawn = RaftPlacement.spawn(grid, RAFT_WORLD)
+        val center = IslandPlacement.center(grid, ISLAND_WORLD)
+        val spawn = IslandPlacement.spawn(grid, ISLAND_WORLD)
 
         val islandId = UUID.randomUUID()
 

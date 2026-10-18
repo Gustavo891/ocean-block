@@ -82,7 +82,7 @@ object DebrisManager {
             origin.originZ + DriftLane.BLOCK_CENTER,
             settings.direction,
             settings.laneLength,
-            lateral(settings.laneWidth),
+            DriftLane.lateralOffset(Random, settings.laneMinWidth, settings.laneWidth),
         )
 
         val params = FloatParams.roll(Random, settings.animation.speedVariation)
@@ -93,9 +93,6 @@ object DebrisManager {
         val entity = DebrisEntities.spawn(lot.world, pose, type)
         tracked += Debris(lot.island.uuid, type, entity, point, params, levelY)
     }
-
-    private fun lateral(halfWidth: Double): Double =
-        if (halfWidth <= 0.0) 0.0 else Random.nextDouble(-halfWidth, halfWidth)
 
     private fun moveTick(settings: DriftSettings) {
         val lots = activeLots()

@@ -11,6 +11,8 @@ object DriftConfigParser {
     private const val DEFAULT_MAX_STACK = 64
     private const val MAX_SPEED_VARIATION = 0.9
     private const val MAX_DIVE_DEPTH = 32.0
+    private const val DEFAULT_LANE_WIDTH = 14.0
+    private const val DEFAULT_LANE_MIN_WIDTH = 10.0
 
     private class MaterialRules(val isItem: (Material) -> Boolean, val maxStack: (Material) -> Int)
 
@@ -30,12 +32,21 @@ object DriftConfigParser {
         val current = root.getConfigurationSection("corrente")
         val spawn = root.getConfigurationSection("spawn")
         val pickup = root.getConfigurationSection("coleta")
+        val laneWidth = number(current?.get("largura"), "corrente.largura", DEFAULT_LANE_WIDTH, 0.0, null, warn)
 
         return DriftSettings(
             direction = parseDirection(current?.getString("direcao"), warn),
             speed = number(current?.get("velocidade"), "corrente.velocidade", 0.05, 0.001, null, warn),
             laneLength = number(current?.get("comprimento"), "corrente.comprimento", 40.0, 1.0, null, warn),
-            laneWidth = number(current?.get("largura"), "corrente.largura", 10.0, 0.0, null, warn),
+            laneWidth = laneWidth,
+            laneMinWidth = number(
+                current?.get("largura-minima"),
+                "corrente.largura-minima",
+                DEFAULT_LANE_MIN_WIDTH.coerceAtMost(laneWidth),
+                0.0,
+                laneWidth,
+                warn,
+            ),
             surfaceY = number(current?.get("altura"), "corrente.altura", 62.85, null, null, warn),
             spawnIntervalTicks = number(spawn?.get("intervalo-ticks"), "spawn.intervalo-ticks", 100.0, 1.0, null, warn).toLong(),
             maxPerLot = number(spawn?.get("maximo-por-lote"), "spawn.maximo-por-lote", 8.0, 1.0, null, warn).toInt(),

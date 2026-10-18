@@ -23,7 +23,7 @@ class IslandsView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title("Rafts")
+        config.title("Ilhas")
         config.layout(
             "         ",
             "  OOOOO  ",

@@ -4,7 +4,7 @@ import ocean_block.system.islands.hud.IslandHud
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
-import ocean_block.system.islands.island.RaftPlacement
+import ocean_block.system.islands.island.IslandPlacement
 import ocean_block.system.islands.island.StarterIsland
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -39,7 +39,7 @@ object IslandResetService {
         }
 
         sender.sendRichMessage("<yellow>Nada foi alterado. Use <white>-confirm</white> para executar.")
-        sender.sendRichMessage("<dark_gray>O progresso do raft não é afetado por este comando.")
+        sender.sendRichMessage("<dark_gray>O progresso da ilha não é afetado por este comando.")
     }
 
     fun previewProgress(sender: CommandSender, island: Island) {
@@ -56,7 +56,7 @@ object IslandResetService {
         sender.sendRichMessage("<gray>- upgrades: <white>$upgrades</white>")
 
         sender.sendRichMessage("<yellow>Nada foi alterado. Use <white>-confirm</white> para executar.")
-        sender.sendRichMessage("<dark_gray>Os blocos do raft não são afetados por este comando.")
+        sender.sendRichMessage("<dark_gray>Os blocos da ilha não são afetados por este comando.")
     }
 
     fun resetTerrain(sender: CommandSender, island: Island) {
@@ -68,17 +68,17 @@ object IslandResetService {
         }
 
         if (!running.add(island.uuid)) {
-            sender.sendRichMessage("<red>Já existe um reset de terreno em andamento nesse raft.")
+            sender.sendRichMessage("<red>Já existe um reset de terreno em andamento nessa ilha.")
             return
         }
 
-        sender.sendRichMessage("<gray>Restaurando o mar do raft de <white>${island.ownerName}</white>...")
+        sender.sendRichMessage("<gray>Restaurando o mar da ilha de <white>${island.ownerName}</white>...")
 
         OceanRegen.regenerate(area) { ok ->
             running.remove(island.uuid)
 
             if (!ok) {
-                sender.sendRichMessage("<red>Falha ao restaurar o mar do raft de <white>${island.ownerName}</white>. Nada foi alterado.")
+                sender.sendRichMessage("<red>Falha ao restaurar o mar da ilha de <white>${island.ownerName}</white>. Nada foi alterado.")
                 return@regenerate
             }
 
@@ -88,12 +88,12 @@ object IslandResetService {
                 .filter { it !is Player && area.contains(it.location) }
                 .forEach { it.remove() }
 
-            island.spawn = RaftPlacement.spawn(island.position, island.center.world)
+            island.spawn = IslandPlacement.spawn(island.position, island.center.world)
             island.markDirty()
 
             StarterIsland.generate(island)
             returnPlayers(island, area)
-            sender.sendRichMessage("<green>Raft de <white>${island.ownerName}</white> resetado.")
+            sender.sendRichMessage("<green>Ilha de <white>${island.ownerName}</white> resetada.")
         }
     }
 
@@ -107,7 +107,7 @@ object IslandResetService {
         island.blackList = null
         island.settings = null
         island.isPublic = false
-        island.spawn = RaftPlacement.spawn(island.position, island.center.world)
+        island.spawn = IslandPlacement.spawn(island.position, island.center.world)
         island.refreshWorldBorder()
 
         expelMembers(island)
@@ -133,7 +133,7 @@ object IslandResetService {
             if (IslandManager.getIslandAt(player.location)?.uuid != island.uuid) return@forEach
 
             player.teleport(player.world.spawnLocation)
-            player.sendRichMessage("<red>O raft em que você estava foi resetado.")
+            player.sendRichMessage("<red>A ilha em que você estava foi resetada.")
         }
     }
 

@@ -35,7 +35,7 @@ class MembersView : View() {
             "  OOOOO  ",
             "    v+   "
         )
-        config.title(Mini.mm.deserialize("<gray>Raft > <dark_gray>Membros"))
+        config.title(Mini.mm.deserialize("<gray>Ilha > <dark_gray>Membros"))
     }
 
     override fun onFirstRender(render: RenderContext) {
@@ -90,7 +90,7 @@ class MembersView : View() {
                 }
 
                 if (island.ownerUuid != target.uniqueId) {
-                    player.sendRichMessage("<red>Você não é o dono deste raft!")
+                    player.sendRichMessage("<red>Você não é o dono desta ilha!")
                     return@setHandler emptyList()
                 }
 
@@ -100,7 +100,7 @@ class MembersView : View() {
                 }
 
                 if (island.members.size >= (island.getUpgradeLevel(IslandUpgrade.Members, 1) * 3)) {
-                    player.sendRichMessage("<red>Seu raft está lotado de membros.")
+                    player.sendRichMessage("<red>Sua ilha está lotada de membros.")
                     return@setHandler emptyList()
                 }
 

@@ -57,7 +57,7 @@ internal object DebrisParticles {
     private fun randomLanePoint(centerX: Double, centerZ: Double, settings: DriftSettings, random: Random): LanePoint {
         val half = settings.laneLength / 2.0
         val along = random.nextDouble(-half, half)
-        val lateral = if (settings.laneWidth <= 0.0) 0.0 else random.nextDouble(-settings.laneWidth, settings.laneWidth)
+        val lateral = DriftLane.lateralOffset(random, settings.laneMinWidth, settings.laneWidth)
         return DriftLane.pointAt(centerX, centerZ, settings.direction, along, lateral)
     }
 }

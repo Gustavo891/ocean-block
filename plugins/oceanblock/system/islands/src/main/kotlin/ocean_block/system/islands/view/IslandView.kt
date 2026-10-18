@@ -40,7 +40,7 @@ class IslandView : View() {
         val avail = 20
         val display = if (name.length > avail) name.take(avail - 3) + "..." else name
 
-        open.modifyConfig().title(Mini.mm.deserialize("<gray>Raft > <dark_gray>$display"))
+        open.modifyConfig().title(Mini.mm.deserialize("<gray>Ilha > <dark_gray>$display"))
     }
 
     override fun onFirstRender(render: RenderContext) {
@@ -54,7 +54,7 @@ class IslandView : View() {
             'm',
             Material.PLAYER_HEAD,
             "Membros",
-            "Gerencie quem faz parte do seu raft."
+            "Gerencie quem faz parte da sua ilha."
         ) { handleMemberClick(this, island) }
 
         setupActionSlot(
@@ -62,7 +62,7 @@ class IslandView : View() {
             's',
             Material.COMPARATOR,
             "Configurações",
-            "Ligue ou desligue comportamentos do raft."
+            "Ligue ou desligue comportamentos da ilha."
         ) { handleSettingsClick(this, island) }
 
         setupActionSlot(
@@ -70,7 +70,7 @@ class IslandView : View() {
             'u',
             Material.ANVIL,
             "Melhorias",
-            "Evolua o tamanho e os limites do raft."
+            "Evolua o tamanho e os limites da ilha."
         ) { handleUpgradeClick(this, island) }
 
         setupActionSlot(
@@ -78,7 +78,7 @@ class IslandView : View() {
             'p',
             Material.CLOCK,
             "Fases",
-            "Veja o progresso das fases do raft."
+            "Veja o progresso das fases da ilha."
         ) { handlePhaseClick(this, island) }
     }
 
@@ -107,8 +107,8 @@ class IslandView : View() {
             .renderWith {
                 itemStack(Material.GRASS_BLOCK) {
                     meta<ItemMeta> {
-                        name("<yellow>Ir para seu raft")
-                        setLore { +"<gray>Teleporta você para o spawn do raft." }
+                        name("<yellow>Ir para sua ilha")
+                        setLore { +"<gray>Teleporta você para o spawn da ilha." }
                     }
                 }
             }

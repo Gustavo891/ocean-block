@@ -1,6 +1,7 @@
 package ocean_block.system.drift.lane
 
 import ocean_block.system.drift.config.CurrentDirection
+import kotlin.random.Random
 
 object DriftLane {
 
@@ -13,6 +14,13 @@ object DriftLane {
         laneLength: Double,
         lateral: Double,
     ): LanePoint = pointAt(originX, originZ, direction, -laneLength / 2.0, lateral)
+
+    fun lateralOffset(random: Random, min: Double, max: Double): Double {
+        if (max <= 0.0) return 0.0
+        val low = min.coerceIn(0.0, max)
+        val magnitude = if (low >= max) max else random.nextDouble(low, max)
+        return if (random.nextBoolean()) magnitude else -magnitude
+    }
 
     fun pointAt(
         originX: Double,

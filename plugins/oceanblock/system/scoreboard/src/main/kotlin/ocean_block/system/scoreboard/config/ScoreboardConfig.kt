@@ -136,7 +136,7 @@ object ScoreboardConfig {
         defaults.set("$ROOT.default.scores.16", "")
         defaults.set("$ROOT.default.scores.15", "<white> Coins: <dark_green>$<white>%walletcoins%")
         defaults.set("$ROOT.default.scores.14", "")
-        defaults.set("$ROOT.default.scores.13", "<white> <glyph:floating_islands> <color:#FFD54F>Seu raft:")
+        defaults.set("$ROOT.default.scores.13", "<white> <glyph:floating_islands> <color:#FFD54F>Sua ilha:")
         defaults.set("$ROOT.default.scores.12", "<white> Fase: <gray>%island_phasename%")
         defaults.set("$ROOT.default.scores.10", "")
         defaults.set("$ROOT.default.scores.9", "<white> Tempo online: <aqua>%playtime%")

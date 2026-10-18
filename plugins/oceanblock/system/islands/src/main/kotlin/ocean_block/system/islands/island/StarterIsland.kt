@@ -16,9 +16,7 @@ import java.io.FileInputStream
 object StarterIsland {
 
     private const val FOLDER = "templates"
-    private const val SCHEMATIC = "raft.schem"
-
-    private const val PASTE_Y_OFFSET = 1
+    private const val SCHEMATIC = "island.schem"
 
     private val schematic: File
         get() = File(File(Instance.dataFolder, FOLDER), SCHEMATIC)
@@ -28,14 +26,14 @@ object StarterIsland {
         val center = island.center.toBukkit()
 
         if (area == null || center == null) {
-            Instance.logger.severe("[raft] Mundo da ilha ${island.uuid} não carregado; raft inicial pulado.")
+            Instance.logger.severe("[ilha] Mundo da ilha ${island.uuid} não carregado; ilha inicial pulada.")
             return
         }
 
         val file = schematic
 
         if (!file.exists()) {
-            Instance.logger.severe("[raft] '${file.path}' não existe; usando a plataforma de fallback na ilha ${island.uuid}.")
+            Instance.logger.severe("[ilha] '${file.path}' não existe; usando a plataforma de fallback na ilha ${island.uuid}.")
             placeFallback(island)
             return
         }
@@ -54,14 +52,14 @@ object StarterIsland {
                 WorldEdit.getInstance().newEditSession(weWorld).use { edit ->
                     val operation = ClipboardHolder(clipboard)
                         .createPaste(edit)
-                        .to(BlockVector3.at(center.blockX, center.blockY + PASTE_Y_OFFSET, center.blockZ))
+                        .to(BlockVector3.at(center.blockX, IslandPlacement.PASTE_Y, center.blockZ))
                         .ignoreAirBlocks(true)
                         .build()
 
                     Operations.complete(operation)
                 }
             }.onFailure {
-                Instance.logger.severe("[raft] Falha ao colar o raft da ilha ${island.uuid}: ${it.message}; usando a plataforma de fallback.")
+                Instance.logger.severe("[ilha] Falha ao colar a ilha ${island.uuid}: ${it.message}; usando a plataforma de fallback.")
                 Bukkit.getScheduler().runTask(Instance, Runnable { placeFallback(island) })
             }
         })
@@ -71,8 +69,9 @@ object StarterIsland {
         val center = island.center.toBukkit() ?: return
         val world = center.world ?: return
 
-        RaftPlacement.fallbackFootprint(center.blockX, center.blockZ).forEach { (x, z) ->
-            world.getBlockAt(x, RaftPlacement.SURFACE_Y, z).type = Material.OAK_PLANKS
+        IslandPlacement.fallbackFootprint(center.blockX, center.blockZ).forEach { (x, z) ->
+            world.getBlockAt(x, IslandPlacement.GROUND_Y - 1, z).type = Material.DIRT
+            world.getBlockAt(x, IslandPlacement.GROUND_Y, z).type = Material.GRASS_BLOCK
         }
     }
 }

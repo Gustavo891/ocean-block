@@ -2,7 +2,8 @@ corrente:
   direcao: EAST
   velocidade: 0.05
   comprimento: 40.0
-  largura: 10.0
+  largura: 14.0
+  largura-minima: 10.0
   altura: 62.85
   riscos: true
   riscos-por-segundo: 6

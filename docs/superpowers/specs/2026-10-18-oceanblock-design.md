@@ -26,6 +26,8 @@ Novo modo de jogo inspirado em **FTB OceanBlock** e **Raft**. O jogador nasce nu
 | Ameaças / sobrevivência | Nenhuma na v1 (sem tubarão, sem sede, sem eventos) |
 | Versão | Paper 26.3 (a mesma do one-block, já a mais recente) |
 
+2026-10-18: a base inicial passou de raft para ilha (`templates/island.schem`, colada em Y 64 no centro do lote).
+
 ### 1.2 Sistemas herdados
 
 **Mantidos:** economia (`currencies`, `shop`, `sell`, `auction-house`, `trader`, `coinflip`, `tops`), progressão paralela (`skills`, `collections`, `battle-pass`, `enchants`, `craft`), `playtime`, `starter-kit`, `scoreboard`.
