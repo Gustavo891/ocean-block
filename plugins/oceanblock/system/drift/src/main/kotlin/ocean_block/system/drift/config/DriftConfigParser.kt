@@ -20,15 +20,15 @@ object DriftConfigParser {
 
         return DriftSettings(
             direction = parseDirection(current?.getString("direcao"), warn),
-            speed = (current?.getDouble("velocidade", 0.05) ?: 0.05).coerceAtLeast(0.001),
-            laneLength = (current?.getDouble("comprimento", 80.0) ?: 80.0).coerceAtLeast(1.0),
-            laneWidth = (current?.getDouble("largura", 10.0) ?: 10.0).coerceAtLeast(0.0),
-            surfaceY = current?.getDouble("altura", 62.6) ?: 62.6,
-            spawnIntervalTicks = (spawn?.getLong("intervalo-ticks", 200L) ?: 200L).coerceAtLeast(1L),
-            maxPerLot = (spawn?.getInt("maximo-por-lote", 8) ?: 8).coerceAtLeast(1),
-            stuckSeconds = (spawn?.getInt("tempo-preso-segundos", 60) ?: 60).coerceAtLeast(1),
-            hookRadius = (pickup?.getDouble("raio-gancho", 2.0) ?: 2.0).coerceAtLeast(0.1),
-            touchRadius = (pickup?.getDouble("raio-toque", 1.5) ?: 1.5).coerceAtLeast(0.1),
+            speed = number(current?.get("velocidade"), "corrente.velocidade", 0.05, 0.001, null, warn),
+            laneLength = number(current?.get("comprimento"), "corrente.comprimento", 80.0, 1.0, null, warn),
+            laneWidth = number(current?.get("largura"), "corrente.largura", 10.0, 0.0, null, warn),
+            surfaceY = number(current?.get("altura"), "corrente.altura", 62.6, null, null, warn),
+            spawnIntervalTicks = number(spawn?.get("intervalo-ticks"), "spawn.intervalo-ticks", 200.0, 1.0, null, warn).toLong(),
+            maxPerLot = number(spawn?.get("maximo-por-lote"), "spawn.maximo-por-lote", 8.0, 1.0, null, warn).toInt(),
+            stuckSeconds = number(spawn?.get("tempo-preso-segundos"), "spawn.tempo-preso-segundos", 60.0, 1.0, null, warn).toInt(),
+            hookRadius = number(pickup?.get("raio-gancho"), "coleta.raio-gancho", 2.0, 0.1, null, warn),
+            touchRadius = number(pickup?.get("raio-toque"), "coleta.raio-toque", 1.5, 0.1, null, warn),
         )
     }
 
@@ -58,7 +58,9 @@ object DriftConfigParser {
         }
 
         val drops = section.getMapList("drops").mapNotNull { parseDrop(id, it, warn) }
-        val scale = section.getDouble("escala", DEFAULT_SCALE).coerceAtLeast(0.05).toFloat()
+        if (drops.isEmpty()) warn("[deriva] detrito '$id' sem drops validos.")
+
+        val scale = number(section.get("escala"), "detritos.$id.escala", DEFAULT_SCALE, 0.05, null, warn).toFloat()
         return DebrisType(id, weight, display, scale, drops)
     }
 
@@ -69,10 +71,42 @@ object DriftConfigParser {
             return null
         }
 
-        val min = (raw["min"] as? Number)?.toInt()?.coerceAtLeast(1) ?: 1
-        val max = ((raw["max"] as? Number)?.toInt() ?: min).coerceAtLeast(min)
-        val chance = ((raw["chance"] as? Number)?.toDouble() ?: 1.0).coerceIn(0.0, 1.0)
+        val label = "drop $material de '$typeId'"
+        val min = number(raw["min"], "$label.min", 1.0, 1.0, null, warn).toInt()
+        val max = number(raw["max"], "$label.max", min.toDouble(), null, null, warn).toInt()
+        val chance = number(raw["chance"], "$label.chance", 1.0, 0.0, 1.0, warn)
+
+        if (max < min) {
+            warn("[deriva] $label: max $max menor que min $min; usando $min.")
+            return DropEntry(material, min, min, chance)
+        }
         return DropEntry(material, min, max, chance)
+    }
+
+    private fun number(
+        raw: Any?,
+        label: String,
+        default: Double,
+        lower: Double?,
+        upper: Double?,
+        warn: (String) -> Unit,
+    ): Double {
+        if (raw == null) return default
+
+        val value = (raw as? Number)?.toDouble() ?: raw.toString().trim().toDoubleOrNull()
+        if (value == null || !value.isFinite()) {
+            warn("[deriva] $label invalido '$raw'; usando $default.")
+            return default
+        }
+        if (lower != null && value < lower) {
+            warn("[deriva] $label abaixo do minimo ($value); usando $lower.")
+            return lower
+        }
+        if (upper != null && value > upper) {
+            warn("[deriva] $label acima do maximo ($value); usando $upper.")
+            return upper
+        }
+        return value
     }
 
     private fun parseMaterial(name: String?): Material? =

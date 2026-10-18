@@ -1,21 +1,19 @@
 package ocean_block.system.drift
 
+import ocean_block.libs.instance.Instance
 import ocean_block.system.drift.config.DriftConfig
 import ocean_block.system.drift.config.DriftFile
 import org.bukkit.plugin.java.JavaPlugin
 
 object DriftSystem {
 
-    lateinit var config: DriftConfig
-        private set
-
-    var enabled = false
+    var config: DriftConfig? = null
         private set
 
     fun init(plugin: JavaPlugin) {
-        val loaded = DriftFile.load(plugin) ?: return
-        config = loaded
-        enabled = true
+        config = runCatching { DriftFile.load(plugin) }
+            .onFailure { Instance.logger.severe("[deriva] falha ao carregar drift.yml: ${it.message}") }
+            .getOrNull()
     }
 
     fun onDisable() {

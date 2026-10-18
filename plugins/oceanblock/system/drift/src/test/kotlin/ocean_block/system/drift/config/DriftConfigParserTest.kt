@@ -3,6 +3,7 @@ package ocean_block.system.drift.config
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.shouldBe
 import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
@@ -26,6 +27,132 @@ class DriftConfigParserTest : StringSpec({
         config.settings.speed shouldBe 0.05
         config.settings.maxPerLot shouldBe 8
         config.settings.surfaceY shouldBe 62.6
+        config.settings.laneLength shouldBe 80.0
+        config.settings.laneWidth shouldBe 10.0
+        config.settings.spawnIntervalTicks shouldBe 200L
+        config.settings.stuckSeconds shouldBe 60
+        config.settings.hookRadius shouldBe 2.0
+        config.settings.touchRadius shouldBe 1.5
+
+        config.types.associate { it.id to it.display } shouldBe mapOf(
+            "tabua" to Material.OAK_PLANKS,
+            "folhas" to Material.OAK_LEAVES,
+            "sucata" to Material.IRON_NUGGET,
+            "barril" to Material.BARREL,
+        )
+        val drops = config.types.associate { it.id to it.drops }
+        drops["tabua"] shouldBe listOf(DropEntry(Material.OAK_PLANKS, 1, 2, 1.0))
+        drops["folhas"] shouldBe listOf(
+            DropEntry(Material.OAK_LEAVES, 1, 2, 1.0),
+            DropEntry(Material.STICK, 1, 2, 0.5),
+            DropEntry(Material.OAK_SAPLING, 1, 1, 0.1),
+            DropEntry(Material.STRING, 1, 1, 0.3),
+        )
+        drops["sucata"] shouldBe listOf(
+            DropEntry(Material.IRON_NUGGET, 1, 3, 1.0),
+            DropEntry(Material.RAW_COPPER, 1, 1, 0.25),
+        )
+        drops["barril"] shouldBe listOf(
+            DropEntry(Material.BREAD, 1, 2, 0.6),
+            DropEntry(Material.STRING, 1, 3, 0.6),
+            DropEntry(Material.KELP, 2, 4, 0.5),
+            DropEntry(Material.OAK_SAPLING, 1, 1, 0.3),
+            DropEntry(Material.COD, 1, 2, 0.4),
+            DropEntry(Material.IRON_INGOT, 1, 1, 0.1),
+            DropEntry(Material.NAME_TAG, 1, 1, 0.02),
+        )
+    }
+
+    "min maior que max e chance fora do intervalo geram aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 5, max: 2, chance: 1.0}
+                  - {material: STRING, min: 1, max: 1, chance: 1.5}
+            """.trimIndent(),
+            warnings,
+        )!!
+
+        config.types.single().drops shouldBe listOf(
+            DropEntry(Material.STICK, 5, 5, 1.0),
+            DropEntry(Material.STRING, 1, 1, 1.0),
+        )
+        warnings shouldHaveSize 2
+        warnings.count { "STICK" in it && "tabua" in it } shouldBe 1
+        warnings.count { "STRING" in it && "tabua" in it } shouldBe 1
+    }
+
+    "valor nao numerico em configuracao usa padrao com aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            corrente:
+              velocidade: abc
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+        )!!
+
+        config.settings.speed shouldBe 0.05
+        warnings shouldHaveSize 1
+        warnings.single() shouldContain "velocidade"
+    }
+
+    "secoes ausentes usam padroes" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+        )!!
+
+        config.settings shouldBe DriftSettings(
+            direction = CurrentDirection.EAST,
+            speed = 0.05,
+            laneLength = 80.0,
+            laneWidth = 10.0,
+            surfaceY = 62.6,
+            spawnIntervalTicks = 200L,
+            maxPerLot = 8,
+            stuckSeconds = 60,
+            hookRadius = 2.0,
+            touchRadius = 1.5,
+        )
+        warnings shouldHaveSize 0
+    }
+
+    "tipo sem drops validos permanece com aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            detritos:
+              vazio:
+                peso: 1
+                exibicao: OAK_PLANKS
+                drops:
+                  - {material: NAO_EXISTE, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+        )!!
+
+        config.types.single().drops shouldHaveSize 0
+        warnings.count { "vazio" in it } shouldBe 2
     }
 
     "material invalido e ignorado com aviso" {
