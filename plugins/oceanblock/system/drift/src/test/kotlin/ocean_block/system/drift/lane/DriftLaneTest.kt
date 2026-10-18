@@ -20,6 +20,16 @@ class DriftLaneTest : StringSpec({
         moved shouldBe LanePoint(960.1, 5.0)
     }
 
+    "shift desloca na perpendicular da corrente" {
+        DriftLane.shift(LanePoint(10.0, 5.0), CurrentDirection.EAST, 0.4) shouldBe LanePoint(10.0, 5.4)
+        DriftLane.shift(LanePoint(10.0, 5.0), CurrentDirection.NORTH, 2.0) shouldBe LanePoint(12.0, 5.0)
+    }
+
+    "pointAt mede ao longo e ao lado da corrente a partir do centro" {
+        DriftLane.pointAt(100.0, 0.0, CurrentDirection.EAST, 10.0, -3.0) shouldBe LanePoint(110.0, -3.0)
+        DriftLane.pointAt(0.0, 0.0, CurrentDirection.SOUTH, 4.0, 1.0) shouldBe LanePoint(-1.0, 4.0)
+    }
+
     "fim da trilha" {
         val east = CurrentDirection.EAST
 

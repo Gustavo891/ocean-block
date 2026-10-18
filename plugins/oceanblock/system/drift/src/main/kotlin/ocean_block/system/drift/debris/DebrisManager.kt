@@ -86,17 +86,22 @@ object DebrisManager {
             lateral(settings.laneWidth),
         )
 
-        if (!DebrisEntities.isLoaded(lot.world, floor(point.x).toInt(), floor(point.z).toInt())) return
+        val params = FloatParams.roll(Random, settings.animation.speedVariation)
+        val pose = DebrisPose.along(point, 0, params, settings, type.sink)
+        if (!DebrisEntities.isLoaded(lot.world, floor(pose.point.x).toInt(), floor(pose.point.z).toInt())) return
 
-        val entity = DebrisEntities.spawn(lot.world, point, settings.surfaceY, type)
-        tracked += Debris(lot.island.uuid, type, entity, point)
+        val entity = DebrisEntities.spawn(lot.world, pose, type)
+        tracked += Debris(lot.island.uuid, type, entity, point, params)
     }
 
     private fun lateral(halfWidth: Double): Double =
         if (halfWidth <= 0.0) 0.0 else Random.nextDouble(-halfWidth, halfWidth)
 
     private fun moveTick(settings: DriftSettings) {
-        val tick = MotionTick(settings, activeLots().keys, System.currentTimeMillis())
+        val lots = activeLots()
+        if (settings.streaks) lots.values.forEach { streaks(it, settings) }
+
+        val tick = MotionTick(settings, lots.keys, System.currentTimeMillis())
         val iterator = tracked.iterator()
 
         while (iterator.hasNext()) {
@@ -105,6 +110,19 @@ object DebrisManager {
             discard(debris)
             iterator.remove()
         }
+    }
+
+    private fun streaks(lot: ActiveLot, settings: DriftSettings) {
+        val origin = lot.island.position
+        runCatching {
+            DebrisParticles.streaks(
+                lot.world,
+                origin.originX + DriftLane.BLOCK_CENTER,
+                origin.originZ + DriftLane.BLOCK_CENTER,
+                settings,
+                Random,
+            )
+        }.onFailure { Instance.logger.warning("[deriva] falha ao desenhar riscos: ${it.message}") }
     }
 
     private fun keep(debris: Debris, tick: MotionTick): Boolean =

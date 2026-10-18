@@ -7,6 +7,7 @@ object DriftConfigParser {
 
     private const val DEFAULT_SCALE = 0.6
     private const val DEFAULT_MAX_STACK = 64
+    private const val MAX_SPEED_VARIATION = 0.9
 
     private class MaterialRules(val isItem: (Material) -> Boolean, val maxStack: (Material) -> Int)
 
@@ -32,13 +33,37 @@ object DriftConfigParser {
             speed = number(current?.get("velocidade"), "corrente.velocidade", 0.05, 0.001, null, warn),
             laneLength = number(current?.get("comprimento"), "corrente.comprimento", 40.0, 1.0, null, warn),
             laneWidth = number(current?.get("largura"), "corrente.largura", 10.0, 0.0, null, warn),
-            surfaceY = number(current?.get("altura"), "corrente.altura", 62.6, null, null, warn),
+            surfaceY = number(current?.get("altura"), "corrente.altura", 62.85, null, null, warn),
             spawnIntervalTicks = number(spawn?.get("intervalo-ticks"), "spawn.intervalo-ticks", 100.0, 1.0, null, warn).toLong(),
             maxPerLot = number(spawn?.get("maximo-por-lote"), "spawn.maximo-por-lote", 8.0, 1.0, null, warn).toInt(),
             stuckSeconds = number(spawn?.get("tempo-preso-segundos"), "spawn.tempo-preso-segundos", 60.0, 1.0, null, warn).toInt(),
             hookRadius = number(pickup?.get("raio-gancho"), "coleta.raio-gancho", 2.0, 0.1, null, warn),
             touchRadius = number(pickup?.get("raio-toque"), "coleta.raio-toque", 1.5, 0.1, null, warn),
+            streaks = flag(current?.get("riscos"), "corrente.riscos", true, warn),
+            streaksPerSecond = number(current?.get("riscos-por-segundo"), "corrente.riscos-por-segundo", 6.0, 0.0, null, warn),
+            animation = parseAnimation(root.getConfigurationSection("animacao"), warn),
         )
+    }
+
+    private fun parseAnimation(section: ConfigurationSection?, warn: (String) -> Unit): AnimationSettings =
+        AnimationSettings(
+            bobAmplitude = number(section?.get("balanco"), "animacao.balanco", 0.06, 0.0, null, warn),
+            bobPeriodTicks = number(section?.get("periodo-balanco-ticks"), "animacao.periodo-balanco-ticks", 50.0, 1.0, null, warn).toInt(),
+            tiltDegrees = number(section?.get("inclinacao-graus"), "animacao.inclinacao-graus", 8.0, 0.0, 90.0, warn),
+            spinDegreesPerSecond = number(section?.get("giro-graus-por-segundo"), "animacao.giro-graus-por-segundo", 10.0, 0.0, null, warn),
+            meander = number(section?.get("sinuosidade"), "animacao.sinuosidade", 0.4, 0.0, null, warn),
+            meanderPeriodTicks = number(section?.get("periodo-sinuosidade-ticks"), "animacao.periodo-sinuosidade-ticks", 120.0, 1.0, null, warn).toInt(),
+            speedVariation = number(section?.get("variacao-velocidade"), "animacao.variacao-velocidade", 0.2, 0.0, MAX_SPEED_VARIATION, warn),
+            wake = flag(section?.get("rastro"), "animacao.rastro", true, warn),
+        )
+
+    private fun flag(raw: Any?, label: String, default: Boolean, warn: (String) -> Unit): Boolean {
+        if (raw == null) return default
+        if (raw is Boolean) return raw
+
+        val value = raw.toString().trim().lowercase().toBooleanStrictOrNull()
+        if (value == null) warn("[deriva] $label invalido '$raw'; usando $default.")
+        return value ?: default
     }
 
     private fun parseDirection(name: String?, warn: (String) -> Unit): CurrentDirection {
@@ -74,7 +99,8 @@ object DriftConfigParser {
         if (drops.isEmpty()) warn("[deriva] detrito '$id' sem drops validos.")
 
         val scale = number(section.get("escala"), "detritos.$id.escala", DEFAULT_SCALE, 0.05, null, warn).toFloat()
-        return DebrisType(id, weight, display, scale, drops)
+        val sink = number(section.get("afundamento"), "detritos.$id.afundamento", 0.0, 0.0, null, warn)
+        return DebrisType(id, weight, display, scale, drops, sink)
     }
 
     private fun parseDrop(typeId: String, raw: Map<*, *>, rules: MaterialRules, warn: (String) -> Unit): DropEntry? {

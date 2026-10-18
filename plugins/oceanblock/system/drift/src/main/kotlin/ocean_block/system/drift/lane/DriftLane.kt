@@ -12,18 +12,21 @@ object DriftLane {
         direction: CurrentDirection,
         laneLength: Double,
         lateral: Double,
-    ): LanePoint {
-        val half = laneLength / 2.0
-        val perpX = -direction.dz
-        val perpZ = direction.dx
-        return LanePoint(
-            x = originX - direction.dx * half + perpX * lateral,
-            z = originZ - direction.dz * half + perpZ * lateral,
-        )
-    }
+    ): LanePoint = pointAt(originX, originZ, direction, -laneLength / 2.0, lateral)
+
+    fun pointAt(
+        originX: Double,
+        originZ: Double,
+        direction: CurrentDirection,
+        along: Double,
+        lateral: Double,
+    ): LanePoint = shift(advance(LanePoint(originX, originZ), direction, along), direction, lateral)
 
     fun advance(point: LanePoint, direction: CurrentDirection, distance: Double): LanePoint =
         LanePoint(point.x + direction.dx * distance, point.z + direction.dz * distance)
+
+    fun shift(point: LanePoint, direction: CurrentDirection, lateral: Double): LanePoint =
+        LanePoint(point.x - direction.dz * lateral, point.z + direction.dx * lateral)
 
     fun isPastEnd(
         point: LanePoint,

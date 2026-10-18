@@ -8,4 +8,5 @@ data class DebrisType(
     val display: Material,
     val scale: Float,
     val drops: List<DropEntry>,
+    val sink: Double = 0.0,
 )

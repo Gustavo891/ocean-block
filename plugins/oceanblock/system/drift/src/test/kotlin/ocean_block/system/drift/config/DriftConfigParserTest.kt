@@ -21,6 +21,17 @@ private fun defaultYaml(): String =
     DriftConfigParser::class.java.classLoader.getResourceAsStream("drift.yml")!!
         .bufferedReader().use { it.readText() }
 
+private val DEFAULT_ANIMATION = AnimationSettings(
+    bobAmplitude = 0.06,
+    bobPeriodTicks = 50,
+    tiltDegrees = 8.0,
+    spinDegreesPerSecond = 10.0,
+    meander = 0.4,
+    meanderPeriodTicks = 120,
+    speedVariation = 0.2,
+    wake = true,
+)
+
 class DriftConfigParserTest : StringSpec({
 
     "yaml padrao gera quatro tipos com pesos da spec" {
@@ -31,7 +42,16 @@ class DriftConfigParserTest : StringSpec({
         config.settings.direction shouldBe CurrentDirection.EAST
         config.settings.speed shouldBe 0.05
         config.settings.maxPerLot shouldBe 8
-        config.settings.surfaceY shouldBe 62.6
+        config.settings.surfaceY shouldBe 62.85
+        config.settings.streaks shouldBe true
+        config.settings.streaksPerSecond shouldBe 6.0
+        config.settings.animation shouldBe DEFAULT_ANIMATION
+        config.types.associate { it.id to it.sink } shouldBe mapOf(
+            "tabua" to 0.0,
+            "folhas" to 0.0,
+            "sucata" to 0.0,
+            "barril" to 0.12,
+        )
         config.settings.laneLength shouldBe 40.0
         config.settings.laneWidth shouldBe 10.0
         config.settings.spawnIntervalTicks shouldBe 100L
@@ -132,14 +152,81 @@ class DriftConfigParserTest : StringSpec({
             speed = 0.05,
             laneLength = 40.0,
             laneWidth = 10.0,
-            surfaceY = 62.6,
+            surfaceY = 62.85,
             spawnIntervalTicks = 100L,
             maxPerLot = 8,
             stuckSeconds = 60,
             hookRadius = 2.0,
             touchRadius = 1.5,
+            streaks = true,
+            streaksPerSecond = 6.0,
+            animation = DEFAULT_ANIMATION,
         )
+        config.types.single().sink shouldBe 0.0
         warnings shouldHaveSize 0
+    }
+
+    "animacao com valores invalidos usa padroes e limites com aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            corrente:
+              riscos: talvez
+              riscos-por-segundo: -3
+            animacao:
+              balanco: abc
+              periodo-balanco-ticks: 0
+              inclinacao-graus: -5
+              giro-graus-por-segundo: 12.5
+              sinuosidade: -1
+              periodo-sinuosidade-ticks: xyz
+              variacao-velocidade: 2.0
+              rastro: false
+            detritos:
+              tabua:
+                peso: 1
+                exibicao: OAK_PLANKS
+                afundamento: nada
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+        )!!
+
+        config.settings.streaks shouldBe true
+        config.settings.streaksPerSecond shouldBe 0.0
+        config.settings.animation shouldBe AnimationSettings(
+            bobAmplitude = 0.06,
+            bobPeriodTicks = 1,
+            tiltDegrees = 0.0,
+            spinDegreesPerSecond = 12.5,
+            meander = 0.0,
+            meanderPeriodTicks = 120,
+            speedVariation = 0.9,
+            wake = false,
+        )
+        config.types.single().sink shouldBe 0.0
+        warnings shouldHaveSize 9
+        listOf(
+            "riscos ", "riscos-por-segundo ", "balanco ", "periodo-balanco-ticks ", "inclinacao-graus ",
+            "sinuosidade ", "periodo-sinuosidade-ticks ", "variacao-velocidade ", "afundamento ",
+        ).forEach { key -> warnings.count { ".$key" in it } shouldBe 1 }
+    }
+
+    "afundamento valido por tipo" {
+        val config = parse(
+            """
+            detritos:
+              barril:
+                peso: 1
+                exibicao: BARREL
+                afundamento: 0.3
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+        )!!
+
+        config.types.single().sink shouldBe 0.3
     }
 
     "tipo sem drops validos permanece com aviso" {

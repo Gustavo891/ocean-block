@@ -3,12 +3,24 @@ corrente:
   velocidade: 0.05
   comprimento: 40.0
   largura: 10.0
-  altura: 62.6
+  altura: 62.85
+  riscos: true
+  riscos-por-segundo: 6
 
 spawn:
   intervalo-ticks: 100
   maximo-por-lote: 8
   tempo-preso-segundos: 60
+
+animacao:
+  balanco: 0.06
+  periodo-balanco-ticks: 50
+  inclinacao-graus: 8.0
+  giro-graus-por-segundo: 10.0
+  sinuosidade: 0.4
+  periodo-sinuosidade-ticks: 120
+  variacao-velocidade: 0.2
+  rastro: true
 
 coleta:
   raio-gancho: 2.0
@@ -41,6 +53,7 @@ detritos:
     peso: 8
     exibicao: BARREL
     escala: 0.6
+    afundamento: 0.12
     drops:
       - {material: BREAD, min: 1, max: 2, chance: 0.6}
       - {material: STRING, min: 1, max: 3, chance: 0.6}

@@ -5,7 +5,14 @@ import ocean_block.system.drift.lane.LanePoint
 import org.bukkit.entity.ItemDisplay
 import java.util.UUID
 
-class Debris(val islandId: UUID, val type: DebrisType, val entity: ItemDisplay, var point: LanePoint) {
+class Debris(
+    val islandId: UUID,
+    val type: DebrisType,
+    val entity: ItemDisplay,
+    var point: LanePoint,
+    val float: FloatParams,
+) {
+    var ageTicks: Int = 0
     var stuckSinceMillis: Long? = null
     var pullTarget: UUID? = null
     var pullTicksLeft: Int = 0
