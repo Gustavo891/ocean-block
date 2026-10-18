@@ -47,6 +47,9 @@ object GravityRules {
             else -> Support.FALL
         }
 
+    fun restingSupport(landedTopY: Int, isWater: (Int) -> Boolean, isSolid: (Int) -> Boolean): Support =
+        support(isWater(landedTopY), isSolid(landedTopY - 1))
+
     fun settle(fromY: Double, toY: Double, isWater: (Int) -> Boolean, isSolid: (Int) -> Boolean): Fall {
         for (blockY in floor(fromY).toInt() downTo floor(toY).toInt()) {
             if (isSolid(blockY)) return Fall.Landed(blockY + 1)

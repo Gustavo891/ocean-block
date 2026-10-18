@@ -95,7 +95,6 @@ internal object DebrisMotion {
     }
 
     private fun travel(debris: Debris, next: LanePoint, point: LanePoint, open: Passage.Open, settings: DriftSettings): Boolean {
-        debris.stuckSinceMillis = null
         if (DebrisDive.approach(debris, open, settings)) return advanceTo(debris, next, point, settings)
 
         DebrisDive.hold(debris, settings)
@@ -103,6 +102,7 @@ internal object DebrisMotion {
     }
 
     private fun advanceTo(debris: Debris, next: LanePoint, point: LanePoint, settings: DriftSettings): Boolean {
+        debris.stuckSinceMillis = null
         debris.point = next
         val bobScale = DebrisDive.bobScale(debris, settings)
         DebrisEntities.place(debris.entity, DebrisPose.inPlace(point, debris.ageTicks, debris.float, settings, debris.levelY, bobScale))

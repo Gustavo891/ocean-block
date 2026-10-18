@@ -1,7 +1,6 @@
 package ocean_block.system.drift.debris
 
 import ocean_block.system.drift.config.DriftSettings
-import kotlin.math.floor
 
 internal object DebrisFall {
 
@@ -36,9 +35,9 @@ internal object DebrisFall {
         val here = DebrisDive.hereColumn(debris, raftY)
         if (!here.isLoaded) return false
 
-        val blockY = floor(debris.levelY).toInt()
-        when (GravityRules.support(here.isWaterAt(blockY), here.isSolidAt(blockY - 1))) {
-            Support.FLOAT -> splash(debris, blockY, debris.levelY, raftY)
+        val landed = debris.landedTopY
+        when (GravityRules.restingSupport(landed, here::isWaterAt, here::isSolidAt)) {
+            Support.FLOAT -> splash(debris, landed, debris.levelY, raftY)
             Support.FALL -> begin(debris)
             Support.GROUND -> if (debris.stuckSinceMillis == null) debris.stuckSinceMillis = nowMillis
         }
@@ -59,6 +58,7 @@ internal object DebrisFall {
         debris.velocityY = 0.0
         debris.levelY = GravityRules.restY(topY, debris.type.scale.toDouble())
         debris.restAgeTicks = debris.ageTicks
+        debris.landedTopY = topY
         debris.stuckSinceMillis = nowMillis
     }
 }

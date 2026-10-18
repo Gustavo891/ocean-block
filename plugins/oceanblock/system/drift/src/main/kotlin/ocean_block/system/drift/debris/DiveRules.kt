@@ -3,13 +3,45 @@ package ocean_block.system.drift.debris
 import kotlin.math.abs
 import kotlin.math.floor
 
+sealed interface Passage {
+    data object Unloaded : Passage
+    data object Unsupported : Passage
+    data object Drop : Passage
+    data object Blocked : Passage
+    data class Open(val depth: Int, val atSurface: Boolean) : Passage
+}
+
 object DiveRules {
 
     const val ARRIVAL_TOLERANCE = 0.05
     const val SUBMERGED_BOB_SCALE = 0.3
     const val FADE_SINK = 0.5
+    const val SCAN_MARGIN = 4
 
     private const val BLOCK_CENTER = 0.5
+
+    fun passage(
+        loaded: Boolean,
+        depth: Int,
+        levelDepth: Int,
+        maxDepth: Int,
+        here: (Int) -> BlockKind,
+        front: (Int) -> BlockKind,
+    ): Passage {
+        if (!loaded) return Passage.Unloaded
+        if (here(depth) != BlockKind.WATER) return Passage.Unsupported
+        if (front(depth) == BlockKind.AIR && front(levelDepth) == BlockKind.AIR) return Passage.Drop
+        return open(depth, maxDepth, here, front) ?: Passage.Blocked
+    }
+
+    private fun open(depth: Int, maxDepth: Int, here: (Int) -> BlockKind, front: (Int) -> BlockKind): Passage.Open? {
+        val scan = maxDepth + SCAN_MARGIN
+        val limit = minOf(maxOf(maxDepth, depth), scan)
+        val frontWater = { at: Int -> front(at) == BlockKind.WATER }
+        val target = targetDepth(depth, limit, frontWater) { here(it) == BlockKind.WATER } ?: return null
+        val surface = GravityRules.surfaceDepth(scan, frontWater) { front(it) == BlockKind.SOLID }
+        return Passage.Open(target, surface == target)
+    }
 
     fun targetDepth(
         currentDepth: Int,

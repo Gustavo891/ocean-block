@@ -6,6 +6,8 @@ import org.bukkit.configuration.ConfigurationSection
 object DriftConfigParser {
 
     private const val DEFAULT_SCALE = 0.6
+    private const val MIN_SCALE = 0.1
+    private const val MAX_SCALE = 2.0
     private const val DEFAULT_MAX_STACK = 64
     private const val MAX_SPEED_VARIATION = 0.9
     private const val MAX_DIVE_DEPTH = 32.0
@@ -107,7 +109,7 @@ object DriftConfigParser {
         val drops = section.getMapList("drops").mapNotNull { parseDrop(id, it, rules, warn) }
         if (drops.isEmpty()) warn("[deriva] detrito '$id' sem drops validos.")
 
-        val scale = number(section.get("escala"), "detritos.$id.escala", DEFAULT_SCALE, 0.05, null, warn).toFloat()
+        val scale = number(section.get("escala"), "detritos.$id.escala", DEFAULT_SCALE, MIN_SCALE, MAX_SCALE, warn).toFloat()
         val sink = number(section.get("afundamento"), "detritos.$id.afundamento", 0.0, 0.0, null, warn)
         return DebrisType(id, weight, display, scale, drops, sink)
     }

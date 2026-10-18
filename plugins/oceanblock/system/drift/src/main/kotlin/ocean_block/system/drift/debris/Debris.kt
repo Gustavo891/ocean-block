@@ -19,6 +19,7 @@ class Debris(
     var support: Support = Support.FLOAT
     var velocityY: Double = 0.0
     var restAgeTicks: Int = 0
+    var landedTopY: Int = 0
     var stuckSinceMillis: Long? = null
     var fadeStartTick: Int? = null
     var pullTarget: UUID? = null

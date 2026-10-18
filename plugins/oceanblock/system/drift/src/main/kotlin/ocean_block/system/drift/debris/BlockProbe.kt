@@ -6,17 +6,17 @@ import org.bukkit.block.data.Waterlogged
 
 internal class Column(private val world: World, val x: Int, val z: Int, private val raftY: Int) {
 
+    private val kinds = ColumnKinds { BlockProbe.kind(world, x, it, z) }
+
     val isLoaded: Boolean get() = DebrisEntities.isLoaded(world, x, z)
 
-    fun kindAt(blockY: Int): BlockKind = BlockProbe.kind(world, x, blockY, z)
+    fun kindAt(blockY: Int): BlockKind = kinds.at(blockY)
+
+    fun kindAtDepth(depth: Int): BlockKind = kinds.at(raftY - depth)
 
     fun isWaterAt(blockY: Int): Boolean = kindAt(blockY) == BlockKind.WATER
 
     fun isSolidAt(blockY: Int): Boolean = kindAt(blockY) == BlockKind.SOLID
-
-    fun isWaterAtDepth(depth: Int): Boolean = isWaterAt(raftY - depth)
-
-    fun isSolidAtDepth(depth: Int): Boolean = isSolidAt(raftY - depth)
 }
 
 internal object BlockProbe {

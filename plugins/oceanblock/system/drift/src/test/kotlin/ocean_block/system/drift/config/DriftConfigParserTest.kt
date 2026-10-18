@@ -267,6 +267,33 @@ class DriftConfigParserTest : StringSpec({
             .forEach { key -> warnings.count { ".$key" in it } shouldBe 1 }
     }
 
+    "escala fora de 0.1 a 2.0 e limitada com aviso" {
+        val warnings = mutableListOf<String>()
+        val config = parse(
+            """
+            detritos:
+              grande:
+                peso: 1
+                exibicao: OAK_PLANKS
+                escala: 5.0
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+              pequeno:
+                peso: 1
+                exibicao: OAK_PLANKS
+                escala: 0.01
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+            warnings,
+        )!!
+
+        config.types.associate { it.id to it.scale } shouldBe mapOf("grande" to 2.0f, "pequeno" to 0.1f)
+        warnings shouldHaveSize 2
+        warnings.count { "grande.escala" in it } shouldBe 1
+        warnings.count { "pequeno.escala" in it } shouldBe 1
+    }
+
     "afundamento valido por tipo" {
         val config = parse(
             """
