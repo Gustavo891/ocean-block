@@ -1,0 +1,423 @@
+# Gerado a partir dos glyphs do Nexo (namespace oneblock).
+# bar_start/bar_mid/bar_end do Nexo viraram hud_left/hud_body/hud_right, que sao
+# os ids que o HudBackground procura. As texturas e o unicode sao os mesmos.
+# Os unicodes foram movidos para a Private Use Area (U+E100+). Os codepoints
+# herdados do Nexo eram Syriac: U+0711/0610/0611 sao marcas combinantes
+# (advance 0) e U+0720/0712 sao RTL fortes, que disparam reordenacao BiDi
+# no cliente. Use sempre PUA aqui - nao altere sem regerar o pack.
+
+
+# hover_complete e hover_current tem unicode fixo: os mesmos chars estao
+# escritos a mao em configs/fonts/custom.json, base das font-ui-<ascent> que
+# posicionam os selos no titulo de /is phases. Trocar aqui sem trocar la
+# quebra o overlay.
+hover_complete:
+  id: hover_complete
+  caminho: assets/oneblock/textures/icons/hover_complete.png
+  unicode: \uE121
+  ascent: 8
+  size: 16
+  height: 16
+  default: true
+  show_in_gui: true
+
+hover_current:
+  id: hover_current
+  caminho: assets/oneblock/textures/icons/hover_current.png
+  unicode: \uE122
+  ascent: 8
+  size: 16
+  height: 16
+  default: true
+  show_in_gui: true
+
+hud_left:
+  id: hud_left
+  caminho: assets/oneblock/textures/hud/left.png
+  unicode: \uE100
+  ascent: 6
+  size: 6
+  height: 14
+  default: true
+  show_in_gui: true
+
+hud_body:
+  id: hud_body
+  caminho: assets/oneblock/textures/hud/body.png
+  unicode: \uE101
+  ascent: 6
+  size: 6
+  height: 14
+  default: true
+  show_in_gui: true
+
+hud_right:
+  id: hud_right
+  caminho: assets/oneblock/textures/hud/right.png
+  unicode: \uE102
+  ascent: 6
+  size: 6
+  height: 14
+  default: true
+  show_in_gui: true
+
+floating_islands:
+  id: floating_islands
+  caminho: assets/oneblock/textures/icons/floating_island.png
+  unicode: \uE103
+  ascent: 8
+  height: 8
+  default: true
+  show_in_gui: true
+  size: 12
+  # Tambem entra na fonte da bossbar (minecraft:bossbar). ascent/height/unicode
+  # herdam os globais quando vazios; o plugin preenche e grava aqui.
+  fonts:
+    bossbar:
+      ascent: 3
+      height: 10
+      unicode-specify: ''
+
+level_up:
+  id: level_up
+  caminho: assets/oneblock/textures/icons/level_up.png
+  unicode: \uE104
+  ascent: 5
+  height: 8
+  default: true
+  show_in_gui: true
+  size: 12
+
+anvil:
+  id: anvil
+  caminho: assets/oneblock/textures/icons/anvil.png
+  unicode: \uE105
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+book:
+  id: book
+  caminho: assets/oneblock/textures/icons/book.png
+  unicode: \uE106
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+cave:
+  id: cave
+  caminho: assets/oneblock/textures/icons/cave.png
+  unicode: \uE107
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+chef_hat:
+  id: chef_hat
+  caminho: assets/oneblock/textures/icons/chef_hat.png
+  unicode: \uE108
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+coins:
+  id: coins
+  caminho: assets/oneblock/textures/icons/coins.png
+  unicode: \uE109
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+crown:
+  id: crown
+  caminho: assets/oneblock/textures/icons/crown.png
+  unicode: \uE10A
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+diamond:
+  id: diamond
+  caminho: assets/oneblock/textures/icons/diamond.png
+  unicode: \uE10B
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+experience_orb:
+  id: experience_orb
+  caminho: assets/oneblock/textures/icons/experience_orb.png
+  unicode: \uE10C
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+fountain:
+  id: fountain
+  caminho: assets/oneblock/textures/icons/fountain.png
+  unicode: \uE10D
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+heart:
+  id: heart
+  caminho: assets/oneblock/textures/icons/heart.png
+  unicode: \uE10E
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+
+angel_wings:
+  id: angel_wings
+  caminho: assets/oneblock/textures/icons/angel_wings.png
+  ascent: 7
+  height: 8
+  default: true
+  show_in_gui: true
+  size: 8
+  # Usado na HUD secundaria do tempo de voo (<glyph:angel_wings:bossbar>).
+  fonts:
+    bossbar:
+      ascent: 3
+      height: 8
+      unicode-specify: ''
+  unicode: \uE020
+
+hourglass:
+  id: hourglass
+  caminho: assets/oneblock/textures/icons/hourglass.png
+  unicode: \uE10F
+  ascent: 7
+  height: 8
+  default: true
+  show_in_gui: true
+  size: 12
+
+house:
+  id: house
+  caminho: assets/oneblock/textures/icons/house.png
+  unicode: \uE110
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+judge_gavel:
+  id: judge_gavel
+  caminho: assets/oneblock/textures/icons/judge_gavel.png
+  unicode: \uE111
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+key:
+  id: key
+  caminho: assets/oneblock/textures/icons/key.png
+  unicode: \uE112
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+magnifying_glass:
+  id: magnifying_glass
+  caminho: assets/oneblock/textures/icons/magnifying_glass.png
+  unicode: \uE113
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+mana:
+  id: mana
+  caminho: assets/oneblock/textures/icons/mana.png
+  unicode: \uE114
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+moon:
+  id: moon
+  caminho: assets/oneblock/textures/icons/moon.png
+  unicode: \uE115
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+plant:
+  id: plant
+  caminho: assets/oneblock/textures/icons/plant.png
+  unicode: \uE116
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+potion:
+  id: potion
+  caminho: assets/oneblock/textures/icons/potion.png
+  unicode: \uE117
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+purple_orb:
+  id: purple_orb
+  caminho: assets/oneblock/textures/icons/purple_orb.png
+  unicode: \uE118
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+scroll:
+  id: scroll
+  caminho: assets/oneblock/textures/icons/scroll.png
+  unicode: \uE119
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+shield:
+  id: shield
+  caminho: assets/oneblock/textures/icons/shield.png
+  unicode: \uE11A
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+skull:
+  id: skull
+  caminho: assets/oneblock/textures/icons/skull.png
+  unicode: \uE11B
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+star:
+  id: star
+  caminho: assets/oneblock/textures/icons/star.png
+  unicode: \uE11C
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+sun:
+  id: sun
+  caminho: assets/oneblock/textures/icons/sun.png
+  unicode: \uE11D
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+sword:
+  id: sword
+  caminho: assets/oneblock/textures/icons/sword.png
+  unicode: \uE11E
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+trees:
+  id: trees
+  caminho: assets/oneblock/textures/icons/trees.png
+  unicode: \uE11F
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+online_status:
+  id: online_status
+  caminho: assets/oneblock/textures/icons/online_status.png
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+  unicode: \uE00F
+
+offline_status:
+  id: offline_status
+  caminho: assets/oneblock/textures/icons/offline_status.png
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+  unicode: \uE010
+
+
+wizard_tower:
+  id: wizard_tower
+  caminho: assets/oneblock/textures/icons/wizard_tower.png
+  unicode: \uE120
+  ascent: 8
+  height: 12
+  default: true
+  show_in_gui: true
+  size: 12
+
+mouse_clicks:
+  caminho: assets/oneblock/textures/icons/mouse_clicks.png
+  amount: 3
+  ids:
+  - mouse_left
+  - mouse_right
+  - mouse_middle
+  ascent: 8
+  height: 10
+  default: true
+  show_in_gui: true
+  unicode:
+  - \uE00E
+  - \uE00C
+  - \uE00D

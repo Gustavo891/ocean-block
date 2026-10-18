@@ -1,0 +1,20 @@
+# Arquivo de registro de itens para 1.21.4+ usando custom_model_data
+# 
+# O plugin ira agrupar todos os itens pelo material base e gerar o arquivo 
+# na pasta assets/minecraft/items/<material>.json com o minecraft:select correspondente.
+#
+# Como usar no jogo: /give @p diamond_sword[custom_model_data=10]
+# 
+# Exemplo flat (O plugin gera o modelo automaticamente usando a textura):
+# espada_fogo:
+#   material: diamond_sword
+#   custom_model_data: 10
+#   type: flat
+#   texture: espada_fogo.png # <-- Lê espada_fogo.png dentro da pasta items/
+#
+# Exemplo model (Voce providencia um JSON customizado ou uma chave):
+# escudo_epico:
+#   material: shield
+#   custom_model_data: 5
+#   type: model
+#   model: escudo.json # <-- Lê escudo.json dentro da pasta items/ (tambem aceita chaves diretas como minecraft:block/acacia_fence)

@@ -1,0 +1,15 @@
+package one_block.system.custom_items.block.context
+
+import one_block.system.custom_items.block.PlacedBlock
+import org.bukkit.block.Block
+import org.bukkit.entity.Player
+import org.bukkit.event.Cancellable
+
+class BreakContext(
+    val player: Player,
+    val block: Block,
+    val placed: PlacedBlock,
+    private val event: Cancellable,
+) {
+    fun cancel() { event.isCancelled = true }
+}

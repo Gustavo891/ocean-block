@@ -1,0 +1,92 @@
+stone:
+  icon-gap: 3
+  icon-size: 9
+  text:
+    heading: { color: "#242424", bold: true, shadow: false }
+    body: { color: "#242424", shadow: false }
+    muted: { color: "#5f5f5f", shadow: false }
+    selected: { color: "#ffffff" }
+    button: { color: "#ffffff" }
+    count: { color: "#ffffff" }
+    segment: { color: "#1e1e1e", shadow: false }
+    good: { color: "#1f7a1f", shadow: false }
+    disabled: { color: "#777777", shadow: false }
+    body-bare: { color: "#ffffff" }
+    heading-bare: { color: "#ffffff", bold: true }
+    muted-bare: { color: "#aaaaaa" }
+    tooltip: { color: "#a8a8b3" }
+  surfaces:
+    sheet: ui:stone/sheet
+    head: ui:stone/head
+    well: ui:stone/well
+  switch:
+    on: ui:stone/switch_on
+    off: ui:stone/switch_off
+    labels: { on: "On", off: "Off" }
+  segmented:
+    art: ui:stone/segment
+    selected-art: ui:stone/segment_selected
+    text-style: segment
+    selected-text-style: selected
+    pad: 8
+    frame: ui:stone/segment_frame
+  button:
+    art: ui:stone/button
+    text-style: button
+    looks:
+      light:
+        art: ui:stone/button_light
+        text-style: segment
+        selected-art: ui:stone/button_light_selected
+        selected-text-style: selected
+        disabled-art: ui:stone/button_light_disabled
+        disabled-text-style: disabled
+  nav:
+    art: ui:stone/nav
+    active-art: ui:stone/nav_active
+    text-style: body
+    active-text-style: selected
+    pad: 7
+  dropdown:
+    art: ui:stone/dropdown
+    arrow: ui:stone/arrow_down
+    text-style: body
+  slider:
+    track: ui:stone/slider_track
+    fill: ui:stone/slider_fill
+    text-style: body
+  slots:
+    art: ui:stone/slot
+    text-style: count
+  chip:
+    art: ui:stone/chip
+    text-style: body-bare
+    height: 20
+    pad: 8
+  icons:
+    users: ui:stone/icons/users
+    mail: ui:stone/icons/mail
+    person-add: ui:stone/icons/person-add
+    chat: ui:stone/icons/chat
+    monitor: ui:stone/icons/monitor
+    sidebar: ui:stone/icons/sidebar
+    sparkle: ui:stone/icons/sparkle
+    dot-green: online_status
+    dot-gold: hourglass
+    dot-red: offline_status
+    music: star
+    user: crown
+    sword: ui:stone/icons/sword
+    apple: ui:stone/icons/apple
+    potion: ui:stone/icons/potion
+    bow: ui:stone/icons/bow
+    armor: ui:stone/icons/armor
+    play: ui:stone/icons/play
+    trophy: ui:stone/icons/trophy
+    swords: ui:stone/icons/swords
+    chest: ui:stone/icons/chest
+    pickaxe: ui:stone/icons/pickaxe
+    portal: ui:stone/icons/portal
+    check: ui:stone/icons/check
+    cart: ui:stone/icons/cart
+    lock: ui:stone/icons/lock

@@ -1,0 +1,22 @@
+custom1:
+  id: custom
+  caminho: fonts/custom.json
+  ascent: -10   # deslocamento vertical
+custom2:
+  id: custom2
+  caminho: fonts/custom.json
+  ascent: 7
+bossbar:
+  id: bossbar
+  caminho: fonts/bossbar.json
+  ascent: 3
+
+oneblock_gui:
+  id: gui
+  namespace: oneblock
+  caminho: fonts/oneblock-gui.json
+  ascent: 7
+oneblock_level:
+  id: oneblock_level
+  caminho: fonts/oneblock-level.json
+  ascent: 7

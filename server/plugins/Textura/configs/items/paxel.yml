@@ -1,0 +1,15 @@
+diamond_paxel:
+  material: DIAMOND_PICKAXE
+  item_model: oneblock:diamond_paxel
+  type: flat
+  texture: assets/oneblock/textures/item/paxel/diamond_paxel.png
+netherite_paxel:
+  material: NETHERITE_PICKAXE
+  item_model: oneblock:netherite_paxel
+  type: flat
+  texture: assets/oneblock/textures/item/paxel/netherite_paxel.png
+iron_paxel:
+  material: IRON_PICKAXE
+  item_model: oneblock:iron_paxel
+  type: flat
+  texture: assets/oneblock/textures/item/paxel/iron_paxel.png

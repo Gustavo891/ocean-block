@@ -1,0 +1,102 @@
+# Itens de GUI do one-block.
+#
+# Os 'flat' geram o modelo automaticamente a partir do PNG.
+# Os dois botoes usam um modelo proprio, que ja referencia a textura pela chave
+# 'oneblock:item/<nome>' - o PNG entra no pack sozinho por estar em resource/,
+# entao eles nao precisam declarar 'texture'.
+#
+# A textura de um modelo PRECISA morar em textures/item/ ou textures/block/: o
+# atlas 'blocks' do vanilla so varre essas duas pastas. De textures/gui/ ela nao
+# e costurada e o item sai com o xadrez roxo. (Glyph e fonte nao usam atlas, por
+# isso as texturas de GUI dos menus continuam em textures/gui/.)
+#
+# 'oversized_in_gui' e obrigatorio neles: o display.gui do modelo usa escala 3.2
+# e translacao 36, e sem essa flag o cliente recorta no quadrado do slot e o item
+# fica invisivel.
+
+accept:
+  material: paper
+  type: flat
+  texture: assets/oneblock/textures/item/accept.png
+  item_model: oneblock:accept
+
+deny:
+  material: paper
+  type: flat
+  texture: assets/oneblock/textures/item/deny.png
+  item_model: oneblock:deny
+
+locked:
+  material: paper
+  type: flat
+  texture: assets/oneblock/textures/item/locked.png
+  item_model: oneblock:locked
+
+button_left:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/button_left.json
+  oversized_in_gui: true
+  item_model: oneblock:button_left
+
+button_right:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/button_right.json
+  oversized_in_gui: true
+  item_model: oneblock:button_right
+
+blank:
+  material: paper
+  custom_model_data: 1
+  type: flat
+  texture: assets/oneblock/textures/item/blank.png
+  item_model: oneblock:blank
+
+page_forward:
+  material: paper
+  custom_model_data: 2
+  type: flat
+  texture: assets/oneblock/textures/item/page_forward.png
+  item_model: oneblock:forward
+
+page_backward:
+  material: paper
+  custom_model_data: 3
+  type: flat
+  texture: assets/oneblock/textures/item/page_backward.png
+  item_model: oneblock:backward
+
+toggle_on:
+  material: paper
+  type: flat
+  texture: assets/oneblock/textures/item/toggle_switch_on.png
+  item_model: oneblock:on
+
+toggle_off:
+  material: paper
+  type: flat
+  texture: assets/oneblock/textures/item/toggle_switch_off.png
+  item_model: oneblock:off
+
+
+buy_button:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/buy_button.json
+  item_model: oneblock:buy_button
+  oversized_in_gui: true
+
+max_button:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/max_button.json
+  item_model: oneblock:max_button
+  oversized_in_gui: true
+
+deny_button:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/deny_button.json
+  item_model: oneblock:deny_button
+  oversized_in_gui: true

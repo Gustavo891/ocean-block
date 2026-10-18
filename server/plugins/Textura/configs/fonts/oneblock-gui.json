@@ -1,0 +1,26 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/oneblock-gui.png",
+      "height": 12,
+      "ascent": 9,
+      "chars": [
+        "ÁÂÃÉáâãóôõç",
+        "ABCDEFGHIJK",
+        "LMNOPQRSTUV",
+        "WXYZabcdefg",
+        "hijklmnopqr",
+        "stuvwxyz123",
+        "4567890%():",
+        "/|->é.$,###"
+      ]
+    },
+    {
+      "type": "space",
+      "advances": {
+        " ": 5
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+coletor_itens:
+  id: coletor_itens
+  caminho: assets/oneblock/textures/gui/coletor/coletor.png
+  ascent: 19
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE093
+
+coletor_upgrades:
+  id: coletor_upgrades
+  caminho: assets/oneblock/textures/gui/coletor/coletor_upgrades.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE00B

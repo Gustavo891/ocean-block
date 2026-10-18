@@ -1,0 +1,62 @@
+# Arquivo de registro de itens para 1.21.4+ usando custom_model_data
+# 
+# O plugin ira agrupar todos os itens pelo material base e gerar o arquivo 
+# na pasta assets/minecraft/items/<material>.json com o minecraft:select correspondente.
+#
+# Como usar no jogo: /give @p diamond_sword[custom_model_data=10]
+# 
+# Exemplo flat (O plugin gera o modelo automaticamente usando a textura):
+# espada_fogo:
+#   material: diamond_sword
+#   custom_model_data: 10
+#   type: flat
+#   texture: espada_fogo.png # <-- Lê espada_fogo.png dentro da pasta items/
+#
+# Exemplo model (Voce providencia um JSON customizado ou uma chave):
+magnet:
+  material: PAPER
+  item_model: oneblock:magnet
+  type: model
+  model: assets/oneblock/models/item/magnet.json
+
+miner:
+  material: PAPER
+  item_model: oneblock:miner
+  type: model
+  model: assets/oneblock/models/item/miner.json
+
+knight:
+  material: PAPER
+  item_model: oneblock:knight
+  type: model
+  model: assets/oneblock/models/item/knight.json
+
+
+
+head1:
+  material: PLAYER_HEAD
+  custom_model_data: 2
+  type: model
+  model: assets/oneblock/models/item/2d_head.json
+head2:
+  material: PLAYER_HEAD
+  custom_model_data: 3
+  type: model
+  model: assets/oneblock/models/item/head_portrait.json
+head3:
+  material: PLAYER_HEAD
+  custom_model_data: 4
+  type: model
+  model: assets/oneblock/models/item/terra_head.json
+head4:
+  material: PLAYER_HEAD
+  custom_model_data: 5
+  type: model
+  model: assets/oneblock/models/item/head_portrait2.json
+
+headtest:
+  material: PLAYER_HEAD
+  type: model
+  model: assets/oneblock/models/item/head2d.json
+  item_model: oneblock:head2d
+  oversized_in_gui: true

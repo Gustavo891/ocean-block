@@ -5,11 +5,11 @@ kotlin = "2.3.0"
 ktor = "2.3.11"
 coroutines-core = "1.8.1"
 serialization-json = "1.6.3"
-plugin-shadowjar = "8.3.0"
+plugin-shadowjar = "9.2.2"
 placeholder = "2.11.6"
 aikar = "0.5.1-SNAPSHOT"
-paperApi = "1.21.8-R0.1-SNAPSHOT"
-shadowJar = "8.3.0"
+paperApi = "26.3.build.192-stable"
+shadowJar = "9.2.2"
 velocity = "3.2.0-SNAPSHOT"
 reflections8 = "0.10.2"
 screen-currencies-api = "0.2.0-SNAPSHOT"
@@ -45,6 +45,11 @@ mythicMobs = "5.6.1"
 boards = "1.0"
 mango = "1.0"
 areas = "1.0"
+creative = "1.7.3"
+examination = "1.3.0"
+kotest = "5.9.1"
+packetevents = "2.13.0"
+fastboard = "2.2.1"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -86,6 +91,15 @@ inventoryFramework = { module = "me.devnatan:inventory-framework-platform-paper"
 itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
 mythicMobs = { module = "io.lumine:Mythic-Dist", version.ref = "mythicMobs" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
+creative-api = { module = "team.unnamed:creative-api", version.ref = "creative" }
+creative-serializer-minecraft = { module = "team.unnamed:creative-serializer-minecraft", version.ref = "creative" }
+creative-server = { module = "team.unnamed:creative-server", version.ref = "creative" }
+examination-api = { module = "net.kyori:examination-api", version.ref = "examination" }
+examination-string = { module = "net.kyori:examination-string", version.ref = "examination" }
+packetevents-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents" }
+fastboard = { module = "fr.mrmicky:fastboard", version.ref = "fastboard" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 [bundles]
 #warden = ["warden-client", "warden-connector", "warden-shared"]
 

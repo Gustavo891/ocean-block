@@ -1,0 +1,115 @@
+{
+  "title": "Social",
+  "theme": "stone",
+  "hideFooter": false,
+  "canCloseWithEscape": true,
+  "showWarning": false,
+  "document": {
+    "row": [
+      {
+        "column": [
+          {
+            "row": [
+              { "icon": "ui:dot-green", "size": 9, "bind": "status", "states": { "online": "ui:dot-green", "away": "ui:dot-gold", "busy": "ui:dot-red" } },
+              { "text": "{player}", "style": "heading", "w": "fit" }
+            ],
+            "w": "grow", "h": "fit", "gap": 3, "pad": 3, "cross": "center", "surface": "well"
+          },
+          { "nav": "Perfil", "icon": "ui:user", "w": "grow", "onClick": { "action": "page", "value": "profile" } },
+          { "nav": "Som", "icon": "ui:music", "w": "grow", "onClick": { "action": "page", "value": "audio" } }
+        ],
+        "w": 96, "h": "fit", "gap": 2, "pad": 2, "surface": "sheet", "name": "Sidebar"
+      },
+      {
+        "column": [
+          {
+            "row": [
+              { "space": 3 },
+              { "text": "Perfil", "style": "heading", "w": "grow" }
+            ],
+            "w": "grow", "h": 15, "cross": "center", "surface": "head", "name": "Heading"
+          },
+          {
+            "column": [
+              {
+                "row": [
+                  { "text": "Status", "style": "body", "w": "grow" },
+                  { "dropdown": "Online", "options": ["Online", "Away", "Busy"], "bind": "status", "w": 70, "tooltip": "Status\n⏵ Atual: {value}" }
+                ],
+                "w": "grow", "gap": 5, "cross": "center"
+              },
+              { "text": "Você está {status?online:disponível|away:ausente|busy:ocupado|disponível}.", "style": "muted", "w": "grow" },
+              {
+                "row": [
+                  { "space": "grow" },
+                  { "button": "Salvar", "w": "fit", "onClick": { "action": "run_command", "value": "[message] <green>Status salvo: {status}\n[sound] entity.experience_orb.pickup 1 1.4" } }
+                ],
+                "w": "grow"
+              }
+            ],
+            "w": "grow", "h": "fit", "gap": 6, "pad": 5, "name": "Body"
+          }
+        ],
+        "w": 200, "h": "fit", "pad": 1, "surface": "sheet", "name": "Profile"
+      }
+    ],
+    "w": "fit", "h": "fit", "gap": 4
+  },
+  "pages": [
+    { "id": "profile", "name": "Perfil" },
+    {
+      "id": "audio",
+      "name": "Som",
+      "document": {
+        "row": [
+          {
+            "column": [
+              {
+                "row": [
+                  { "icon": "ui:dot-green", "size": 9, "bind": "status", "states": { "online": "ui:dot-green", "away": "ui:dot-gold", "busy": "ui:dot-red" } },
+                  { "text": "{player}", "style": "heading", "w": "fit" }
+                ],
+                "w": "grow", "h": "fit", "gap": 3, "pad": 3, "cross": "center", "surface": "well"
+              },
+              { "nav": "Perfil", "icon": "ui:user", "w": "grow", "onClick": { "action": "page", "value": "profile" } },
+              { "nav": "Som", "icon": "ui:music", "w": "grow", "onClick": { "action": "page", "value": "audio" } }
+            ],
+            "w": 96, "h": "fit", "gap": 2, "pad": 2, "surface": "sheet", "name": "Sidebar"
+          },
+          {
+            "column": [
+              {
+                "row": [
+                  { "space": 3 },
+                  { "text": "Som", "style": "heading", "w": "grow" }
+                ],
+                "w": "grow", "h": 15, "cross": "center", "surface": "head", "name": "Heading"
+              },
+              {
+                "column": [
+                  {
+                    "row": [
+                      { "text": "Música", "style": "body", "w": "grow" },
+                      { "slider": 40, "min": 0, "max": 100, "step": 10, "unit": "%", "bind": "music", "w": 90, "tooltip": "Volume da música: {value}" }
+                    ],
+                    "w": "grow", "gap": 5, "cross": "center"
+                  },
+                  {
+                    "row": [
+                      { "text": "Sons de interface", "style": "body", "w": "grow" },
+                      { "switch": true, "bind": "ui_sounds", "tooltip": "Sons de interface: {value}" }
+                    ],
+                    "w": "grow", "gap": 5, "cross": "center"
+                  }
+                ],
+                "w": "grow", "h": "fit", "gap": 6, "pad": 5, "name": "Body"
+              }
+            ],
+            "w": 200, "h": "fit", "pad": 1, "surface": "sheet", "name": "Audio"
+          }
+        ],
+        "w": "fit", "h": "fit", "gap": 4
+      }
+    }
+  ]
+}

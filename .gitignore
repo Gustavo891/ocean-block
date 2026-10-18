@@ -3,3 +3,6 @@
 **/.gradle
 .idea
 /.claude/settings.local.json
+.kotlin/
+hs_err_*.log
+replay_*.log

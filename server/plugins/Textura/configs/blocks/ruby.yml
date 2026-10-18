@@ -1,0 +1,13 @@
+ruby_ore:
+  type: OVERRIDE
+  target: deepslate_emerald_ore
+  texture: assets/oneblock/textures/ores/ruby/ruby_ore.png
+  name: "Minério de Rubi"
+  block_drop_id: ruby
+ruby_block:
+  type: OVERRIDE
+  target: raw_gold_block
+  texture: assets/oneblock/textures/ores/ruby/ruby_block.png
+  name: "Bloco de Rubi"
+  block_drop_id: ruby_block
+  block_default_drop: true

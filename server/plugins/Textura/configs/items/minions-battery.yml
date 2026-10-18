@@ -1,0 +1,55 @@
+bateriabig1:
+  material: PAPER
+  item_model: oneblock:bateriabig1
+  type: model
+  model: assets/oneblock/models/minions/battery.json
+  oversized_in_gui: true
+
+bateria:
+  material: PAPER
+  item_model: oneblock:bateria
+  type: model
+  model: assets/oneblock/models/minions/battery_regular.json
+  oversized_in_gui: true
+
+hammer:
+  material: PAPER
+  item_model: oneblock:hammer
+  type: model
+  model: assets/oneblock/models/minions/hammer.json
+  oversized_in_gui: true
+
+spear:
+  material: PAPER
+  item_model: oneblock:spear
+  type: model
+  model: assets/oneblock/models/minions/spear.json
+  oversized_in_gui: true
+
+miner_pickaxe:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/miner_pickaxe.json
+  oversized_in_gui: true
+  item_model: oneblock:miner_pickaxe  
+
+coal_backpack:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/coal_backpack.json
+  oversized_in_gui: true
+  item_model: oneblock:coal_backpack  
+
+iron_backpack:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/iron_backpack.json
+  oversized_in_gui: true
+  item_model: oneblock:iron_backpack  
+
+gold_backpack:
+  material: paper
+  type: model
+  model: assets/oneblock/models/item/gold_backpack.json
+  oversized_in_gui: true
+  item_model: oneblock:gold_backpack  

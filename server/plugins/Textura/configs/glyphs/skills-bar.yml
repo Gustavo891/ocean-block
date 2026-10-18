@@ -1,0 +1,43 @@
+progress_bars:
+  caminho: assets/oneblock/textures/skills/bar/bars.png
+  amount: 11
+  ids:
+  - bar0
+  - bar1
+  - bar2
+  - bar3
+  - bar4
+  - bar5
+  - bar6
+  - bar7
+  - bar8
+  - bar9
+  - bar10
+  ascent: 6
+  height: 6
+  default: true
+  show_in_gui: true
+  # Uma fonte por linha do menu de habilidades: o ascent posiciona a barra em cima
+  # da faixa desenhada no menu.png (topos em y 24, 42 e 60).
+  fonts:
+    skills_row0:
+      ascent: -10
+      height: 6
+    skills_row1:
+      ascent: -28
+      height: 6
+    skills_row2:
+      ascent: -46
+      height: 6
+  unicode:
+  - \uE015
+  - \uE016
+  - \uE017
+  - \uE018
+  - \uE019
+  - \uE01A
+  - \uE01B
+  - \uE01C
+  - \uE01D
+  - \uE01E
+  - \uE01F

@@ -1,0 +1,19 @@
+{
+    "providers": [
+        {
+            "type": "bitmap",
+            "file": "minecraft:font/oneblock-level.png",
+            "height": 12,
+            "ascent": 10,
+            "chars": [
+                "0123456789"
+            ]
+        },
+        {
+            "type": "space",
+            "advances": {
+                " ": 4
+            }
+        }
+    ]
+}

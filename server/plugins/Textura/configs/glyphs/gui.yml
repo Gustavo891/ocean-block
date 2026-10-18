@@ -1,0 +1,90 @@
+# Gerado a partir dos glyphs do Nexo (namespace oneblock).
+# O 'unicode' foi preservado do pack original - nao altere sem regerar o pack.
+
+island_phases:
+  id: island_phases
+  caminho: assets/oneblock/textures/gui/island_phases.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE001
+island_upgrades:
+  id: island_upgrades
+  caminho: assets/oneblock/textures/gui/island_upgrades.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE007
+shop:
+  id: shop
+  caminho: assets/oneblock/textures/gui/shop.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE002
+
+shop_category:
+  id: shop_category
+  caminho: assets/oneblock/textures/gui/shop_category.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE003
+
+shop_product:
+  id: shop_product
+  caminho: assets/oneblock/textures/gui/shop_product.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE004
+
+sell_menu:
+  id: sell_menu
+  caminho: assets/oneblock/textures/gui/sell_menu.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE005
+
+sell_items:
+  id: sell_items
+  caminho: assets/oneblock/textures/gui/sell_items.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE008
+
+island_menu:
+  id: island_menu
+  caminho: assets/oneblock/textures/gui/island_menu.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE006
+
+spawner:
+  id: spawner
+  caminho: assets/oneblock/textures/gui/spawner.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE00A

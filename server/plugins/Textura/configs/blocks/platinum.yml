@@ -1,0 +1,8 @@
+platinum_ore:
+  type: OVERRIDE
+  target: deepslate_iron_ore
+  texture: assets/oneblock/textures/ores/platinum/platinum_ore.png
+  name: "Minério de Platina"
+  block_drop_id: platinum_raw
+  block_drop_amount: 1
+  block_default_drop: true

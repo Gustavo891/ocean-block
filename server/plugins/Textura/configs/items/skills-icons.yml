@@ -1,0 +1,134 @@
+bar1:
+  material: PAPER
+  item_model: oneblock:bar1
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar1.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+bar2:
+  material: PAPER
+  item_model: oneblock:bar2
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar2.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+bar3:
+  material: PAPER
+  item_model: oneblock:bar3
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar3.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+bar4:
+  material: PAPER
+  item_model: oneblock:bar4
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar4.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+bar5:
+  material: PAPER
+  item_model: oneblock:bar5
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar5.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+bar6:
+  material: PAPER
+  item_model: oneblock:bar6
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar6.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+bar7:
+  material: PAPER
+  item_model: oneblock:bar7
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar7.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+bar8:
+  material: PAPER
+  item_model: oneblock:bar8
+  type: flat
+  texture: assets/oneblock/textures/skills/bar/bar8.png
+  oversized_in_gui: true
+  display:
+    gui:
+      scale: [1.7, 1.5, 1.375]
+      translation: [9, 0, 0]
+
+skill_mining:
+  material: PAPER
+  item_model: oneblock:skill_mining
+  type: flat
+  texture: assets/oneblock/textures/skills/icons/skill_mining.png 
+  display:
+    gui:
+      scale: 0.9
+      translation: [2, 0, 0]
+
+skill_farming:
+  material: PAPER
+  item_model: oneblock:skill_farming
+  type: flat
+  texture: assets/oneblock/textures/skills/icons/skill_farming.png 
+  display:
+    gui:
+      scale: 0.9
+      translation: [2, 0, 0]
+skill_fishing:
+  material: PAPER
+  item_model: oneblock:skill_fishing
+  type: flat
+  texture: assets/oneblock/textures/skills/icons/skill_fishing.png 
+  display:
+    gui:
+      scale: 0.9
+      translation: [1, 0, 0]
+skill_lumberjack:
+  material: PAPER
+  item_model: oneblock:skill_lumberjack
+  type: flat
+  texture: assets/oneblock/textures/skills/icons/skill_foraging.png 
+  display:
+    gui:
+      scale: 0.9
+      translation: [2, 0, 0]
+skill_fighting:
+  material: PAPER
+  item_model: oneblock:skill_fighting
+  type: flat
+  texture: assets/oneblock/textures/skills/icons/skill_fighting.png 
+  display:
+    gui:
+      scale: 0.9
+      translation: [2, 0, 0]

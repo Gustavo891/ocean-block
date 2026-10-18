@@ -1,0 +1,137 @@
+bloq-left:
+  material: PAPER
+  item_model: oneblock:bloq-left
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/bloq-left.png
+
+bloq-up:
+  material: PAPER
+  item_model: oneblock:bloq-up
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/bloq-up.png
+
+bloq-right:
+  material: PAPER
+  item_model: oneblock:bloq-right
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/bloq-right.png
+
+bloq-down:
+  material: PAPER
+  item_model: oneblock:bloq-down
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/bloq-down.png
+
+current-left:
+  material: PAPER
+  item_model: oneblock:current-left
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/current-left.png
+
+current-up:
+  material: PAPER
+  item_model: oneblock:current-up
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/current-up.png
+
+current-right:
+  material: PAPER
+  item_model: oneblock:current-right
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/current-right.png
+
+current-down:
+  material: PAPER
+  item_model: oneblock:current-down
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/current-down.png
+
+
+sucess-left:
+  material: PAPER
+  item_model: oneblock:sucess-left
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/sucess-left.png
+
+sucess-up:
+  material: PAPER
+  item_model: oneblock:sucess-up
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/sucess-up.png
+
+sucess-right:
+  material: PAPER
+  item_model: oneblock:sucess-right
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/sucess-right.png
+
+sucess-down:
+  material: PAPER
+  item_model: oneblock:sucess-down
+  type: flat
+  scale: 1.5
+  texture: assets/oneblock/textures/skills/icons/sucess-down.png
+
+bloqueado:
+  material: PAPER
+  item_model: oneblock:bloqueado
+  type: flat
+  texture: assets/oneblock/textures/skills/bloqueado.png
+
+desbloqueado:
+  material: PAPER
+  item_model: oneblock:desbloqueado
+  type: flat
+  texture: assets/oneblock/textures/skills/desbloqueado.png
+
+andamento:
+  material: PAPER
+  item_model: oneblock:andamento
+  type: flat
+  texture: assets/oneblock/textures/skills/andamento.png
+
+smeltery:
+  material: PAPER
+  item_model: oneblock:smeltery
+  type: flat
+  texture: assets/oneblock/textures/skills/reward/smeltery.png 
+  oversized_in_gui: true 
+
+extra_fortune:
+  material: PAPER
+  item_model: oneblock:extra_fortune
+  type: flat
+  texture: assets/oneblock/textures/skills/reward/luck.png 
+  oversized_in_gui: true 
+
+craft:
+  material: PAPER
+  item_model: oneblock:craft
+  type: flat
+  texture: assets/oneblock/textures/skills/reward/craft.png 
+  oversized_in_gui: true
+
+skill:
+  material: PAPER
+  item_model: oneblock:skill
+  type: flat
+  texture: assets/oneblock/textures/skills/reward/skill.png 
+  oversized_in_gui: true
+
+reward:
+  material: PAPER
+  item_model: oneblock:reward
+  type: flat
+  texture: assets/oneblock/textures/skills/reward/reward.png 
+  oversized_in_gui: true 

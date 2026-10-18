@@ -36,4 +36,12 @@ class NbtBuilder(
     fun double(namespace: String, key: String, value: Double) {
         container.set(NamespacedKey(namespace, key), PersistentDataType.DOUBLE, value)
     }
+
+    fun boolean(namespace: String, key: String, value: Boolean) {
+        container.set(NamespacedKey(namespace, key), PersistentDataType.BOOLEAN, value)
+    }
+
+    fun boolean(key: NamespacedKey, value: Boolean) {
+        container.set(key, PersistentDataType.BOOLEAN, value)
+    }
 }

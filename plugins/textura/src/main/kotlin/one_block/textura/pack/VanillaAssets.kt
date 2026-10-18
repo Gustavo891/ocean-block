@@ -1,0 +1,127 @@
+package one_block.textura.pack
+
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import java.awt.image.BufferedImage
+import java.io.File
+import java.net.HttpURLConnection
+import java.net.URI
+import java.security.MessageDigest
+import java.util.logging.Logger
+import java.util.zip.ZipFile
+import javax.imageio.ImageIO
+
+class VanillaAssets(private val folder: File, private val version: String, private val logger: Logger) {
+
+    private val lock = Any()
+
+    @Volatile
+    private var failed = false
+
+    fun itemTexture(name: String, download: Boolean): BufferedImage? {
+        if (!NAME.matches(name)) return null
+        val jar = jar(download) ?: return null
+        val image = runCatching {
+            ZipFile(jar).use { zip ->
+                val base = TEXTURE_FOLDERS.firstNotNullOfOrNull { dir -> read(zip, "$dir/$name") }
+                val overlay = if (name in TINTED_POTIONS) read(zip, "item/potion_overlay") else null
+                if (base != null && overlay != null) tinted(base, overlay) else base
+            }
+        }.getOrElse {
+            logger.warning("[ui] Falha ao ler textura vanilla '$name': ${it.message}")
+            null
+        } ?: return null
+        return firstFrame(image)
+    }
+
+    private fun read(zip: ZipFile, path: String): BufferedImage? =
+        zip.getEntry("assets/minecraft/textures/$path.png")?.let { entry -> zip.getInputStream(entry).use(ImageIO::read) }
+
+    private fun tinted(base: BufferedImage, overlay: BufferedImage): BufferedImage {
+        val result = BufferedImage(base.width, base.height, BufferedImage.TYPE_INT_ARGB)
+        for (x in 0 until base.width) {
+            for (y in 0 until base.height) {
+                val liquid = if (x < overlay.width && y < overlay.height) overlay.getRGB(x, y) else 0
+                val glass = base.getRGB(x, y)
+                result.setRGB(x, y, if (glass ushr 24 != 0) glass else multiply(liquid, WATER_COLOR))
+            }
+        }
+        return result
+    }
+
+    private fun multiply(argb: Int, color: Int): Int {
+        val r = (argb shr 16 and 0xFF) * (color shr 16 and 0xFF) / 255
+        val g = (argb shr 8 and 0xFF) * (color shr 8 and 0xFF) / 255
+        val b = (argb and 0xFF) * (color and 0xFF) / 255
+        return (argb and 0xFF000000.toInt()) or (r shl 16) or (g shl 8) or b
+    }
+
+    private fun firstFrame(image: BufferedImage): BufferedImage =
+        if (image.height > image.width && image.height % image.width == 0) image.getSubimage(0, 0, image.width, image.width) else image
+
+    private fun jar(download: Boolean): File? {
+        val file = File(folder, "client-$version.jar")
+        if (file.isFile) return file
+        if (!download || failed) return null
+        synchronized(lock) {
+            if (file.isFile) return file
+            return runCatching { fetch(file) }.getOrElse {
+                failed = true
+                logger.warning("[ui] Não foi possível baixar o client $version da Mojang (ícones item: ficam vazios): ${it.message}")
+                null
+            }
+        }
+    }
+
+    private fun fetch(target: File): File {
+        logger.info("[ui] Baixando texturas vanilla do client $version...")
+        val manifest = json(MANIFEST)
+        val entry = manifest.getAsJsonArray("versions").map { it.asJsonObject }.firstOrNull { it.get("id").asString == version }
+            ?: error("versão $version não está no manifesto")
+        val client = json(entry.get("url").asString).getAsJsonObject("downloads").getAsJsonObject("client")
+        val sha1 = client.get("sha1").asString
+
+        folder.mkdirs()
+        val temp = File(folder, target.name + ".part")
+        connect(client.get("url").asString).inputStream.use { input -> temp.outputStream().use { input.copyTo(it) } }
+        val actual = sha1(temp)
+        if (!actual.equals(sha1, ignoreCase = true)) {
+            temp.delete()
+            error("sha1 diferente (esperado $sha1, veio $actual)")
+        }
+        if (!temp.renameTo(target)) error("não foi possível mover ${temp.name}")
+        logger.info("[ui] Client $version salvo em ${target.path}")
+        return target
+    }
+
+    private fun json(url: String): JsonObject =
+        connect(url).inputStream.bufferedReader().use { JsonParser.parseReader(it).asJsonObject }
+
+    private fun connect(url: String): HttpURLConnection =
+        (URI(url).toURL().openConnection() as HttpURLConnection).apply {
+            connectTimeout = 15_000
+            readTimeout = 120_000
+            if (responseCode !in 200..299) error("HTTP $responseCode em $url")
+        }
+
+    private fun sha1(file: File): String {
+        val digest = MessageDigest.getInstance("SHA-1")
+        file.inputStream().use { input ->
+            val buffer = ByteArray(65_536)
+            while (true) {
+                val read = input.read(buffer)
+                if (read < 0) break
+                digest.update(buffer, 0, read)
+            }
+        }
+        return digest.digest().joinToString("") { "%02x".format(it) }
+    }
+
+    private companion object {
+        const val MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+        val TEXTURE_FOLDERS = listOf("item", "block")
+        val NAME = Regex("[a-z0-9_]+")
+        val TINTED_POTIONS = setOf("potion", "splash_potion", "lingering_potion")
+        const val WATER_COLOR = 0x385DC6
+    }
+}

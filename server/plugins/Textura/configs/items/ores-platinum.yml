@@ -1,0 +1,22 @@
+platinum_raw:
+  material: PAPER
+  item_model: oneblock:platinum_raw
+  type: flat
+  texture: assets/oneblock/textures/ores/platinum/platinum_raw.png
+  name: "<white>Platina Bruta"
+  lore:
+    - "<dark_gray>Metal pesado, ainda impuro."
+    - ""
+    - "<gray>Refine na forja para obter"
+    - "<gray>Lingotes de Platina."
+
+platinum_ingot:
+  material: PAPER
+  item_model: oneblock:platinum_ingot
+  type: flat
+  texture: assets/oneblock/textures/ores/platinum/platinum_ingot.png
+  name: "<white>Lingote de Platina"
+  lore:
+    - "<dark_gray>Metal pesado refinado."
+    - ""
+    - "<gray>Usado para construir Minions."

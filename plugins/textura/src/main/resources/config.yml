@@ -1,0 +1,30 @@
+# Servidor HTTP que entrega o resource pack aos jogadores.
+# IMPORTANTE: 127.0.0.1 so funciona para clientes na mesma maquina.
+# Para jogadores remotos use o IP/dominio publico acessivel do servidor.
+#
+# host.url (opcional): se preenchido, SOBRESCREVE a URL enviada aos jogadores
+# e o servidor HTTP interno passa a ser ignorado como fonte. Use para hospedar
+# o resourcepack.zip num host externo (lobfile, catbox, GitHub release, etc).
+# ATENCAO: o arquivo hospedado TEM que ser exatamente o zip gerado
+# (server/plugins/Textura/generated/resourcepack.zip) — o SHA1 enviado e
+# calculado do zip local; se divergir, o cliente rejeita o pack.
+# Fluxo: /textura gerar -> sobe o zip gerado -> cola o link direto aqui -> restart.
+host:
+  porta: 8080
+  ip: "127.0.0.1"
+  url: ""
+
+  # Sobe o resourcepack.zip automaticamente pro LobFile a cada /textura gerar
+  # e usa a URL retornada como packUrl (sobrescreve ip/porta e host.url).
+  # Dispensa port-forward/CGNAT. O SHA1 enviado ao cliente e o do zip local,
+  # que e exatamente o arquivo enviado — hash sempre bate.
+  # A variavel de ambiente TEXTURA_LOBFILE_API_KEY, se definida, tem prioridade
+  # sobre api-key.
+  lobfile:
+    enabled: true
+    api-key: ""
+
+# Resource packs externos colocados em plugins/Textura/external/ sao
+# mesclados automaticamente ao pack principal ao gerar (.zip ou pasta
+# descompactada com pack.mcmeta/assets). Fontes tem seus providers unidos;
+# demais recursos sobrescrevem por chave em caso de conflito.

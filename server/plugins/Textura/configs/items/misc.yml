@@ -1,0 +1,5 @@
+energy:
+  material: PAPER
+  item_model: oneblock:energy
+  type: flat
+  texture: assets/oneblock/textures/item/battery.png

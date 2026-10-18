@@ -1,0 +1,21 @@
+custom1:
+  id: custom
+  caminho: fonts/custom.json
+  ascent: -10   # deslocamento vertical
+custom2:
+  id: custom2
+  caminho: fonts/custom.json
+  ascent: 7
+
+# Fontes migradas do pack do Nexo (namespace oneblock). O 'ascent' aqui e 7 (a base
+# vanilla), entao o ascent de cada provider vale exatamente o que esta no JSON.
+#oneblock_gui:
+#  id: gui
+#  namespace: oneblock
+#  caminho: fonts/oneblock-gui.json
+#  ascent: 7
+#oneblock_test:
+#  id: test
+#  namespace: oneblock
+#  caminho: fonts/oneblock-test.json
+#  ascent: 7

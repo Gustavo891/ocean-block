@@ -1,0 +1,177 @@
+{
+  "column": [
+    {
+      "column": [
+        {
+          "row": [
+            { "space": 3 },
+            { "text": "Social", "style": "heading", "align": "left", "scale": 1, "icon": "ui:users", "w": "grow" },
+            { "space": 2 }
+          ],
+          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Heading"
+        },
+        {
+          "column": [
+            {
+              "row": [
+                {
+                  "column": [
+                    { "space": 4 },
+                    { "icon": "ui:mail", "size": 9 }
+                  ],
+                  "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Icon"
+                },
+                {
+                  "column": [
+                    { "space": 3 },
+                    { "text": "Private Messages", "style": "body", "align": "left", "scale": 1, "w": "fit" },
+                    { "text": "Who can send you messages.", "style": "muted", "align": "left", "scale": 1, "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 1, "pad": 0, "align": "start", "cross": "start", "name": "Words"
+                },
+                {
+                  "segmented": ["All", "Friends", "None"],
+                  "selected": 1,
+                  "bind": "private_messages",
+                  "w": "fit",
+                  "tooltip": "Private Messages\n⏵ Currently: {value}\n\nClick to choose who can message!"
+                }
+              ],
+              "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "start", "name": "Private Messages"
+            },
+            {
+              "row": [
+                {
+                  "column": [
+                    { "space": 4 },
+                    { "icon": "ui:person-add", "size": 9 }
+                  ],
+                  "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Icon"
+                },
+                {
+                  "column": [
+                    { "space": 3 },
+                    { "text": "Friend Requests", "style": "body", "align": "left", "scale": 1, "w": "fit" },
+                    { "text": "Allow players to add you.", "style": "muted", "align": "left", "scale": 1, "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 1, "pad": 0, "align": "start", "cross": "start", "name": "Words"
+                },
+                {
+                  "switch": true,
+                  "bind": "friend_requests",
+                  "tooltip": "Friend Requests\n⏵ Currently: {value}\n\nClick to toggle!"
+                }
+              ],
+              "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "start", "name": "Friend Requests"
+            },
+            {
+              "row": [
+                {
+                  "column": [
+                    { "space": 4 },
+                    { "icon": "ui:chat", "size": 9 }
+                  ],
+                  "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Icon"
+                },
+                {
+                  "column": [
+                    { "space": 3 },
+                    { "text": "Chat Mentions", "style": "body", "align": "left", "scale": 1, "w": "fit" },
+                    { "text": "Get alerts when mentioned.", "style": "muted", "align": "left", "scale": 1, "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 1, "pad": 0, "align": "start", "cross": "start", "name": "Words"
+                },
+                {
+                  "switch": true,
+                  "bind": "chat_mentions",
+                  "tooltip": "Chat Mentions\n⏵ Currently: {value}\n\nClick to toggle!"
+                }
+              ],
+              "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "start", "name": "Chat Mentions"
+            }
+          ],
+          "w": "grow", "h": "fit", "gap": 9, "pad": 5, "align": "start", "cross": "start", "name": "Body"
+        }
+      ],
+      "w": "grow", "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Social"
+    },
+    {
+      "column": [
+        {
+          "row": [
+            { "space": 3 },
+            { "text": "Display", "style": "heading", "align": "left", "scale": 1, "icon": "ui:monitor", "w": "grow" },
+            { "space": 2 }
+          ],
+          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Heading"
+        },
+        {
+          "column": [
+            {
+              "row": [
+                {
+                  "column": [
+                    { "space": 4 },
+                    { "icon": "ui:sidebar", "size": 9 }
+                  ],
+                  "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Icon"
+                },
+                {
+                  "column": [
+                    { "space": 3 },
+                    { "text": "Scoreboard", "style": "body", "align": "left", "scale": 1, "w": "fit" },
+                    { "text": "Show the sidebar stats.", "style": "muted", "align": "left", "scale": 1, "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 1, "pad": 0, "align": "start", "cross": "start", "name": "Words"
+                },
+                {
+                  "switch": true,
+                  "bind": "show_scoreboard",
+                  "tooltip": "Scoreboard\n⏵ Currently: {value}\n\nClick to toggle!"
+                }
+              ],
+              "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "start", "name": "Scoreboard"
+            },
+            {
+              "row": [
+                {
+                  "column": [
+                    { "space": 4 },
+                    { "icon": "ui:sparkle", "size": 9 }
+                  ],
+                  "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Icon"
+                },
+                {
+                  "column": [
+                    { "space": 3 },
+                    { "text": "Particle Visibility", "style": "body", "align": "left", "scale": 1, "w": "fit" },
+                    { "text": "How many effects you see.", "style": "muted", "align": "left", "scale": 1, "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 1, "pad": 0, "align": "start", "cross": "start", "name": "Words"
+                },
+                {
+                  "segmented": ["All", "Reduced", "Off"],
+                  "selected": 0,
+                  "bind": "particle_visibility",
+                  "w": "fit",
+                  "tooltip": "Particle Visibility\n⏵ Currently: {value}\n\nClick to choose effect detail!"
+                }
+              ],
+              "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "start", "name": "Particle Visibility"
+            }
+          ],
+          "w": "grow", "h": "fit", "gap": 9, "pad": 5, "align": "start", "cross": "start", "name": "Body"
+        }
+      ],
+      "w": "grow", "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Display"
+    }
+  ],
+  "w": "fit",
+  "h": "fit",
+  "gap": 6,
+  "pad": 0,
+  "align": "start",
+  "cross": "start",
+  "theme": "stone",
+  "title": "Settings"
+}

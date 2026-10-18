@@ -1,0 +1,386 @@
+{
+  "column": [
+    {
+      "row": [
+        {
+          "text": "3/6 Owned",
+          "style": "body",
+          "align": "left",
+          "scale": 1,
+          "icon": "ui:chest",
+          "w": "fit"
+        },
+        {
+          "space": "grow"
+        },
+        {
+          "chip": "2,450 Coins",
+          "icon": "item:gold_nugget"
+        }
+      ],
+      "w": "grow",
+      "h": "fit",
+      "gap": 4,
+      "pad": 0,
+      "align": "start",
+      "cross": "center"
+    },
+    {
+      "grid": [
+        {
+          "column": [
+            {
+              "text": "Rookie",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "icon": "ui:sword",
+              "w": "fit"
+            },
+            {
+              "row": [
+                {
+                  "icon": "item:iron_sword",
+                  "size": 24
+                },
+                {
+                  "text": "Owned",
+                  "style": "good",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                }
+              ],
+              "w": "fit",
+              "h": "fit",
+              "gap": 5,
+              "pad": 0,
+              "align": "start",
+              "cross": "center"
+            },
+            {
+              "pair": [
+                "Price",
+                "Free"
+              ],
+              "style": "body",
+              "w": "grow"
+            },
+            {
+              "button": "Selected",
+              "icon": "ui:check",
+              "selected": true,
+              "look": "light",
+              "w": "grow",
+              "tooltip": "Rookie Kit\n\nIncludes\n∙ Iron sword\n∙ 8 oak planks\n\n✔ Currently selected!"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 5,
+          "align": "start",
+          "cross": "start",
+          "surface": "sheet"
+        },
+        {
+          "column": [
+            {
+              "text": "Archer",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "icon": "ui:bow",
+              "w": "fit"
+            },
+            {
+              "row": [
+                {
+                  "icon": "item:bow",
+                  "size": 24
+                },
+                {
+                  "text": "Owned",
+                  "style": "good",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                }
+              ],
+              "w": "fit",
+              "h": "fit",
+              "gap": 5,
+              "pad": 0,
+              "align": "start",
+              "cross": "center"
+            },
+            {
+              "pair": [
+                "Price",
+                "500 Coins"
+              ],
+              "style": "body",
+              "w": "grow"
+            },
+            {
+              "button": "Select",
+              "icon": "ui:check",
+              "look": "light",
+              "w": "grow",
+              "tooltip": "Archer Kit\n\nIncludes\n∙ Bow\n∙ 16 arrows\n\nClick to select!"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 5,
+          "align": "start",
+          "cross": "start",
+          "surface": "sheet"
+        },
+        {
+          "column": [
+            {
+              "text": "Miner",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "icon": "ui:pickaxe",
+              "w": "fit"
+            },
+            {
+              "row": [
+                {
+                  "icon": "item:iron_pickaxe",
+                  "size": 24
+                },
+                {
+                  "text": "Owned",
+                  "style": "good",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                }
+              ],
+              "w": "fit",
+              "h": "fit",
+              "gap": 5,
+              "pad": 0,
+              "align": "start",
+              "cross": "center"
+            },
+            {
+              "pair": [
+                "Price",
+                "750 Coins"
+              ],
+              "style": "body",
+              "w": "grow"
+            },
+            {
+              "button": "Select",
+              "icon": "ui:check",
+              "look": "light",
+              "w": "grow",
+              "tooltip": "Miner Kit\n\nIncludes\n∙ Iron pickaxe\n∙ 8 iron ingots\n\nClick to select!"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 5,
+          "align": "start",
+          "cross": "start",
+          "surface": "sheet"
+        },
+        {
+          "column": [
+            {
+              "text": "Armorer",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "icon": "ui:armor",
+              "w": "fit"
+            },
+            {
+              "row": [
+                {
+                  "icon": "item:iron_chestplate",
+                  "size": 24
+                },
+                {
+                  "text": "Not Owned",
+                  "style": "muted",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                }
+              ],
+              "w": "fit",
+              "h": "fit",
+              "gap": 5,
+              "pad": 0,
+              "align": "start",
+              "cross": "center"
+            },
+            {
+              "pair": [
+                "Price",
+                "1,000 Coins"
+              ],
+              "style": "body",
+              "w": "grow"
+            },
+            {
+              "button": "Buy",
+              "icon": "ui:cart",
+              "look": "light",
+              "w": "grow",
+              "tooltip": "Armorer Kit\n\nIncludes\n∙ Iron chestplate\n∙ Iron boots\n\nCost\n∙ 1,000 Coins\n\nClick to buy!"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 5,
+          "align": "start",
+          "cross": "start",
+          "surface": "sheet"
+        },
+        {
+          "column": [
+            {
+              "text": "Alchemist",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "icon": "ui:potion",
+              "w": "fit"
+            },
+            {
+              "row": [
+                {
+                  "icon": "item:potion",
+                  "size": 24
+                },
+                {
+                  "text": "Not Owned",
+                  "style": "muted",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                }
+              ],
+              "w": "fit",
+              "h": "fit",
+              "gap": 5,
+              "pad": 0,
+              "align": "start",
+              "cross": "center"
+            },
+            {
+              "pair": [
+                "Price",
+                "1,500 Coins"
+              ],
+              "style": "body",
+              "w": "grow"
+            },
+            {
+              "button": "Buy",
+              "icon": "ui:cart",
+              "look": "light",
+              "w": "grow",
+              "tooltip": "Alchemist Kit\n\nIncludes\n∙ 2 splash healing potions\n∙ 1 speed potion\n\nCost\n∙ 1,500 Coins\n\nClick to buy!"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 5,
+          "align": "start",
+          "cross": "start",
+          "surface": "sheet"
+        },
+        {
+          "column": [
+            {
+              "text": "Enderman",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "icon": "ui:portal",
+              "w": "fit"
+            },
+            {
+              "row": [
+                {
+                  "icon": "item:ender_pearl",
+                  "size": 24
+                },
+                {
+                  "text": "Not Owned",
+                  "style": "muted",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                }
+              ],
+              "w": "fit",
+              "h": "fit",
+              "gap": 5,
+              "pad": 0,
+              "align": "start",
+              "cross": "center"
+            },
+            {
+              "pair": [
+                "Price",
+                "3,000 Coins"
+              ],
+              "style": "body",
+              "w": "grow"
+            },
+            {
+              "button": "Need Coins",
+              "icon": "ui:lock",
+              "disabled": true,
+              "look": "light",
+              "w": "grow",
+              "tooltip": "Enderman Kit\n\nIncludes\n∙ 2 ender pearls\n∙ 8 obsidian\n\nCost\n∙ 3,000 Coins\n∙ Need 550 more Coins\n\n⌀ Not enough Coins!"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 5,
+          "align": "start",
+          "cross": "start",
+          "surface": "sheet"
+        }
+      ],
+      "w": "grow",
+      "h": "fit",
+      "gap": 6,
+      "pad": 0,
+      "align": "center",
+      "cross": "center",
+      "columns": 3
+    },
+    {
+      "text": "Your selected kit equips when the match starts.",
+      "style": "muted",
+      "align": "left",
+      "scale": 1,
+      "w": "fit"
+    }
+  ],
+  "w": "grow",
+  "h": "fit",
+  "gap": 6,
+  "pad": 0,
+  "align": "start",
+  "cross": "start",
+  "theme": "stone"
+}

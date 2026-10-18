@@ -1,0 +1,16 @@
+# Configure aqui os seus emojis!
+# Para cada emoji, coloque o arquivo de imagem .png nesta mesma pasta
+# e configure o nome abaixo.
+
+emoji_padrao:
+  id: espada
+  caminho: assets/oneblock/textures/icons/espada.png
+  # default: true  -> tambem gera na fonte padrao (chat/textos). false -> so nas fontes de 'fonts'.
+  default: true
+  # Fontes nomeadas adicionais (ex.: bossbar). Cada uma pode ter ascent/height proprios.
+  # Se 'ascent'/'height' da fonte ficarem vazios, o plugin puxa do global e grava aqui.
+  unicode: \uE000
+  ascent: 8
+  height: 8
+  show_in_gui: true
+  size: 16

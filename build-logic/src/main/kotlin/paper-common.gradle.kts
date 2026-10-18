@@ -15,20 +15,21 @@ repositories {
     maven("https://maven.devs.beer/")
     maven("https://mvn.lumine.io/repository/maven-public/")
     maven("https://maven.maxhenkel.de/repository/public")
+    maven("https://repo.unnamed.team/repository/unnamed-public/")
+    maven("https://repo.codemc.io/repository/maven-releases/")
 }
 
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 dependencies {
     compileOnly(libs.findLibrary("paperApi").get())
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly(files(rootProject.file("jars/inventory-framework-paper-3.7.1.jar")))
 
     implementation(libs.findLibrary("aikar").get())
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {

@@ -1,0 +1,8 @@
+legendary:
+  id: legendary
+  caminho: assets/oneblock/textures/tags/legendary.png
+  ascent: 7
+  height: 8
+  default: true
+  show_in_gui: true
+  unicode: \uE009

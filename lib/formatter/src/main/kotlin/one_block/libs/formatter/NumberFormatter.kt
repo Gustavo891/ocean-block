@@ -7,7 +7,6 @@ import kotlin.math.ln
 
 object NumberFormatter {
 
-    //  private val PATTERN: Pattern = Pattern.compile("([A-z]*)([0-9]*)")
     private val PATTERN: Pattern = Pattern.compile("([0-9]+(?:\\.[0-9]+)?)([A-Z]+)?")
 
     private val FORMATS = arrayOf(
@@ -27,7 +26,6 @@ object NumberFormatter {
         )
     )
 
-//  private val decimalFormat: DecimalFormat = DecimalFormat("#,###.##")
 
     private val decimalFormatSmall = DecimalFormat("#,##0.##", DecimalFormatSymbols().apply {
         decimalSeparator = '.'
@@ -39,24 +37,8 @@ object NumberFormatter {
         groupingSeparator = ','
     })
 
-    private val log: Double = 6.907755278982137 // ln(1000.0)
+    private val log: Double = 6.907755278982137
 
-//  fun formatNumber(number: Double): String {
-//    if (number <= 999999) {
-//      return try {
-//        decimalFormat.format(number)
-//      } catch (e: Exception) {
-//        "?"
-//      }
-//    }
-//
-//    try {
-//      val index = (ln(number) / log).toInt()
-//      return decimalFormat.format(number / FORMATS[1][index] as Double) + FORMATS[0][index]
-//    } catch (e: Exception) {
-//      return "?"
-//    }
-//  }
 
     fun formatNumber(number: Double): String {
         if (number < 1_000_000) {
@@ -100,46 +82,5 @@ object NumberFormatter {
     }
 
 
-//  fun deform(s: String): Double {
-//    val string = s.uppercase(Locale.getDefault())
-//    val matcher = PATTERN.matcher(string)
-//
-//    if (matcher.matches()) {
-//      val value = matcher.group(1).toDouble()
-//      val suffix = matcher.group(2) ?: ""
-//      val index = FORMATS[0].indexOf(suffix)
-//      val multiplier = if (index >= 0) FORMATS[1][index] as Double else 1.0
-//
-//      return value * multiplier
-//    }
-//
-//    return s.toDouble()
-//  }
 
-//  public fun deform(s: String): Double {
-//    val string = s.uppercase(Locale.getDefault())
-//    val matcher = PATTERN.matcher(string)
-//
-//    val formats = listOf(*FORMATS[0])
-//
-//    var i = 0
-//    var value = 0.0
-//    var charName: String? = null
-//    while (matcher.find()) {
-//      if (i == 1) {
-//        charName = matcher.group()
-//        break
-//      }
-//
-//      value = matcher.group().toDouble()
-//      i++
-//    }
-//
-//    if (charName == null) {
-//      return s.toDouble()
-//    }
-//
-//    val index = if (formats.contains(charName)) formats.indexOf(charName) else 0
-//    return value * FORMATS[1][index] as Double
-//  }
 }

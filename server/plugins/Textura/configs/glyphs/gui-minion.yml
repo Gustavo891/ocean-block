@@ -1,0 +1,19 @@
+minion_menu:
+  id: minion_menu
+  caminho: assets/oneblock/textures/gui/minion/minion_menu.png
+  ascent: 14
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE011
+
+minion_upgrade:
+  id: minion_upgrade
+  caminho: assets/oneblock/textures/gui/minion/minion_upgrade.png
+  ascent: 21
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE012

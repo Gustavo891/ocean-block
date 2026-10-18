@@ -1,0 +1,6 @@
+ruby:
+  material: PAPER
+  item_model: oneblock:ruby
+  type: flat
+  texture: assets/oneblock/textures/ores/ruby/ruby.png
+  name: "<red>Rubi"
