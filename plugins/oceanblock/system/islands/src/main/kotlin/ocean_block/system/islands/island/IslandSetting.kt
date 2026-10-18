@@ -49,7 +49,7 @@ enum class IslandSetting(
         icon = Material.CAMPFIRE,
         enabledLore = "O fogo se espalha e queima blocos da ilha.",
         disabledLore = "O fogo não se espalha nem queima blocos da ilha.",
-        defaultEnabled = true,
+        defaultEnabled = false,
     ),
     MobGriefing(
         displayName = "Mobs alteram blocos",

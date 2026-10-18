@@ -29,6 +29,7 @@ class IslandSettingListener : Listener {
         val FIRE_SPREAD_CAUSES = setOf(
             BlockIgniteEvent.IgniteCause.SPREAD,
             BlockIgniteEvent.IgniteCause.LAVA,
+            BlockIgniteEvent.IgniteCause.LIGHTNING,
         )
     }
 

@@ -7,6 +7,10 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason
 
 class IslandSettingsTest : StringSpec({
 
+    "propagacao de fogo vem desligada por padrao" {
+        IslandSettings.isEnabled(null, IslandSetting.FireSpread) shouldBe false
+    }
+
     "mapa nulo usa o default da setting" {
         IslandSetting.entries.forEach { setting ->
             IslandSettings.isEnabled(null, setting) shouldBe setting.defaultEnabled
@@ -30,8 +34,8 @@ class IslandSettingsTest : StringSpec({
         IslandSettings.isEnabled(settings, IslandSetting.LeafDecay) shouldBe true
     }
 
-    "toda setting comeca ligada para nao mudar o comportamento de ilhas existentes" {
-        IslandSetting.entries.forEach { setting ->
+    "toda setting exceto propagacao de fogo comeca ligada" {
+        IslandSetting.entries.filter { it != IslandSetting.FireSpread }.forEach { setting ->
             setting.defaultEnabled shouldBe true
         }
     }
@@ -48,5 +52,6 @@ class IslandSettingsTest : StringSpec({
         (org.bukkit.event.block.BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL in causes) shouldBe false
         (org.bukkit.event.block.BlockIgniteEvent.IgniteCause.SPREAD in causes) shouldBe true
         (org.bukkit.event.block.BlockIgniteEvent.IgniteCause.LAVA in causes) shouldBe true
+        (org.bukkit.event.block.BlockIgniteEvent.IgniteCause.LIGHTNING in causes) shouldBe true
     }
 })

@@ -16,3 +16,4 @@ server/cache/
 server/libraries/
 server/versions/
 server/.console_history
+server/backups/
