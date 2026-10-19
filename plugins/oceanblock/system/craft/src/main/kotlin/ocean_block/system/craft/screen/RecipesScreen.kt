@@ -28,7 +28,7 @@ class RecipesScreen(private val logger: Logger) {
         if (categories.size > RecipeEntries.CATEGORIES_PER_PAGE) warnOnce("categorias") {
             "[receitas] ${categories.size} categorias têm receitas, mas a tela mostra só ${RecipeEntries.CATEGORIES_PER_PAGE}; aumente o perPage de 'categorias' em $SCREEN_ID.json"
         }
-        when (DialogApi.openResult(player, SCREEN_ID) { bind(player) }) {
+        when (DialogApi.openResult(player, SCREEN_ID) { it.bind(player) }) {
             DialogOpenResult.Shown, DialogOpenResult.NeedsPack -> Unit
             DialogOpenResult.MissingScreen, DialogOpenResult.Failed -> unavailable(player)
         }

@@ -29,7 +29,7 @@ class HudCommand : BaseCommand() {
     @Subcommand("show")
     fun show(player: Player, texto: Array<String>) {
         val raw = texto.joinToString(" ").ifBlank { "Teste" }
-        HudApi.show(player, SLOT, HudContent(text = raw))
+        HudApi.show(player, SLOT, HudContent(raw))
         player.sendMessage("§aHUD exibida.")
     }
 
@@ -48,7 +48,7 @@ class HudCommand : BaseCommand() {
             return
         }
         val raw = texto.joinToString(" ").ifBlank { "Teste" }
-        HudApi.showSecondary(player, SLOT, HudSecondary(text = raw, side = side))
+        HudApi.showSecondary(player, SLOT, HudSecondary(raw, side))
         player.sendMessage("§aHUD secundária exibida.")
     }
 

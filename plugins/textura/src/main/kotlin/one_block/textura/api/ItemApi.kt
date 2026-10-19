@@ -38,7 +38,9 @@ object ItemApi {
      * `custom_model_data` declarados no yml, ou `null` se o id não existir ou o
      * material for inválido.
      */
-    fun create(id: String, amount: Int = 1): ItemStack? {
+    fun create(id: String): ItemStack? = create(id, 1)
+
+    fun create(id: String, amount: Int): ItemStack? {
         val data = get(id) ?: return null
         val material = Material.matchMaterial(data.material) ?: return null
 

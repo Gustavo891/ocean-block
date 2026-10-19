@@ -23,7 +23,7 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         val jar = jar(download) ?: return null
         val image = runCatching {
             ZipFile(jar).use { zip ->
-                val base = TEXTURE_FOLDERS.firstNotNullOfOrNull { dir -> read(zip, "$dir/$name") }
+                val base = VanillaTextures.find(name) { path -> read(zip, path) }
                 val overlay = if (name in TINTED_POTIONS) read(zip, "item/potion_overlay") else null
                 if (base != null && overlay != null) tinted(base, overlay) else base
             }
@@ -119,7 +119,6 @@ class VanillaAssets(private val folder: File, private val version: String, priva
 
     private companion object {
         const val MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
-        val TEXTURE_FOLDERS = listOf("item", "block")
         val NAME = Regex("[a-z0-9_]+")
         val TINTED_POTIONS = setOf("potion", "splash_potion", "lingering_potion")
         const val WATER_COLOR = 0x385DC6

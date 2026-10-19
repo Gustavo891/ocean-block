@@ -159,7 +159,12 @@ sumir, os blocos já colocados no mundo trocam de aparência.
 Telas desenhadas dentro do dialog vanilla (1.21.6+) com glyphs de fonte. Cada
 `<id>.json` é uma tela; cada `*.yml` declara temas (uma chave de topo por tema).
 Abra com `/textura dialog <id> [jogador]` ou, de outro plugin,
-`DialogApi.open(player, "<id>") { switch(...); segmented(...); button(...) }`.
+`DialogApi.open(player, "<id>") { binds -> binds.switch(...); binds.button(...) }`
+(ou `DialogApi.openResult(...)`, que diz se abriu, se falta a textura, se a tela não
+existe ou se falhou). A API pública só usa tipos Java/Bukkit/Adventure/Textura
+(`Supplier`, `IntSupplier`, `Consumer`, `DialogBindsConfig`, `DialogButtonAction`,
+`DialogListAction`) e não tem parâmetros com valor padrão: cada plugin traz o
+próprio Kotlin, e um `kotlin.*` na assinatura quebra com `LinkageError`.
 
 O arquivo JSON é o nó raiz, que precisa ser um container e ter `theme`. Opcionais
 no raiz: `title` (MiniMessage) e `close` (rótulo do botão de fechar; `null`
@@ -207,11 +212,11 @@ de `text("chave") { ... }` fornecido pelo código. O valor entra como texto puro
 para a largura da tela não mudar a cada valor.
 
 ```kotlin
-DialogApi.open(player, "settings") {
-    switch("friend_requests", get = { prefs.friends }, set = { prefs.friends = it })
-    segmented("private_messages", get = { prefs.pm }, set = { prefs.pm = it })
-    text("saldo") { formatar(saldo) }
-    button("reset") { click -> prefs.reset() }
+DialogApi.open(player, "settings") { binds ->
+    binds.switch("friend_requests", get = { prefs.friends }, set = { prefs.friends = it })
+    binds.segmented("private_messages", get = { prefs.pm }, set = { prefs.pm = it })
+    binds.text("saldo") { formatar(saldo) }
+    binds.button("reset") { click -> prefs.reset() }
 }
 ```
 
@@ -286,7 +291,9 @@ tira o botão de fechar.
 | `{"button": "Rótulo", "onClick": {...}}` | executa ações; com `bind` também chama o código antes. `selected` e `disabled` aceitam `true`, `false` ou `"{chave}"` (só o texto `true` liga) |
 | `{"space": "grow"}` | ocupa o espaço que sobra na linha |
 
-Ícones `item:<material>` (ex.: `item:diamond_sword`) usam a textura vanilla do item. No primeiro
+Ícones `item:<material>` (ex.: `item:diamond_sword`) usam a textura vanilla do item. Item sem
+textura própria (ex.: `item:loom`, que usa o modelo do bloco) cai na textura do bloco,
+nesta ordem: `block/<nome>`, `<nome>_front`, `<nome>_side`, `<nome>_top`. No primeiro
 `/textura gerar` o client da versão é baixado da Mojang para `generated/vanilla/` (uma vez só).
 No tema, `icons:` aceita alias com prefixo (`apple: item:golden_apple`).
 
@@ -314,7 +321,7 @@ minúsculas, espaço vira `_`), slider o número. Ordem: bind do código → sal
 jogador → sessão → default do JSON. Controle com `bind` e sem handler no código
 fica salvo no jogador (PDC `textura:ui_<bind>`); outros sistemas leem com
 `DialogApi.setting(player, "bind")` e gravam com `DialogApi.setSetting(...)`.
-Valores iniciais: `DialogApi.open(player, "id", mapOf("target" to nome)) { ... }`.
+Valores iniciais: `DialogApi.open(player, "id", mapOf("target" to nome)) { binds -> ... }`.
 
 Chaves do Studio só de render são aceitas e ignoradas: `nudge`, `drawButtons`,
 `contentWidth`, `showWarning`, `look`, `compact`, `accent`, `face`, `frame`,
@@ -348,11 +355,11 @@ página); sem `listButton`, cai no `button(bind)` comum.
 ```
 
 ```kotlin
-DialogApi.open(player, "receitas") {
-    list("receitas") { receitas.map { mapOf("nome" to it.nome, "item" to "fishing_rod", "qtd" to "1", "falta" to (!pode(it)).toString()) } }
-    listPage("receitas") { estado.pagina }
-    listButton("craftar") { click, index -> craftar(receitas[index]) }
-    button("proxima") { estado.pagina++ }
+DialogApi.open(player, "receitas") { binds ->
+    binds.list("receitas") { receitas.map { mapOf("nome" to it.nome, "item" to "fishing_rod", "qtd" to "1", "falta" to (!pode(it)).toString()) } }
+    binds.listPage("receitas") { estado.pagina }
+    binds.listButton("craftar") { click, index -> craftar(receitas[index]) }
+    binds.button("proxima") { estado.pagina++ }
 }
 ```
 

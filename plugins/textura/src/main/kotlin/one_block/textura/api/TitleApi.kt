@@ -32,11 +32,15 @@ object TitleApi {
      */
     fun source(path: String, baseAscent: Int): TitleFontSource = TitleFontSource(path, baseAscent)
 
-    fun registerAscent(
-        y: Int,
-        height: Int? = TitleFontRegistry.BASE_HEIGHT,
-        source: TitleFontSource = TitleFontSource(),
-    ) {
+    fun registerAscent(y: Int) {
+        registerAscent(y, TitleFontRegistry.BASE_HEIGHT)
+    }
+
+    fun registerAscent(y: Int, height: Int?) {
+        registerAscent(y, height, TitleFontSource())
+    }
+
+    fun registerAscent(y: Int, height: Int?, source: TitleFontSource) {
         registry?.register(y, height, source)
     }
 }

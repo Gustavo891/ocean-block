@@ -8,9 +8,11 @@ package one_block.textura.registry
  * qualquer fonte: o ascent efetivo do provider principal.
  */
 data class TitleFontSource(
-    val path: String = TitleFontRegistry.DEFAULT_SOURCE,
-    val baseAscent: Int = TitleFontRegistry.BASE_ASCENT,
+    val path: String,
+    val baseAscent: Int,
 ) {
+
+    constructor() : this(TitleFontRegistry.DEFAULT_SOURCE, TitleFontRegistry.BASE_ASCENT)
 
     val slug: String get() = path.substringAfterLast('/').substringBeforeLast('.')
 

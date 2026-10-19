@@ -19,8 +19,9 @@ class TitleBuilder(private val titleFontRegistry: TitleFontRegistry) {
      * de ascent [y]. [height] é a altura final dos glyphs — 8 é o tamanho padrão do
      * Minecraft, valores menores encolhem o texto proporcionalmente.
      */
-    @JvmOverloads
-    fun addText(text: String, x: Int, y: Int, height: Int = TitleFontRegistry.BASE_HEIGHT): TitleBuilder {
+    fun addText(text: String, x: Int, y: Int): TitleBuilder = addText(text, x, y, TitleFontRegistry.BASE_HEIGHT)
+
+    fun addText(text: String, x: Int, y: Int, height: Int): TitleBuilder {
         titleFontRegistry.register(y, height)
 
         val offsetX = x - currentX
@@ -51,15 +52,20 @@ class TitleBuilder(private val titleFontRegistry: TitleFontRegistry) {
      * Minecraft aplica é `arredonda(opacos * height / alturaDaCelula) + 1` — é dele
      * que [charWidth] tem que sair.
      */
-    @JvmOverloads
+    fun addText(text: String, x: Int, y: Int, source: TitleFontSource, charWidth: Int): TitleBuilder =
+        addText(text, x, y, source, charWidth, 0, null)
+
+    fun addText(text: String, x: Int, y: Int, source: TitleFontSource, charWidth: Int, letterSpacing: Int): TitleBuilder =
+        addText(text, x, y, source, charWidth, letterSpacing, null)
+
     fun addText(
         text: String,
         x: Int,
         y: Int,
         source: TitleFontSource,
         charWidth: Int,
-        letterSpacing: Int = 0,
-        height: Int? = null,
+        letterSpacing: Int,
+        height: Int?,
     ): TitleBuilder {
         if (text.isEmpty()) return this
 

@@ -12,8 +12,16 @@ class DialogClick internal constructor(val player: Player) {
         outcome = UiOutcome.Close
     }
 
-    fun open(screenId: String, values: Map<String, String> = emptyMap(), binds: DialogBinds.() -> Unit = {}) {
-        outcome = UiOutcome.Open(screenId, DialogBinds().apply(binds), values)
+    fun open(screenId: String) {
+        open(screenId, emptyMap()) {}
+    }
+
+    fun open(screenId: String, binds: DialogBindsConfig) {
+        open(screenId, emptyMap(), binds)
+    }
+
+    fun open(screenId: String, values: Map<String, String>, binds: DialogBindsConfig) {
+        outcome = UiOutcome.Open(screenId, DialogBinds().also(binds::configure), values)
     }
 
     fun page(id: String) {

@@ -65,7 +65,9 @@ object BlockApi {
         return Material.matchMaterial(definition.itemMaterial)
     }
 
-    fun createItem(id: String, amount: Int = 1): ItemStack? {
+    fun createItem(id: String): ItemStack? = createItem(id, 1)
+
+    fun createItem(id: String, amount: Int): ItemStack? {
         val definition = get(id) ?: return null
 
         if (definition.type == BlockEntryType.OVERRIDE) {

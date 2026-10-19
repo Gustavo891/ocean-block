@@ -13,19 +13,23 @@ object DialogApi {
         this.opener = opener
     }
 
-    fun open(
-        player: Player,
-        screenId: String,
-        values: Map<String, String> = emptyMap(),
-        binds: DialogBinds.() -> Unit = {},
-    ): Boolean = openResult(player, screenId, values, binds) == DialogOpenResult.Shown
+    fun open(player: Player, screenId: String): Boolean =
+        openResult(player, screenId) == DialogOpenResult.Shown
 
-    fun openResult(
-        player: Player,
-        screenId: String,
-        values: Map<String, String> = emptyMap(),
-        binds: DialogBinds.() -> Unit = {},
-    ): DialogOpenResult = opener?.open(player, screenId, values, DialogBinds().apply(binds)) ?: DialogOpenResult.Failed
+    fun open(player: Player, screenId: String, binds: DialogBindsConfig): Boolean =
+        openResult(player, screenId, binds) == DialogOpenResult.Shown
+
+    fun open(player: Player, screenId: String, values: Map<String, String>, binds: DialogBindsConfig): Boolean =
+        openResult(player, screenId, values, binds) == DialogOpenResult.Shown
+
+    fun openResult(player: Player, screenId: String): DialogOpenResult =
+        openResult(player, screenId, emptyMap()) {}
+
+    fun openResult(player: Player, screenId: String, binds: DialogBindsConfig): DialogOpenResult =
+        openResult(player, screenId, emptyMap(), binds)
+
+    fun openResult(player: Player, screenId: String, values: Map<String, String>, binds: DialogBindsConfig): DialogOpenResult =
+        opener?.open(player, screenId, values, DialogBinds().also(binds::configure)) ?: DialogOpenResult.Failed
 
     fun registerItemIcons(materials: Collection<String>) {
         DynamicItemIcons.register(materials)

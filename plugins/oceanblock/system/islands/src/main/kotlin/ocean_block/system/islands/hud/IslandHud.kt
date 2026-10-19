@@ -30,7 +30,7 @@ object IslandHud {
     }
 
     private fun contentFor(island: Island): HudContent =
-        HudContent(text = "<white>Ilha <dark_gray>• <gray>${island.size}x${island.size}", progress = 1f)
+        HudContent("<white>Ilha <dark_gray>• <gray>${island.size}x${island.size}")
 
     private fun viewersOf(island: Island): List<Player> =
         IslandManager.playerIsland

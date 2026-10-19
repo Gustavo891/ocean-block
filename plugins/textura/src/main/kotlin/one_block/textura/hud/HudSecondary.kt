@@ -1,8 +1,5 @@
 package one_block.textura.hud
 
-/** Lado da HUD principal em que a HUD secundária é desenhada. */
-enum class HudSide { LEFT, RIGHT }
-
 /**
  * HUD menor desenhada na *mesma* bossbar da principal, colada ao lado dela.
  *
@@ -12,11 +9,12 @@ enum class HudSide { LEFT, RIGHT }
  */
 data class HudSecondary(
     val text: String,
-    val side: HudSide = HudSide.RIGHT,
-    val gap: Int = DEFAULT_GAP,
+    val side: HudSide,
+    val gap: Int,
 ) {
-    companion object {
-        /** Espaço em pixels entre a borda da HUD principal e a secundária. */
-        const val DEFAULT_GAP = 6
-    }
+    constructor(text: String) : this(text, HudSide.RIGHT)
+
+    constructor(text: String, side: HudSide) : this(text, side, DEFAULT_GAP)
 }
+
+private const val DEFAULT_GAP = 6

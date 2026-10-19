@@ -29,7 +29,7 @@ object HudApi {
 
     /** Atalho de [show] para o caso comum de só texto + alinhamento. */
     fun show(player: Player, slot: String, text: String) {
-        manager?.show(player, slot, HudContent(text = text))
+        manager?.show(player, slot, HudContent(text))
     }
 
     /** Atualiza a HUD do [slot] se existir; caso contrário, no-op. */
@@ -48,8 +48,12 @@ object HudApi {
     }
 
     /** Atalho de [showSecondary] para o caso comum de só texto + lado. */
-    fun showSecondary(player: Player, slot: String, text: String, side: HudSide = HudSide.RIGHT) {
-        manager?.showSecondary(player, slot, HudSecondary(text = text, side = side))
+    fun showSecondary(player: Player, slot: String, text: String) {
+        showSecondary(player, slot, text, HudSide.RIGHT)
+    }
+
+    fun showSecondary(player: Player, slot: String, text: String, side: HudSide) {
+        manager?.showSecondary(player, slot, HudSecondary(text, side))
     }
 
     /** Remove a HUD secundária do [slot], mantendo a principal. */
