@@ -25,6 +25,13 @@ class SlotContentTest : StringSpec({
         SlotContent.resolve(DefSlotItem(0, "stone", "{faltando}", null, emptyList()), ::expand)?.count shouldBe 1
     }
 
+    "count acima de 99 e limitado a 99" {
+        val big = mapOf("muito" to "500")
+
+        SlotContent.resolve(DefSlotItem(0, "stone", "{muito}", null, emptyList())) { text -> big[text.trim('{', '}')] ?: text }?.count shouldBe 99
+        SlotContent.resolve(DefSlotItem(0, "stone", "99", null, emptyList()), ::expand)?.count shouldBe 99
+    }
+
     "item vazio ou sem valor deixa o slot vazio" {
         SlotContent.resolve(DefSlotItem(0, "{vazio}", "1", null, emptyList()), ::expand) shouldBe null
         SlotContent.resolve(DefSlotItem(0, "{faltando}", "1", null, emptyList()), ::expand) shouldBe null

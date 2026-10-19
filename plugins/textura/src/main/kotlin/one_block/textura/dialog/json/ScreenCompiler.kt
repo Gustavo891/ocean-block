@@ -462,7 +462,11 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
 
         private fun icon(id: String): String = resolveIcon(theme, id)
 
-        private fun labelIcon(id: String): IconNode? = icon(id).takeIf(kit::has)?.let { IconNode(it, theme.iconSize) }
+        private fun labelIcon(raw: String): IconNode? {
+            val id = placeholders.plain(raw).trim()
+            if (id.isEmpty() || PLACEHOLDER_MARK in id) return null
+            return icon(id).takeIf(kit::has)?.let { IconNode(it, theme.iconSize) }
+        }
 
         private fun labelParts(iconId: String?, text: TextNode): Array<UiNode?> {
             val iconNode = iconId?.let(::labelIcon) ?: return arrayOf(null, text)
@@ -506,6 +510,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         const val DEFAULT_SLOT_SIZE = 18
         const val STUDIO_WIDTH = 388
         private const val SLOT_BORDER = 2
+        private const val PLACEHOLDER_MARK = '{'
         private const val ICON_RISE = 1
         private const val BARE_SUFFIX = "-bare"
         private const val PAIR_LABEL_STYLE = "muted"

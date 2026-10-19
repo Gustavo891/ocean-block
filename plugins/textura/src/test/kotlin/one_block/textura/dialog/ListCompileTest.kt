@@ -10,6 +10,7 @@ import one_block.textura.dialog.json.ScreenCompiler
 import one_block.textura.dialog.kit.SurfaceHeight
 import one_block.textura.dialog.kit.IconSize
 import one_block.textura.dialog.kit.UiUsage
+import one_block.textura.dialog.layout.ImageVariant
 import one_block.textura.dialog.layout.LaidOut
 import one_block.textura.dialog.layout.UiLayout
 
@@ -105,6 +106,56 @@ class ListCompileTest : StringSpec({
         navs[1].run(DialogFixtures.player())
 
         run.session.value("escolhida") shouldBe "coleta"
+    }
+
+    "icone de nav, chip, botao e texto resolve o campo da entrada" {
+        val definition = DialogFixtures.parse(
+            """
+            {"theme": "stone", "column": [
+              {"repeat": "categorias", "column": [
+                {"nav": "{nome}", "icon": "{icone}"},
+                {"chip": "{nome}", "icon": "{icone}_chip"},
+                {"button": "{nome}", "icon": "{icone}_botao"},
+                {"text": "{nome}", "icon": "{icone}_texto"}
+              ]},
+              {"nav": "Sem valor", "icon": "{inexistente}"}
+            ]}
+            """.trimIndent(),
+        ).first!!
+        val binds = DialogBinds().apply {
+            list("categorias") { listOf(mapOf("nome" to "Ferramentas", "icone" to "ui:pickaxe"), mapOf("nome" to "Coleta", "icone" to "ui:chest")) }
+        }
+        val session = DialogSession(definition.id, binds)
+        val screen = ScreenCompiler(DialogFixtures.kit) { }.compile(definition, DialogFixtures.theme, session)
+        val icons = UiLayout(DialogFixtures.kit).layout(screen).images
+            .filter { it.variant is ImageVariant.Icon }
+            .map { it.id }
+
+        icons shouldContainExactly listOf(
+            "ui:pickaxe", "ui:pickaxe_chip", "ui:pickaxe_botao", "ui:pickaxe_texto",
+            "ui:chest", "ui:chest_chip", "ui:chest_botao", "ui:chest_texto",
+        )
+    }
+
+    "gerar assa os aliases do tema e os itens registrados quando o icone tem placeholder" {
+        val theme = DialogFixtures.theme.copy(icons = mapOf("pickaxe" to "ui:stone/icons/pickaxe", "dot" to "online_status"))
+        val kit = DialogFixtures.kit { !it.startsWith("ui:") || it.startsWith("ui:stone/") }
+        val dynamic = DialogFixtures.parse(
+            """{"theme": "stone", "column": [{"repeat": "categorias", "perPage": 2, "nav": "{nome}", "icon": "{icone}"}]}""",
+        ).first!!
+        val fixed = DialogFixtures.parse(
+            """{"theme": "stone", "column": [{"nav": "Fixo", "icon": "ui:pickaxe"}]}""",
+            id = "fixa",
+        ).first!!
+        val expected = listOf(
+            IconSize("ui:stone/icons/pickaxe", 8),
+            IconSize("glyph:online_status", 8),
+            IconSize("item:fishing_rod", 8),
+        )
+
+        UiUsage.collect(listOf(dynamic), mapOf("stone" to theme), kit, setOf("fishing_rod")) { }.icons shouldContainAll expected
+        UiUsage.collect(listOf(fixed), mapOf("stone" to theme), kit, setOf("fishing_rod")) { }.icons shouldBe
+            setOf(IconSize("ui:stone/icons/pickaxe", 8))
     }
 
     "gerar compila toda contagem de 0 a perPage e assa cada altura" {

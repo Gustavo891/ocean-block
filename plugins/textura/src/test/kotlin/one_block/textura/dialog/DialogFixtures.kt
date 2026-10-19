@@ -28,8 +28,10 @@ import java.util.logging.Logger
 
 object DialogFixtures {
 
-    val kit: UiKit = object : UiKit {
-        override fun has(id: String): Boolean = true
+    val kit: UiKit = kit { it.isNotBlank() && !it.contains('{') }
+
+    fun kit(known: (String) -> Boolean): UiKit = object : UiKit {
+        override fun has(id: String): Boolean = known(id)
         override fun image(id: String): UiImage = UiImage("x", 10, 10, 10)
         override fun surface(size: SurfaceSize): UiImage? = null
         override fun icon(size: IconSize): UiImage? = null

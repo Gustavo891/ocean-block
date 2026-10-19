@@ -299,8 +299,12 @@ class ScreenParser(private val logger: Logger) {
         private fun perPage(obj: JsonObject, path: String): Int? {
             val element = obj.get(PER_PAGE) ?: return null
             val value = element.takeIf { it.isJsonPrimitive && it.asJsonPrimitive.isNumber }?.asInt?.takeIf { it > 0 }
-            if (value == null) warn(path, "'$PER_PAGE' deveria ser um número maior que 0; a lista aparece inteira")
-            return value
+            if (value == null) {
+                warn(path, "'$PER_PAGE' deveria ser um número maior que 0; a lista aparece inteira")
+                return null
+            }
+            if (value > MAX_PER_PAGE) warn(path, "'$PER_PAGE' $value passa de $MAX_PER_PAGE, usando $MAX_PER_PAGE")
+            return value.coerceAtMost(MAX_PER_PAGE)
         }
 
         private fun flag(obj: JsonObject, key: String, path: String): DefFlag {
@@ -584,6 +588,7 @@ class ScreenParser(private val logger: Logger) {
         const val MAX_SLOT_ROWS = 14
         const val REPEAT = "repeat"
         const val PER_PAGE = "perPage"
+        const val MAX_PER_PAGE = 64
         private const val DEFAULT_COUNT = "1"
         val PLACEHOLDER = Regex("""\{([A-Za-z0-9_.-]+)""")
 

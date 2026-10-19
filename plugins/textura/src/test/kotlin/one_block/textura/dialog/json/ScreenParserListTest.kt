@@ -43,6 +43,15 @@ class ScreenParserListTest : StringSpec({
         warnings.single() shouldContain "perPage"
     }
 
+    "perPage acima de 64 e limitado com aviso" {
+        val (definition, warnings) = DialogFixtures.parse(
+            """{"theme": "stone", "column": [{"repeat": "l", "text": "a", "perPage": 500}]}""",
+        )
+
+        definition!!.root.children.single().shouldBeInstanceOf<DefRepeat>().perPage shouldBe 64
+        warnings.single() shouldContain "64"
+    }
+
     "disabled e selected aceitam placeholder e booleano" {
         val (definition, warnings) = DialogFixtures.parse(
             """

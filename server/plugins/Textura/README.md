@@ -365,6 +365,18 @@ por `{campo}` precisam ser registrados pelo código antes do gerar, senão o
 DialogApi.registerItemIcons(listOf("fishing_rod", "cobweb"))
 ```
 
+`icon` de `nav`, `chip`, `button` e `text` também aceita `{campo}` (ex.: cada
+categoria com `"icone": "ui:pickaxe"`). Como o gerar não sabe o valor, uma tela
+com ícone por placeholder assa, no `icon-size` do tema, **todos os aliases de
+`icons:` do tema** (`ui:<alias>`) e os itens de `registerItemIcons`
+(`item:<material>`). Por isso o valor do campo precisa ser um desses: um
+`ui:<caminho>` que não seja alias, ou um glyph solto, fica sem ícone. Valor vazio
+ou sem resolver também não desenha ícone. O nó `{"icon": ...}` não aceita
+placeholder.
+
+Limites: `perPage` acima de 64 vira 64 (com aviso); `count` de slot fica entre
+1 e 99.
+
 ## `config.yml`
 
 `ui.fonte-texto` é o JSON (em `configs/fonts/`) cujos providers viram a fonte do
