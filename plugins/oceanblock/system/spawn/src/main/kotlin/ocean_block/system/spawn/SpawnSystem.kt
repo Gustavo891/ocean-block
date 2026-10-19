@@ -9,7 +9,6 @@ import ocean_block.system.spawn.hologram.SpawnHolograms
 import ocean_block.system.spawn.listener.NpcListener
 import ocean_block.system.spawn.listener.NpcModelListener
 import ocean_block.system.spawn.listener.PortalListener
-import ocean_block.system.spawn.listener.SpawnHudListener
 import ocean_block.system.spawn.listener.SpawnProtectionListener
 import ocean_block.system.spawn.npc.NpcManager
 import ocean_block.system.spawn.npc.NpcModel
@@ -55,7 +54,6 @@ object SpawnSystem {
     }
 
     private fun setupListeners(plugin: JavaPlugin) = with(plugin.server.pluginManager) {
-        registerEvents(SpawnHudListener(), plugin)
         registerEvents(SpawnProtectionListener(), plugin)
         registerEvents(NpcListener(), plugin)
         registerEvents(PortalListener(), plugin)

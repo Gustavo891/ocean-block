@@ -1,6 +1,5 @@
 package ocean_block.system.islands.reset
 
-import ocean_block.system.islands.hud.IslandHud
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
@@ -115,7 +114,6 @@ object IslandResetService {
 
         Bukkit.getPlayer(island.ownerUuid)?.let { island.onJoin(it) }
 
-        IslandHud.refresh(island)
         island.markDirty()
 
         sender.sendRichMessage("<green>Progresso de <white>${island.ownerName}</white> resetado.")

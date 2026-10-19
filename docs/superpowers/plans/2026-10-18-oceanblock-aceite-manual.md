@@ -15,10 +15,10 @@ Verificações que precisam de jogador no jogo; os agentes não conseguiram roda
 - [ ] Morrer e renascer: volta em cima da ilha no centro, não dentro do tronco da árvore.
 - [ ] Renomear `island.schem` temporariamente e criar ilha com outro jogador novo: 3×3 de grama sobre terra (grama em Y 63, terra em Y 62), jogador em pé na grama + log `[ilha]` severe. Voltar o nome.
 - [ ] Quebrar o bloco central: dropa normalmente, não regenera, nenhum mob nasce.
-- [ ] HUD mostra `Ilha • 30x30`; depois de um upgrade de borda mostra `Ilha • 50x50` na hora.
+- [ ] Não existe mais HUD "Ilha • NxN" no topo da tela.
 - [ ] Scoreboard com título `OCEAN BLOCK` e nenhum `%placeholder%` cru.
 - [ ] `/ilha`, `/island` e `/is` abrem o comando; `/raft`, `/balsa`, `/is phases` e `/is setphase` não existem mais.
-- [ ] Mensagens, menus, HUD e scoreboard dizem "ilha" com concordância certa ("sua ilha", "Sua ilha:").
+- [ ] Mensagens, menus e scoreboard dizem "ilha" com concordância certa ("sua ilha", "Sua ilha:").
 
 ## 4. Construção e membros
 - [ ] Construir para fora a partir da borda da ilha com terra, pedregulho e tábua; fora da borda é bloqueado.
@@ -60,7 +60,7 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Detritos nunca forçam o carregamento de chunks: com a distância de renderização baixa (ex.: `view-distance=2`), podem nascer menos detritos.
 
 ### Coleta
-- [ ] Lançar a linha do gancho perto de um detrito e recolher: o detrito desliza até o jogador em ~0,5 s, com som, respingo e action bar `+N item`.
+- [ ] Lançar a linha do gancho perto de um detrito e recolher: o detrito desliza até o jogador em ~0,5 s, com som, respingo e a notificação `+N item` (ícone do item) na lista à direita, abaixo da scoreboard.
 - [ ] Nadar até um detrito (a menos de 1,5 bloco) coleta na hora; na beira da ilha também.
 - [ ] Barril dá loot variado (pão, linha, alga, muda, bacalhau etc.) e nunca vem vazio (pior caso: 1 linha).
 - [ ] Com inventário cheio, o que não cabe cai aos pés do jogador.
@@ -127,3 +127,13 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 ### Bancada
 - [ ] A bancada de trabalho não faz mais o gancho nem a rede com tábua e linha em nenhum formato.
 - [ ] Sem erros `[receitas]` ou `[ui:receitas]` no log durante toda a sessão.
+
+## 9. Notificações
+Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as notificações).
+- [ ] Puxar detritos seguidos: cada item aparece numa linha à direita, abaixo da scoreboard, com ícone, `+N` em verde e o nome do item; coletar o mesmo item de novo enquanto a linha está na tela vira `+2`, `+3`... na mesma linha.
+- [ ] Itens diferentes empilham para baixo, no máximo 6 linhas; a mais antiga sai quando chega a 7ª; cada linha some ~3 s depois da última coleta daquele item.
+- [ ] Encher uma Rede de Detritos: aparece no topo esquerdo `Sua Rede de Detritos ficou cheia!` com o ícone do tear, por ~5 s, para o dono e membros online; não repete enquanto a rede continuar cheia; tirar itens e encher de novo avisa outra vez.
+- [ ] As duas regiões aparecem ao mesmo tempo sem se sobrepor.
+- [ ] Trocar a escala de GUI (1, 2, 3, 4, Auto) e redimensionar a janela: as notificações continuam encostadas nos cantos certos.
+- [ ] Com a barra do battle pass ativa, as notificações continuam no lugar certo e nenhuma barra fica pulando.
+- [ ] Textos normais (chat, títulos, nomes) não mudam de lugar nem de cor.

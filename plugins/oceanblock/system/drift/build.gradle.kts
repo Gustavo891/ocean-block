@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(projects.lib.actionbar)
+    compileOnly(projects.plugins.textura)
     compileOnly(projects.lib.coordinate)
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.instance)

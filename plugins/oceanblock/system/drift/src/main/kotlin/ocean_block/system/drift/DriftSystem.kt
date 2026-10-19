@@ -4,6 +4,7 @@ import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.libs.instance.Instance
 import ocean_block.system.custom_items.block.CustomBlockRegistry
 import ocean_block.system.custom_items.item.CustomItemRegistry
+import ocean_block.system.drift.collect.CollectNotifier
 import ocean_block.system.drift.config.DriftConfig
 import ocean_block.system.drift.config.DriftFile
 import ocean_block.system.drift.debris.DebrisManager
@@ -11,9 +12,11 @@ import ocean_block.system.drift.hook.FirstJoinListener
 import ocean_block.system.drift.hook.GanchoItem
 import ocean_block.system.drift.loot.ConfigDebrisPool
 import ocean_block.system.drift.net.NetBlock
+import ocean_block.system.drift.net.NetFullNotifier
 import ocean_block.system.drift.net.NetListener
 import ocean_block.system.drift.net.view.NetStorageView
 import ocean_block.system.drift.recipe.DriftRecipes
+import one_block.textura.api.NotificationApi
 import org.bukkit.plugin.java.JavaPlugin
 
 object DriftSystem {
@@ -32,10 +35,18 @@ object DriftSystem {
             .getOrNull()
 
         config?.let { DebrisManager.start(it, ConfigDebrisPool(it.types)) }
+        registerNotifications(plugin)
     }
 
     fun onDisable() {
         DebrisManager.stop()
+    }
+
+    private fun registerNotifications(plugin: JavaPlugin) {
+        plugin.server.pluginManager.registerEvents(CollectNotifier, plugin)
+        val materials = config?.types.orEmpty().flatMap { type -> type.drops.map { it.material } }.toSet()
+        val icons = materials.map { CollectNotifier.iconOf(it).removePrefix("item:") } + NetFullNotifier.ICON.removePrefix("item:")
+        NotificationApi.registerItemIcons(icons.distinct())
     }
 
     private fun registerNet(plugin: JavaPlugin, viewFrame: ViewFrame) {

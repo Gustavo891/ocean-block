@@ -1,7 +1,6 @@
 package ocean_block.system.islands.island
 
 import ocean_block.libs.coordinate.SimpleLocation
-import ocean_block.system.islands.hud.IslandHud
 import ocean_block.system.islands.phase.Phase
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.position.Position
@@ -38,7 +37,6 @@ data class Island(
 
     fun onJoin(player: Player) {
         refreshWorldBorder()?.let { player.worldBorder = it }
-        IslandHud.show(player, this)
     }
 
     fun getCurrentPhase(): Phase? {
@@ -132,7 +130,6 @@ data class Island(
         setUpgradeLevel(IslandUpgrade.Size, newLevel)
         size = BORDER_SIZE[newLevel]
         refreshWorldBorder()
-        IslandHud.refresh(this)
     }
 
     fun getIslandOnlinePlayers(): List<Player> = Bukkit.getOnlinePlayers()
