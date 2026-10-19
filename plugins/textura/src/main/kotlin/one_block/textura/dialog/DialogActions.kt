@@ -11,8 +11,14 @@ import org.bukkit.entity.Player
 
 object DialogActions {
 
-    fun run(steps: List<DefStep>, player: Player, session: DialogSession, warn: (String) -> Unit): UiOutcome {
-        val placeholders = Placeholders(session)
+    fun run(
+        steps: List<DefStep>,
+        player: Player,
+        session: DialogSession,
+        warn: (String) -> Unit,
+        scope: Map<String, String> = emptyMap(),
+    ): UiOutcome {
+        val placeholders = Placeholders(session, scope)
         for (step in steps) {
             when (step) {
                 is DefStep.Set -> step.pairs.forEach { (key, value) -> session.set(key, placeholders.plain(value)) }

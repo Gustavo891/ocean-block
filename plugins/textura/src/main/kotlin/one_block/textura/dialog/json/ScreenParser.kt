@@ -84,7 +84,12 @@ class ScreenParser(private val logger: Logger) {
     private fun controls(containers: List<DefContainer>): List<DefNode> {
         val nodes = mutableListOf<DefNode>()
         fun walk(node: DefNode) {
-            if (node is DefContainer) node.children.forEach(::walk) else nodes += node
+            when (node) {
+                is DefContainer -> node.children.forEach(::walk)
+                is DefRepeat -> walk(node.node)
+                is DefScoped -> walk(node.node)
+                else -> nodes += node
+            }
         }
         containers.forEach(::walk)
         return nodes
@@ -131,6 +136,9 @@ class ScreenParser(private val logger: Logger) {
         fun placeholders(text: String?) {
             if (text != null) PLACEHOLDER.findAll(text).forEach { keys += it.groupValues[1] }
         }
+        fun flag(flag: DefFlag) {
+            if (flag is DefFlag.Bound) placeholders(flag.raw)
+        }
         fun steps(click: DefClick?) {
             click?.steps?.forEach { step ->
                 when (step) {
@@ -169,12 +177,27 @@ class ScreenParser(private val logger: Logger) {
                     node.bind?.let(keys::add)
                     placeholders(node.label)
                     placeholders(node.tooltip)
+                    flag(node.selected)
+                    flag(node.disabled)
                     steps(node.click)
                 }
                 is DefNav -> {
+                    node.bind?.let(keys::add)
                     placeholders(node.label)
                     placeholders(node.tooltip)
+                    flag(node.selected)
                     steps(node.click)
+                }
+                is DefRepeat -> {
+                    keys += node.list
+                    walk(node.node)
+                }
+                is DefScoped -> walk(node.node)
+                is DefSlots -> node.items.forEach { item ->
+                    placeholders(item.item)
+                    placeholders(item.count)
+                    placeholders(item.name)
+                    item.lore.forEach(::placeholders)
                 }
                 is DefIcon -> node.bind?.let(keys::add)
                 is DefChip -> {
@@ -185,7 +208,7 @@ class ScreenParser(private val logger: Logger) {
                     placeholders(node.label)
                     placeholders(node.value)
                 }
-                is DefSpace, is DefImage, is DefSlots -> Unit
+                is DefSpace, is DefImage -> Unit
             }
         }
         containers.forEach(::walk)
@@ -204,6 +227,8 @@ class ScreenParser(private val logger: Logger) {
         fun walk(node: DefNode) {
             when (node) {
                 is DefContainer -> node.children.forEach(::walk)
+                is DefRepeat -> walk(node.node)
+                is DefScoped -> walk(node.node)
                 is DefSwitch -> node.bind?.let(binds::add)
                 is DefSegmented -> node.bind?.let(binds::add)
                 is DefDropdown -> node.bind?.let(binds::add)
@@ -242,11 +267,11 @@ class ScreenParser(private val logger: Logger) {
                 "button" -> DefButton(
                     singleLine(obj.string("button").orEmpty(), path), obj.string("bind"), size(obj, "w", path),
                     obj.string("icon"), obj.string("tooltip"), path, click(obj, path),
-                    obj.string("look"), obj.bool("selected", path), obj.bool("disabled", path),
+                    obj.string("look"), flag(obj, "selected", path), flag(obj, "disabled", path),
                 )
                 "nav" -> DefNav(
                     singleLine(obj.string("nav").orEmpty(), path), obj.string("icon"), size(obj, "w", path), click(obj, path), path,
-                    obj.bool("selected", path), obj.string("tooltip"),
+                    flag(obj, "selected", path), obj.string("tooltip"), obj.string("bind"),
                 )
                 "slots" -> slots(obj, path)
                 "chip" -> DefChip(singleLine(obj.string("chip").orEmpty(), path), obj.string("icon"), obj.string("tooltip"), path)
@@ -258,7 +283,34 @@ class ScreenParser(private val logger: Logger) {
 
             val allowed = KNOWN.getValue(shape) + COMMON + IGNORED + if (root) ROOT else emptySet()
             obj.keySet().filterNot { it in allowed }.forEach { warn(path, "chave desconhecida '$it'") }
-            return node
+            return repeated(obj, node, path, root)
+        }
+
+        private fun repeated(obj: JsonObject, node: DefNode, path: String, root: Boolean): DefNode {
+            val element = obj.get(REPEAT) ?: return node
+            val list = element.takeIf { it.isJsonPrimitive && it.asJsonPrimitive.isString }?.asString?.takeIf { it.isNotBlank() }
+            return when {
+                list == null -> node.also { warn(path, "'$REPEAT' deveria ser o nome de uma lista") }
+                root -> node.also { warn(path, "'$REPEAT' no nó raiz é ignorado") }
+                else -> DefRepeat(list, perPage(obj, path), node, path)
+            }
+        }
+
+        private fun perPage(obj: JsonObject, path: String): Int? {
+            val element = obj.get(PER_PAGE) ?: return null
+            val value = element.takeIf { it.isJsonPrimitive && it.asJsonPrimitive.isNumber }?.asInt?.takeIf { it > 0 }
+            if (value == null) warn(path, "'$PER_PAGE' deveria ser um número maior que 0; a lista aparece inteira")
+            return value
+        }
+
+        private fun flag(obj: JsonObject, key: String, path: String): DefFlag {
+            val element = obj.get(key) ?: return DefFlag.OFF
+            val primitive = element.takeIf { it.isJsonPrimitive }?.asJsonPrimitive ?: run {
+                warn(path, "'$key' deveria ser true, false ou um {placeholder}")
+                return DefFlag.OFF
+            }
+            if (primitive.isString && PLACEHOLDER.containsMatchIn(primitive.asString)) return DefFlag.Bound(primitive.asString)
+            return DefFlag.Fixed(primitive.asBoolean)
         }
 
         private fun container(obj: JsonObject, kind: ContainerKind, key: String, path: String): DefContainer {
@@ -365,7 +417,7 @@ class ScreenParser(private val logger: Logger) {
             val items = (obj.get("items")?.takeIf { it.isJsonArray }?.asJsonArray ?: JsonArray()).mapIndexedNotNull { index, element ->
                 val item = element.takeIf { it.isJsonObject }?.asJsonObject ?: return@mapIndexedNotNull null
                 val at = item.int("at", index, path)
-                val material = item.string("item")?.removePrefix("minecraft:")?.lowercase()
+                val material = item.string("item")
                 when {
                     material.isNullOrBlank() -> {
                         warn(path, "item #$index sem 'item'")
@@ -375,10 +427,30 @@ class ScreenParser(private val logger: Logger) {
                         warn(path, "item '$material' em 'at' $at fora da grade ${columns}x$rows")
                         null
                     }
-                    else -> DefSlotItem(at, material, item.int("count", 1, path).coerceAtLeast(1))
+                    else -> DefSlotItem(at, material, count(item, path), item.string("name"), lore(item, path))
                 }
             }
             return DefSlots(columns, rows, items, align(obj, "align", path), path)
+        }
+
+        private fun count(item: JsonObject, path: String): String {
+            val primitive = item.get("count")?.takeIf { it.isJsonPrimitive }?.asJsonPrimitive ?: return DEFAULT_COUNT
+            val raw = primitive.asString.trim()
+            if (PLACEHOLDER.containsMatchIn(raw)) return raw
+            val value = raw.toIntOrNull() ?: run {
+                warn(path, "'count' '$raw' deveria ser número ou {placeholder}, usando 1")
+                return DEFAULT_COUNT
+            }
+            return value.coerceAtLeast(1).toString()
+        }
+
+        private fun lore(item: JsonObject, path: String): List<String> {
+            val element = item.get("lore") ?: return emptyList()
+            return when {
+                element.isJsonArray -> element.asJsonArray.mapNotNull { line -> line.takeIf { it.isJsonPrimitive }?.asString }
+                element.isJsonPrimitive -> element.asString.split('\n')
+                else -> emptyList<String>().also { warn(path, "'lore' deveria ser uma lista de textos") }
+            }
         }
 
         private fun click(obj: JsonObject, path: String): DefClick? {
@@ -510,6 +582,9 @@ class ScreenParser(private val logger: Logger) {
         const val MAX_ICON_SIZE = 256
         const val MAX_SLOT_COLUMNS = 21
         const val MAX_SLOT_ROWS = 14
+        const val REPEAT = "repeat"
+        const val PER_PAGE = "perPage"
+        private const val DEFAULT_COUNT = "1"
         val PLACEHOLDER = Regex("""\{([A-Za-z0-9_.-]+)""")
 
         private val CONTAINERS = linkedMapOf(
@@ -519,7 +594,7 @@ class ScreenParser(private val logger: Logger) {
             "grid" to ContainerKind.Grid,
         )
         private val LEAVES = listOf("text", "button", "nav", "dropdown", "slider", "segmented", "switch", "chip", "pair", "slots", "image", "icon", "space")
-        private val COMMON = setOf("name")
+        private val COMMON = setOf("name", REPEAT)
         private val ROOT = setOf("theme", "title", "close")
         private val WRAPPER = setOf("title", "theme", "document", "pages", "hideFooter", "canCloseWithEscape", "pause", "close")
         private val IGNORED = setOf(
@@ -538,7 +613,7 @@ class ScreenParser(private val logger: Logger) {
             "button" to setOf("button", "bind", "w", "icon", "tooltip", "onClick", "look", "selected", "disabled"),
             "chip" to setOf("chip", "icon", "tooltip"),
             "pair" to setOf("pair", "style", "w"),
-            "nav" to setOf("nav", "icon", "w", "onClick", "selected", "tooltip"),
+            "nav" to setOf("nav", "icon", "w", "onClick", "selected", "tooltip", "bind"),
             "slots" to setOf("slots", "items", "align"),
             "dropdown" to setOf("dropdown", "options", "bind", "w", "tooltip"),
             "slider" to setOf("slider", "min", "max", "step", "unit", "bind", "w", "tooltip"),

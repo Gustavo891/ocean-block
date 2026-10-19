@@ -60,4 +60,15 @@ class DialogSession(
         handler(click)
         return click.outcome
     }
+
+    fun press(key: String, index: Int, player: Player): UiOutcome {
+        val handler = binds.listButtons[key] ?: return press(key, player)
+        val click = DialogClick(player)
+        handler(click, index)
+        return click.outcome
+    }
+
+    fun entries(list: String): List<Map<String, String>> = binds.lists[list]?.invoke().orEmpty()
+
+    fun listPage(list: String): Int = binds.listPages[list]?.invoke() ?: 0
 }

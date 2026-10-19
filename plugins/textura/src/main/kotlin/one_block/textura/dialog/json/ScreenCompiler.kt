@@ -4,7 +4,9 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.JoinConfiguration
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.event.HoverEventSource
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import one_block.textura.dialog.DialogActions
 import one_block.textura.dialog.DialogSession
 import one_block.textura.dialog.DialogValues
@@ -30,6 +32,7 @@ import one_block.textura.dialog.theme.UiTheme
 import one_block.textura.dialog.theme.UiTextStyle
 import one_block.textura.dialog.text.Placeholders
 import org.bukkit.Material
+import org.bukkit.entity.Player
 
 class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit) {
 
@@ -37,7 +40,8 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
     private val layout = UiLayout(kit)
 
     fun compile(definition: ScreenDefinition, theme: UiTheme, session: DialogSession): UiScreen {
-        val built = Context(theme, session).container(definition.page(session.page))
+        val expanded = ListExpander(session::entries, session::listPage).expand(definition.page(session.page))
+        val built = Context(theme, session).container(expanded)
         val stretched = built.w == UiSize.Fit && built.kind == ContainerKind.Row && built.children.any { it.w == UiSize.Grow }
         val compiled = if (stretched) built.copy(w = UiSize.Px(STUDIO_WIDTH)) else built
         val wanted = when (val w = compiled.w) {
@@ -54,6 +58,10 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
     fun title(definition: ScreenDefinition, session: DialogSession): Component? =
         definition.title?.let { Placeholders(session).rich(it) }
 
+    fun slotIconSize(theme: UiTheme): Int = slotSize(theme) - SLOT_BORDER
+
+    private fun slotSize(theme: UiTheme): Int = kit.image(theme.slots.art)?.height?.takeIf { it > SLOT_BORDER } ?: DEFAULT_SLOT_SIZE
+
     fun resolveIcon(theme: UiTheme, id: String): String {
         if (!id.startsWith(UiArtCatalog.UI_PREFIX) || kit.has(id)) return id
         val name = id.removePrefix(UiArtCatalog.UI_PREFIX)
@@ -63,8 +71,9 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
 
     private inner class Context(private val theme: UiTheme, private val session: DialogSession) {
 
-        private val placeholders = Placeholders(session)
+        private var scope: DefScoped? = null
         private var onSurface = false
+        private val placeholders: Placeholders get() = Placeholders(session, scope?.values.orEmpty())
 
         fun node(def: DefNode): UiNode = when (def) {
             is DefContainer -> container(def)
@@ -81,19 +90,47 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             is DefSlots -> slots(def)
             is DefChip -> chip(def)
             is DefPair -> pair(def)
+            is DefScoped -> scoped(def)
+            is DefRepeat -> ContainerNode.space(0)
+        }
+
+        private fun scoped(def: DefScoped): UiNode {
+            val previous = scope
+            scope = def
+            return try {
+                node(def.node)
+            } finally {
+                scope = previous
+            }
         }
 
         private fun stateIcon(def: DefIcon): String =
             def.bind?.let { session.value(it) }?.let { def.states[it] } ?: def.id
 
-        private fun clickAction(click: DefClick, bind: String?): UiAction = UiAction { player ->
-            val first = bind?.let { session.press(it, player) } ?: UiOutcome.Refresh
-            if (first != UiOutcome.Refresh) first else DialogActions.run(click.steps, player, session, warn)
+        private fun clickAction(click: DefClick, bind: String?): UiAction {
+            val at = scope
+            return UiAction { player ->
+                val first = bind?.let { press(it, at, player) } ?: UiOutcome.Refresh
+                if (first != UiOutcome.Refresh) first else DialogActions.run(click.steps, player, session, warn, at?.values.orEmpty())
+            }
         }
+
+        private fun pressAction(key: String): UiAction {
+            val at = scope
+            return UiAction { player -> press(key, at, player) }
+        }
+
+        private fun press(key: String, at: DefScoped?, player: Player): UiOutcome =
+            if (at != null) session.press(key, at.index, player) else session.press(key, player)
 
         private fun nav(def: DefNav): UiNode {
             val target = (def.click?.steps?.singleOrNull() as? DefStep.Page)?.id
-            val active = if (target != null && session.page != null) target == session.page else def.selected
+            val active = if (target != null && session.page != null) target == session.page else def.selected.resolve(placeholders::plain)
+            val action = when {
+                def.click != null -> clickAction(def.click, def.bind)
+                def.bind != null -> pressAction(def.bind)
+                else -> null
+            }
             val style = theme.style(if (active) theme.nav.activeTextStyle else theme.nav.textStyle)
             val label = listOfNotNull(
                 ContainerNode.space(theme.nav.pad),
@@ -104,7 +141,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                 listOf(
                     ImageNode(if (active) theme.nav.activeArt else theme.nav.art, w = UiSize.Grow),
                     ContainerNode(ContainerKind.Row, label, gap = theme.iconGap, cross = UiAlign.Start),
-                    HotspotNode(def.click?.let { clickAction(it, null) }, def.tooltip?.let { tooltip(it, null) }),
+                    HotspotNode(action, def.tooltip?.let { tooltip(it, null) }),
                 ),
                 align = UiAlign.Start,
                 cross = UiAlign.Center,
@@ -113,15 +150,16 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         }
 
         private fun slots(def: DefSlots): UiNode {
-            val size = kit.image(theme.slots.art)?.height?.takeIf { it > 2 } ?: DEFAULT_SLOT_SIZE
-            val items = def.items.associateBy { it.at }
+            val size = slotSize(theme)
+            val expand = placeholders::plain
+            val items = def.items.mapNotNull { SlotContent.resolve(it, expand) }.associateBy { it.at }
             val rows = (0 until def.rows).map { row ->
                 ContainerNode(ContainerKind.Row, (0 until def.columns).map { column -> slot(items[row * def.columns + column], size) })
             }
             return ContainerNode(ContainerKind.Box, listOf(ContainerNode(ContainerKind.Column, rows)), align = def.align, w = UiSize.Grow)
         }
 
-        private fun slot(item: DefSlotItem?, size: Int): UiNode {
+        private fun slot(item: SlotView?, size: Int): UiNode {
             val frame = ContainerNode(ContainerKind.Box, listOf(ImageNode(theme.slots.art)), w = UiSize.Px(size), h = UiSize.Px(size))
             if (item == null) return frame
             val style = theme.style(theme.slots.textStyle)
@@ -129,7 +167,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                 frame,
                 ContainerNode(
                     ContainerKind.Box,
-                    listOf(IconNode(icon(UiArtCatalog.ITEM_PREFIX + item.item), size - 2)),
+                    listOf(IconNode(icon(UiArtCatalog.ITEM_PREFIX + item.item), size - SLOT_BORDER)),
                     align = UiAlign.Center,
                     cross = UiAlign.Center,
                     w = UiSize.Px(size),
@@ -153,10 +191,22 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             return ContainerNode(ContainerKind.Box, children, w = UiSize.Px(size), h = UiSize.Px(size))
         }
 
-        private fun itemTooltip(item: DefSlotItem): HoverEventSource<*> {
+        private fun itemTooltip(item: SlotView): HoverEventSource<*> {
+            if (item.name != null || item.lore.isNotEmpty()) return namedTooltip(item)
             val material = Material.matchMaterial(item.item)?.takeIf { it.isItem } ?: return Component.text(item.item)
             return HoverEvent.showItem(HoverEvent.ShowItem.showItem(material.key(), item.count))
         }
+
+        private fun namedTooltip(item: SlotView): Component {
+            val text = placeholders
+            val loreColor = theme.style(UiTheme.TOOLTIP_STYLE).color ?: DEFAULT_TOOLTIP_LINE
+            val title = item.name?.let { text.rich(it).colorIfAbsent(NamedTextColor.WHITE) } ?: itemName(item.item)
+            val lines = listOf(title) + item.lore.map { text.rich(it).colorIfAbsent(loreColor) }
+            return Component.join(JoinConfiguration.newlines(), lines.map { it.decoration(TextDecoration.ITALIC, false) })
+        }
+
+        private fun itemName(item: String): Component =
+            Material.matchMaterial(item)?.let { Component.translatable(it.translationKey()) } ?: Component.text(item)
 
         private fun dropdown(def: DefDropdown): UiNode {
             if (def.options.isEmpty()) return ContainerNode.space(0)
@@ -373,15 +423,17 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         private fun button(def: DefButton): UiNode {
             val key = def.bind ?: def.path
             val look = theme.button.look(def.look)
+            val disabled = def.disabled.resolve(placeholders::plain)
+            val selected = def.selected.resolve(placeholders::plain)
             val art = when {
-                def.disabled -> look.disabledArt
-                def.selected -> look.selectedArt
+                disabled -> look.disabledArt
+                selected -> look.selectedArt
                 else -> look.art
             }
             val style = theme.style(
                 when {
-                    def.disabled -> look.disabledTextStyle
-                    def.selected -> look.selectedTextStyle
+                    disabled -> look.disabledTextStyle
+                    selected -> look.selectedTextStyle
                     else -> look.textStyle
                 },
             )
@@ -391,9 +443,9 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                 ContainerNode.space(1),
             )
             val action = when {
-                def.disabled -> null
+                disabled -> null
                 def.click != null -> clickAction(def.click, def.bind)
-                else -> UiAction { player -> session.press(key, player) }
+                else -> pressAction(key)
             }
             return ContainerNode(
                 ContainerKind.Box,
@@ -422,7 +474,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
 
         private fun tooltip(text: String, value: String?): Component {
             val extra = if (value == null) emptyMap() else mapOf(Placeholders.VALUE_KEY to value)
-            val placeholders = Placeholders(session, extra)
+            val placeholders = Placeholders(session, scope?.values.orEmpty() + extra)
             val body = theme.style(UiTheme.TOOLTIP_STYLE).color
             if (!text.contains('\n') || text.contains('<')) return placeholders.rich(text).colorIfAbsent(body)
 
@@ -453,6 +505,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         const val DEFAULT_SLIDER_WIDTH = 80
         const val DEFAULT_SLOT_SIZE = 18
         const val STUDIO_WIDTH = 388
+        private const val SLOT_BORDER = 2
         private const val ICON_RISE = 1
         private const val BARE_SUFFIX = "-bare"
         private const val PAIR_LABEL_STYLE = "muted"

@@ -9,8 +9,11 @@ class DialogBinds {
     internal val values = mutableMapOf<String, ValueBind>()
     internal val indexes = mutableMapOf<String, IndexBind>()
     internal val buttons = mutableMapOf<String, (DialogClick) -> Unit>()
+    internal val lists = mutableMapOf<String, () -> List<Map<String, String>>>()
+    internal val listPages = mutableMapOf<String, () -> Int>()
+    internal val listButtons = mutableMapOf<String, (DialogClick, Int) -> Unit>()
 
-    internal val keys: Set<String> get() = values.keys + indexes.keys + buttons.keys
+    internal val keys: Set<String> get() = values.keys + indexes.keys + buttons.keys + lists.keys + listPages.keys + listButtons.keys
 
     fun switch(key: String, get: () -> Boolean, set: (Boolean) -> Unit) {
         values[key] = ValueBind({ get().toString() }, { set(it == "true") })
@@ -38,5 +41,17 @@ class DialogBinds {
 
     fun button(key: String, onClick: (DialogClick) -> Unit) {
         buttons[key] = onClick
+    }
+
+    fun list(key: String, entries: () -> List<Map<String, String>>) {
+        lists[key] = entries
+    }
+
+    fun listPage(key: String, page: () -> Int) {
+        listPages[key] = page
+    }
+
+    fun listButton(key: String, action: (DialogClick, Int) -> Unit) {
+        listButtons[key] = action
     }
 }

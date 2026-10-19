@@ -271,12 +271,12 @@ tira o botão de fechar.
 
 | Forma | Campos |
 |---|---|
-| `{"nav": "Rótulo"}` | `icon`, `w`, `onClick`, `tooltip`, `selected`. Fica ativo quando o `onClick` é `page` para a página atual; antes de qualquer página, vale `selected: true` |
-| `{"slots": [7, 1], "items": [{"at": 0, "item": "diamond_sword", "count": 1}]}` | grade de slots (arte `slots.art` do tema) com ícone do item, quantidade e nome traduzido no tooltip; `align` posiciona a grade |
+| `{"nav": "Rótulo"}` | `icon`, `w`, `onClick`, `tooltip`, `selected`, `bind`. Fica ativo quando o `onClick` é `page` para a página atual; antes de qualquer página, vale `selected` (`true`, `false` ou `"{chave}"`). Com `bind`, o clique chama o `button`/`listButton` do código |
+| `{"slots": [7, 1], "items": [{"at": 0, "item": "diamond_sword", "count": 1}]}` | grade de slots (arte `slots.art` do tema) com ícone do item, quantidade e nome traduzido no tooltip; `align` posiciona a grade. Por item, `item` e `count` aceitam `{chave}`; `name` (MiniMessage) e `lore` (lista de linhas MiniMessage) trocam o tooltip do item por um texto sem itálico. Item vazio ou sem valor deixa o slot vazio |
 | `{"dropdown": "Inicial"}` | `options`, `bind`, `w`, `tooltip`. Cada clique avança para a próxima opção |
 | `{"slider": 40}` | `min`, `max`, `step`, `unit`, `bind`, `w`, `tooltip`. Metade esquerda −step, direita +step |
 | `{"icon": "ui:x", "bind": "k", "states": {"a": "ui:y"}}` | troca o ícone pelo valor de `k` |
-| `{"button": "Rótulo", "onClick": {...}}` | executa ações; com `bind` também chama o código antes |
+| `{"button": "Rótulo", "onClick": {...}}` | executa ações; com `bind` também chama o código antes. `selected` e `disabled` aceitam `true`, `false` ou `"{chave}"` (só o texto `true` liga) |
 | `{"space": "grow"}` | ocupa o espaço que sobra na linha |
 
 Ícones `item:<material>` (ex.: `item:diamond_sword`) usam a textura vanilla do item. No primeiro
@@ -312,7 +312,58 @@ Valores iniciais: `DialogApi.open(player, "id", mapOf("target" to nome)) { ... }
 Chaves do Studio só de render são aceitas e ignoradas: `nudge`, `drawButtons`,
 `contentWidth`, `showWarning`, `look`, `compact`, `accent`, `face`, `frame`,
 `style`, `buttons`, `inputs`, `afterAction`, `command`, `commandPermission`,
-`perPage`, `scale`, `columns`.
+`perPage` (fora de `repeat`), `scale`, `columns`.
+
+### Listas repetíveis
+
+Qualquer nó (menos o raiz) aceita `"repeat": "<lista>"` e, opcional,
+`"perPage": N`. O código fornece a lista; o nó é desenhado uma vez por entrada,
+no lugar dele, antes do layout (dentro de um `grid`, cada entrada vira uma
+célula). Com `perPage`, aparecem no máximo `N` entradas a partir de
+`página × N`; a página fora do intervalo é limitada à primeira ou à última. Sem
+`perPage`, aparecem todas e a página é ignorada.
+
+Dentro do nó repetido, `{campo}` resolve primeiro na entrada (e nas entradas das
+listas de fora, se houver repetição aninhada) e depois nos valores globais, em
+textos, rótulos, tooltips, `item`/`count`/`name`/`lore` de slots, `selected`/
+`disabled` e nas ações do `onClick`. Um `button` ou `nav` repetido com `bind`
+chama `listButton(bind)` com o **índice da entrada na lista inteira** (não na
+página); sem `listButton`, cai no `button(bind)` comum.
+
+```json
+{"grid": [
+  {"repeat": "receitas", "perPage": 6, "column": [
+    {"slots": [1, 1], "items": [{"at": 0, "item": "{item}", "count": "{qtd}", "name": "<yellow>{nome}", "lore": ["{custo}"]}]},
+    {"text": "{nome}", "style": "heading", "w": 90},
+    {"button": "Craftar", "icon": "ui:cart", "look": "light", "bind": "craftar", "disabled": "{falta}", "tooltip": "{dica}"}
+  ], "surface": "sheet", "pad": 5}
+], "columns": 2}
+```
+
+```kotlin
+DialogApi.open(player, "receitas") {
+    list("receitas") { receitas.map { mapOf("nome" to it.nome, "item" to "fishing_rod", "qtd" to "1", "falta" to (!pode(it)).toString()) } }
+    listPage("receitas") { estado.pagina }
+    listButton("craftar") { click, index -> craftar(receitas[index]) }
+    button("proxima") { estado.pagina++ }
+}
+```
+
+Trocar de página é só mudar o valor que `listPage` devolve: depois de qualquer
+clique a tela é redesenhada e lê a lista e a página de novo.
+
+**Pré-render:** o `/textura gerar` compila cada tela com listas falsas de 0 até
+`perPage` entradas em todas as combinações (acima de 512, uma lista por vez com
+as outras cheias), para que toda página parcial tenha a altura das surfaces
+pronta. Lista sem `perPage` avisa no console e só pré-renderiza 0 e 1 entrada.
+As entradas falsas não têm campos, então `{campo}` aparece literal e o slot com
+`item` dinâmico fica vazio; alturas não dependem do texto. Itens que só aparecem
+por `{campo}` precisam ser registrados pelo código antes do gerar, senão o
+ícone não entra no pack:
+
+```kotlin
+DialogApi.registerItemIcons(listOf("fishing_rod", "cobweb"))
+```
 
 ## `config.yml`
 

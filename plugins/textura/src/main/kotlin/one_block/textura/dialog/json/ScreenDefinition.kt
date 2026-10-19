@@ -73,8 +73,8 @@ data class DefButton(
     override val path: String,
     val click: DefClick? = null,
     val look: String? = null,
-    val selected: Boolean = false,
-    val disabled: Boolean = false,
+    val selected: DefFlag = DefFlag.OFF,
+    val disabled: DefFlag = DefFlag.OFF,
 ) : DefNode
 
 data class DefChip(val label: String, val icon: String?, val tooltip: String?, override val path: String) : DefNode
@@ -87,11 +87,18 @@ data class DefNav(
     val w: UiSize,
     val click: DefClick?,
     override val path: String,
-    val selected: Boolean = false,
+    val selected: DefFlag = DefFlag.OFF,
     val tooltip: String? = null,
+    val bind: String? = null,
 ) : DefNode
 
-data class DefSlotItem(val at: Int, val item: String, val count: Int)
+data class DefSlotItem(
+    val at: Int,
+    val item: String,
+    val count: String,
+    val name: String? = null,
+    val lore: List<String> = emptyList(),
+)
 
 data class DefSlots(
     val columns: Int,
@@ -121,6 +128,33 @@ data class DefSlider(
     val tooltip: String?,
     override val path: String,
 ) : DefNode
+
+data class DefRepeat(val list: String, val perPage: Int?, val node: DefNode, override val path: String) : DefNode
+
+data class DefScoped(
+    val values: Map<String, String>,
+    val list: String,
+    val index: Int,
+    val node: DefNode,
+    override val path: String,
+) : DefNode
+
+sealed interface DefFlag {
+    fun resolve(expand: (String) -> String): Boolean
+
+    data class Fixed(val value: Boolean) : DefFlag {
+        override fun resolve(expand: (String) -> String): Boolean = value
+    }
+
+    data class Bound(val raw: String) : DefFlag {
+        override fun resolve(expand: (String) -> String): Boolean = expand(raw).trim().equals(TRUE, ignoreCase = true)
+    }
+
+    companion object {
+        private const val TRUE = "true"
+        val OFF: DefFlag = Fixed(false)
+    }
+}
 
 sealed interface DefStep {
     data class Page(val id: String) : DefStep

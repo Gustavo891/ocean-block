@@ -1,6 +1,7 @@
 package one_block.textura.api
 
 import one_block.textura.dialog.DialogOpener
+import one_block.textura.dialog.kit.DynamicItemIcons
 import org.bukkit.entity.Player
 
 object DialogApi {
@@ -18,6 +19,10 @@ object DialogApi {
         values: Map<String, String> = emptyMap(),
         binds: DialogBinds.() -> Unit = {},
     ): Boolean = opener?.open(player, screenId, values, DialogBinds().apply(binds)) ?: false
+
+    fun registerItemIcons(materials: Collection<String>) {
+        DynamicItemIcons.register(materials)
+    }
 
     fun setting(player: Player, key: String): String? = opener?.setting(player, key)
 
