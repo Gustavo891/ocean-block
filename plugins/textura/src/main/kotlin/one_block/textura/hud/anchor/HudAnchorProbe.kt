@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import one_block.textura.api.TitleApi
+import one_block.textura.notify.service.BossBarOrder
 import one_block.textura.hud.anchor.AnchorPalette.AQUA
 import one_block.textura.hud.anchor.AnchorPalette.GOLD
 import one_block.textura.hud.anchor.AnchorPalette.GRAY
@@ -56,14 +57,9 @@ object HudAnchorProbe : Listener {
 
     fun show(player: Player) {
         hide(player)
-        val others = player.activeBossBars().toList()
-        others.forEach(player::hideBossBar)
-
         val bar = BossBar.bossBar(render(), 1.0f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS)
         bars[player.uniqueId] = bar
-        player.showBossBar(bar)
-
-        others.forEach(player::showBossBar)
+        BossBarOrder.showFirst(player, bar)
     }
 
     fun hide(player: Player) {

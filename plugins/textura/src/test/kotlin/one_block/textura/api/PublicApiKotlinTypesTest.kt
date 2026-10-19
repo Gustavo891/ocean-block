@@ -14,7 +14,7 @@ import java.lang.reflect.WildcardType
 
 class PublicApiKotlinTypesTest : StringSpec({
 
-    val packages = listOf("one_block.textura.api", "one_block.textura.hud")
+    val packages = listOf("one_block.textura.api", "one_block.textura.hud", "one_block.textura.notify")
 
     fun classesIn(pkg: String): List<Class<*>> {
         val path = pkg.replace('.', '/')
@@ -73,6 +73,7 @@ class PublicApiKotlinTypesTest : StringSpec({
     "a varredura enxerga as classes da API" {
         classesIn("one_block.textura.api").shouldNotBeEmpty()
         classesIn("one_block.textura.hud").shouldNotBeEmpty()
+        classesIn("one_block.textura.notify").shouldNotBeEmpty()
     }
 
     "nenhuma assinatura pública da API ou do HUD expõe tipos do Kotlin" {

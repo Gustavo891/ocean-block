@@ -34,6 +34,44 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         return firstFrame(image)
     }
 
+
+    fun lang(locale: String, download: Boolean): Map<String, String> {
+        if (!LOCALE.matches(locale)) return emptyMap()
+        val cached = File(folder, "lang-$version-$locale.json")
+        if (cached.isFile) return parseLang(cached.readText(Charsets.UTF_8))
+        if (locale == JAR_LOCALE) {
+            val jar = jar(download) ?: return emptyMap()
+            return runCatching {
+                ZipFile(jar).use { zip ->
+                    zip.getEntry("assets/minecraft/lang/$locale.json")?.let { entry -> zip.getInputStream(entry).use { it.readBytes().decodeToString() } }
+                }
+            }.getOrNull()?.let(::parseLang).orEmpty()
+        }
+        if (!download) return emptyMap()
+        return runCatching {
+            val text = fetchLang(locale)
+            folder.mkdirs()
+            cached.writeText(text, Charsets.UTF_8)
+            parseLang(text)
+        }.getOrElse {
+            logger.warning("[notificacoes] Não foi possível baixar o idioma $locale do client $version: ${it.message}")
+            emptyMap()
+        }
+    }
+
+    private fun fetchLang(locale: String): String {
+        val manifest = json(MANIFEST)
+        val entry = manifest.getAsJsonArray("versions").map { it.asJsonObject }.firstOrNull { it.get("id").asString == version }
+            ?: error("versão $version não está no manifesto")
+        val index = json(json(entry.get("url").asString).getAsJsonObject("assetIndex").get("url").asString)
+        val hash = index.getAsJsonObject("objects").getAsJsonObject("minecraft/lang/$locale.json")?.get("hash")?.asString
+            ?: error("idioma $locale não está no asset index")
+        val bytes = connect("$RESOURCES/${hash.take(2)}/$hash").inputStream.use { it.readBytes() }
+        val actual = MessageDigest.getInstance("SHA-1").digest(bytes).joinToString("") { "%02x".format(it) }
+        if (!actual.equals(hash, ignoreCase = true)) error("sha1 diferente (esperado $hash, veio $actual)")
+        return bytes.decodeToString()
+    }
+
     private fun read(zip: ZipFile, path: String): BufferedImage? =
         zip.getEntry("assets/minecraft/textures/$path.png")?.let { entry -> zip.getInputStream(entry).use(ImageIO::read) }
 
@@ -119,8 +157,18 @@ class VanillaAssets(private val folder: File, private val version: String, priva
 
     private companion object {
         const val MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+        const val RESOURCES = "https://resources.download.minecraft.net"
+        const val JAR_LOCALE = "en_us"
+        val LOCALE = Regex("[a-z]{2,3}_[a-z]{2,3}")
         val NAME = Regex("[a-z0-9_]+")
         val TINTED_POTIONS = setOf("potion", "splash_potion", "lingering_potion")
         const val WATER_COLOR = 0x385DC6
     }
 }
+
+fun parseLang(json: String): Map<String, String> =
+    runCatching {
+        JsonParser.parseString(json).asJsonObject.entrySet()
+            .filter { it.value.isJsonPrimitive }
+            .associate { it.key to it.value.asString }
+    }.getOrDefault(emptyMap())

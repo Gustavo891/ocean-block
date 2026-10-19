@@ -10,10 +10,11 @@ import team.unnamed.creative.base.Writable
 import java.io.File
 import java.util.logging.Logger
 import one_block.textura.dialog.kit.UiKit
+import one_block.textura.notify.render.NotificationKit
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
-data class BuiltPack(val zip: File, val uiKit: UiKit?)
+data class BuiltPack(val zip: File, val uiKit: UiKit?, val notificationKit: NotificationKit?)
 
 /**
  * Monta o resource pack a partir dos registries e da pasta de dados.
@@ -32,6 +33,7 @@ class ResourcePackBuilder(
     private val logger: Logger,
     private val packFormat: Int = PackBuilder.DEFAULT_PACK_FORMAT,
     private val ui: UiPackWriter,
+    private val notifications: NotificationPackWriter,
 ) {
     private val generatedFolder = File(dataFolder, "generated")
     private val assets = PackAssets(dataFolder)
@@ -55,13 +57,17 @@ class ResourcePackBuilder(
             logger.log(java.util.logging.Level.SEVERE, "[ui] Falha ao gerar a UI de dialog, o resto do pack segue", it)
             null
         }
+        val notificationKit = runCatching { notifications.write(builder) }.getOrElse {
+            logger.log(java.util.logging.Level.SEVERE, "[notificacoes] Falha ao gerar as fontes de notificação, o resto do pack segue", it)
+            null
+        }
         mergeExternalPacks(builder)
 
         val target = File(generatedFolder, ZIP_NAME)
         val temp = File(generatedFolder, "$ZIP_NAME.tmp")
         builder.build(temp)
         Files.move(temp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
-        return BuiltPack(target, uiKit)
+        return BuiltPack(target, uiKit, notificationKit)
     }
 
     /**

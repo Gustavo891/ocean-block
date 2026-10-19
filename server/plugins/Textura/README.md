@@ -391,10 +391,107 @@ placeholder.
 Limites: `perPage` acima de 64 vira 64 (com aviso); `count` de slot fica entre
 1 e 99.
 
+## `configs/hud/notificacoes.yml` — notificações na bossbar
+
+As notificações saem numa única bossbar por jogador. Ela junta as linhas de todas
+as regiões, e o shader `core/text.vsh` do pack move cada linha para o seu canto
+real da tela, em qualquer GUI scale ou resolução. A barra só aparece enquanto o
+jogador tem alguma linha viva. Ela é sempre a primeira bossbar do jogador: ao
+aparecer, esconde as outras e mostra elas de novo depois dela. Sem o pack (ou
+com um shaderpack que troca os core shaders), as linhas aparecem empilhadas no
+topo, nas cores do marcador.
+
+Cada chave de topo é uma região:
+
+```yaml
+coleta:
+  id: coleta
+  ancora: MEIO_DIREITA
+  x: 0
+  y: 70
+  linhas: 6
+  espacamento: 1
+  fundo: true
+  direcao: baixo
+```
+
+| Campo | Valor | Padrão |
+|---|---|---|
+| `id` | nome usado no código (`NotificationApi.push(player, "coleta", ...)`) | a chave |
+| `ancora` | `TOPO_ESQUERDA`, `TOPO_DIREITA`, `MEIO_ESQUERDA`, `MEIO_DIREITA`, `BASE_ESQUERDA`, `BASE_DIREITA` | obrigatório |
+| `x`, `y` | deslocamento em px de GUI (x para a direita, y para baixo) a partir da âncora | 0 |
+| `linhas` | máximo de linhas visíveis (1..15). Cheia, a mais antiga sai | 3 |
+| `espacamento` | px entre uma linha e a próxima (0..32). O passo é 11 + espaçamento | 1 |
+| `fundo` | placa escura semitransparente na largura do conteúdo | true |
+| `direcao` | `baixo` ou `cima` | `cima` nas âncoras `BASE_*`, `baixo` nas outras |
+
+`y: 0` põe a primeira linha onde o texto da bossbar ficaria. Âncoras à direita
+alinham pela direita: o fundo termina em `x`. Valor inválido gera um aviso
+`[notificacoes]` no console e vira o padrão ou o limite. Âncora inválida
+descarta a região. Linhas que subiriam além do alcance do shader (15 passos de
+12 px) são cortadas, também com aviso.
+
+O arquivo é lido no `onEnable` e no `/textura reload`. As fontes de cada linha
+(`textura:notify/<altura>`) nascem no build do pack, então mudar `y`, `linhas`,
+`espacamento` ou `direcao` precisa de `/textura gerar`.
+
+### API
+
+```kotlin
+NotificationApi.registerItemIcons(listOf("oak_planks", "string", "loom"))
+NotificationApi.push(player, "coleta", NotificationLine("<green>+3</green> <lang:block.minecraft.oak_planks>", "item:oak_planks", 60, "coleta:oak_planks"))
+NotificationApi.push(player, "avisos", NotificationLine("<yellow>Sua Rede de Detritos ficou cheia!</yellow>", "item:loom", 100))
+NotificationApi.clear(player, "coleta")
+```
+
+- `NotificationLine(texto, icone, duracaoTicks, chave)` também tem as formas
+  `(texto, duracaoTicks)` e `(texto, icone, duracaoTicks)`, além de `withIcon` e
+  `withKey`. O texto é MiniMessage com as tags do Textura. `<lang:...>` é
+  resolvido no servidor em pt_br (vanilla baixado da Mojang mais
+  `resource/assets/minecraft/lang/pt_br.json`), para que a largura medida bata
+  com a desenhada.
+- Ícone: `item:<material>` ou `glyph:<id>`, desenhado com 8 px de altura antes do
+  texto. Ícone que não está no pack é omitido.
+- Um push com a mesma chave na mesma região troca a linha no lugar e reinicia o
+  tempo. Quem chama acumula o valor (ex.: `+1` vira `+2`).
+- As linhas vencidas saem num task de 5 ticks. A barra só é reenviada quando o
+  conteúdo muda.
+
+### Ícones de item
+
+O `/textura gerar` assa como glyph das fontes de notificação a textura vanilla
+de cada material registrado com `NotificationApi.registerItemIcons(...)`. A
+busca é a mesma dos ícones `item:` das telas: `item/<nome>`, depois
+`block/<nome>`, `_front`, `_side` e `_top`, lidos do client da Mojang. Os glyphs
+de `configs/glyphs` (fora das folhas) entram sozinhos como `glyph:<id>`. O
+build do pack no startup roda no primeiro tick depois de todos os plugins
+habilitarem, então **registre os ícones durante o `onEnable`**. Ícones
+registrados depois só entram no próximo `/textura gerar`.
+
+### Contrato do marcador (shader)
+
+Texto de GUI com cor exatamente `R=254`, `G = âncora × 16` (1 TOPO_ESQUERDA,
+2 TOPO_DIREITA, 3 MEIO_ESQUERDA, 4 MEIO_DIREITA, 5 BASE_ESQUERDA,
+6 BASE_DIREITA) e `B = paleta × 16 + lift` é movido pelo `text.vsh`:
+
+- a paleta (0..15) é a dos códigos `§0`..`§f`, e a cor real é pintada no lugar da
+  cor do marcador;
+- o `lift` (0..15) sobe a linha `lift × 12` px. É assim que linhas sobem a partir
+  da base: as fontes só conseguem descer o texto;
+- a sombra vai como `shadow_color` explícita com `R=253` e o mesmo G/B, e o
+  shader escurece a paleta como a sombra vanilla (×0,25).
+
+Qualquer outra cor fica vanilla. Não use essas cores em outros textos (chat,
+scoreboard, nomes de item): o shader também os moveria. O `/textura hudtest
+[on|off]` mostra uma bossbar de teste com as 6 âncoras e dois controles sem
+marcador.
+
 ## `config.yml`
 
 `ui.fonte-texto` é o JSON (em `configs/fonts/`) cujos providers viram a fonte do
-texto das telas de dialog; as larguras são medidas dos PNGs dele.
+texto das telas de dialog; as larguras são medidas dos PNGs dele. A mesma fonte é a do
+texto das notificações. `notificacoes.idioma` (padrão `pt_br`) é o idioma em que
+o `<lang:...>` das notificações é resolvido.
 
 `pack.formato` tem que bater com a versão do cliente (97 = 26.3). Abaixo
 disso o Minecraft trata o pack como de outra versão e as fontes customizadas
@@ -415,6 +512,7 @@ sobrescrever a chave num ambiente específico sem editar o arquivo.
 | `/textura importglyph <nome> [unicode] <link.png>` | Baixa um PNG e registra como glyph |
 | `/textura testfont <fonte> <texto>` | Inspeção visual de uma fonte |
 | `/textura dialog <id> [jogador]` | Abre a tela `configs/ui/<id>.json` (estado só da sessão) |
+| `/textura hudtest [on\|off]` | Bossbar de teste das 6 âncoras do shader (só op) |
 
 Tudo sob a permissão `textura.admin`. O HUD tem comando próprio: `/hud
 show|hide|sec|unsec`.

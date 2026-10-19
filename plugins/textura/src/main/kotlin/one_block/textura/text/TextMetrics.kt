@@ -21,6 +21,12 @@ object TextMetrics {
                 continue
             }
 
+            val shift = SpacingFont.shiftAdvance(ch)
+            if (shift != null) {
+                advance += shift
+                continue
+            }
+
             advance += when (ch) {
                 'i', '!', '\'', '.', ',', ':', ';', '|' -> 2
                 'l', '`' -> 3

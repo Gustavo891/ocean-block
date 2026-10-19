@@ -1,0 +1,19 @@
+coleta:
+  id: coleta
+  ancora: MEIO_DIREITA
+  x: 0
+  y: 70
+  linhas: 6
+  espacamento: 1
+  fundo: true
+  direcao: baixo
+
+avisos:
+  id: avisos
+  ancora: TOPO_ESQUERDA
+  x: 4
+  y: 4
+  linhas: 3
+  espacamento: 1
+  fundo: true
+  direcao: baixo

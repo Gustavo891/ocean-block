@@ -50,5 +50,7 @@ object SpacingFont {
         return builder.toString()
     }
 
+    fun shiftAdvance(char: Char): Int? = if (char == ' ') null else ADVANCES[char.toString()]
+
     fun component(pixels: Int): Component = Component.text(chars(pixels)).font(KEY)
 }

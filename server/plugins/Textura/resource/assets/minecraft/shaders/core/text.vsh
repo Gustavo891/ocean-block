@@ -39,6 +39,7 @@ const float TEXTURA_HUD_BAR_TEXT_TOP = 3.0;
 const float TEXTURA_HUD_LINE_HEIGHT = 9.0;
 const float TEXTURA_HUD_MARGIN_X = 2.0;
 const float TEXTURA_HUD_MARGIN_BOTTOM = 2.0;
+const float TEXTURA_HUD_LIFT_STEP = 12.0;
 
 const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(0.0, 0.0, 0.0),
@@ -59,9 +60,10 @@ const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(255.0, 255.0, 255.0)
 );
 
-int texturaHudDecode(vec4 color, out int palette, out bool shadow) {
+int texturaHudDecode(vec4 color, out int palette, out int lift, out bool shadow) {
     ivec3 c = ivec3(round(color.rgb * 255.0));
     palette = 0;
+    lift = 0;
     shadow = false;
 
     int step = TEXTURA_HUD_STEP;
@@ -78,12 +80,14 @@ int texturaHudDecode(vec4 color, out int palette, out bool shadow) {
         return 0;
     }
 
-    if (c.g % step != 0 || c.b % step != 0) return 0;
+    if (c.g % step != 0) return 0;
     int anchor = c.g / step;
-    int index = c.b / step;
+    int blue = c.b * (TEXTURA_HUD_STEP / step);
+    int index = blue / TEXTURA_HUD_STEP;
     if (anchor < 1 || anchor > TEXTURA_HUD_ANCHORS || index >= TEXTURA_HUD_PALETTE_SIZE) return 0;
 
     palette = index;
+    lift = blue % TEXTURA_HUD_STEP;
     return anchor;
 }
 
@@ -122,10 +126,11 @@ void main() {
 
 #ifdef IS_GUI
     int hudPalette;
+    int hudLift;
     bool hudShadow;
-    int hudAnchor = texturaHudDecode(Color, hudPalette, hudShadow);
+    int hudAnchor = texturaHudDecode(Color, hudPalette, hudLift, hudShadow);
     if (hudAnchor > 0) {
-        vec2 offset = texturaHudOffset(hudAnchor);
+        vec2 offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift) * TEXTURA_HUD_LIFT_STEP);
         gl_Position.x += offset.x * ProjMat[0][0] * gl_Position.w;
         gl_Position.y += offset.y * ProjMat[1][1] * gl_Position.w;
 

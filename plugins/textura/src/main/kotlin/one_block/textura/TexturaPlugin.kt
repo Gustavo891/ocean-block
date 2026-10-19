@@ -17,6 +17,13 @@ import one_block.textura.command.HudCommand
 import one_block.textura.command.TexturaCommand
 import one_block.textura.hud.HudManager
 import one_block.textura.hud.anchor.HudAnchorProbe
+import one_block.textura.api.NotificationApi
+import one_block.textura.notify.icon.ItemIconRegistry
+import one_block.textura.notify.region.RegionConfigParser
+import one_block.textura.notify.render.NotificationKit
+import one_block.textura.notify.service.NotificationService
+import one_block.textura.pack.NotificationPackWriter
+import one_block.textura.pack.parseLang
 import one_block.textura.http.ResourcePackServer
 import one_block.textura.listener.ChatListener
 import one_block.textura.menu.BlocksMenu
@@ -82,6 +89,8 @@ class TexturaPlugin : JavaPlugin(), Listener {
     var uiKit: UiKit? = null
         private set
     private lateinit var dialogOpener: DialogOpener
+    lateinit var notifications: NotificationService
+        private set
     private val packStatus = PackStatusTracker(PACK_ID) { dialogOpener.forget(it) }
     private var server: ResourcePackServer? = null
     private var localUrl: String = ""
@@ -107,6 +116,8 @@ class TexturaPlugin : JavaPlugin(), Listener {
         BlockApi.init(blockRegistry, blockAllocator)
         uiScreenRegistry = UiScreenRegistry(logger)
         uiThemeRegistry = UiThemeRegistry(logger)
+        notifications = NotificationService(this, NotificationKit.textOnly(uiTextFont()))
+        NotificationApi.init(notifications)
 
         File(dataFolder, "configs/glyphs").mkdirs()
         if (!File(dataFolder, "configs/glyphs/emojis.yml").exists()) {
@@ -119,6 +130,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
         File(dataFolder, "configs/items").mkdirs()
         File(dataFolder, "configs/blocks").mkdirs()
         File(dataFolder, "configs/ui").mkdirs()
+        File(dataFolder, "configs/hud").mkdirs()
         if (!File(dataFolder, "configs/items/exemplo.yml").exists()) {
             saveResource("configs/items/exemplo.yml", false)
         }
@@ -165,6 +177,9 @@ class TexturaPlugin : JavaPlugin(), Listener {
         Bukkit.getPluginManager().registerEvents(one_block.textura.listener.CustomBlockListener(logger), this)
         Bukkit.getPluginManager().registerEvents(hudManager, this)
         Bukkit.getPluginManager().registerEvents(HudAnchorProbe, this)
+        Bukkit.getPluginManager().registerEvents(notifications, this)
+        notifications.start()
+        loadTranslations()
         Bukkit.getPluginManager().registerEvents(packStatus, this)
         Bukkit.getPluginManager().registerEvents(dialogOpener, this)
 
@@ -176,6 +191,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
     }
 
     override fun onDisable() {
+        notifications.stop()
         server?.stop()
         logger.info("Modulo ResourcePack desligado.")
     }
@@ -192,6 +208,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
         one_block.textura.block.VanillaRecipeRemover.apply(blockRegistry, logger)
         uiThemeRegistry.load(assets.configFolder("ui"))
         uiScreenRegistry.load(assets.configFolder("ui"))
+        notifications.regions(RegionConfigParser.load(File(assets.configFolder("hud"), NOTIFICATION_REGIONS)) { logger.warning("[notificacoes] $it") })
         auditUi()
     }
 
@@ -202,6 +219,37 @@ class TexturaPlugin : JavaPlugin(), Listener {
         return UiArtCatalog(File(assets.resourceRoot, UI_ART_FOLDER), { id ->
             glyphRegistry.glyphs[id]?.takeIf { it.sheetKey == null }?.let { assets.resolveGlyph(it.caminho, glyphsFolder)?.file }
         }, logger) { name -> vanilla.itemTexture(name, download) }
+    }
+
+    private fun notificationWriter(): NotificationPackWriter {
+        val assets = PackAssets(dataFolder)
+        val glyphsFolder = assets.configFolder("glyphs")
+        val vanilla = VanillaAssets(File(dataFolder, VANILLA_FOLDER), Bukkit.getMinecraftVersion(), logger)
+        val glyphFiles = glyphRegistry.glyphs.values
+            .filter { it.sheetKey == null }
+            .mapNotNull { glyph -> assets.resolveGlyph(glyph.caminho, glyphsFolder)?.file?.let { glyph.id to it } }
+            .toMap()
+        return NotificationPackWriter(
+            notifications.regionList(),
+            uiTextFont(),
+            ItemIconRegistry.materials(),
+            { name -> vanilla.itemTexture(name, true) },
+            glyphFiles,
+            File(assets.resourceRoot, HUD_PLAQUE),
+            logger,
+        )
+    }
+
+    private fun loadTranslations() {
+        val locale = config.getString("notificacoes.idioma", NOTIFICATION_LOCALE) ?: NOTIFICATION_LOCALE
+        val override = File(PackAssets(dataFolder).resourceRoot, "${PackAssets.LANG_PREFIX}$locale.json")
+        Bukkit.getScheduler().runTaskAsynchronously(this, Runnable {
+            val vanilla = VanillaAssets(File(dataFolder, VANILLA_FOLDER), Bukkit.getMinecraftVersion(), logger)
+            val merged = vanilla.lang("en_us", true) + vanilla.lang(locale, true) +
+                (if (override.isFile) parseLang(override.readText(Charsets.UTF_8)) else emptyMap())
+            notifications.translations(merged)
+            logger.info("[notificacoes] ${merged.size} tradução(ões) carregada(s) para $locale.")
+        })
     }
 
     fun uiTextFont(): UiTextFont {
@@ -234,6 +282,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
                     blockRegistry, blockAllocator, dataFolder, logger,
                     config.getInt("pack.formato", PackBuilder.DEFAULT_PACK_FORMAT),
                     ui,
+                    notificationWriter(),
                 )
                 val built = builder.build()
                 val zip = built.zip
@@ -250,6 +299,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
                     server?.publish(zip.readBytes(), hash)
                     release = PackRelease(url, hash)
                     uiKit = built.uiKit
+                    built.notificationKit?.let(notifications::kit)
                     if (previous?.hash != hash) {
                         packStatus.reset()
                         Bukkit.getScheduler().runTask(this, Runnable { Bukkit.getOnlinePlayers().forEach(::applyPack) })
@@ -358,5 +408,8 @@ class TexturaPlugin : JavaPlugin(), Listener {
         const val UI_ART_FOLDER = "assets/oneblock/textures/ui"
         const val VANILLA_FOLDER = "generated/vanilla"
         const val DEFAULT_UI_TEXT_FONT = "custom.json"
+        const val NOTIFICATION_REGIONS = "notificacoes.yml"
+        const val NOTIFICATION_LOCALE = "pt_br"
+        const val HUD_PLAQUE = "assets/oneblock/textures/hud/body.png"
     }
 }
