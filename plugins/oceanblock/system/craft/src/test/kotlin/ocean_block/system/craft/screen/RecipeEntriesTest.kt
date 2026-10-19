@@ -3,6 +3,7 @@ package ocean_block.system.craft.screen
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import io.kotest.matchers.shouldBe
 import ocean_block.system.craft.recipe.Ingredient
 import ocean_block.system.craft.recipe.OceanRecipe
@@ -104,5 +105,9 @@ class RecipeEntriesTest : StringSpec({
         )
         RecipeEntries.pagination(1, 13).single()["sem_anterior"] shouldBe "false"
         RecipeEntries.pagination(2, 13).single()["sem_proxima"] shouldBe "true"
+    }
+
+    "a coluna de categorias comporta todas as categorias que existem" {
+        RecipeCategory.entries.size shouldBeLessThanOrEqual RecipeEntries.CATEGORIES_PER_PAGE
     }
 })

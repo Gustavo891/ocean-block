@@ -15,6 +15,7 @@ data class CardInput(
 object RecipeEntries {
 
     const val CARDS_PER_PAGE = 6
+    const val CATEGORIES_PER_PAGE = 6
     const val MAX_CHIPS = 4
     private const val SEPARATOR = " ∙ "
     private const val BULLET = "∙ "

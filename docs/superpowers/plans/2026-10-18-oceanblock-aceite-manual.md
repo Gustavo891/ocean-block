@@ -92,14 +92,15 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 ## 8. Receitas
 
 ### Preparação
-- [ ] Depois de instalar o jar com a tela, `/textura gerar` termina sem aviso `[ui:receitas]` no console e o pack novo chega aos jogadores (o hash muda).
-- [ ] Antes do `/textura gerar`, o card mostra o slot vazio (sem o ícone do item); depois dele o slot mostra a vara de pesca (Gancho) e o tear (Rede).
+- [ ] Depois de instalar o jar com a tela e reiniciar, o pack que o Textura monta na subida termina sem aviso `[ui:receitas]` no console e o pack novo chega aos jogadores (o hash muda); o slot do card já mostra a vara de pesca (Gancho) e o tear (Rede), sem precisar de `/textura gerar`.
+- [ ] Reiniciar o servidor de novo: os ícones continuam aparecendo nos cards.
+- [ ] Editar `receitas.json` com o servidor ligado e `/textura reload`: a mudança de altura ou ícone só aparece certa depois de `/textura gerar`.
 
 ### Abrir
 - [ ] `/receitas`, `/craft` e `/receita` abrem a mesma tela, com título `Receitas`, tema de pedra e o rodapé `Os itens vão para o seu inventário.`
 - [ ] Clicar no NPC "RECEITAS" do spawn abre a tela.
-- [ ] Sem a textura aceita, aparece o aviso `Textura necessária` do Textura em vez da tela (o chat também mostra `A tela de receitas não está disponível.`, porque o `DialogApi.open` devolve false nesse caso).
-- [ ] Renomear `configs/ui/receitas.json`, `/textura reload` e rodar `/receitas`: chat `A tela de receitas não está disponível.` e um aviso `[receitas]` no console. Voltar o nome e `/textura reload`.
+- [ ] Sem a textura aceita, aparece só o aviso `Textura necessária` do Textura em vez da tela: nada no chat e nenhum aviso `[receitas]` no console.
+- [ ] Renomear `configs/ui/receitas.json`, `/textura reload` e rodar `/receitas`: chat `A tela de receitas não está disponível.` e um aviso `[receitas]` no console. Rodar `/receitas` de novo: o chat repete, o console não. Voltar o nome e `/textura reload`.
 
 ### Categorias e chips
 - [ ] A coluna da esquerda lista `Ferramentas` (picareta) e `Coleta` (baú); a aberta fica destacada e o tooltip diz `✔ Aberta agora!`, a outra `Clique para ver!`.
@@ -117,9 +118,11 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Com 3 tábuas e 2 linhas, `Craftar` no Gancho: consome exatamente isso, entrega um gancho que funciona (puxa detrito), mostra `Você craftou 1x Gancho.` e a tela se redesenha com os chips e os botões atualizados.
 - [ ] Com 4 tábuas e 5 linhas, `Craftar` na Rede: entrega a rede, que pode ser colocada e coleta detritos.
 - [ ] Tábuas divididas em pilhas de madeiras diferentes (ex.: 1 de carvalho + 2 de abeto, em slots separados) contam juntas e são consumidas certo; o que sobra fica no inventário.
-- [ ] Inventário cheio (sem slot livre): o craft consome os ingredientes e o item cai aos pés do jogador.
+- [ ] Inventário cheio (sem slot livre) com pilhas maiores que o custo (ex.: 10 tábuas e 10 linhas, de modo que nenhum slot esvazia): o craft consome os ingredientes e o item cai aos pés do jogador.
 - [ ] Craftar duas redes avança o desafio `CRAFT_REDE` do battle pass.
-- [ ] Largar os ingredientes com a tela aberta e clicar `Craftar` (botão ainda ativo): nada é consumido, aparece `⌀ Falta: ...` em vermelho e a tela se redesenha com o botão desabilitado.
+- [ ] Com a tela aberta e exatamente 3 tábuas e 2 linhas (Gancho pronto), rodar no console `/clear <jogador> string 2` e clicar `Craftar` (botão ainda ativo): nada é consumido, aparece `⌀ Falta: ...` em vermelho e a tela se redesenha com o botão desabilitado.
+- [ ] Com material para exatamente 2 ganchos (6 tábuas e 4 linhas), clicar `Craftar` várias vezes bem rápido: sai um gancho por redesenho e nunca mais de 2 no total; sobram 0 tábuas e 0 linhas e nenhum material fica negativo ou duplicado.
+- [ ] No tooltip do botão, `✔ Pronto! Clique para craftar.` aparece em verde, `⌀ Falta: ...` em vermelho e as linhas `∙ ...` do custo em destaque.
 
 ### Bancada
 - [ ] A bancada de trabalho não faz mais o gancho nem a rede com tábua e linha em nenhum formato.

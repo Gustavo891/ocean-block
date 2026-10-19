@@ -6,9 +6,6 @@ platinum_raw:
   name: "<white>Platina Bruta"
   lore:
     - "<dark_gray>Metal pesado, ainda impuro."
-    - ""
-    - "<gray>Refine na forja para obter"
-    - "<gray>Lingotes de Platina."
 
 platinum_ingot:
   material: PAPER

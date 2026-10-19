@@ -7,6 +7,7 @@ import ocean_block.system.craft.recipe.RecipeCrafter
 import ocean_block.system.craft.recipe.Recipes
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
+import one_block.textura.api.DialogOpenResult
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.UUID
@@ -16,25 +17,34 @@ import java.util.logging.Logger
 class RecipesScreen(private val logger: Logger) {
 
     private val views = ConcurrentHashMap<UUID, RecipesView>()
+    private val warned = ConcurrentHashMap.newKeySet<String>()
 
     fun open(player: Player) {
-        registerIcons()
-        if (available().isEmpty()) {
+        val categories = available()
+        if (categories.isEmpty()) {
             player.sendRichMessage("<red>Nenhuma receita disponível.")
             return
         }
-        if (!DialogApi.open(player, SCREEN_ID) { bind(player) }) {
-            player.sendRichMessage("<red>A tela de receitas não está disponível.")
-            logger.warning("[receitas] a tela '$SCREEN_ID' do Textura não abriu para ${player.name}; confira configs/ui/$SCREEN_ID.json e rode /textura gerar")
+        if (categories.size > RecipeEntries.CATEGORIES_PER_PAGE) warnOnce("categorias") {
+            "[receitas] ${categories.size} categorias têm receitas, mas a tela mostra só ${RecipeEntries.CATEGORIES_PER_PAGE}; aumente o perPage de 'categorias' em $SCREEN_ID.json"
         }
+        when (DialogApi.openResult(player, SCREEN_ID) { bind(player) }) {
+            DialogOpenResult.Shown, DialogOpenResult.NeedsPack -> Unit
+            DialogOpenResult.MissingScreen, DialogOpenResult.Failed -> unavailable(player)
+        }
+    }
+
+    private fun unavailable(player: Player) {
+        player.sendRichMessage("<red>A tela de receitas não está disponível.")
+        warnOnce(SCREEN_ID) { "[receitas] a tela '$SCREEN_ID' do Textura não abriu; confira configs/ui/$SCREEN_ID.json e o console do Textura" }
+    }
+
+    private fun warnOnce(key: String, message: () -> String) {
+        if (warned.add(key)) logger.warning(message())
     }
 
     fun forget(id: UUID) {
         views.remove(id)
-    }
-
-    fun registerIcons() {
-        DialogApi.registerItemIcons(Recipes.all().map { materialOf(it.result()) })
     }
 
     private fun DialogBinds.bind(player: Player) {
@@ -90,9 +100,13 @@ class RecipesScreen(private val logger: Logger) {
         }
     }
 
-    private fun materialOf(item: ItemStack): String = item.type.key().value()
-
     companion object {
         const val SCREEN_ID = "receitas"
+
+        fun registerIcon(recipe: OceanRecipe) {
+            DialogApi.registerItemIcons(listOf(materialOf(recipe.result())))
+        }
+
+        private fun materialOf(item: ItemStack): String = item.type.key().value()
     }
 }

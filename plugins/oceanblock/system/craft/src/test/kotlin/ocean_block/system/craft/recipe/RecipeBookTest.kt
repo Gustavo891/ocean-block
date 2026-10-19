@@ -74,4 +74,28 @@ class RecipeBookTest : StringSpec({
             OceanRecipe("vazia", "Vazia", "", RecipeCategory.COLETA, { ItemStack(Material.STICK) }, emptyList())
         }
     }
+
+    "ouvinte recebe as receitas já registradas e as próximas, uma vez cada" {
+        val book = RecipeBook()
+        val gancho = recipe("gancho", RecipeCategory.FERRAMENTAS)
+        val rede = recipe("rede", RecipeCategory.COLETA)
+        val vistas = mutableListOf<String>()
+        book.register(gancho)
+
+        book.onRegister { vistas += it.id }
+        book.register(rede)
+
+        vistas shouldContainExactly listOf("gancho", "rede")
+    }
+
+    "id duplicado nao chega ao ouvinte" {
+        val book = RecipeBook()
+        val vistas = mutableListOf<String>()
+        book.onRegister { vistas += it.id }
+        book.register(recipe("gancho", RecipeCategory.FERRAMENTAS))
+
+        shouldThrow<IllegalArgumentException> { book.register(recipe("gancho", RecipeCategory.COLETA)) }
+
+        vistas shouldContainExactly listOf("gancho")
+    }
 })

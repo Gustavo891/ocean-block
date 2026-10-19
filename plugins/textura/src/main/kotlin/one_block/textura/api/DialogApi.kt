@@ -18,7 +18,14 @@ object DialogApi {
         screenId: String,
         values: Map<String, String> = emptyMap(),
         binds: DialogBinds.() -> Unit = {},
-    ): Boolean = opener?.open(player, screenId, values, DialogBinds().apply(binds)) ?: false
+    ): Boolean = openResult(player, screenId, values, binds) == DialogOpenResult.Shown
+
+    fun openResult(
+        player: Player,
+        screenId: String,
+        values: Map<String, String> = emptyMap(),
+        binds: DialogBinds.() -> Unit = {},
+    ): DialogOpenResult = opener?.open(player, screenId, values, DialogBinds().apply(binds)) ?: DialogOpenResult.Failed
 
     fun registerItemIcons(materials: Collection<String>) {
         DynamicItemIcons.register(materials)

@@ -7,6 +7,7 @@ import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
+import one_block.textura.api.TexturaTags
 import one_block.textura.dialog.DialogActions
 import one_block.textura.dialog.DialogSession
 import one_block.textura.dialog.DialogValues
@@ -35,6 +36,8 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 
 class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit) {
+
+    private class TooltipLine(val text: String, val component: Component)
 
     private val measurer = TextMeasurer(kit)
     private val layout = UiLayout(kit)
@@ -480,25 +483,39 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val extra = if (value == null) emptyMap() else mapOf(Placeholders.VALUE_KEY to value)
             val placeholders = Placeholders(session, scope?.values.orEmpty() + extra)
             val body = theme.style(UiTheme.TOOLTIP_STYLE).color
-            if (!text.contains('\n') || text.contains('<')) return placeholders.rich(text).colorIfAbsent(body)
+            if (text.contains('<')) return placeholders.rich(text).colorIfAbsent(body)
+            val lines = tooltipLines(text, placeholders)
+            if (lines.size == 1) return lines.single().component.colorIfAbsent(body)
 
-            val lines = text.split('\n')
-            val action = lines.lastIndex.takeIf { it >= 2 && lines[it].isNotBlank() && lines[it - 1].isBlank() }
+            val texts = lines.map { it.text }
+            val action = texts.lastIndex.takeIf { it >= 2 && texts[it].isNotBlank() && texts[it - 1].isBlank() }
             val parts = lines.mapIndexed { index, line ->
                 val color = when {
                     index == 0 -> styleColor(TOOLTIP_TITLE, DEFAULT_TOOLTIP_TITLE)
-                    index == action -> when {
-                        line.startsWith(SUCCESS_MARK) -> styleColor(TOOLTIP_SUCCESS, DEFAULT_TOOLTIP_SUCCESS)
-                        line.startsWith(ERROR_MARK) -> styleColor(TOOLTIP_ERROR, DEFAULT_TOOLTIP_ERROR)
-                        else -> styleColor(TOOLTIP_ACTION, DEFAULT_TOOLTIP_ACTION)
-                    }
-                    HIGHLIGHT_MARKS.any(line::startsWith) -> styleColor(TOOLTIP_HIGHLIGHT, DEFAULT_TOOLTIP_HIGHLIGHT)
-                    line.isNotBlank() && lines[index - 1].isBlank() -> styleColor(TOOLTIP_HEADER, DEFAULT_TOOLTIP_HEADER)
+                    index == action -> actionColor(line.text)
+                    HIGHLIGHT_MARKS.any(line.text::startsWith) -> styleColor(TOOLTIP_HIGHLIGHT, DEFAULT_TOOLTIP_HIGHLIGHT)
+                    line.text.isNotBlank() && texts[index - 1].isBlank() -> styleColor(TOOLTIP_HEADER, DEFAULT_TOOLTIP_HEADER)
                     else -> styleColor(TOOLTIP_LINE, DEFAULT_TOOLTIP_LINE)
                 }
-                placeholders.rich(line).colorIfAbsent(color)
+                line.component.colorIfAbsent(color)
             }
             return Component.join(JoinConfiguration.newlines(), parts)
+        }
+
+        private fun tooltipLines(text: String, placeholders: Placeholders): List<TooltipLine> =
+            text.split('\n').flatMap { line ->
+                val resolved = placeholders.escaped(line)
+                if ('\n' in resolved) {
+                    resolved.split('\n').map { TooltipLine(it, TexturaTags.miniMessage.deserialize(it)) }
+                } else {
+                    listOf(TooltipLine(resolved, placeholders.rich(line)))
+                }
+            }
+
+        private fun actionColor(line: String): TextColor = when {
+            line.startsWith(SUCCESS_MARK) -> styleColor(TOOLTIP_SUCCESS, DEFAULT_TOOLTIP_SUCCESS)
+            ERROR_MARKS.any(line::startsWith) -> styleColor(TOOLTIP_ERROR, DEFAULT_TOOLTIP_ERROR)
+            else -> styleColor(TOOLTIP_ACTION, DEFAULT_TOOLTIP_ACTION)
         }
 
         private fun styleColor(name: String, default: TextColor): TextColor = theme.styles[name]?.color ?: default
@@ -523,7 +540,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         private const val TOOLTIP_ERROR = "tooltip-error"
         private val HIGHLIGHT_MARKS = listOf(Char(0x23F5).toString(), Char(0x2219).toString())
         private val SUCCESS_MARK = Char(0x2714).toString()
-        private val ERROR_MARK = Char(0x2300).toString()
+        private val ERROR_MARKS = listOf(Char(0x2300).toString(), Char(0x2716).toString())
         private val DEFAULT_TOOLTIP_HEADER: TextColor = TextColor.color(0xFFFFFF)
         private val DEFAULT_TOOLTIP_SUCCESS: TextColor = TextColor.color(0x6FE06F)
         private val DEFAULT_TOOLTIP_ERROR: TextColor = TextColor.color(0xFF6B6B)

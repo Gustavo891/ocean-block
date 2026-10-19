@@ -14,6 +14,9 @@ class Placeholders(private val session: DialogSession, private val extra: Map<St
     fun plain(text: String): String =
         expand(text) { it.rendered.replace('\n', ' ').replace('\r', ' ') }
 
+    fun escaped(text: String): String =
+        expand(text) { TexturaTags.miniMessage.escapeTags(it.rendered) }
+
     fun rich(text: String): Component {
         val resolvers = mutableListOf<TagResolver>()
         val converted = expand(text) { piece ->

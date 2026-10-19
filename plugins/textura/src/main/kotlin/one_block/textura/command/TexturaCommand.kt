@@ -8,6 +8,7 @@ import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.Optional
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import one_block.textura.api.DialogApi
+import one_block.textura.api.DialogOpenResult
 import io.papermc.paper.dialog.Dialog
 import io.papermc.paper.registry.data.dialog.DialogBase
 import io.papermc.paper.registry.data.dialog.body.DialogBody
@@ -58,8 +59,11 @@ class TexturaCommand(private val plugin: TexturaPlugin) : BaseCommand() {
             sender.sendMessage("§cUso: /textura dialog <id> <jogador>")
             return
         }
-        if (!DialogApi.open(player, id)) {
-            sender.sendMessage("§eTela '$id' não abriu: tela/tema inexistente, pack não gerado ou jogador sem textura. Veja o console.")
+        when (DialogApi.openResult(player, id)) {
+            DialogOpenResult.Shown -> Unit
+            DialogOpenResult.NeedsPack -> sender.sendMessage("§eTela '$id' não abriu: o jogador está sem a textura ou o pack ainda não foi gerado.")
+            DialogOpenResult.MissingScreen -> sender.sendMessage("§cTela '$id' não existe em configs/ui.")
+            DialogOpenResult.Failed -> sender.sendMessage("§cTela '$id' não abriu: tema inexistente ou erro ao montar. Veja o console.")
         }
     }
 

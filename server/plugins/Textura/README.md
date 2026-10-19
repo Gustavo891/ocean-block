@@ -190,6 +190,13 @@ Folhas:
 | `{"segmented": ["A","B"]}` | `selected`, `bind`, `w`, `tooltip` |
 | `{"button": "rótulo"}` | `bind`, `w`, `icon`, `tooltip` |
 
+Tooltip de várias linhas sem tags MiniMessage ganha cores por linha, decididas
+depois de trocar os placeholders (um valor com `\n` vira várias linhas): a
+primeira é o título; linha começando com `∙` ou `⏵` é destaque; a primeira linha
+depois de uma em branco é cabeçalho; a última, se vier depois de uma em branco, é
+a ação (`✔` verde, `⌀` ou `✖` vermelho, o resto amarelo). Com `<` no texto, o
+tooltip inteiro é MiniMessage e não há cor automática.
+
 Em `tooltip`, `{value}` vira o valor atual do controle. `bind` é a chave que o
 código usa para ler e gravar o estado; sem handler, a tela usa o valor do JSON e
 guarda o clique só enquanto o dialog estiver aberto.

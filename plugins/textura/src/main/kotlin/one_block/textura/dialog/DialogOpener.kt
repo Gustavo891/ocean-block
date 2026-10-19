@@ -15,6 +15,7 @@ import net.kyori.adventure.text.JoinConfiguration
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import one_block.textura.api.DialogBinds
+import one_block.textura.api.DialogOpenResult
 import one_block.textura.api.TexturaTags
 import one_block.textura.dialog.json.ScreenCompiler
 import one_block.textura.dialog.json.ScreenDefinition
@@ -55,10 +56,10 @@ class DialogOpener(
     @Volatile
     private var warnedKit: UiKit? = null
 
-    fun open(player: Player, screenId: String, values: Map<String, String>, binds: DialogBinds): Boolean {
+    fun open(player: Player, screenId: String, values: Map<String, String>, binds: DialogBinds): DialogOpenResult {
         if (!Bukkit.isPrimaryThread()) {
             Bukkit.getScheduler().runTask(plugin, Runnable { if (player.isOnline) open(player, screenId, values, binds) })
-            return true
+            return DialogOpenResult.Shown
         }
         return show(player, DialogSession(screenId, binds, values, player, settings))
     }
@@ -82,14 +83,14 @@ class DialogOpener(
         current.remove(id)
     }
 
-    private fun show(player: Player, session: DialogSession): Boolean {
+    private fun show(player: Player, session: DialogSession): DialogOpenResult {
         val definition = screens.screens[session.screenId] ?: run {
             plugin.logger.warning("[ui] Tela '${session.screenId}' não existe")
-            return false
+            return DialogOpenResult.MissingScreen
         }
         val theme = themes.themes[definition.theme] ?: run {
             plugin.logger.warning("[ui:${definition.id}] Tema '${definition.theme}' não existe")
-            return false
+            return DialogOpenResult.Failed
         }
         session.persistent = definition.controlBinds
         session.defaults = definition.defaults
@@ -102,11 +103,11 @@ class DialogOpener(
         if (session.page == null) session.page = definition.firstPage
         val snapshot = kit() ?: run {
             player.sendMessage(Component.text("Interface indisponível agora, tente de novo em instantes.", NamedTextColor.RED))
-            return false
+            return DialogOpenResult.NeedsPack
         }
         if (!packStatus.loaded(player)) {
             player.showDialog(fallback())
-            return false
+            return DialogOpenResult.NeedsPack
         }
 
         val warn = warner(snapshot, definition.id)
@@ -123,12 +124,12 @@ class DialogOpener(
             dialog(definition, compiler.title(definition, session), body)
         }.getOrElse {
             plugin.logger.log(Level.SEVERE, "[ui:${definition.id}] Falha ao montar a tela", it)
-            return false
+            return DialogOpenResult.Failed
         }
 
         current[player.uniqueId] = Current(token, session, actions.toList())
         player.showDialog(rendered)
-        return true
+        return DialogOpenResult.Shown
     }
 
     @EventHandler
@@ -152,6 +153,7 @@ class DialogOpener(
                 val index = match.groupValues[2].toIntOrNull() ?: return
                 val state = current[player.uniqueId]?.takeIf { it.token == token } ?: return
                 val action = state.actions.getOrNull(index) ?: return
+                if (!current.remove(player.uniqueId, state)) return
                 run(player, state.session, action)
             }
         }
