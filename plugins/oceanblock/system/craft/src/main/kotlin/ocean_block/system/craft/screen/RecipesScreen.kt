@@ -1,0 +1,98 @@
+package ocean_block.system.craft.screen
+
+import ocean_block.system.craft.recipe.CraftResult
+import ocean_block.system.craft.recipe.OceanRecipe
+import ocean_block.system.craft.recipe.RecipeCategory
+import ocean_block.system.craft.recipe.RecipeCrafter
+import ocean_block.system.craft.recipe.Recipes
+import one_block.textura.api.DialogApi
+import one_block.textura.api.DialogBinds
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.logging.Logger
+
+class RecipesScreen(private val logger: Logger) {
+
+    private val views = ConcurrentHashMap<UUID, RecipesView>()
+
+    fun open(player: Player) {
+        registerIcons()
+        if (available().isEmpty()) {
+            player.sendRichMessage("<red>Nenhuma receita disponível.")
+            return
+        }
+        if (!DialogApi.open(player, SCREEN_ID) { bind(player) }) {
+            player.sendRichMessage("<red>A tela de receitas não está disponível.")
+            logger.warning("[receitas] a tela '$SCREEN_ID' do Textura não abriu para ${player.name}; confira configs/ui/$SCREEN_ID.json e rode /textura gerar")
+        }
+    }
+
+    fun forget(id: UUID) {
+        views.remove(id)
+    }
+
+    fun registerIcons() {
+        DialogApi.registerItemIcons(Recipes.all().map { materialOf(it.result()) })
+    }
+
+    private fun DialogBinds.bind(player: Player) {
+        val id = player.uniqueId
+        text("titulo") { category(id).displayName }
+        text("titulo_icone") { category(id).icon }
+        list("categorias") { RecipeEntries.categories(available(), category(id)) }
+        list("chips") { chips(player) }
+        list("receitas") { recipes(id).map { RecipeEntries.card(cardInput(player, it)) } }
+        listPage("receitas") { page(id) }
+        list("paginacao") { RecipeEntries.pagination(page(id), recipes(id).size) }
+        listButton("categoria") { _, index -> select(id, index) }
+        listButton("craftar") { _, index -> craft(player, index) }
+        button("anterior") { turn(id, -1) }
+        button("proxima") { turn(id, 1) }
+    }
+
+    private fun available(): List<RecipeCategory> = Recipes.byCategory().keys.toList()
+
+    private fun category(id: UUID): RecipeCategory =
+        RecipeEntries.activeCategory(views[id]?.category, available()) ?: RecipeCategory.entries.first()
+
+    private fun recipes(id: UUID): List<OceanRecipe> = Recipes.byCategory()[category(id)].orEmpty()
+
+    private fun page(id: UUID): Int = RecipeEntries.clampPage(views[id]?.page ?: 0, recipes(id).size)
+
+    private fun chips(player: Player): List<Map<String, String>> {
+        val ingredients = RecipeEntries.chipIngredients(recipes(player.uniqueId))
+        val counts = ingredients.associate { it.label to RecipeCrafter.count(player, it) }
+        return RecipeEntries.chips(ingredients, counts)
+    }
+
+    private fun cardInput(player: Player, recipe: OceanRecipe): CardInput {
+        val item = recipe.result()
+        return CardInput(recipe, materialOf(item), item.amount, RecipeCrafter.shortages(player, recipe))
+    }
+
+    private fun select(id: UUID, index: Int) {
+        val chosen = available().getOrNull(index) ?: return
+        views[id] = RecipesView(chosen, 0)
+    }
+
+    private fun turn(id: UUID, delta: Int) {
+        val current = category(id)
+        views[id] = RecipesView(current, RecipeEntries.clampPage(page(id) + delta, recipes(id).size))
+    }
+
+    private fun craft(player: Player, index: Int) {
+        val recipe = recipes(player.uniqueId).getOrNull(index) ?: return
+        when (val result = RecipeCrafter.craft(player, recipe)) {
+            is CraftResult.Crafted -> player.sendRichMessage("<green>Você craftou <white>${result.item.amount}x ${recipe.name}</white>.")
+            is CraftResult.Missing -> player.sendRichMessage("<red>${RecipeEntries.missingText(result.shortages)}")
+        }
+    }
+
+    private fun materialOf(item: ItemStack): String = item.type.key().value()
+
+    companion object {
+        const val SCREEN_ID = "receitas"
+    }
+}

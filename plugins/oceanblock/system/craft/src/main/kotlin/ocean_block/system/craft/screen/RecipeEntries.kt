@@ -1,0 +1,86 @@
+package ocean_block.system.craft.screen
+
+import ocean_block.system.craft.recipe.Ingredient
+import ocean_block.system.craft.recipe.OceanRecipe
+import ocean_block.system.craft.recipe.RecipeCategory
+import ocean_block.system.craft.recipe.Shortage
+
+data class CardInput(
+    val recipe: OceanRecipe,
+    val item: String,
+    val amount: Int,
+    val shortages: List<Shortage>,
+)
+
+object RecipeEntries {
+
+    const val CARDS_PER_PAGE = 6
+    const val MAX_CHIPS = 4
+    private const val SEPARATOR = " ∙ "
+    private const val BULLET = "∙ "
+    private const val READY = "✔ Pronto! Clique para craftar."
+    private const val MISSING = "⌀ Falta: "
+    private const val OPEN = "✔ Aberta agora!"
+    private const val BROWSE = "Clique para ver!"
+
+    fun categories(available: List<RecipeCategory>, active: RecipeCategory): List<Map<String, String>> =
+        available.map { category ->
+            mapOf(
+                "nome" to category.displayName,
+                "icone" to category.icon,
+                "descricao" to category.description,
+                "ativa" to (category == active).toString(),
+                "acao" to if (category == active) OPEN else BROWSE,
+            )
+        }
+
+    fun activeCategory(wanted: RecipeCategory?, available: List<RecipeCategory>): RecipeCategory? =
+        wanted?.takeIf { it in available } ?: available.firstOrNull()
+
+    fun chipIngredients(recipes: List<OceanRecipe>): List<Ingredient> =
+        recipes.flatMap { it.ingredients }.distinctBy { it.label }.take(MAX_CHIPS)
+
+    fun chips(ingredients: List<Ingredient>, counts: Map<String, Int>): List<Map<String, String>> =
+        ingredients.map { ingredient -> mapOf("texto" to amountOf(ingredient, counts[ingredient.label] ?: 0)) }
+
+    fun card(input: CardInput): Map<String, String> {
+        val recipe = input.recipe
+        val missing = input.shortages.isNotEmpty()
+        return mapOf(
+            "item" to input.item,
+            "qtd" to input.amount.toString(),
+            "nome" to recipe.name,
+            "descricao" to recipe.description,
+            "custo" to cost(recipe.ingredients),
+            "custo_lista" to recipe.ingredients.joinToString("\n") { BULLET + amountOf(it, it.amount) },
+            "falta" to missing.toString(),
+            "acao" to if (missing) missingText(input.shortages) else READY,
+        )
+    }
+
+    fun cost(ingredients: List<Ingredient>): String =
+        ingredients.joinToString(SEPARATOR) { amountOf(it, it.amount) }
+
+    fun missingText(shortages: List<Shortage>): String =
+        MISSING + shortages.joinToString(SEPARATOR) { amountOf(it.ingredient, it.missing) }
+
+    fun pageCount(size: Int): Int = maxOf(1, (size + CARDS_PER_PAGE - 1) / CARDS_PER_PAGE)
+
+    fun clampPage(page: Int, size: Int): Int = page.coerceIn(0, pageCount(size) - 1)
+
+    fun pagination(page: Int, size: Int): List<Map<String, String>> {
+        val pages = pageCount(size)
+        if (pages <= 1) return emptyList()
+        val current = clampPage(page, size)
+        return listOf(
+            mapOf(
+                "pagina" to (current + 1).toString(),
+                "paginas" to pages.toString(),
+                "sem_anterior" to (current == 0).toString(),
+                "sem_proxima" to (current == pages - 1).toString(),
+            ),
+        )
+    }
+
+    private fun amountOf(ingredient: Ingredient, count: Int): String = "$count ${ingredient.labelFor(count)}"
+}

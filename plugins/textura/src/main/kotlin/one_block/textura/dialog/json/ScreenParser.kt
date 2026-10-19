@@ -155,6 +155,7 @@ class ScreenParser(private val logger: Logger) {
                 is DefContainer -> node.children.forEach(::walk)
                 is DefText -> {
                     placeholders(node.text)
+                    placeholders(node.icon)
                     placeholders(node.tooltip)
                 }
                 is DefSwitch -> {
@@ -176,6 +177,7 @@ class ScreenParser(private val logger: Logger) {
                 is DefButton -> {
                     node.bind?.let(keys::add)
                     placeholders(node.label)
+                    placeholders(node.icon)
                     placeholders(node.tooltip)
                     flag(node.selected)
                     flag(node.disabled)
@@ -184,6 +186,7 @@ class ScreenParser(private val logger: Logger) {
                 is DefNav -> {
                     node.bind?.let(keys::add)
                     placeholders(node.label)
+                    placeholders(node.icon)
                     placeholders(node.tooltip)
                     flag(node.selected)
                     steps(node.click)
@@ -202,6 +205,7 @@ class ScreenParser(private val logger: Logger) {
                 is DefIcon -> node.bind?.let(keys::add)
                 is DefChip -> {
                     placeholders(node.label)
+                    placeholders(node.icon)
                     placeholders(node.tooltip)
                 }
                 is DefPair -> {

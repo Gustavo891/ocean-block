@@ -78,7 +78,7 @@ class OceanBlockPlugin : JavaPlugin() {
             { CustomItemSystem.init(this, viewFrame, paperCommandManager) },
             { AuctionHouseSystem.init(this, viewFrame) },
             { CoinFlipSystem.init(this, viewFrame) },
-            { CraftSystem.init(paperCommandManager) },
+            { CraftSystem.init(this, paperCommandManager) },
             { CurrenciesSystem.init(this, paperCommandManager) },
             { CollectionsSystem.init(this, viewFrame, paperCommandManager) },
             { EnchantsSystem.init(this, paperCommandManager) },

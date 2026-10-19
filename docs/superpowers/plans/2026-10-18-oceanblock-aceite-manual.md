@@ -88,3 +88,39 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] `/ilha reset terrain <dono> -confirm` não deixa detrito fantasma (somem no tick seguinte).
 - [ ] Reiniciar o servidor com detritos no mundo: depois de subir não sobra nenhum `ItemDisplay` de detrito.
 - [ ] Sem erros `[deriva]` no log durante toda a sessão.
+
+## 8. Receitas
+
+### Preparação
+- [ ] Depois de instalar o jar com a tela, `/textura gerar` termina sem aviso `[ui:receitas]` no console e o pack novo chega aos jogadores (o hash muda).
+- [ ] Antes do `/textura gerar`, o card mostra o slot vazio (sem o ícone do item); depois dele o slot mostra a vara de pesca (Gancho) e o tear (Rede).
+
+### Abrir
+- [ ] `/receitas`, `/craft` e `/receita` abrem a mesma tela, com título `Receitas`, tema de pedra e o rodapé `Os itens vão para o seu inventário.`
+- [ ] Clicar no NPC "RECEITAS" do spawn abre a tela.
+- [ ] Sem a textura aceita, aparece o aviso `Textura necessária` do Textura em vez da tela (o chat também mostra `A tela de receitas não está disponível.`, porque o `DialogApi.open` devolve false nesse caso).
+- [ ] Renomear `configs/ui/receitas.json`, `/textura reload` e rodar `/receitas`: chat `A tela de receitas não está disponível.` e um aviso `[receitas]` no console. Voltar o nome e `/textura reload`.
+
+### Categorias e chips
+- [ ] A coluna da esquerda lista `Ferramentas` (picareta) e `Coleta` (baú); a aberta fica destacada e o tooltip diz `✔ Aberta agora!`, a outra `Clique para ver!`.
+- [ ] Clicar em `Coleta` troca o cabeçalho para `Coleta` com o ícone do baú e mostra só a Rede; voltar para `Ferramentas` mostra só o Gancho.
+- [ ] Os chips do topo mostram quanto o jogador tem dos ingredientes da categoria aberta (ex.: `12 Tábuas`, `1 Linha`, singular com 1); pegar ou largar linha e reabrir atualiza o número.
+- [ ] Fechar a tela em `Coleta` e abrir de novo: continua em `Coleta`. Sair do servidor e entrar de novo: volta para `Ferramentas`.
+
+### Cards
+- [ ] Cada card mostra o item no slot (tooltip com nome e descrição), o nome, a linha de custo (`3 Tábuas ∙ 2 Linhas` no Gancho, `4 Tábuas ∙ 5 Linhas` na Rede) e o botão `Craftar` com o carrinho.
+- [ ] Sem material, o botão `Craftar` aparece desabilitado, não reage ao clique e o tooltip termina com `⌀ Falta: ...` listando só o que falta (ex.: `⌀ Falta: 1 Tábua ∙ 2 Linhas`).
+- [ ] Com material, o tooltip termina com `✔ Pronto! Clique para craftar.`
+- [ ] Com 6 receitas ou menos numa categoria, a linha de páginas (`«  1/1  »`) não aparece.
+
+### Craftar
+- [ ] Com 3 tábuas e 2 linhas, `Craftar` no Gancho: consome exatamente isso, entrega um gancho que funciona (puxa detrito), mostra `Você craftou 1x Gancho.` e a tela se redesenha com os chips e os botões atualizados.
+- [ ] Com 4 tábuas e 5 linhas, `Craftar` na Rede: entrega a rede, que pode ser colocada e coleta detritos.
+- [ ] Tábuas divididas em pilhas de madeiras diferentes (ex.: 1 de carvalho + 2 de abeto, em slots separados) contam juntas e são consumidas certo; o que sobra fica no inventário.
+- [ ] Inventário cheio (sem slot livre): o craft consome os ingredientes e o item cai aos pés do jogador.
+- [ ] Craftar duas redes avança o desafio `CRAFT_REDE` do battle pass.
+- [ ] Largar os ingredientes com a tela aberta e clicar `Craftar` (botão ainda ativo): nada é consumido, aparece `⌀ Falta: ...` em vermelho e a tela se redesenha com o botão desabilitado.
+
+### Bancada
+- [ ] A bancada de trabalho não faz mais o gancho nem a rede com tábua e linha em nenhum formato.
+- [ ] Sem erros `[receitas]` ou `[ui:receitas]` no log durante toda a sessão.
