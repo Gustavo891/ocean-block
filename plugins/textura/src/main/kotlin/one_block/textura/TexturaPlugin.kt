@@ -89,8 +89,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
     var uiKit: UiKit? = null
         private set
     private lateinit var dialogOpener: DialogOpener
-    lateinit var notifications: NotificationService
-        private set
+    private lateinit var notifications: NotificationService
     private val packStatus = PackStatusTracker(PACK_ID) { dialogOpener.forget(it) }
     private var server: ResourcePackServer? = null
     private var localUrl: String = ""

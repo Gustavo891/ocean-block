@@ -9,7 +9,7 @@ object DialogApi {
     @Volatile
     private var opener: DialogOpener? = null
 
-    fun init(opener: DialogOpener) {
+    internal fun init(opener: DialogOpener) {
         this.opener = opener
     }
 

@@ -3,11 +3,11 @@ package one_block.textura.notify.render
 import net.kyori.adventure.key.Key
 import one_block.textura.dialog.kit.UiTextFont
 
-data class IconGlyph(val char: String, val advance: Int)
+internal data class IconGlyph(val char: String, val advance: Int)
 
-data class PlaqueGlyphs(val leftCap: String, val rightCap: String, val bodies: Map<Int, String>)
+internal data class PlaqueGlyphs(val leftCap: String, val rightCap: String, val bodies: Map<Int, String>)
 
-class NotificationKit(
+internal class NotificationKit(
     val textFont: UiTextFont,
     val textTops: Set<Int>,
     val plaque: PlaqueGlyphs?,
@@ -22,14 +22,14 @@ class NotificationKit(
     }
 }
 
-object NotificationFonts {
+internal object NotificationFonts {
 
     const val NAMESPACE = "textura"
 
     fun key(textTop: Int): Key = Key.key(NAMESPACE, "notify/$textTop")
 }
 
-object NotificationIcons {
+internal object NotificationIcons {
 
     const val ITEM_PREFIX = "item:"
     const val GLYPH_PREFIX = "glyph:"

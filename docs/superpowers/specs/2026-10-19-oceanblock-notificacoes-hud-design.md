@@ -18,7 +18,7 @@ Base validada: spike `8b16b80` (`/textura hudtest`) — o shader `core/text.vsh`
 | Fundo | Placa escura semitransparente por linha (glyphs de fundo do HUD), na largura do conteúdo, alinhada ao lado da âncora (direita alinha pela direita). |
 | Ícones de item | Novo gerador no `/textura gerar`: assa a textura vanilla do item (mesmo fallback item → bloco da `VanillaTextures`) como glyph na fonte do HUD de notificação; materiais registrados por código (`NotificationApi.registerItemIcons`) antes do build. |
 | Shader | Evolução do spike: marca `R=254`, âncora no `G`, paleta no `B` (nibble alto) e **índice de linha no nibble baixo do `B`** para empilhar para cima nas âncoras de base (o shader sobe `linha × altura`); sombra com `shadow_color` explícita `R=253`. Detecção de sombra por 1/4 continua desligada. |
-| Atualização | A barra só é reenviada quando o conteúdo muda; um task de 5 ticks expira linhas vencidas. Sem jogador com notificações, a barra é escondida. |
+| Atualização | A barra só é reenviada quando o conteúdo muda; um task de 5 ticks expira linhas vencidas. A barra fica sempre presente para todo jogador online, com nome vazio quando não há linha viva (os sprites YELLOW/PROGRESS do pack são transparentes, então ela não desenha nada), para que as outras barras não pulem 19 px quando notificações vêm e vão. |
 | Compatibilidade | `/textura hudtest` continua (debug). Outras barras (battle-pass) continuam funcionando. Sem o pack/shader, as notificações aparecem empilhadas no topo (mesma degradação do spike). |
 
 ## 2. Uso no ocean-block

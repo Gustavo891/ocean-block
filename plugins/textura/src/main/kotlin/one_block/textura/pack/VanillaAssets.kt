@@ -6,14 +6,15 @@ import java.awt.image.BufferedImage
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URI
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.security.MessageDigest
+import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Logger
 import java.util.zip.ZipFile
 import javax.imageio.ImageIO
 
 class VanillaAssets(private val folder: File, private val version: String, private val logger: Logger) {
-
-    private val lock = Any()
 
     @Volatile
     private var failed = false
@@ -38,7 +39,7 @@ class VanillaAssets(private val folder: File, private val version: String, priva
     fun lang(locale: String, download: Boolean): Map<String, String> {
         if (!LOCALE.matches(locale)) return emptyMap()
         val cached = File(folder, "lang-$version-$locale.json")
-        if (cached.isFile) return parseLang(cached.readText(Charsets.UTF_8))
+        if (cached.isFile) readCachedLang(cached)?.let { return it }
         if (locale == JAR_LOCALE) {
             val jar = jar(download) ?: return emptyMap()
             return runCatching {
@@ -49,14 +50,29 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         }
         if (!download) return emptyMap()
         return runCatching {
-            val text = fetchLang(locale)
-            folder.mkdirs()
-            cached.writeText(text, Charsets.UTF_8)
-            parseLang(text)
+            synchronized(lockFor(cached)) {
+                if (cached.isFile) readCachedLang(cached)?.let { return it }
+                val text = fetchLang(locale)
+                val parsed = parseLang(text)
+                if (parsed.isEmpty()) error("idioma $locale veio vazio ou inválido")
+                folder.mkdirs()
+                val temp = File(folder, cached.name + ".part")
+                temp.writeText(text, Charsets.UTF_8)
+                Files.move(temp.toPath(), cached.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
+                parsed
+            }
         }.getOrElse {
             logger.warning("[notificacoes] Não foi possível baixar o idioma $locale do client $version: ${it.message}")
             emptyMap()
         }
+    }
+
+    private fun readCachedLang(cached: File): Map<String, String>? {
+        val parsed = runCatching { parseLang(cached.readText(Charsets.UTF_8)) }.getOrDefault(emptyMap())
+        if (parsed.isNotEmpty()) return parsed
+        logger.warning("[notificacoes] Cache de idioma ${cached.name} inválido; apagado para baixar de novo")
+        cached.delete()
+        return null
     }
 
     private fun fetchLang(locale: String): String {
@@ -101,7 +117,7 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         val file = File(folder, "client-$version.jar")
         if (file.isFile) return file
         if (!download || failed) return null
-        synchronized(lock) {
+        synchronized(lockFor(file)) {
             if (file.isFile) return file
             return runCatching { fetch(file) }.getOrElse {
                 failed = true
@@ -156,6 +172,10 @@ class VanillaAssets(private val folder: File, private val version: String, priva
     }
 
     private companion object {
+        private val LOCKS = ConcurrentHashMap<String, Any>()
+
+        fun lockFor(file: File): Any = LOCKS.computeIfAbsent(file.absoluteFile.normalize().path) { Any() }
+
         const val MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
         const val RESOURCES = "https://resources.download.minecraft.net"
         const val JAR_LOCALE = "en_us"

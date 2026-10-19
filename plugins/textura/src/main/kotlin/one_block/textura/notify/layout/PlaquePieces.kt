@@ -1,6 +1,6 @@
 package one_block.textura.notify.layout
 
-object PlaquePieces {
+internal object PlaquePieces {
 
     const val CAP_WIDTH = 1
     val BODY_WIDTHS: List<Int> = listOf(128, 64, 32, 16, 8, 4, 2, 1)

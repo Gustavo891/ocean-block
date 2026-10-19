@@ -46,13 +46,48 @@ class PublicApiKotlinTypesTest : StringSpec({
 
     val reachable = listOf(one_block.textura.registry.TitleFontSource::class.java)
 
-    fun publicClasses(): List<Class<*>> = (packages.flatMap(::classesIn) + reachable).filter { Modifier.isPublic(it.modifiers) }
+    fun exposed(member: Executable): Boolean =
+        Modifier.isPublic(member.modifiers) && (member !is java.lang.reflect.Method || INTERNAL_MARK !in member.name)
 
-    fun violations(): List<String> = publicClasses()
+    fun texturaClasses(type: Type, seen: MutableSet<Type> = mutableSetOf()): List<Class<*>> {
+        if (!seen.add(type)) return emptyList()
+        return when (type) {
+            is Class<*> -> when {
+                type.isArray -> texturaClasses(type.componentType, seen)
+                type.name.startsWith(TEXTURA) -> listOf(type)
+                else -> emptyList()
+            }
+            is ParameterizedType -> texturaClasses(type.rawType, seen) + type.actualTypeArguments.flatMap { texturaClasses(it, seen) }
+            is WildcardType -> (type.upperBounds + type.lowerBounds).flatMap { texturaClasses(it, seen) }
+            is GenericArrayType -> texturaClasses(type.genericComponentType, seen)
+            is TypeVariable<*> -> type.bounds.flatMap { texturaClasses(it, seen) }
+            else -> emptyList()
+        }
+    }
+
+    fun exposedTypes(type: Class<*>): List<Type> =
+        listOfNotNull(type.genericSuperclass) + type.genericInterfaces +
+            (type.constructors.toList() + type.methods.filter { it.declaringClass == type }).filter(::exposed).flatMap(::signatureTypes) +
+            type.fields.filter { it.declaringClass == type }.map { it.genericType }
+
+    fun publicClasses(): List<Class<*>> {
+        val found = linkedSetOf<Class<*>>()
+        val queue = ArrayDeque((packages.flatMap(::classesIn) + reachable).filter { Modifier.isPublic(it.modifiers) })
+        while (queue.isNotEmpty()) {
+            val type = queue.removeFirst()
+            if (!found.add(type)) continue
+            exposedTypes(type).flatMap { texturaClasses(it) }.filter { Modifier.isPublic(it.modifiers) && it !in found }.forEach(queue::addLast)
+        }
+        return found.toList()
+    }
+
+    fun checkedClasses(): List<Class<*>> = publicClasses().filterNot { it.name in PRE_EXISTING_REACHABLE }
+
+    fun violations(): List<String> = checkedClasses()
         .flatMap { type ->
             val supertypes = listOfNotNull(type.genericSuperclass) + type.genericInterfaces
             val members = (type.constructors.toList() + type.methods.filter { it.declaringClass == type })
-                .filter { Modifier.isPublic(it.modifiers) }
+                .filter(::exposed)
                 .flatMap { member -> signatureTypes(member).flatMap { kotlinTypes(it) }.map { "${type.name}: $member -> $it" } }
             val fields = type.fields.filter { it.declaringClass == type }
                 .flatMap { field -> kotlinTypes(field.genericType).map { "${type.name}.${field.name} -> $it" } }
@@ -61,13 +96,20 @@ class PublicApiKotlinTypesTest : StringSpec({
         .distinct()
 
     "nenhuma função pública tem parâmetro com valor padrão" {
-        publicClasses()
+        checkedClasses()
             .flatMap { type ->
                 type.methods
                     .filter { it.declaringClass == type && it.name.endsWith(DEFAULTS) && it.name != DATA_COPY }
                     .map { "${type.name}.${it.name}" }
             }
             .joinToString("\n") shouldBe ""
+    }
+
+    "a varredura segue as assinaturas públicas até outras classes do Textura" {
+        val reached = publicClasses()
+        reached.contains(one_block.textura.notify.NotificationLine::class.java) shouldBe true
+        reached.any { it.name.startsWith("one_block.textura.notify.service.") } shouldBe false
+        PRE_EXISTING_REACHABLE.forEach { name -> reached.any { it.name == name } shouldBe true }
     }
 
     "a varredura enxerga as classes da API" {
@@ -83,3 +125,17 @@ class PublicApiKotlinTypesTest : StringSpec({
 
 private const val DEFAULTS = "\$default"
 private const val DATA_COPY = "copy\$default"
+private const val INTERNAL_MARK = "$"
+private const val TEXTURA = "one_block.textura."
+private val PRE_EXISTING_REACHABLE = setOf(
+    "one_block.textura.model.BlockDefinition",
+    "one_block.textura.model.BlockDefinition\$Companion",
+    "one_block.textura.model.BlockEntryType",
+    "one_block.textura.model.BlockBase",
+    "one_block.textura.model.ItemData",
+    "one_block.textura.model.ItemType",
+    "one_block.textura.model.DisplayTransform",
+    "one_block.textura.registry.TitleFont",
+    "one_block.textura.registry.TitleFontRegistry",
+    "one_block.textura.registry.TitleFontRegistry\$Companion",
+)

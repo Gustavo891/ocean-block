@@ -15,9 +15,9 @@ import one_block.textura.hud.anchor.ScreenAnchor
 import one_block.textura.text.SpacingFont
 import one_block.textura.text.TextMetrics
 
-data class PaintedText(val component: Component, val width: Int)
+internal data class PaintedText(val component: Component, val width: Int)
 
-class TextPainter(private val textFont: UiTextFont, private val translate: (String) -> String?) {
+internal class TextPainter(private val textFont: UiTextFont, private val translate: (String) -> String?) {
 
     private data class Context(
         val color: TextColor?,
@@ -74,15 +74,15 @@ class TextPainter(private val textFont: UiTextFont, private val translate: (Stri
     }
 
     private fun measure(text: String, context: Context, own: Key): Int = when {
-        context.font == SpacingFont.KEY -> text.sumOf { SpacingFont.ADVANCES[it.toString()] ?: 0 }
+        context.font == SpacingFont.KEY -> text.sumOf { (SpacingFont.ADVANCES[it.toString()] ?: 0) + if (context.bold) 1 else 0 }
         context.font != null && context.font != own -> TextMetrics.calculateWidth(text)
         else -> text.codePoints().toArray().sumOf { codePoint ->
-            textFont.advance(codePoint) + if (context.bold && codePoint != ' '.code) 1 else 0
+            textFont.advance(codePoint) + if (context.bold) 1 else 0
         }
     }
 }
 
-object TranslationFormat {
+internal object TranslationFormat {
 
     private val PLACEHOLDER = Regex("""%(?:(\d+)\$)?([sd%])""")
 

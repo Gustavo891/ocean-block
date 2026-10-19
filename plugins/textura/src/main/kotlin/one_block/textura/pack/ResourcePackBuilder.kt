@@ -14,7 +14,7 @@ import one_block.textura.notify.render.NotificationKit
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
-data class BuiltPack(val zip: File, val uiKit: UiKit?, val notificationKit: NotificationKit?)
+internal data class BuiltPack(val zip: File, val uiKit: UiKit?, val notificationKit: NotificationKit?)
 
 /**
  * Monta o resource pack a partir dos registries e da pasta de dados.
@@ -22,7 +22,7 @@ data class BuiltPack(val zip: File, val uiKit: UiKit?, val notificationKit: Noti
  * Só orquestra: cada domínio tem seu escritor ([FontPackWriter], [ItemPackWriter],
  * [BlockPackWriter]), e quem conhece a API do Creative é o [PackBuilder].
  */
-class ResourcePackBuilder(
+internal class ResourcePackBuilder(
     glyphRegistry: GlyphRegistry,
     fontRegistry: FontRegistry,
     titleFontRegistry: TitleFontRegistry,

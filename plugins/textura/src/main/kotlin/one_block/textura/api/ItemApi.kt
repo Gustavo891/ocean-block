@@ -20,7 +20,7 @@ object ItemApi {
     @Volatile
     private var registry: ItemRegistry? = null
 
-    fun init(registry: ItemRegistry) {
+    internal fun init(registry: ItemRegistry) {
         this.registry = registry
     }
 

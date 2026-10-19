@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.function.Consumer
 
-object RegionConfigParser {
+internal object RegionConfigParser {
 
     const val MIN_LINES = 1
     const val MAX_LINES = 15

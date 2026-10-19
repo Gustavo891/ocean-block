@@ -18,7 +18,7 @@ object HudApi {
     @Volatile
     private var manager: HudManager? = null
 
-    fun init(manager: HudManager) {
+    internal fun init(manager: HudManager) {
         this.manager = manager
     }
 

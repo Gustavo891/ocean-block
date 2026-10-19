@@ -4,11 +4,11 @@ import one_block.textura.hud.anchor.AnchorMarker
 import one_block.textura.notify.region.NotificationRegion
 import one_block.textura.notify.region.StackDirection
 
-data class LineSlot(val textTop: Int, val lift: Int)
+internal data class LineSlot(val textTop: Int, val lift: Int)
 
-data class LineSpan(val boxLeft: Int, val boxWidth: Int, val contentLeft: Int)
+internal data class LineSpan(val boxLeft: Int, val boxWidth: Int, val contentLeft: Int)
 
-object LineGeometry {
+internal object LineGeometry {
 
     const val BASE_ASCENT = 7
     const val LINE_HEIGHT = 11

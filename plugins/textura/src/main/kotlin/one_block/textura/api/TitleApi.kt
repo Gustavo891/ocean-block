@@ -19,7 +19,7 @@ object TitleApi {
     @Volatile
     private var registry: TitleFontRegistry? = null
 
-    fun init(registry: TitleFontRegistry) {
+    internal fun init(registry: TitleFontRegistry) {
         this.registry = registry
     }
 

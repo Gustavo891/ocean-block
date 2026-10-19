@@ -23,7 +23,7 @@ object BlockApi {
     @Volatile
     private var allocator: NoteBlockAllocator? = null
 
-    fun init(registry: BlockRegistry, allocator: NoteBlockAllocator) {
+    internal fun init(registry: BlockRegistry, allocator: NoteBlockAllocator) {
         this.registry = registry
         this.allocator = allocator
     }

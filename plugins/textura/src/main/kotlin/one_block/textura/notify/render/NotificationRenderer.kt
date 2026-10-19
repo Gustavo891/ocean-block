@@ -12,7 +12,7 @@ import one_block.textura.notify.layout.PlaquePieces
 import one_block.textura.notify.region.NotificationRegion
 import one_block.textura.text.SpacingFont
 
-class NotificationRenderer(private val miniMessage: MiniMessage) {
+internal class NotificationRenderer(private val miniMessage: MiniMessage) {
 
     private class Cursor {
         val parts = mutableListOf<Component>()

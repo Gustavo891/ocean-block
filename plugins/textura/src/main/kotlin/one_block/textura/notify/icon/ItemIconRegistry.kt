@@ -2,7 +2,7 @@ package one_block.textura.notify.icon
 
 import java.util.concurrent.ConcurrentHashMap
 
-object ItemIconRegistry {
+internal object ItemIconRegistry {
 
     private val NAME = Regex("[a-z0-9_]+")
     private val materials = ConcurrentHashMap.newKeySet<String>()

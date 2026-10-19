@@ -157,9 +157,9 @@ class NotificationRendererTest : StringSpec({
         translatables(painted.component) shouldBe 0
     }
 
-    "negrito soma 1px por caractere visível e shift conta o avanço real" {
+    "negrito soma 1px por caractere, espaço incluído, e shift conta o avanço real" {
         val painter = TextPainter(textFont) { null }
-        painter.paint(TexturaTags.miniMessage.deserialize("<b>ab c</b>"), ScreenAnchor.TOP_LEFT, 0, NotificationFonts.key(0)).width shouldBe 6 * 3 + 3 + 4
+        painter.paint(TexturaTags.miniMessage.deserialize("<b>ab c</b>"), ScreenAnchor.TOP_LEFT, 0, NotificationFonts.key(0)).width shouldBe 6 * 3 + 4 + 4
         painter.paint(TexturaTags.miniMessage.deserialize("a<shift:-3>b"), ScreenAnchor.TOP_LEFT, 0, NotificationFonts.key(0)).width shouldBe 9
     }
 

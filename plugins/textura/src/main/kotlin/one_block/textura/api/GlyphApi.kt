@@ -15,7 +15,7 @@ object GlyphApi {
     @Volatile
     private var registry: GlyphRegistry? = null
 
-    fun init(registry: GlyphRegistry) {
+    internal fun init(registry: GlyphRegistry) {
         this.registry = registry
     }
 

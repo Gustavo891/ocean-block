@@ -11,7 +11,7 @@ object NotificationApi {
     @Volatile
     private var service: NotificationService? = null
 
-    fun init(service: NotificationService) {
+    internal fun init(service: NotificationService) {
         this.service = service
     }
 

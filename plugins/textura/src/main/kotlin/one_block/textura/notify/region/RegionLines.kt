@@ -2,9 +2,9 @@ package one_block.textura.notify.region
 
 import one_block.textura.notify.NotificationLine
 
-data class ActiveLine(val line: NotificationLine, val expiresAt: Long)
+internal data class ActiveLine(val line: NotificationLine, val expiresAt: Long)
 
-class RegionLines(private val maxLines: Int) {
+internal class RegionLines(private val maxLines: Int) {
 
     private val active = ArrayList<ActiveLine>()
 

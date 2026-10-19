@@ -11,19 +11,20 @@ import one_block.textura.notify.render.NotificationRenderer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
-class NotificationService(private val plugin: Plugin, initialKit: NotificationKit) : Listener {
+internal class NotificationService(private val plugin: Plugin, initialKit: NotificationKit) : Listener {
 
     private class Viewer(val bar: BossBar) {
         val regions = LinkedHashMap<String, RegionLines>()
-        var shown = false
-        var lastName: Component? = null
+        var lastName: Component = Component.empty()
     }
 
     private val renderer = NotificationRenderer(TexturaTags.miniMessage)
@@ -43,6 +44,7 @@ class NotificationService(private val plugin: Plugin, initialKit: NotificationKi
     fun start() {
         task?.cancel()
         task = Bukkit.getScheduler().runTaskTimer(plugin, Runnable { tick() }, EXPIRY_PERIOD, EXPIRY_PERIOD)
+        Bukkit.getOnlinePlayers().forEach(::viewer)
     }
 
     fun stop() {
@@ -83,55 +85,57 @@ class NotificationService(private val plugin: Plugin, initialKit: NotificationKi
             if (line.icon != null && kit.icon(line.icon) == null && kit.textTops.isNotEmpty() && warned.add("icone:${line.icon}")) {
                 plugin.logger.warning("[notificacoes] Ícone '${line.icon}' não está no pack; registre com NotificationApi.registerItemIcons antes do build")
             }
-            val viewer = viewers.getOrPut(player.uniqueId) { Viewer(BossBar.bossBar(Component.empty(), 1.0f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS)) }
+            val viewer = viewer(player)
             viewer.regions.getOrPut(region.id) { RegionLines(region.maxLines) }.push(line, now())
-            refresh(player, viewer)
+            refresh(viewer)
         }
     }
 
     fun clear(player: Player, regionId: String) {
         onMain {
             val viewer = viewers[player.uniqueId] ?: return@onMain
-            if (viewer.regions[regionId]?.clear() == true) refresh(player, viewer)
+            if (viewer.regions[regionId]?.clear() == true) refresh(viewer)
         }
+    }
+
+    private fun viewer(player: Player): Viewer = viewers.getOrPut(player.uniqueId) {
+        val viewer = Viewer(BossBar.bossBar(Component.empty(), 1.0f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS))
+        BossBarOrder.showFirst(player, viewer.bar)
+        viewer
     }
 
     private fun tick() {
         val now = now()
         viewers.forEach { (uuid, viewer) ->
-            val player = Bukkit.getPlayer(uuid)
-            if (player == null) {
+            if (Bukkit.getPlayer(uuid) == null) {
                 viewers.remove(uuid)
                 return@forEach
             }
             val expired = viewer.regions.values.map { it.expire(now) }.any { it }
-            if (expired) refresh(player, viewer)
+            if (expired) refresh(viewer)
         }
     }
 
     private fun refreshAll() {
-        viewers.forEach { (uuid, viewer) -> Bukkit.getPlayer(uuid)?.let { refresh(it, viewer) } }
+        viewers.values.forEach(::refresh)
     }
 
-    private fun refresh(player: Player, viewer: Viewer) {
-        val ordered = regions.values.toList()
+    private fun refresh(viewer: Viewer) {
         val lines = viewer.regions.mapValues { (_, state) -> state.lines().map { it.line } }
-        if (lines.values.all { it.isEmpty() }) {
-            if (viewer.shown) player.hideBossBar(viewer.bar)
-            viewer.shown = false
-            viewer.lastName = null
-            return
+        val name = if (lines.values.all { it.isEmpty() }) {
+            Component.empty()
+        } else {
+            renderer.render(regions.values.toList(), lines, kit) { key -> translations[key] }
         }
-
-        val name = renderer.render(ordered, lines, kit) { key -> translations[key] }
         if (name != viewer.lastName) {
             viewer.bar.name(name)
             viewer.lastName = name
         }
-        if (!viewer.shown) {
-            BossBarOrder.showFirst(player, viewer.bar)
-            viewer.shown = true
-        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    fun onJoin(event: PlayerJoinEvent) {
+        viewer(event.player)
     }
 
     @EventHandler
@@ -150,7 +154,7 @@ class NotificationService(private val plugin: Plugin, initialKit: NotificationKi
     }
 }
 
-object BossBarOrder {
+internal object BossBarOrder {
 
     fun showFirst(player: Player, bar: BossBar) {
         val others = player.activeBossBars().filter { it != bar }

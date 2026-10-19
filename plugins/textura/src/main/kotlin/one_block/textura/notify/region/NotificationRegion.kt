@@ -2,9 +2,9 @@ package one_block.textura.notify.region
 
 import one_block.textura.hud.anchor.ScreenAnchor
 
-enum class StackDirection { DOWN, UP }
+internal enum class StackDirection { DOWN, UP }
 
-data class NotificationRegion(
+internal data class NotificationRegion(
     val id: String,
     val anchor: ScreenAnchor,
     val x: Int,

@@ -395,11 +395,13 @@ Limites: `perPage` acima de 64 vira 64 (com aviso); `count` de slot fica entre
 
 As notificações saem numa única bossbar por jogador. Ela junta as linhas de todas
 as regiões, e o shader `core/text.vsh` do pack move cada linha para o seu canto
-real da tela, em qualquer GUI scale ou resolução. A barra só aparece enquanto o
-jogador tem alguma linha viva. Ela é sempre a primeira bossbar do jogador: ao
-aparecer, esconde as outras e mostra elas de novo depois dela. Sem o pack (ou
-com um shaderpack que troca os core shaders), as linhas aparecem empilhadas no
-topo, nas cores do marcador.
+real da tela, em qualquer GUI scale ou resolução. A barra fica sempre presente
+para todo jogador online, com nome vazio quando não há linha viva. Os sprites
+YELLOW/PROGRESS do pack são transparentes, então ela não desenha nada, e as
+outras bossbars não pulam 19 px quando notificações vêm e vão. Ela é sempre a
+primeira bossbar do jogador: na entrada, esconde as outras e mostra elas de
+novo depois dela. Sem o pack (ou com um shaderpack que troca os core shaders),
+as linhas aparecem empilhadas no topo, nas cores do marcador.
 
 Cada chave de topo é uma região:
 
@@ -451,7 +453,14 @@ NotificationApi.clear(player, "coleta")
   `resource/assets/minecraft/lang/pt_br.json`), para que a largura medida bata
   com a desenhada.
 - Ícone: `item:<material>` ou `glyph:<id>`, desenhado com 8 px de altura antes do
-  texto. Ícone que não está no pack é omitido.
+  texto. Ícone que não está no pack é omitido. **Use sempre o campo de ícone.**
+  Um `<glyph:id>` (ou outro texto com fonte própria) dentro do texto fica na
+  altura da fonte dele, não na da linha. Um caractere que não existe na fonte de
+  texto das notificações (`ui.fonte-texto`) sai como o quadradinho de glyph
+  ausente e é medido com 6 px.
+- Cores: só existem as 16 cores legadas. Uma cor hex (`<#ff8800>`, gradiente)
+  vira a mais próxima delas. O negrito soma 1 px por caractere, espaço
+  incluído.
 - Um push com a mesma chave na mesma região troca a linha no lugar e reinicia o
   tempo. Quem chama acumula o valor (ex.: `+1` vira `+2`).
 - As linhas vencidas saem num task de 5 ticks. A barra só é reenviada quando o

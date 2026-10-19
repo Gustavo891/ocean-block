@@ -22,7 +22,7 @@ import java.security.MessageDigest
 import java.util.logging.Logger
 import javax.imageio.ImageIO
 
-class NotificationPackWriter(
+internal class NotificationPackWriter(
     private val regions: List<NotificationRegion>,
     private val textFont: UiTextFont,
     private val materials: Set<String>,
