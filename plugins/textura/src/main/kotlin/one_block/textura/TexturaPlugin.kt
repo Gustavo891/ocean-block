@@ -16,6 +16,7 @@ import one_block.textura.registry.BlockRegistry
 import one_block.textura.command.HudCommand
 import one_block.textura.command.TexturaCommand
 import one_block.textura.hud.HudManager
+import one_block.textura.hud.anchor.HudAnchorProbe
 import one_block.textura.http.ResourcePackServer
 import one_block.textura.listener.ChatListener
 import one_block.textura.menu.BlocksMenu
@@ -98,6 +99,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
         fontRegistry = FontRegistry()
         titleFontRegistry = TitleFontRegistry()
         TitleApi.init(titleFontRegistry)
+        HudAnchorProbe.registerFonts()
         itemRegistry = ItemRegistry(logger)
         ItemApi.init(itemRegistry)
         blockRegistry = BlockRegistry(logger)
@@ -162,6 +164,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
         Bukkit.getPluginManager().registerEvents(one_block.textura.listener.NoteBlockGuard(), this)
         Bukkit.getPluginManager().registerEvents(one_block.textura.listener.CustomBlockListener(logger), this)
         Bukkit.getPluginManager().registerEvents(hudManager, this)
+        Bukkit.getPluginManager().registerEvents(HudAnchorProbe, this)
         Bukkit.getPluginManager().registerEvents(packStatus, this)
         Bukkit.getPluginManager().registerEvents(dialogOpener, this)
 

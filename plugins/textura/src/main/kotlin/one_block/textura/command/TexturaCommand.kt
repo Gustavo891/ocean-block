@@ -25,6 +25,7 @@ import one_block.textura.TexturaPlugin
 import one_block.textura.glyph.GlyphImportResult
 import one_block.textura.glyph.GlyphImporter
 import one_block.textura.pack.PackAssets
+import one_block.textura.hud.anchor.HudAnchorProbe
 
 @CommandAlias("textura")
 @CommandPermission("textura.admin")
@@ -64,6 +65,26 @@ class TexturaCommand(private val plugin: TexturaPlugin) : BaseCommand() {
             DialogOpenResult.NeedsPack -> sender.sendMessage("§eTela '$id' não abriu: o jogador está sem a textura ou o pack ainda não foi gerado.")
             DialogOpenResult.MissingScreen -> sender.sendMessage("§cTela '$id' não existe em configs/ui.")
             DialogOpenResult.Failed -> sender.sendMessage("§cTela '$id' não abriu: tema inexistente ou erro ao montar. Veja o console.")
+        }
+    }
+
+    @Subcommand("hudtest")
+    @CommandCompletion("on|off")
+    fun hudTest(player: Player, @Optional estado: String?) {
+        if (!player.isOp) {
+            player.sendMessage("§cSó operadores podem usar este teste.")
+            return
+        }
+        when (estado?.lowercase() ?: "on") {
+            "on" -> {
+                HudAnchorProbe.show(player)
+                player.sendMessage("§aHUD de teste ancorada exibida. Sem o shader do pack ela aparece embolada no topo.")
+            }
+            "off" -> {
+                HudAnchorProbe.hide(player)
+                player.sendMessage("§eHUD de teste removida.")
+            }
+            else -> player.sendMessage("§cUso: /textura hudtest [on|off]")
         }
     }
 
