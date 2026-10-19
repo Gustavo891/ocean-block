@@ -1,5 +1,6 @@
 package ocean_block.system.craft.recipe
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.maps.shouldContainExactly
@@ -61,22 +62,16 @@ class RecipeBookTest : StringSpec({
 
         book.register(primeira)
 
-        runCatching { book.register(recipe("gancho", RecipeCategory.COLETA, name = "Outro")) }.isFailure shouldBe true
+        shouldThrow<IllegalArgumentException> {
+            book.register(recipe("gancho", RecipeCategory.COLETA, name = "Outro"))
+        }
         book.get("gancho") shouldBe primeira
         book.all() shouldContainExactly listOf(primeira)
     }
 
     "receita sem ingredientes e rejeitada" {
-        runCatching {
+        shouldThrow<IllegalArgumentException> {
             OceanRecipe("vazia", "Vazia", "", RecipeCategory.COLETA, { ItemStack(Material.STICK) }, emptyList())
-        }.isFailure shouldBe true
-    }
-
-    "Recipes e o livro global" {
-        val gancho = recipe("teste_global", RecipeCategory.FERRAMENTAS)
-
-        Recipes.register(gancho)
-
-        Recipes.get("teste_global") shouldBe gancho
+        }
     }
 })

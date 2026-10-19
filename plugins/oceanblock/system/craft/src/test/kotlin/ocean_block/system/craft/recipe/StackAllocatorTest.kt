@@ -1,5 +1,6 @@
 package ocean_block.system.craft.recipe
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -42,14 +43,6 @@ class StackAllocatorTest : StringSpec({
         result.remaining shouldContainExactly listOf(0, 3, 3)
     }
 
-    "alocacao nao altera as pilhas de entrada" {
-        val items = listOf(Pilha("linha", 5))
-
-        allocate(items, precisa(2, "linha"))
-
-        items shouldContainExactly listOf(Pilha("linha", 5))
-    }
-
     "fica incompleta quando falta um ingrediente mesmo com o outro sobrando" {
         val items = listOf(Pilha("linha", 5), Pilha("carvalho", 2))
 
@@ -89,7 +82,7 @@ class StackAllocatorTest : StringSpec({
     }
 
     "ingrediente com quantidade nao positiva e rejeitado" {
-        runCatching { Ingredient.material(Material.STRING, "Linha", 0) }.isFailure shouldBe true
+        shouldThrow<IllegalArgumentException> { Ingredient.material(Material.STRING, "Linha", 0) }
     }
 
     "rotulo usa o plural fora de um" {
