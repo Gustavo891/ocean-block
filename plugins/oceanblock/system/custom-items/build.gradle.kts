@@ -14,7 +14,6 @@ dependencies {
     compileOnly(projects.plugins.textura)
 
     compileOnly(projects.plugins.oceanblock.system.islands)
-    compileOnly(projects.plugins.oceanblock.system.craft)
     compileOnly(projects.plugins.oceanblock.system.currencies)
 
     testImplementation(libs.kotest.runner)

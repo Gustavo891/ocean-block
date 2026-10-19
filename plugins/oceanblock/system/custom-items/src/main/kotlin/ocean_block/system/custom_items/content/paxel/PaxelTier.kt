@@ -61,15 +61,6 @@ enum class PaxelTier(
 
     val attackSpeed: Double get() = SWORD_ATTACK_SPEED
 
-    val craftTools: List<Pair<String, Material>>
-        get() = listOf(
-            "Picareta $tierName" to material,
-            "Machado $tierName" to axe,
-            "Pá $tierName" to shovel,
-            "Enxada $tierName" to hoe,
-            "Espada $tierName" to sword,
-        )
-
     companion object {
         const val SWORD_ATTACK_SPEED = -2.4
     }

@@ -19,12 +19,12 @@ enum class Challenges(
         xpReward = 100,
         objective = ChallengeObjective.BreakOneBlock(goal = 200),
     ),
-    CRAFT_LEATHER(
+    CRAFT_REDE(
         displayName = "Fabricante",
-        description = listOf("Fabrique <white>x16 <gray>couros no /craft."),
-        icon = itemStack(Material.LEATHER) {},
+        description = listOf("Fabrique <white>x2 <gray>redes de detritos no /receitas."),
+        icon = itemStack(Material.LOOM) {},
         xpReward = 200,
-        objective = ChallengeObjective.CustomCraft("leather", goal = 16),
+        objective = ChallengeObjective.CustomCraft("rede", goal = 2),
     ),
     SELL_5000(
         displayName = "Comerciante",

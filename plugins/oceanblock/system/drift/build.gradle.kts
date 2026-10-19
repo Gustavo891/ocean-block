@@ -9,6 +9,7 @@ dependencies {
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.itemBuilder)
 
+    compileOnly(projects.plugins.oceanblock.system.craft)
     compileOnly(projects.plugins.oceanblock.system.customItems)
     compileOnly(projects.plugins.oceanblock.system.islands)
 

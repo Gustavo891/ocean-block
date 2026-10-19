@@ -10,11 +10,7 @@ import io.papermc.paper.registry.set.RegistryKeySet
 import io.papermc.paper.registry.set.RegistrySet
 import io.papermc.paper.registry.tag.TagKey
 import net.kyori.adventure.util.TriState
-import ocean_block.system.craft.CraftCategory
-import ocean_block.system.craft.forge.ForgeRecipe
-import ocean_block.system.craft.forge.ForgeRequirement
 import ocean_block.system.custom_items.item.CustomItem
-import ocean_block.system.custom_items.item.CustomItemRegistry
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -39,22 +35,6 @@ class PaxelItem(private val tier: PaxelTier) : CustomItem() {
         applyCombatAttributes(stack)
         return stack
     }
-
-    fun forgeRecipe(): ForgeRecipe = ForgeRecipe(
-        id = tier.id,
-        prettyName = tier.displayName,
-        icon = build(),
-        result = build(),
-        requirements = tier.craftTools.map { (name, material) ->
-            ForgeRequirement(
-                prettyName = name,
-                item = ItemStack(material),
-                amount = 1,
-                matcher = { it.type == material && CustomItemRegistry.fromItemStack(it) == null },
-            )
-        },
-        category = CraftCategory.MINERACAO,
-    )
 
     private fun applyCombatAttributes(stack: ItemStack) {
         stack.editMeta { meta ->

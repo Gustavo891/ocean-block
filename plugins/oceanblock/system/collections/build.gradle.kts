@@ -10,6 +10,4 @@ dependencies {
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.itemBuilder)
-
-    compileOnly(projects.plugins.oceanblock.system.craft)
 }

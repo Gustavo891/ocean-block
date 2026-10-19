@@ -14,7 +14,6 @@ dependencies {
     compileOnly(projects.lib.itemBuilder)
     compileOnly(projects.lib.rewards)
     compileOnly(projects.lib.toast)
-    compileOnly(projects.plugins.oceanblock.system.craft)
     compileOnly(projects.lib.translation)
     compileOnly(projects.plugins.textura)
     compileOnly(files(rootProject.file("jars/FastAsyncWorldEdit-Bukkit-2.15.1.jar")))

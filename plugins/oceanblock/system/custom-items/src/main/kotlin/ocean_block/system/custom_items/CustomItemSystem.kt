@@ -2,7 +2,6 @@ package ocean_block.system.custom_items
 
 import co.aikar.commands.PaperCommandManager
 import me.devnatan.inventoryframework.ViewFrame
-import ocean_block.system.craft.Crafts
 import ocean_block.system.custom_items.block.CustomBlockCommand
 import ocean_block.system.custom_items.block.CustomBlockListener
 import ocean_block.system.custom_items.block.CustomBlockRegistry
@@ -70,10 +69,7 @@ object CustomItemSystem {
     private fun registerBuiltInItems() {
         CustomItemRegistry.register(MultiToolItem())
 
-        PaxelItem.all().forEach {
-            CustomItemRegistry.register(it)
-            Crafts.register(it.forgeRecipe())
-        }
+        PaxelItem.all().forEach { CustomItemRegistry.register(it) }
     }
 
     private fun registerBuiltInBlocks(commandManager: PaperCommandManager) {

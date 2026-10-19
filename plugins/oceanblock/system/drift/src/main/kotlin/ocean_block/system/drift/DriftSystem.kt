@@ -9,12 +9,11 @@ import ocean_block.system.drift.config.DriftFile
 import ocean_block.system.drift.debris.DebrisManager
 import ocean_block.system.drift.hook.FirstJoinListener
 import ocean_block.system.drift.hook.GanchoItem
-import ocean_block.system.drift.hook.GanchoRecipe
 import ocean_block.system.drift.loot.ConfigDebrisPool
 import ocean_block.system.drift.net.NetBlock
 import ocean_block.system.drift.net.NetListener
-import ocean_block.system.drift.net.NetRecipe
 import ocean_block.system.drift.net.view.NetStorageView
+import ocean_block.system.drift.recipe.DriftRecipes
 import org.bukkit.plugin.java.JavaPlugin
 
 object DriftSystem {
@@ -24,8 +23,8 @@ object DriftSystem {
 
     fun init(plugin: JavaPlugin, viewFrame: ViewFrame) {
         CustomItemRegistry.register(GanchoItem)
-        GanchoRecipe.register()
         registerNet(plugin, viewFrame)
+        DriftRecipes.register()
         plugin.server.pluginManager.registerEvents(FirstJoinListener(), plugin)
 
         config = runCatching { DriftFile.load(plugin) }
@@ -41,7 +40,6 @@ object DriftSystem {
 
     private fun registerNet(plugin: JavaPlugin, viewFrame: ViewFrame) {
         CustomBlockRegistry.register(NetBlock)
-        NetRecipe.register()
         viewFrame.with(NetStorageView())
         plugin.server.pluginManager.registerEvents(NetListener(viewFrame), plugin)
     }

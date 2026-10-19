@@ -3,14 +3,11 @@ plugins {
 }
 
 dependencies {
-    compileOnly(libs.placeholder)
-    compileOnly(libs.mongodb)
+    testImplementation(libs.paperApi)
+    testImplementation(libs.kotest.runner)
+    testImplementation(libs.kotest.assertions)
+}
 
-    compileOnly(projects.lib.connection)
-    compileOnly(projects.lib.coordinate)
-    compileOnly(projects.lib.formatter)
-    compileOnly(projects.lib.instance)
-    compileOnly(projects.lib.itemBuilder)
-    compileOnly(projects.plugins.textura)
-
+tasks.test {
+    useJUnitPlatform()
 }

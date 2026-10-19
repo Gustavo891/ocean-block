@@ -41,7 +41,7 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Na primeira subida, `server/plugins/ocean-block/drift.yml` foi criado com os 4 tipos (`tabua`, `folhas`, `sucata`, `barril`).
 - [ ] Jogador novo (nunca entrou antes) recebe o gancho ao entrar; jogador antigo não recebe de novo.
 - [ ] `/citem give gancho` entrega o gancho.
-- [ ] A receita do gancho funciona na bancada (`..P / .PS / P.S`, P = qualquer tábua, S = linha) e o resultado é o gancho custom, não uma vara comum.
+- [ ] A bancada não faz mais o gancho (`..P / .PS / P.S` com tábua e linha não dá resultado); ele só sai pela tela de receitas.
 
 ### Detritos
 - [ ] Em pé na ilha, detritos aparecem a montante e passam boiando ao lado da ilha, rente à água (Y ~62,6), movendo suave, na direção da corrente (leste por padrão). Passam dos dois lados, entre `largura-minima` (8) e `largura` (13) blocos do centro, ou seja, 2 a 7 blocos fora da costa (a parte sólida da ilha vai até ~6 blocos do centro); nenhum vem pelo meio nem bate de frente na ilha.
@@ -70,7 +70,7 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Espectador (modo espectador) perto de um detrito: anotar o que acontece (coleta, ignora ou erro no log). O comportamento ainda não foi decidido.
 
 ### Rede de detritos
-- [ ] A receita da rede funciona na bancada (`PSP / SSS / PSP`, P = qualquer tábua, S = linha) e o resultado é a `Rede de Detritos` (tear com nome e lore), não um tear comum. `/cblock give rede` também entrega.
+- [ ] A bancada não faz mais a rede (`PSP / SSS / PSP` com tábua e linha não dá resultado); ela só sai pela tela de receitas. `/cblock give rede` também entrega.
 - [ ] Colocar a rede na borda da ilha: detritos que passam a até 3 blocos dela (distância 3D até o centro do bloco) deslizam até a rede em ~0,5 s e somem com respingo no bloco, sem action bar para ninguém.
 - [ ] Detrito mais perto do jogador (a menos de 1,5 bloco) vai para o jogador, não para a rede; o gancho não puxa um detrito que já está indo para a rede.
 - [ ] Clique direito na rede (dono, membro ou trust) abre `Rede de Detritos` com 27 slots; clicar num item passa ele para o inventário, `Coletar tudo` passa tudo; não dá para colocar itens nem arrastar; o tear vanilla nunca abre (nem agachado).
