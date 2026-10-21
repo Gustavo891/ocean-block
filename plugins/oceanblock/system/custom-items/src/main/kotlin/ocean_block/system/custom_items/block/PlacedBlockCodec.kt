@@ -23,6 +23,9 @@ object PlacedBlockCodec {
             if (placed.filter.isNotEmpty()) {
                 string(CustomBlockKeys.FILTER, StateCodec.encodeFilter(placed.filter))
             }
+            if (placed.counters.isNotEmpty()) {
+                string(CustomBlockKeys.COUNTERS, StateCodec.encodeCounters(placed.counters))
+            }
             if (placed.storage.isNotEmpty()) {
                 string(CustomBlockKeys.STORAGE, StateCodec.encodeStorage(placed.storage))
             }
@@ -46,6 +49,10 @@ object PlacedBlockCodec {
             ?.let { StateCodec.decodeFilter(it) }
             ?: mutableSetOf()
 
+        val counters = container.get(CustomBlockKeys.COUNTERS, PersistentDataType.STRING)
+            ?.let { StateCodec.decodeCounters(it) }
+            ?: mutableMapOf()
+
         val filterMode = container.get(CustomBlockKeys.FILTER_MODE, PersistentDataType.STRING)
             ?.let { runCatching { FilterMode.valueOf(it) }.getOrNull() }
             ?: FilterMode.BLACKLIST
@@ -62,6 +69,7 @@ object PlacedBlockCodec {
             storage = storage,
             filterMode = filterMode,
             filter = filter,
+            counters = counters,
         )
     }
 }

@@ -11,4 +11,5 @@ object CustomBlockKeys {
     val FILTER_MODE = NamespacedKey("oneblock", "custom_block_filter_mode")
     val FILTER = NamespacedKey("oneblock", "custom_block_filter")
     val ENABLED = NamespacedKey("oneblock", "custom_block_enabled")
+    val COUNTERS = NamespacedKey("oneblock", "custom_block_counters")
 }

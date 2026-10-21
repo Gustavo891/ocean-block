@@ -21,6 +21,7 @@ data class PlacedBlock(
     var filterMode: FilterMode = FilterMode.BLACKLIST,
     val filter: MutableSet<String> = mutableSetOf(),
     var notifiedFull: Boolean = false,
+    val counters: MutableMap<String, Long> = mutableMapOf(),
 ) {
 
     fun getUpgradeLevel(id: String, def: Int = 0): Int = upgrades.getOrDefault(id, def)

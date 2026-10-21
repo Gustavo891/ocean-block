@@ -20,6 +20,19 @@ class StateCodecTest : StringSpec({
             mutableMapOf("vacuum_radius" to 2, "vacuum_storage" to 1)
     }
 
+    "contadores fazem round-trip" {
+        val counters = mapOf("fuel" to 300L, "progress" to 0L)
+        StateCodec.decodeCounters(StateCodec.encodeCounters(counters)) shouldBe counters
+    }
+
+    "contadores vazios voltam vazios" {
+        StateCodec.decodeCounters("") shouldBe mutableMapOf()
+    }
+
+    "par de contador malformado é ignorado e o resto fica" {
+        StateCodec.decodeCounters("a:x;b:2") shouldBe mutableMapOf("b" to 2L)
+    }
+
     "filtro faz round-trip preservando os nomes" {
         val filter = setOf("COBBLESTONE", "DIRT")
         StateCodec.decodeFilter(StateCodec.encodeFilter(filter)) shouldBe filter
