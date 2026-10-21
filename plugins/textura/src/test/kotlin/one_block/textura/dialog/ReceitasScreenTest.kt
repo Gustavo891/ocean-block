@@ -65,7 +65,6 @@ class ReceitasScreenTest : StringSpec({
                 mapOf("nome" to "Coleta", "icone" to "ui:chest", "ativa" to "false", "descricao" to "y", "acao" to "Clique para ver!"),
             )
         }
-        list("chips") { listOf(mapOf("texto" to "12 Tábuas"), mapOf("texto" to "1 Linha")) }
         list("receitas") { receitas }
         listPage("receitas") { page }
         list("paginacao") {
@@ -93,7 +92,7 @@ class ReceitasScreenTest : StringSpec({
         warnings.shouldBeEmpty()
         definition.shouldNotBeNull().theme shouldBe "stone"
         definition.keys shouldContainAll listOf(
-            "categorias", "chips", "receitas", "paginacao", "categoria", "titulo", "titulo_icone", "craftar", "anterior", "proxima",
+            "categorias", "receitas", "paginacao", "categoria", "titulo", "titulo_icone", "craftar", "anterior", "proxima",
         )
     }
 
@@ -103,7 +102,7 @@ class ReceitasScreenTest : StringSpec({
         run.warnings.shouldBeEmpty()
         run.unknownBinds.shouldBeEmpty()
         run.laid.width shouldBeLessThanOrEqual ScreenCompiler.MAX_WIDTH
-        run.laid.texts.map { it.text } shouldContainAll listOf("Ferramentas", "Coleta", "12 Tábuas", "Gancho", "Rede de Detritos", "3 Tábuas ∙ 2 Linhas")
+        run.laid.texts.map { it.text } shouldContainAll listOf("Ferramentas", "Coleta", "Gancho", "Rede de Detritos", "3 Tábuas ∙ 2 Linhas")
         run.laid.images.map { it.id } shouldContain "ui:stone/icons/pickaxe"
     }
 

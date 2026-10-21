@@ -17,7 +17,6 @@ object RecipeEntries {
 
     const val CARDS_PER_PAGE = 6
     const val CATEGORIES_PER_PAGE = 6
-    const val MAX_CHIPS = 4
     private const val SEPARATOR = " ∙ "
     private const val BULLET = "∙ "
     private const val READY = "✔ Pronto! Clique para craftar."
@@ -39,12 +38,6 @@ object RecipeEntries {
 
     fun activeCategory(wanted: RecipeCategory?, available: List<RecipeCategory>): RecipeCategory? =
         wanted?.takeIf { it in available } ?: available.firstOrNull()
-
-    fun chipIngredients(recipes: List<OceanRecipe>): List<Ingredient> =
-        recipes.flatMap { it.ingredients }.distinctBy { it.label }.take(MAX_CHIPS)
-
-    fun chips(ingredients: List<Ingredient>, counts: Map<String, Int>): List<Map<String, String>> =
-        ingredients.map { ingredient -> mapOf("texto" to amountOf(ingredient, counts[ingredient.label] ?: 0)) }
 
     fun card(input: CardInput): Map<String, String> {
         val recipe = input.recipe

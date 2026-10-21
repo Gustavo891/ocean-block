@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack
 
 private fun tabuas(amount: Int) = Ingredient("Tábua", amount, "Tábuas") { true }
 private fun linhas(amount: Int) = Ingredient("Linha", amount, "Linhas") { true }
-private fun ingredient(label: String) = Ingredient(label, 1, "${label}s") { true }
 
 private fun recipe(id: String, vararg ingredients: Ingredient, category: RecipeCategory = RecipeCategory.FERRAMENTAS) = OceanRecipe(
     id = id,
@@ -66,17 +65,6 @@ class RecipeEntriesTest : StringSpec({
 
         card["falta"] shouldBe "true"
         card["acao"] shouldBe "⌀ Falta: 1 Tábua ∙ 2 Linhas"
-    }
-
-    "chips usam os ingredientes da categoria sem repetir rótulo, no máximo 4, com a contagem do jogador" {
-        val rede = recipe("rede", tabuas(4), linhas(5))
-        val outra = recipe("outra", ingredient("Pena"), ingredient("Osso"), ingredient("Pedra"))
-
-        val ingredients = RecipeEntries.chipIngredients(listOf(gancho, rede, outra))
-        val chips = RecipeEntries.chips(ingredients, mapOf("Tábua" to 12, "Linha" to 1))
-
-        ingredients.map { it.label } shouldContainExactly listOf("Tábua", "Linha", "Pena", "Osso")
-        chips.map { it["texto"] } shouldContainExactly listOf("12 Tábuas", "1 Linha", "0 Penas", "0 Ossos")
     }
 
     "categorias marcam a aberta e trazem nome, ícone e dica" {

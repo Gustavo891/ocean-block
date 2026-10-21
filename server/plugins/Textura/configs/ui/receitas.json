@@ -25,27 +25,12 @@
     {
       "column": [
         {
-          "row": [
-            {
-              "repeat": "chips",
-              "perPage": 4,
-              "chip": "{texto}",
-              "tooltip": "{texto}\nNo seu inventário."
-            }
-          ],
-          "w": "grow",
-          "h": "fit",
-          "gap": 4,
-          "pad": 0,
-          "align": "start",
-          "cross": "center",
-          "name": "Chips"
-        },
-        {
           "column": [
             {
               "row": [
-                { "space": 3 },
+                {
+                  "space": 3
+                },
                 {
                   "text": "{titulo}",
                   "style": "heading",
@@ -54,7 +39,9 @@
                   "icon": "{titulo_icone}",
                   "w": "grow"
                 },
-                { "space": 2 }
+                {
+                  "space": 2
+                }
               ],
               "w": "grow",
               "h": 15,
@@ -74,14 +61,37 @@
                       "perPage": 6,
                       "column": [
                         {
-                          "slots": [1, 1],
+                          "slots": [
+                            1,
+                            1
+                          ],
                           "items": [
-                            { "at": 0, "item": "{item}", "count": "{qtd}", "name": "{nome}", "lore": ["{descricao}"] }
+                            {
+                              "at": 0,
+                              "item": "{item}",
+                              "count": "{qtd}",
+                              "name": "{nome}",
+                              "lore": [
+                                "{descricao}"
+                              ]
+                            }
                           ],
                           "align": "center"
                         },
-                        { "text": "{nome}", "style": "heading", "align": "left", "scale": 1, "w": "fit" },
-                        { "text": "{custo}", "style": "body", "align": "left", "scale": 1, "w": "fit" },
+                        {
+                          "text": "{nome}",
+                          "style": "heading",
+                          "align": "left",
+                          "scale": 1,
+                          "w": "fit"
+                        },
+                        {
+                          "text": "{custo}",
+                          "style": "body",
+                          "align": "left",
+                          "scale": 1,
+                          "w": "fit"
+                        },
                         {
                           "button": "Craftar",
                           "icon": "ui:cart",
@@ -114,9 +124,29 @@
                   "repeat": "paginacao",
                   "perPage": 1,
                   "row": [
-                    { "button": "«", "look": "light", "bind": "anterior", "disabled": "{sem_anterior}", "w": 24, "tooltip": "Página anterior" },
-                    { "text": "{pagina}/{paginas}", "style": "body", "align": "center", "scale": 1, "w": "grow" },
-                    { "button": "»", "look": "light", "bind": "proxima", "disabled": "{sem_proxima}", "w": 24, "tooltip": "Próxima página" }
+                    {
+                      "button": "«",
+                      "look": "light",
+                      "bind": "anterior",
+                      "disabled": "{sem_anterior}",
+                      "w": 24,
+                      "tooltip": "Página anterior"
+                    },
+                    {
+                      "text": "{pagina}/{paginas}",
+                      "style": "body",
+                      "align": "center",
+                      "scale": 1,
+                      "w": "grow"
+                    },
+                    {
+                      "button": "»",
+                      "look": "light",
+                      "bind": "proxima",
+                      "disabled": "{sem_proxima}",
+                      "w": 24,
+                      "tooltip": "Próxima página"
+                    }
                   ],
                   "w": "grow",
                   "h": "fit",

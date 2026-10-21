@@ -26,9 +26,6 @@ object RecipeCrafter {
     fun shortages(player: Player, recipe: OceanRecipe): List<Shortage> =
         IngredientMath.shortages(player.inventory.storageContents.toList(), recipe.ingredients)
 
-    fun count(player: Player, ingredient: Ingredient): Int =
-        IngredientMath.count(player.inventory.storageContents.toList(), ingredient)
-
     private fun deliver(player: Player, item: ItemStack) {
         player.inventory.addItem(item).values.forEach { leftover ->
             player.world.dropItemNaturally(player.location, leftover)

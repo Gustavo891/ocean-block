@@ -53,7 +53,6 @@ class RecipesScreen(private val logger: Logger) {
         text("titulo") { category(id).displayName }
         text("titulo_icone") { category(id).icon }
         list("categorias") { RecipeEntries.categories(available(), category(id)) }
-        list("chips") { chips(player) }
         list("receitas") { recipes(id).map { RecipeEntries.card(cardInput(player, it)) } }
         listPage("receitas") { page(id) }
         list("paginacao") { RecipeEntries.pagination(page(id), recipes(id).size) }
@@ -71,12 +70,6 @@ class RecipesScreen(private val logger: Logger) {
     private fun recipes(id: UUID): List<OceanRecipe> = Recipes.byCategory()[category(id)].orEmpty()
 
     private fun page(id: UUID): Int = RecipeEntries.clampPage(views[id]?.page ?: 0, recipes(id).size)
-
-    private fun chips(player: Player): List<Map<String, String>> {
-        val ingredients = RecipeEntries.chipIngredients(recipes(player.uniqueId))
-        val counts = ingredients.associate { it.label to RecipeCrafter.count(player, it) }
-        return RecipeEntries.chips(ingredients, counts)
-    }
 
     private fun cardInput(player: Player, recipe: OceanRecipe): CardInput {
         val item = recipe.result()

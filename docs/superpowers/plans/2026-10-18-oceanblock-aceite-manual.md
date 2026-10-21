@@ -102,10 +102,10 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Sem a textura aceita, aparece só o aviso `Textura necessária` do Textura em vez da tela: nada no chat e nenhum aviso `[receitas]` no console.
 - [ ] Renomear `configs/ui/receitas.json`, `/textura reload` e rodar `/receitas`: chat `A tela de receitas não está disponível.` e um aviso `[receitas]` no console. Rodar `/receitas` de novo: o chat repete, o console não. Voltar o nome e `/textura reload`.
 
-### Categorias e chips
+### Categorias
 - [ ] A coluna da esquerda lista `Ferramentas` (picareta) e `Coleta` (baú); a aberta fica destacada e o tooltip diz `✔ Aberta agora!`, a outra `Clique para ver!`.
 - [ ] Clicar em `Coleta` troca o cabeçalho para `Coleta` com o ícone do baú e mostra só a Rede; voltar para `Ferramentas` mostra só o Gancho.
-- [ ] Os chips do topo mostram quanto o jogador tem dos ingredientes da categoria aberta (ex.: `12 Tábuas`, `1 Linha`, singular com 1); pegar ou largar linha e reabrir atualiza o número.
+- [ ] Não há linha de chips no topo da tela.
 - [ ] Fechar a tela em `Coleta` e abrir de novo: continua em `Coleta`. Sair do servidor e entrar de novo: volta para `Ferramentas`.
 
 ### Cards
@@ -115,7 +115,7 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Com 6 receitas ou menos numa categoria, a linha de páginas (`«  1/1  »`) não aparece.
 
 ### Craftar
-- [ ] Com 3 tábuas e 2 linhas, `Craftar` no Gancho: consome exatamente isso, entrega um gancho que funciona (puxa detrito), mostra `Você craftou 1x Gancho.` e a tela se redesenha com os chips e os botões atualizados.
+- [ ] Com 3 tábuas e 2 linhas, `Craftar` no Gancho: consome exatamente isso, entrega um gancho que funciona (puxa detrito), mostra `Você craftou 1x Gancho.` e a tela se redesenha com os botões atualizados.
 - [ ] Com 4 tábuas e 5 linhas, `Craftar` na Rede: entrega a rede, que pode ser colocada e coleta detritos.
 - [ ] Tábuas divididas em pilhas de madeiras diferentes (ex.: 1 de carvalho + 2 de abeto, em slots separados) contam juntas e são consumidas certo; o que sobra fica no inventário.
 - [ ] Inventário cheio (sem slot livre) com pilhas maiores que o custo (ex.: 10 tábuas e 10 linhas, de modo que nenhum slot esvazia): o craft consome os ingredientes e o item cai aos pés do jogador.
