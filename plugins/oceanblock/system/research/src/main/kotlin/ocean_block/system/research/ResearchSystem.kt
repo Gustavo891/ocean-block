@@ -7,6 +7,7 @@ import ocean_block.system.research.data.ResearchManager
 import ocean_block.system.research.table.ResearchTableBlock
 import ocean_block.system.research.table.ResearchTableListener
 import ocean_block.system.research.tree.ResearchTree
+import one_block.textura.api.DialogApi
 import one_block.textura.api.NotificationApi
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -22,7 +23,8 @@ object ResearchSystem {
         plugin.server.pluginManager.registerEvents(ResearchTableListener(), plugin)
         ResearchRecipes.register()
         ResearchTimer.start(plugin)
-        NotificationApi.registerItemIcons(ResearchTree.all.map { it.icon.removePrefix("item:") }.distinct())
+        NotificationApi.registerItemIcons(ResearchTree.iconMaterials())
+        DialogApi.registerItemIcons(ResearchTree.iconMaterials())
     }
 
     fun onDisable() {

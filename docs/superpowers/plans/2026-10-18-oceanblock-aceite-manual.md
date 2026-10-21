@@ -147,7 +147,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 ### Peneira
 - [ ] Puxar torrões da corrente rende areia, cascalho e terra.
 - [ ] Craftar a Peneira no `/receitas` (categoria `Processamento`): 4 Tábuas, 2 Linhas, 2 Gravetos. Colocar: aparece uma composteira.
-- [ ] Clique direito com cascalho na mão: carrega 1 cascalho; cada clique seguinte avança uma etapa (a composteira enche) até a 6ª, que entrega as saídas no inventário com notificação na região `coleta` (`+1 Pedaço de ferro` etc.). Cliques rápidos demais não pulam etapas.
+- [ ] Clique direito com cascalho na mão: carrega 1 cascalho; cada clique seguinte avança uma etapa (a composteira baixa um nível) até a 6ª, que entrega as saídas no inventário com notificação na região `coleta` (`+1 Pedaço de ferro` etc.). Cliques rápidos demais não pulam etapas.
 - [ ] Shift + clique direito com cascalho: carrega e já dá uma etapa, sem abrir nada vanilla.
 - [ ] A composteira nunca chega no nível de farinha de osso; um funil embaixo não puxa nada dela.
 - [ ] Sair do servidor no meio de uma peneirada e voltar: a peneira continua de onde parou.

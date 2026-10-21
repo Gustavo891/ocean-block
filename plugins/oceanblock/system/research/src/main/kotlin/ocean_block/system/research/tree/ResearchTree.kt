@@ -52,4 +52,6 @@ object ResearchTree {
     )
 
     val byId: Map<String, ResearchDefinition> = all.associateBy { it.id }
+
+    fun iconMaterials(): List<String> = all.map { it.icon.removePrefix("item:") }.distinct()
 }
