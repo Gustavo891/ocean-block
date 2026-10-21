@@ -137,3 +137,45 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Trocar a escala de GUI (1, 2, 3, 4, Auto) e redimensionar a janela: as notificações continuam encostadas nos cantos certos.
 - [ ] Com a barra do battle pass ativa, as notificações continuam no lugar certo e nenhuma barra fica pulando.
 - [ ] Textos normais (chat, títulos, nomes) não mudam de lugar nem de cor.
+
+## 10. Peneira, fundição e pesquisa
+
+### Preparação
+- [ ] `server/plugins/ocean-block/drift.yml` atualizado com os torrões (`torrao_areia`, `torrao_cascalho`, `torrao_lodo`) e o barril com areia e cascalho; `peneira.yml` copiado na primeira subida.
+- [ ] Depois de reiniciar, o pack sobe sem aviso `[ui:pesquisa]` e os cards da Mesa mostram os ícones (tear, composteira, alto-forno, mesa de cartografia, funil).
+
+### Peneira
+- [ ] Puxar torrões da corrente rende areia, cascalho e terra.
+- [ ] Craftar a Peneira no `/receitas` (categoria `Processamento`): 4 Tábuas, 2 Linhas, 2 Gravetos. Colocar: aparece uma composteira.
+- [ ] Clique direito com cascalho na mão: carrega 1 cascalho; cada clique seguinte avança uma etapa (a composteira baixa um nível) até a 6ª, que entrega as saídas no inventário com notificação na região `coleta` (`+1 Pedaço de ferro` etc.). Cliques rápidos demais não pulam etapas.
+- [ ] Shift + clique direito com cascalho: carrega e já dá uma etapa, sem abrir nada vanilla.
+- [ ] A composteira nunca chega no nível de farinha de osso; um funil embaixo não puxa nada dela.
+- [ ] Sair do servidor no meio de uma peneirada e voltar: a peneira continua de onde parou.
+
+### Pedaços e fornalha vanilla
+- [ ] Pedaço de ferro na fornalha, no alto-forno e no defumador vanilla: não derrete (a fornalha não começa).
+- [ ] Pedaço na bancada de trabalho (ex.: 9 pedaços para bloco de ferro bruto): nenhum resultado aparece.
+
+### Fundição
+- [ ] Craftar a Fundição (8 Argilas + 4 Tábuas) e colocar: aparece um alto-forno. Clique direito não abre o inventário vanilla.
+- [ ] Clique direito com 8 pedaços de ferro carrega a entrada; com tábua carrega combustível. A fundição acende e, em ~20 s, sai 1 lingote de ferro a cada 4 pedaços; o item em cima mostra o que está fundindo.
+- [ ] Shift + clique direito retira todos os lingotes prontos.
+- [ ] Minério bruto vanilla (ex.: `RAW_IRON` sem ser pedaço) funde 1 para 1.
+- [ ] Quebrar a fundição carregada (entrada, combustível e saída) e colocar de novo: o item quebrado guarda tudo e a fundição volta igual.
+- [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica ou de uma Peneira: não entra nem sai nada (o inventário vanilla do alto-forno e da composteira fica intocado).
+
+### Mesa de Pesquisa
+- [ ] Ilha nova: no `/receitas`, a Rede de Detritos aparece com `⌀ Pesquise na Mesa: Rede de Detritos` e não crafta; o Gancho crafta normal.
+- [ ] Craftar a Mesa de Pesquisa (6 Tábuas, 3 Linhas, 2 Pepitas de ferro) e colocar: clique direito (e shift + clique) abre a tela `pesquisa`, nunca a mesa de cartografia vanilla.
+- [ ] A tela mostra categorias `Coleta`, `Fundição`, `Raft`, a linha de vagas (`1 vaga`), a fila e os cards com custo, tempo e estado.
+- [ ] Dois membros entregam a Rede aos poucos (cada um uma parte das 10 Tábuas e 6 Linhas): só sai do inventário o que falta; ao completar, a pesquisa inicia (20 s).
+- [ ] Ao concluir, aparece na região `avisos` a notificação para os membros online; a Rede passa a craftar no `/receitas`.
+- [ ] Com 1 vaga, completar o custo de duas pesquisas: a segunda entra na fila e começa sozinha quando a primeira termina.
+- [ ] Concluir `Bancada auxiliar`: a linha passa a mostrar 2 vagas e duas pesquisas rodam juntas.
+- [ ] Desligar o servidor no meio de uma pesquisa, esperar mais que o tempo restante, ligar e abrir a Mesa: a pesquisa já está concluída (e a da fila, se cabia no tempo, também).
+- [ ] Visitante sem permissão: shift + clique na Mesa de outra ilha não abre nada.
+
+### Peneira automática
+- [ ] Pesquisar e craftar a Peneira automática. Baú com cascalho em cima, funil embaixo levando para um baú: a peneira puxa do baú de cima e manda as saídas para o funil sozinha, um passo por segundo.
+- [ ] Com o baú de baixo cheio, a peneira espera na última etapa sem perder itens.
+- [ ] Sem erros `[peneira]` ou `[pesquisa]` no log durante toda a sessão.

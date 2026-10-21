@@ -17,10 +17,13 @@ object CollectNotifier : Listener {
 
     private val tallies = mutableMapOf<UUID, CollectTally>()
 
-    fun notify(player: Player, material: Material, amount: Int) {
+    fun notify(player: Player, material: Material, amount: Int) =
+        notify(player, material.name, "<lang:${material.translationKey()}>", iconOf(material), amount)
+
+    fun notify(player: Player, key: String, label: String, icon: String, amount: Int) {
         val tally = tallies.getOrPut(player.uniqueId) { CollectTally(DURATION_TICKS.toLong()) }
-        val total = tally.add(material.name, amount, Bukkit.getCurrentTick().toLong())
-        NotificationApi.push(player, REGION, line(material, total))
+        val total = tally.add(key, amount, Bukkit.getCurrentTick().toLong())
+        NotificationApi.push(player, REGION, line(key, label, icon, total))
     }
 
     fun iconOf(material: Material): String = "item:${material.key.key}"
@@ -30,11 +33,11 @@ object CollectNotifier : Listener {
         tallies.remove(event.player.uniqueId)
     }
 
-    private fun line(material: Material, total: Int): NotificationLine =
+    private fun line(key: String, label: String, icon: String, total: Int): NotificationLine =
         NotificationLine(
-            "<green>+$total</green> <white><lang:${material.translationKey()}></white>",
-            iconOf(material),
+            "<green>+$total</green> <white>$label</white>",
+            icon,
             DURATION_TICKS,
-            "coleta:${material.name}",
+            "coleta:$key",
         )
 }

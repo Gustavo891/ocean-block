@@ -9,6 +9,7 @@ data class OceanRecipe(
     val category: RecipeCategory,
     val result: () -> ItemStack,
     val ingredients: List<Ingredient>,
+    val research: String? = null,
 ) {
 
     init {

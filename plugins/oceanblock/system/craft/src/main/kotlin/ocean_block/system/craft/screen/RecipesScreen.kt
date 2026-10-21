@@ -4,6 +4,7 @@ import ocean_block.system.craft.recipe.CraftResult
 import ocean_block.system.craft.recipe.OceanRecipe
 import ocean_block.system.craft.recipe.RecipeCategory
 import ocean_block.system.craft.recipe.RecipeCrafter
+import ocean_block.system.craft.recipe.RecipeLocks
 import ocean_block.system.craft.recipe.Recipes
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
@@ -79,7 +80,7 @@ class RecipesScreen(private val logger: Logger) {
 
     private fun cardInput(player: Player, recipe: OceanRecipe): CardInput {
         val item = recipe.result()
-        return CardInput(recipe, materialOf(item), item.amount, RecipeCrafter.shortages(player, recipe))
+        return CardInput(recipe, materialOf(item), item.amount, RecipeCrafter.shortages(player, recipe), RecipeLocks.lockedBy(player, recipe))
     }
 
     private fun select(id: UUID, index: Int) {
@@ -97,6 +98,7 @@ class RecipesScreen(private val logger: Logger) {
         when (val result = RecipeCrafter.craft(player, recipe)) {
             is CraftResult.Crafted -> player.sendRichMessage("<green>Você craftou <white>${result.item.amount}x ${recipe.name}</white>.")
             is CraftResult.Missing -> player.sendRichMessage("<red>${RecipeEntries.missingText(result.shortages)}")
+            is CraftResult.Locked -> player.sendRichMessage("<red>Pesquise na Mesa: ${result.research}")
         }
     }
 

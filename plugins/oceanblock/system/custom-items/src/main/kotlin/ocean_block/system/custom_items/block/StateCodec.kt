@@ -24,6 +24,22 @@ object StateCodec {
         return result
     }
 
+    fun encodeCounters(counters: Map<String, Long>): String =
+        counters.entries.joinToString(ENTRY_DELIMITER) { (id, value) -> "$id$LEVEL_DELIMITER$value" }
+
+    fun decodeCounters(raw: String): MutableMap<String, Long> {
+        val result = mutableMapOf<String, Long>()
+        if (raw.isBlank()) return result
+
+        raw.split(ENTRY_DELIMITER).forEach { entry ->
+            val parts = entry.split(LEVEL_DELIMITER)
+            if (parts.size != 2 || parts[0].isBlank()) return@forEach
+            val value = parts[1].toLongOrNull() ?: return@forEach
+            result[parts[0]] = value
+        }
+        return result
+    }
+
     fun encodeFilter(filter: Set<String>): String = filter.joinToString(FILTER_DELIMITER)
 
     fun decodeFilter(raw: String): MutableSet<String> =

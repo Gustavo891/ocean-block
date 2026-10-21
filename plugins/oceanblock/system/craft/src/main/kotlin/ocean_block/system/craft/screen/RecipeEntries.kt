@@ -10,6 +10,7 @@ data class CardInput(
     val item: String,
     val amount: Int,
     val shortages: List<Shortage>,
+    val lockedBy: String? = null,
 )
 
 object RecipeEntries {
@@ -21,6 +22,7 @@ object RecipeEntries {
     private const val BULLET = "∙ "
     private const val READY = "✔ Pronto! Clique para craftar."
     private const val MISSING = "⌀ Falta: "
+    private const val LOCKED = "⌀ Pesquise na Mesa: "
     private const val OPEN = "✔ Aberta agora!"
     private const val BROWSE = "Clique para ver!"
 
@@ -46,7 +48,8 @@ object RecipeEntries {
 
     fun card(input: CardInput): Map<String, String> {
         val recipe = input.recipe
-        val missing = input.shortages.isNotEmpty()
+        val locked = input.lockedBy
+        val missing = locked != null || input.shortages.isNotEmpty()
         return mapOf(
             "item" to input.item,
             "qtd" to input.amount.toString(),
@@ -55,12 +58,18 @@ object RecipeEntries {
             "custo" to cost(recipe.ingredients),
             "custo_lista" to recipe.ingredients.joinToString("\n") { BULLET + amountOf(it, it.amount) },
             "falta" to missing.toString(),
-            "acao" to if (missing) missingText(input.shortages) else READY,
+            "acao" to when {
+                locked != null -> lockedText(locked)
+                missing -> missingText(input.shortages)
+                else -> READY
+            },
         )
     }
 
     fun cost(ingredients: List<Ingredient>): String =
         ingredients.joinToString(SEPARATOR) { amountOf(it, it.amount) }
+
+    fun lockedText(research: String): String = LOCKED + research
 
     fun missingText(shortages: List<Shortage>): String =
         MISSING + shortages.joinToString(SEPARATOR) { amountOf(it.ingredient, it.missing) }

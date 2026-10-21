@@ -32,6 +32,7 @@ object DriftRecipes {
         category = RecipeCategory.COLETA,
         result = { NetBlock.buildItem() },
         ingredients = listOf(tabuas(4), linhas(5)),
+        research = NetBlock.ID,
     )
 
     private fun tabuas(amount: Int) = Ingredient.tag(Tag.PLANKS, "Tábua", amount, plural = "Tábuas")
