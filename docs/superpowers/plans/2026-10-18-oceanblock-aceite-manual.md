@@ -162,6 +162,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Shift + clique direito retira todos os lingotes prontos.
 - [ ] Minério bruto vanilla (ex.: `RAW_IRON` sem ser pedaço) funde 1 para 1.
 - [ ] Quebrar a fundição carregada (entrada, combustível e saída) e colocar de novo: o item quebrado guarda tudo e a fundição volta igual.
+- [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica ou de uma Peneira: não entra nem sai nada (o inventário vanilla do alto-forno e da composteira fica intocado).
 
 ### Mesa de Pesquisa
 - [ ] Ilha nova: no `/receitas`, a Rede de Detritos aparece com `⌀ Pesquise na Mesa: Rede de Detritos` e não crafta; o Gancho crafta normal.
