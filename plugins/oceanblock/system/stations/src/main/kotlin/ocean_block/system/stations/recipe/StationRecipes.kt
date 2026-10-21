@@ -1,5 +1,6 @@
 package ocean_block.system.stations.recipe
 
+import ocean_block.system.craft.recipe.Ingredient
 import ocean_block.system.craft.recipe.OceanRecipe
 import ocean_block.system.craft.recipe.RecipeCategory
 import ocean_block.system.craft.recipe.Recipes
@@ -8,6 +9,8 @@ import ocean_block.system.stations.recipe.StationIngredients.material
 import ocean_block.system.stations.recipe.StationIngredients.planks
 import ocean_block.system.stations.sieve.SieveBlock
 import ocean_block.system.stations.sieve.SieveTier
+import ocean_block.system.stations.smelter.SmelterBlock
+import ocean_block.system.stations.smelter.SmelterTier
 import org.bukkit.Material
 
 object StationRecipes {
@@ -36,7 +39,37 @@ object StationRecipes {
         )
     }
 
-    private fun sieve(tier: SieveTier, name: String, description: String, research: String?, vararg ingredients: ocean_block.system.craft.recipe.Ingredient) =
+    fun registerSmelters() {
+        Recipes.register(
+            smelter(SmelterTier.BASIC, "Fundição", "Derrete pedaços de minério em lingotes.", null,
+                material(Material.CLAY_BALL, "Argila", 8, "Argilas"), planks(4)),
+        )
+        Recipes.register(
+            smelter(SmelterTier.IMPROVED, "Fundição melhorada", "Duas vezes mais rápida, com chance de lingote extra.", SmelterTier.IMPROVED.blockId,
+                custom(SmelterTier.BASIC.blockId, "Fundição", 1, "Fundições"),
+                material(Material.IRON_INGOT, "Lingote de ferro", 6, "Lingotes de ferro"),
+                material(Material.COPPER_INGOT, "Lingote de cobre", 4, "Lingotes de cobre")),
+        )
+        Recipes.register(
+            smelter(SmelterTier.HOPPER, "Fundição com funil", "Recebe e entrega por funis e baús.", SmelterTier.HOPPER.blockId,
+                custom(SmelterTier.IMPROVED.blockId, "Fundição melhorada", 1, "Fundições melhoradas"),
+                material(Material.HOPPER, "Funil", 2, "Funis"),
+                material(Material.REDSTONE, "Redstone", 2)),
+        )
+    }
+
+    private fun smelter(tier: SmelterTier, name: String, description: String, research: String?, vararg ingredients: Ingredient) =
+        OceanRecipe(
+            id = tier.blockId,
+            name = name,
+            description = description,
+            category = RecipeCategory.PROCESSAMENTO,
+            result = { SmelterBlock.all.first { it.tier == tier }.buildItem() },
+            ingredients = ingredients.toList(),
+            research = research,
+        )
+
+    private fun sieve(tier: SieveTier, name: String, description: String, research: String?, vararg ingredients: Ingredient) =
         OceanRecipe(
             id = tier.blockId,
             name = name,

@@ -64,6 +64,7 @@ class OceanBlockPlugin : JavaPlugin() {
 
     override fun onDisable() {
         DriftSystem.onDisable()
+        StationsSystem.onDisable()
         CoinFlipManager.onDisable()
         PlacedBlockManager.onDisable()
         CollectionsSystem.onDisable()
