@@ -33,17 +33,26 @@ sealed interface UiNode {
     val w: UiSize
     val h: UiSize
     val position: UiPosition?
+
+    /** Caminho do nó no JSON da tela (o mesmo `path` dos avisos); só serve para editores mapearem caixas. */
+    val tag: String?
 }
 
 data class ImageNode(
     val id: String,
     override val w: UiSize = UiSize.Fit,
     override val position: UiPosition? = null,
+    override val tag: String? = null,
 ) : UiNode {
     override val h: UiSize get() = UiSize.Fit
 }
 
-data class IconNode(val id: String, val size: Int, override val position: UiPosition? = null) : UiNode {
+data class IconNode(
+    val id: String,
+    val size: Int,
+    override val position: UiPosition? = null,
+    override val tag: String? = null,
+) : UiNode {
     override val w: UiSize get() = UiSize.Px(size)
     override val h: UiSize get() = UiSize.Px(size)
 }
@@ -56,6 +65,7 @@ data class TextNode(
     override val w: UiSize = UiSize.Fit,
     override val position: UiPosition? = null,
     val shadow: Boolean = true,
+    override val tag: String? = null,
 ) : UiNode {
     override val h: UiSize get() = UiSize.Px(LINE_HEIGHT)
 
@@ -70,6 +80,7 @@ data class HotspotNode(
     override val w: UiSize = UiSize.Grow,
     override val h: UiSize = UiSize.Grow,
     override val position: UiPosition? = null,
+    override val tag: String? = null,
 ) : UiNode
 
 data class ContainerNode(
@@ -85,6 +96,7 @@ data class ContainerNode(
     override val w: UiSize = UiSize.Fit,
     override val h: UiSize = UiSize.Fit,
     override val position: UiPosition? = null,
+    override val tag: String? = null,
 ) : UiNode {
 
     companion object {
@@ -94,3 +106,11 @@ data class ContainerNode(
 }
 
 class UiScreen(val width: Int, val root: ContainerNode)
+
+fun UiNode.tagged(tag: String): UiNode = when (this) {
+    is ImageNode -> copy(tag = tag)
+    is IconNode -> copy(tag = tag)
+    is TextNode -> copy(tag = tag)
+    is HotspotNode -> copy(tag = tag)
+    is ContainerNode -> copy(tag = tag)
+}

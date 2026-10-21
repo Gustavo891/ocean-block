@@ -29,6 +29,7 @@ class UiLayout(private val kit: UiKit) {
         val images = mutableListOf<PlacedImage>()
         val texts = mutableListOf<PlacedText>()
         val hotspots = mutableListOf<PlacedHotspot>()
+        val boxes = mutableListOf<PlacedBox>()
     }
 
     private data class Area(val x: Int, val y: Int, val width: Int, val height: Int?)
@@ -36,7 +37,7 @@ class UiLayout(private val kit: UiKit) {
     fun layout(screen: UiScreen): LaidOut {
         val sink = Sink()
         val height = place(screen.root, 0, 0, screen.width, null, sink)
-        return LaidOut(screen.width, height, sink.images.toList(), sink.texts.toList(), sink.hotspots.toList())
+        return LaidOut(screen.width, height, sink.images.toList(), sink.texts.toList(), sink.hotspots.toList(), sink.boxes.toList())
     }
 
     fun intrinsicWidth(node: UiNode): Int {
@@ -74,12 +75,16 @@ class UiLayout(private val kit: UiKit) {
         return cache.getOrPut(key) { place(node, 0, y, width, parentHeight, Sink()) }
     }
 
-    private fun place(node: UiNode, x: Int, y: Int, width: Int, parentHeight: Int?, sink: Sink): Int = when (node) {
-        is ImageNode -> placeImage(node, x, y, width, sink)
-        is IconNode -> placeIcon(node, x, y, sink)
-        is TextNode -> placeText(node, x, y, width, sink)
-        is HotspotNode -> placeHotspot(node, x, y, width, parentHeight, sink)
-        is ContainerNode -> placeContainer(node, x, y, width, parentHeight, sink)
+    private fun place(node: UiNode, x: Int, y: Int, width: Int, parentHeight: Int?, sink: Sink): Int {
+        val height = when (node) {
+            is ImageNode -> placeImage(node, x, y, width, sink)
+            is IconNode -> placeIcon(node, x, y, sink)
+            is TextNode -> placeText(node, x, y, width, sink)
+            is HotspotNode -> placeHotspot(node, x, y, width, parentHeight, sink)
+            is ContainerNode -> placeContainer(node, x, y, width, parentHeight, sink)
+        }
+        node.tag?.let { sink.boxes += PlacedBox(it, x, y, if (node is IconNode) node.size else width, height) }
+        return height
     }
 
     private fun placeImage(node: ImageNode, x: Int, y: Int, width: Int, sink: Sink): Int {

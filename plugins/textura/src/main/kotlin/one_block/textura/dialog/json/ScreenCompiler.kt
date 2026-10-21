@@ -28,6 +28,7 @@ import one_block.textura.dialog.node.UiPosition
 import one_block.textura.dialog.node.UiScreen
 import one_block.textura.dialog.node.UiSize
 import one_block.textura.dialog.node.UiTextAlign
+import one_block.textura.dialog.node.tagged
 import one_block.textura.dialog.render.TextMeasurer
 import one_block.textura.dialog.theme.UiTheme
 import one_block.textura.dialog.theme.UiTextStyle
@@ -44,7 +45,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
 
     fun compile(definition: ScreenDefinition, theme: UiTheme, session: DialogSession): UiScreen {
         val expanded = ListExpander(session::entries, session::listPage).expand(definition.page(session.page))
-        val built = Context(theme, session).container(expanded)
+        val built = Context(theme, session).container(expanded).copy(tag = expanded.path)
         val stretched = built.w == UiSize.Fit && built.kind == ContainerKind.Row && built.children.any { it.w == UiSize.Grow }
         val compiled = if (stretched) built.copy(w = UiSize.Px(STUDIO_WIDTH)) else built
         val wanted = when (val w = compiled.w) {
@@ -78,7 +79,9 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         private var onSurface = false
         private val placeholders: Placeholders get() = Placeholders(session, scope?.values.orEmpty())
 
-        fun node(def: DefNode): UiNode = when (def) {
+        fun node(def: DefNode): UiNode = build(def).tagged(def.path)
+
+        private fun build(def: DefNode): UiNode = when (def) {
             is DefContainer -> container(def)
             is DefSpace -> if (def.grow) ContainerNode(ContainerKind.Box, emptyList(), w = UiSize.Grow, h = UiSize.Px(0)) else ContainerNode.space(def.px)
             is DefText -> text(def)

@@ -9,6 +9,7 @@ rootProject.name = "ocean-block"
 include(
     ":plugins:oceanblock:plugin",
     ":plugins:textura",
+    ":tools:textura-studio",
 
     ":lib:actionbar",
     ":lib:connection",

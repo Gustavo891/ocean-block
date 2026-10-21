@@ -16,10 +16,14 @@ data class PlacedText(val text: String, val color: TextColor?, val bold: Boolean
 
 data class PlacedHotspot(val x: Int, val y: Int, val w: Int, val h: Int, val action: UiAction?, val tooltip: HoverEventSource<*>?)
 
+/** Área ocupada por um nó marcado com `tag` (caminho no JSON); usada por editores, não pelo jogo. */
+data class PlacedBox(val tag: String, val x: Int, val y: Int, val w: Int, val h: Int)
+
 data class LaidOut(
     val width: Int,
     val height: Int,
     val images: List<PlacedImage>,
     val texts: List<PlacedText>,
     val hotspots: List<PlacedHotspot>,
+    val boxes: List<PlacedBox> = emptyList(),
 )
