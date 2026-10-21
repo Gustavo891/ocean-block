@@ -71,3 +71,23 @@ detritos:
       - {material: COD, min: 1, max: 2, chance: 0.4}
       - {material: IRON_INGOT, min: 1, max: 1, chance: 0.1}
       - {material: NAME_TAG, min: 1, max: 1, chance: 0.02}
+      - {material: SAND, min: 2, max: 4, chance: 0.3}
+      - {material: GRAVEL, min: 2, max: 4, chance: 0.3}
+  torrao_areia:
+    peso: 12
+    exibicao: SAND
+    escala: 0.5
+    drops:
+      - {material: SAND, min: 1, max: 3, chance: 1.0}
+  torrao_cascalho:
+    peso: 12
+    exibicao: GRAVEL
+    escala: 0.5
+    drops:
+      - {material: GRAVEL, min: 1, max: 3, chance: 1.0}
+  torrao_lodo:
+    peso: 8
+    exibicao: DIRT
+    escala: 0.5
+    drops:
+      - {material: DIRT, min: 1, max: 2, chance: 1.0}
