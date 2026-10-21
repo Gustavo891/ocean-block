@@ -28,6 +28,7 @@ include(
     ":plugins:oceanblock:system:craft",
     ":plugins:oceanblock:system:drift",
     ":plugins:oceanblock:system:stations",
+    ":plugins:oceanblock:system:research",
     ":plugins:oceanblock:system:currencies",
     ":plugins:oceanblock:system:enchants",
     ":plugins:oceanblock:system:islands",
