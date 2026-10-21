@@ -34,6 +34,18 @@ class RecipeEntriesTest : StringSpec({
         RecipeEntries.cost(listOf(linhas(1))) shouldBe "1 Linha"
     }
 
+    "card bloqueado por pesquisa desliga o botão e pede a Mesa mesmo sem faltar item" {
+        val card = RecipeEntries.card(CardInput(gancho, "fishing_rod", 1, emptyList(), lockedBy = "Peneira de ferro"))
+
+        card["falta"] shouldBe "true"
+        card["acao"] shouldBe "⌀ Pesquise na Mesa: Peneira de ferro"
+    }
+
+    "receita guarda a pesquisa que a libera" {
+        recipe("peneira_ferro", tabuas(1)).copy(research = "peneira_ferro").research shouldBe "peneira_ferro"
+        gancho.research shouldBe null
+    }
+
     "card pronto traz item, nome, custo, botão ligado e dica de pronto" {
         val card = RecipeEntries.card(CardInput(gancho, "fishing_rod", 1, emptyList()))
 
