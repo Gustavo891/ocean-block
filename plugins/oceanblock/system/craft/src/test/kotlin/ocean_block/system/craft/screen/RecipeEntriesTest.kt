@@ -33,11 +33,45 @@ class RecipeEntriesTest : StringSpec({
         RecipeEntries.cost(listOf(linhas(1))) shouldBe "1 Linha"
     }
 
-    "card bloqueado por pesquisa desliga o botão e pede a Mesa mesmo sem faltar item" {
+    "card bloqueado por pesquisa desliga o botão e manda para o /pesquisa mesmo sem faltar item" {
         val card = RecipeEntries.card(CardInput(gancho, "fishing_rod", 1, emptyList(), lockedBy = "Peneira de ferro"))
 
         card["falta"] shouldBe "true"
-        card["acao"] shouldBe "⌀ Pesquise na Mesa: Peneira de ferro"
+        card["acao"] shouldBe "⌀ Pesquise em /pesquisa: Peneira de ferro"
+        card["status"] shouldBe "Requer pesquisa"
+        card["status_icone"] shouldBe "ui:lock"
+        card["status_estilo"] shouldBe "bad"
+    }
+
+    "card mostra cada ingrediente num slot com a quantidade pedida e marca o que falta" {
+        val receita = recipe(
+            "gancho",
+            Ingredient("Tábua", 3, "Tábuas", "oak_planks") { true },
+            Ingredient("Linha", 2, "Linhas", "string") { true },
+        )
+        val shortages = listOf(Shortage(receita.ingredients[1], have = 1, missing = 1))
+
+        val card = RecipeEntries.card(CardInput(receita, "fishing_rod", 1, shortages, owned = listOf(12, 1)))
+
+        card["i0_item"] shouldBe "oak_planks"
+        card["i0_qtd"] shouldBe "3"
+        card["i0_nome"] shouldBe "Tábuas"
+        card["i0_tem"] shouldBe "<green>Você tem 12"
+        card["i0_falta"] shouldBe "false"
+        card["i1_item"] shouldBe "string"
+        card["i1_qtd"] shouldBe "2"
+        card["i1_tem"] shouldBe "<red>Você tem 1, falta 1"
+        card["i1_falta"] shouldBe "true"
+        card["i2_item"] shouldBe ""
+        card["i4_item"] shouldBe ""
+        card["status"] shouldBe "Faltam itens"
+        card["status_icone"] shouldBe "ui:dot-red"
+        card["status_estilo"] shouldBe "bad"
+    }
+
+    "card diz quanto a receita rende" {
+        RecipeEntries.card(CardInput(gancho, "fishing_rod", 1, emptyList()))["rende"] shouldBe "1 unidade"
+        RecipeEntries.card(CardInput(gancho, "fishing_rod", 4, emptyList()))["rende"] shouldBe "4 unidades"
     }
 
     "receita guarda a pesquisa que a libera" {
@@ -56,6 +90,9 @@ class RecipeEntriesTest : StringSpec({
         card["custo_lista"] shouldBe "∙ 3 Tábuas\n∙ 2 Linhas"
         card["falta"] shouldBe "false"
         card["acao"] shouldBe "✔ Pronto! Clique para craftar."
+        card["status"] shouldBe "Pronto para craftar"
+        card["status_icone"] shouldBe "ui:check"
+        card["status_estilo"] shouldBe "good"
     }
 
     "card sem material desliga o botão e lista o que falta" {
@@ -86,25 +123,25 @@ class RecipeEntriesTest : StringSpec({
         RecipeEntries.activeCategory(null, emptyList()) shouldBe null
     }
 
-    "páginas de 6 cards com a página limitada ao intervalo" {
+    "páginas de 4 cards com a página limitada ao intervalo" {
         RecipeEntries.pageCount(0) shouldBe 1
-        RecipeEntries.pageCount(6) shouldBe 1
-        RecipeEntries.pageCount(7) shouldBe 2
+        RecipeEntries.pageCount(4) shouldBe 1
+        RecipeEntries.pageCount(5) shouldBe 2
         RecipeEntries.clampPage(5, 7) shouldBe 1
         RecipeEntries.clampPage(-1, 7) shouldBe 0
         RecipeEntries.clampPage(3, 2) shouldBe 0
     }
 
     "a linha de páginas some com uma página só" {
-        RecipeEntries.pagination(0, 6).shouldBeEmpty()
+        RecipeEntries.pagination(0, 4).shouldBeEmpty()
     }
 
     "a linha de páginas desliga as setas nas pontas" {
         RecipeEntries.pagination(0, 13) shouldContainExactly listOf(
-            mapOf("pagina" to "1", "paginas" to "3", "sem_anterior" to "true", "sem_proxima" to "false"),
+            mapOf("pagina" to "1", "paginas" to "4", "sem_anterior" to "true", "sem_proxima" to "false"),
         )
         RecipeEntries.pagination(1, 13).single()["sem_anterior"] shouldBe "false"
-        RecipeEntries.pagination(2, 13).single()["sem_proxima"] shouldBe "true"
+        RecipeEntries.pagination(3, 13).single()["sem_proxima"] shouldBe "true"
     }
 
     "a coluna de categorias comporta todas as categorias que existem" {

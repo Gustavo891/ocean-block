@@ -160,13 +160,17 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val expand = placeholders::plain
             val items = def.items.mapNotNull { SlotContent.resolve(it, expand) }.associateBy { it.at }
             val rows = (0 until def.rows).map { row ->
-                ContainerNode(ContainerKind.Row, (0 until def.columns).map { column -> slot(items[row * def.columns + column], size) })
+                val cells = (0 until def.columns).map { column -> items[row * def.columns + column] }
+                val shown = if (def.hideEmpty) cells.filterNotNull() else cells
+                ContainerNode(ContainerKind.Row, shown.map { slot(it, size) })
             }
-            return ContainerNode(ContainerKind.Box, listOf(ContainerNode(ContainerKind.Column, rows)), align = def.align, w = UiSize.Grow)
+            val height = if (def.hideEmpty) UiSize.Px(size * def.rows) else UiSize.Fit
+            return ContainerNode(ContainerKind.Box, listOf(ContainerNode(ContainerKind.Column, rows)), align = def.align, w = UiSize.Grow, h = height)
         }
 
         private fun slot(item: SlotView?, size: Int): UiNode {
-            val frame = ContainerNode(ContainerKind.Box, listOf(ImageNode(theme.slots.art)), w = UiSize.Px(size), h = UiSize.Px(size))
+            val art = if (item?.missing == true) theme.slots.missingArt ?: theme.slots.art else theme.slots.art
+            val frame = ContainerNode(ContainerKind.Box, listOf(ImageNode(art)), w = UiSize.Px(size), h = UiSize.Px(size))
             if (item == null) return frame
             val style = theme.style(theme.slots.textStyle)
             val children = listOfNotNull(
@@ -310,7 +314,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         }
 
         private fun textContent(def: DefText, position: UiPosition?): UiNode {
-            val style = textStyle(def.style)
+            val style = textStyle(def.style?.let(placeholders::plain))
             val color = def.color ?: style.color
             val bold = def.bold ?: style.bold
             val value = placeholders.plain(def.text)

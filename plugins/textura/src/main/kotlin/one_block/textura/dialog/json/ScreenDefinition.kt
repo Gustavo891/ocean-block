@@ -98,6 +98,7 @@ data class DefSlotItem(
     val count: String,
     val name: String? = null,
     val lore: List<String> = emptyList(),
+    val missing: DefFlag = DefFlag.OFF,
 )
 
 data class DefSlots(
@@ -105,6 +106,7 @@ data class DefSlots(
     val rows: Int,
     val items: List<DefSlotItem>,
     val align: UiAlign,
+    val hideEmpty: Boolean = false,
     override val path: String,
 ) : DefNode
 

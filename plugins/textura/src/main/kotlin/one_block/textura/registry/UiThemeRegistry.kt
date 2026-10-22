@@ -76,6 +76,7 @@ class UiThemeRegistry(private val logger: Logger) {
         slots = SlotsTheme(
             art = section.getString("slots.art") ?: "ui:$id/slot",
             textStyle = section.getString("slots.text-style") ?: "heading",
+            missingArt = section.getString("slots.missing-art"),
         ),
         chip = ChipTheme(
             art = section.getString("chip.art") ?: "ui:$id/chip",

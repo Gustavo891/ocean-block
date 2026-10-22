@@ -35,7 +35,7 @@ object DriftRecipes {
         research = NetBlock.ID,
     )
 
-    private fun tabuas(amount: Int) = Ingredient.tag(Tag.PLANKS, "Tábua", amount, plural = "Tábuas")
+    private fun tabuas(amount: Int) = Ingredient.tag(Tag.PLANKS, "Tábua", amount, plural = "Tábuas", icon = "oak_planks")
 
     private fun linhas(amount: Int) = Ingredient.material(Material.STRING, "Linha", amount, plural = "Linhas")
 }

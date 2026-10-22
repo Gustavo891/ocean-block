@@ -188,7 +188,7 @@ Folhas:
 | Forma | Campos |
 |---|---|
 | `{"space": n}` | — |
-| `{"text": "…"}` | `style`, `align` (`left`/`center`/`right`), `w`, `icon`, `color`, `bold`, `tooltip`; `scale` só aceita 1 |
+| `{"text": "…"}` | `style` (aceita `"{chave}"`, ex.: `good`/`bad` por entrada), `align` (`left`/`center`/`right`), `w`, `icon`, `color`, `bold`, `tooltip`; `scale` só aceita 1 |
 | `{"icon": "ui:x"}` | `size` (px, default 8) |
 | `{"image": "ui:x"}` | `w` (estica se a imagem tiver `.slice`) |
 | `{"switch": true}` | `bind`, `tooltip` |
@@ -284,7 +284,7 @@ tira o botão de fechar.
 | Forma | Campos |
 |---|---|
 | `{"nav": "Rótulo"}` | `icon`, `w`, `onClick`, `tooltip`, `selected`, `bind`. Fica ativo quando o `onClick` é `page` para a página atual; antes de qualquer página, vale `selected` (`true`, `false` ou `"{chave}"`). Com `bind`, o clique chama o `button`/`listButton` do código |
-| `{"slots": [7, 1], "items": [{"at": 0, "item": "diamond_sword", "count": 1}]}` | grade de slots (arte `slots.art` do tema) com ícone do item, quantidade e nome traduzido no tooltip; `align` posiciona a grade. Por item, `item` e `count` aceitam `{chave}`; `name` (MiniMessage) e `lore` (lista de linhas MiniMessage) trocam o tooltip do item por um texto sem itálico. Item vazio ou sem valor deixa o slot vazio |
+| `{"slots": [7, 1], "items": [{"at": 0, "item": "diamond_sword", "count": 1}]}` | grade de slots (arte `slots.art` do tema) com ícone do item, quantidade e nome traduzido no tooltip; `align` posiciona a grade. Por item, `item` e `count` aceitam `{chave}`; `name` (MiniMessage) e `lore` (lista de linhas MiniMessage) trocam o tooltip do item por um texto sem itálico. Item vazio ou sem valor deixa o slot vazio. `missing` (`true`, `false` ou `"{chave}"`) por item troca a moldura pela arte `slots.missing-art` do tema (no `stone`, o slot vermelho). `"hideEmpty": true` não desenha os slots vazios (a linha mantém a altura) |
 | `{"dropdown": "Inicial"}` | `options`, `bind`, `w`, `tooltip`. Cada clique avança para a próxima opção |
 | `{"slider": 40}` | `min`, `max`, `step`, `unit`, `bind`, `w`, `tooltip`. Metade esquerda −step, direita +step |
 | `{"icon": "ui:x", "bind": "k", "states": {"a": "ui:y"}}` | troca o ícone pelo valor de `k` |

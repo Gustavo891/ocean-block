@@ -16,7 +16,7 @@ enum class RecipeCategory(
         description = "Itens que recolhem o que a correnteza traz.",
     ),
     PROCESSAMENTO(
-        displayName = "Processamento",
+        displayName = "Estações",
         icon = "ui:sparkle",
         description = "Estações que transformam o que o mar traz.",
     ),

@@ -50,8 +50,6 @@ class RecipesScreen(private val logger: Logger) {
 
     private fun DialogBinds.bind(player: Player) {
         val id = player.uniqueId
-        text("titulo") { category(id).displayName }
-        text("titulo_icone") { category(id).icon }
         list("categorias") { RecipeEntries.categories(available(), category(id)) }
         list("receitas") { recipes(id).map { RecipeEntries.card(cardInput(player, it)) } }
         listPage("receitas") { page(id) }
@@ -73,7 +71,14 @@ class RecipesScreen(private val logger: Logger) {
 
     private fun cardInput(player: Player, recipe: OceanRecipe): CardInput {
         val item = recipe.result()
-        return CardInput(recipe, materialOf(item), item.amount, RecipeCrafter.shortages(player, recipe), RecipeLocks.lockedBy(player, recipe))
+        return CardInput(
+            recipe,
+            materialOf(item),
+            item.amount,
+            RecipeCrafter.shortages(player, recipe),
+            RecipeLocks.lockedBy(player, recipe),
+            recipe.ingredients.map { RecipeCrafter.count(player, it) },
+        )
     }
 
     private fun select(id: UUID, index: Int) {
@@ -91,7 +96,7 @@ class RecipesScreen(private val logger: Logger) {
         when (val result = RecipeCrafter.craft(player, recipe)) {
             is CraftResult.Crafted -> player.sendRichMessage("<green>Você craftou <white>${result.item.amount}x ${recipe.name}</white>.")
             is CraftResult.Missing -> player.sendRichMessage("<red>${RecipeEntries.missingText(result.shortages)}")
-            is CraftResult.Locked -> player.sendRichMessage("<red>Pesquise na Mesa: ${result.research}")
+            is CraftResult.Locked -> player.sendRichMessage("<red>Pesquise antes em <white>/pesquisa</white>: ${result.research}")
         }
     }
 
@@ -99,7 +104,7 @@ class RecipesScreen(private val logger: Logger) {
         const val SCREEN_ID = "receitas"
 
         fun registerIcon(recipe: OceanRecipe) {
-            DialogApi.registerItemIcons(listOf(materialOf(recipe.result())))
+            DialogApi.registerItemIcons(listOf(materialOf(recipe.result())) + recipe.ingredients.mapNotNull { it.icon })
         }
 
         private fun materialOf(item: ItemStack): String = item.type.key().value()

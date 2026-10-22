@@ -41,7 +41,7 @@ class StudioTest : FunSpec({
         val tags = result.boxes.map { it.tag }
 
         tags shouldContain "row#0"
-        tags.filter { it.startsWith("row#0 > Categorias > nav#0[") } shouldBe listOf("row#0 > Categorias > nav#0[0]", "row#0 > Categorias > nav#0[1]")
+        tags.filter { it.startsWith("row#0 > Categorias > nav#1[") } shouldBe listOf("row#0 > Categorias > nav#1[0]", "row#0 > Categorias > nav#1[1]")
     }
 
     test("renderiza todas as telas sem erro") {

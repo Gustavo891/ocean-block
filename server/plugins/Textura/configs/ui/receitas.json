@@ -3,6 +3,13 @@
     {
       "column": [
         {
+          "text": "Categorias",
+          "style": "heading",
+          "align": "left",
+          "scale": 1,
+          "w": "fit"
+        },
+        {
           "repeat": "categorias",
           "perPage": 6,
           "nav": "{nome}",
@@ -13,10 +20,10 @@
           "tooltip": "{nome}\n{descricao}\n\n{acao}"
         }
       ],
-      "w": 96,
+      "w": 104,
       "h": "fit",
-      "gap": 1,
-      "pad": 2,
+      "gap": 2,
+      "pad": 4,
       "align": "start",
       "cross": "start",
       "surface": "sheet",
@@ -25,162 +32,220 @@
     {
       "column": [
         {
-          "column": [
+          "grid": [
             {
-              "row": [
-                {
-                  "space": 3
-                },
-                {
-                  "text": "{titulo}",
-                  "style": "heading",
-                  "align": "left",
-                  "scale": 1,
-                  "icon": "{titulo_icone}",
-                  "w": "grow"
-                },
-                {
-                  "space": 2
-                }
-              ],
-              "w": "grow",
-              "h": 15,
-              "gap": 3,
-              "pad": 0,
-              "align": "start",
-              "cross": "center",
-              "surface": "head",
-              "name": "Heading"
-            },
-            {
+              "repeat": "receitas",
+              "perPage": 4,
               "column": [
                 {
-                  "grid": [
+                  "row": [
                     {
-                      "repeat": "receitas",
-                      "perPage": 6,
-                      "column": [
+                      "space": 2
+                    },
+                    {
+                      "text": "{nome}",
+                      "style": "heading",
+                      "align": "left",
+                      "scale": 1,
+                      "icon": "item:{item}",
+                      "w": "grow",
+                      "tooltip": "{nome}\n{descricao}"
+                    },
+                    {
+                      "space": 1
+                    }
+                  ],
+                  "w": "grow",
+                  "h": 15,
+                  "gap": 3,
+                  "pad": 0,
+                  "align": "start",
+                  "cross": "center",
+                  "surface": "head",
+                  "name": "Titulo"
+                },
+                {
+                  "column": [
+                    {
+                      "row": [
                         {
-                          "slots": [
-                            1,
-                            1
-                          ],
-                          "items": [
-                            {
-                              "at": 0,
-                              "item": "{item}",
-                              "count": "{qtd}",
-                              "name": "{nome}",
-                              "lore": [
-                                "{descricao}"
-                              ]
-                            }
-                          ],
-                          "align": "center"
-                        },
-                        {
-                          "text": "{nome}",
-                          "style": "heading",
+                          "text": "Rende",
+                          "style": "muted",
                           "align": "left",
                           "scale": 1,
                           "w": "fit"
                         },
                         {
-                          "text": "{custo}",
+                          "space": "grow"
+                        },
+                        {
+                          "text": "{rende}",
                           "style": "body",
-                          "align": "left",
+                          "align": "right",
                           "scale": 1,
                           "w": "fit"
-                        },
-                        {
-                          "button": "Craftar",
-                          "icon": "ui:cart",
-                          "look": "light",
-                          "bind": "craftar",
-                          "disabled": "{falta}",
-                          "w": "grow",
-                          "tooltip": "{nome}\n{descricao}\n\nCusto\n{custo_lista}\n\n{acao}"
                         }
                       ],
                       "w": "grow",
                       "h": "fit",
-                      "gap": 3,
-                      "pad": 5,
+                      "gap": 4,
+                      "pad": 0,
                       "align": "start",
                       "cross": "center",
-                      "surface": "well"
+                      "name": "Rende"
+                    },
+                    {
+                      "slots": [
+                        5,
+                        1
+                      ],
+                      "hideEmpty": true,
+                      "items": [
+                        {
+                          "at": 0,
+                          "item": "{i0_item}",
+                          "count": "{i0_qtd}",
+                          "name": "<white>{i0_nome}",
+                          "lore": [
+                            "{i0_tem}"
+                          ],
+                          "missing": "{i0_falta}"
+                        },
+                        {
+                          "at": 1,
+                          "item": "{i1_item}",
+                          "count": "{i1_qtd}",
+                          "name": "<white>{i1_nome}",
+                          "lore": [
+                            "{i1_tem}"
+                          ],
+                          "missing": "{i1_falta}"
+                        },
+                        {
+                          "at": 2,
+                          "item": "{i2_item}",
+                          "count": "{i2_qtd}",
+                          "name": "<white>{i2_nome}",
+                          "lore": [
+                            "{i2_tem}"
+                          ],
+                          "missing": "{i2_falta}"
+                        },
+                        {
+                          "at": 3,
+                          "item": "{i3_item}",
+                          "count": "{i3_qtd}",
+                          "name": "<white>{i3_nome}",
+                          "lore": [
+                            "{i3_tem}"
+                          ],
+                          "missing": "{i3_falta}"
+                        },
+                        {
+                          "at": 4,
+                          "item": "{i4_item}",
+                          "count": "{i4_qtd}",
+                          "name": "<white>{i4_nome}",
+                          "lore": [
+                            "{i4_tem}"
+                          ],
+                          "missing": "{i4_falta}"
+                        }
+                      ],
+                      "align": "center"
+                    },
+                    {
+                      "row": [
+                        {
+                          "text": "{status}",
+                          "style": "{status_estilo}",
+                          "align": "left",
+                          "scale": 1,
+                          "icon": "{status_icone}",
+                          "w": "grow"
+                        }
+                      ],
+                      "w": "grow",
+                      "h": 10,
+                      "gap": 0,
+                      "pad": 0,
+                      "align": "start",
+                      "cross": "center",
+                      "name": "Status"
+                    },
+                    {
+                      "button": "Craftar",
+                      "icon": "ui:cart",
+                      "look": "craft",
+                      "bind": "craftar",
+                      "disabled": "{falta}",
+                      "w": "grow",
+                      "tooltip": "{nome}\n{descricao}\n\nCusto\n{custo_lista}\n\n{acao}"
                     }
                   ],
                   "w": "grow",
                   "h": "fit",
                   "gap": 4,
-                  "pad": 0,
-                  "align": "center",
-                  "cross": "center",
-                  "columns": 2,
-                  "name": "Cards"
-                },
-                {
-                  "repeat": "paginacao",
-                  "perPage": 1,
-                  "row": [
-                    {
-                      "button": "«",
-                      "look": "light",
-                      "bind": "anterior",
-                      "disabled": "{sem_anterior}",
-                      "w": 24,
-                      "tooltip": "Página anterior"
-                    },
-                    {
-                      "text": "{pagina}/{paginas}",
-                      "style": "body",
-                      "align": "center",
-                      "scale": 1,
-                      "w": "grow"
-                    },
-                    {
-                      "button": "»",
-                      "look": "light",
-                      "bind": "proxima",
-                      "disabled": "{sem_proxima}",
-                      "w": 24,
-                      "tooltip": "Próxima página"
-                    }
-                  ],
-                  "w": "grow",
-                  "h": "fit",
-                  "gap": 4,
-                  "pad": 0,
+                  "pad": 4,
                   "align": "start",
-                  "cross": "center",
-                  "name": "Paginas"
-                },
-                {
-                  "text": "Os itens vão para o seu inventário.",
-                  "style": "muted",
-                  "align": "left",
-                  "scale": 1,
-                  "w": "fit"
+                  "cross": "start",
+                  "name": "Corpo"
                 }
               ],
               "w": "grow",
               "h": "fit",
-              "gap": 9,
-              "pad": 5,
+              "gap": 0,
+              "pad": 1,
               "align": "start",
               "cross": "start",
-              "name": "Body"
+              "surface": "sheet",
+              "name": "Card"
             }
           ],
           "w": "grow",
           "h": "fit",
-          "gap": 0,
-          "pad": 1,
-          "align": "start",
+          "gap": 3,
+          "pad": 0,
+          "align": "center",
           "cross": "start",
-          "surface": "sheet",
-          "name": "Receitas"
+          "columns": 2,
+          "name": "Cards"
+        },
+        {
+          "repeat": "paginacao",
+          "perPage": 1,
+          "row": [
+            {
+              "button": "«",
+              "look": "light",
+              "bind": "anterior",
+              "disabled": "{sem_anterior}",
+              "w": 24,
+              "tooltip": "Página anterior"
+            },
+            {
+              "text": "{pagina}/{paginas}",
+              "style": "body",
+              "align": "center",
+              "scale": 1,
+              "w": "grow"
+            },
+            {
+              "button": "»",
+              "look": "light",
+              "bind": "proxima",
+              "disabled": "{sem_proxima}",
+              "w": 24,
+              "tooltip": "Próxima página"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 0,
+          "align": "start",
+          "cross": "center",
+          "name": "Paginas"
         }
       ],
       "w": "grow",
@@ -193,7 +258,7 @@
   ],
   "w": "fit",
   "h": "fit",
-  "gap": 8,
+  "gap": 6,
   "pad": 0,
   "align": "start",
   "cross": "start",

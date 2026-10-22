@@ -97,22 +97,23 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Editar `receitas.json` com o servidor ligado e `/textura reload`: a mudança de altura ou ícone só aparece certa depois de `/textura gerar`.
 
 ### Abrir
-- [ ] `/receitas`, `/craft` e `/receita` abrem a mesma tela, com título `Receitas`, tema de pedra e o rodapé `Os itens vão para o seu inventário.`
+- [ ] `/receitas`, `/craft` e `/receita` abrem a mesma tela, com título `Receitas`, tema de pedra e sem rodapé de texto.
 - [ ] Clicar no NPC "RECEITAS" do spawn abre a tela.
 - [ ] Sem a textura aceita, aparece só o aviso `Textura necessária` do Textura em vez da tela: nada no chat e nenhum aviso `[receitas]` no console.
 - [ ] Renomear `configs/ui/receitas.json`, `/textura reload` e rodar `/receitas`: chat `A tela de receitas não está disponível.` e um aviso `[receitas]` no console. Rodar `/receitas` de novo: o chat repete, o console não. Voltar o nome e `/textura reload`.
 
 ### Categorias
-- [ ] A coluna da esquerda lista `Ferramentas` (picareta) e `Coleta` (baú); a aberta fica destacada e o tooltip diz `✔ Aberta agora!`, a outra `Clique para ver!`.
-- [ ] Clicar em `Coleta` troca o cabeçalho para `Coleta` com o ícone do baú e mostra só a Rede; voltar para `Ferramentas` mostra só o Gancho.
+- [ ] A coluna da esquerda tem o título `Categorias` e lista `Ferramentas` (picareta), `Coleta` (baú) e `Estações`; a aberta fica destacada em azul e o tooltip diz `✔ Aberta agora!`, a outra `Clique para ver!`.
+- [ ] Clicar em `Coleta` mostra só a Rede; voltar para `Ferramentas` mostra só o Gancho.
 - [ ] Não há linha de chips no topo da tela.
 - [ ] Fechar a tela em `Coleta` e abrir de novo: continua em `Coleta`. Sair do servidor e entrar de novo: volta para `Ferramentas`.
 
 ### Cards
-- [ ] Cada card mostra o item no slot (tooltip com nome e descrição), o nome, a linha de custo (`3 Tábuas ∙ 2 Linhas` no Gancho, `4 Tábuas ∙ 5 Linhas` na Rede) e o botão `Craftar` com o carrinho.
-- [ ] Sem material, o botão `Craftar` aparece desabilitado, não reage ao clique e o tooltip termina com `⌀ Falta: ...` listando só o que falta (ex.: `⌀ Falta: 1 Tábua ∙ 2 Linhas`).
-- [ ] Com material, o tooltip termina com `✔ Pronto! Clique para craftar.`
-- [ ] Com 6 receitas ou menos numa categoria, a linha de páginas (`«  1/1  »`) não aparece.
+- [ ] Cada card mostra o cabeçalho com o ícone do item e o nome, a linha `Rende  1 unidade`, um slot por ingrediente com a quantidade pedida (Gancho: tábua 3 e linha 2), a linha de estado e o botão `Craftar` com o carrinho, azul quando dá para craftar.
+- [ ] O slot de um ingrediente que falta fica vermelho; o tooltip do slot diz `Você tem N, falta M` em vermelho, ou `Você tem N` em verde.
+- [ ] Sem material, a linha de estado diz `Faltam itens` em vermelho e o botão `Craftar` aparece cinza, desabilitado, não reage ao clique e o tooltip termina com `⌀ Falta: ...` listando só o que falta (ex.: `⌀ Falta: 1 Tábua ∙ 2 Linhas`).
+- [ ] Com material, a linha de estado diz `Pronto para craftar` em verde e o tooltip termina com `✔ Pronto! Clique para craftar.`
+- [ ] Cabem 4 cards por página (2×2). Com 4 receitas ou menos numa categoria, a linha de páginas (`«  1/1  »`) não aparece.
 
 ### Craftar
 - [ ] Com 3 tábuas e 2 linhas, `Craftar` no Gancho: consome exatamente isso, entrega um gancho que funciona (puxa detrito), mostra `Você craftou 1x Gancho.` e a tela se redesenha com os botões atualizados.
@@ -142,11 +143,11 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 
 ### Preparação
 - [ ] `server/plugins/ocean-block/drift.yml` atualizado com os torrões (`torrao_areia`, `torrao_cascalho`, `torrao_lodo`) e o barril com areia e cascalho; `peneira.yml` copiado na primeira subida.
-- [ ] Depois de reiniciar, o pack sobe sem aviso `[ui:pesquisa]` e os cards da Mesa mostram os ícones (tear, composteira, alto-forno, mesa de cartografia, funil).
+- [ ] Depois de reiniciar, o pack sobe sem aviso `[ui:pesquisa]` e os cards do `/pesquisa` mostram os ícones (tear, composteira, alto-forno, mesa de cartografia, funil).
 
 ### Peneira
 - [ ] Puxar torrões da corrente rende areia, cascalho e terra.
-- [ ] Craftar a Peneira no `/receitas` (categoria `Processamento`): 4 Tábuas, 2 Linhas, 2 Gravetos. Colocar: aparece uma composteira.
+- [ ] Craftar a Peneira no `/receitas` (categoria `Estações`): 4 Tábuas, 2 Linhas, 2 Gravetos. Colocar: aparece uma composteira.
 - [ ] Clique direito com cascalho na mão: carrega 1 cascalho; cada clique seguinte avança uma etapa (a composteira baixa um nível) até a 6ª, que entrega as saídas no inventário com notificação na região `coleta` (`+1 Pedaço de ferro` etc.). Cliques rápidos demais não pulam etapas.
 - [ ] Shift + clique direito com cascalho: carrega e já dá uma etapa, sem abrir nada vanilla.
 - [ ] A composteira nunca chega no nível de farinha de osso; um funil embaixo não puxa nada dela.
@@ -164,16 +165,17 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Quebrar a fundição carregada (entrada, combustível e saída) e colocar de novo: o item quebrado guarda tudo e a fundição volta igual.
 - [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica ou de uma Peneira: não entra nem sai nada (o inventário vanilla do alto-forno e da composteira fica intocado).
 
-### Mesa de Pesquisa
-- [ ] Ilha nova: no `/receitas`, a Rede de Detritos aparece com `⌀ Pesquise na Mesa: Rede de Detritos` e não crafta; o Gancho crafta normal.
-- [ ] Craftar a Mesa de Pesquisa (6 Tábuas, 3 Linhas, 2 Pepitas de ferro) e colocar: clique direito (e shift + clique) abre a tela `pesquisa`, nunca a mesa de cartografia vanilla.
+### Pesquisa (`/pesquisa`)
+- [ ] Ilha nova: no `/receitas`, a Rede de Detritos aparece com `Requer pesquisa` (tooltip `⌀ Pesquise em /pesquisa: Rede de Detritos`) e não crafta; o Gancho crafta normal.
+- [ ] `/pesquisa` (e `/pesquisas`) abre a tela `Pesquisa` da sua ilha; dono e membros veem o mesmo progresso. Sem ilha: chat `Você precisa de uma ilha para pesquisar.`
+- [ ] Não existe mais receita de Mesa de Pesquisa no `/receitas`.
 - [ ] A tela mostra categorias `Coleta`, `Fundição`, `Raft`, a linha de vagas (`1 vaga`), a fila e os cards com custo, tempo e estado.
 - [ ] Dois membros entregam a Rede aos poucos (cada um uma parte das 10 Tábuas e 6 Linhas): só sai do inventário o que falta; ao completar, a pesquisa inicia (20 s).
 - [ ] Ao concluir, aparece na região `avisos` a notificação para os membros online; a Rede passa a craftar no `/receitas`.
 - [ ] Com 1 vaga, completar o custo de duas pesquisas: a segunda entra na fila e começa sozinha quando a primeira termina.
 - [ ] Concluir `Bancada auxiliar`: a linha passa a mostrar 2 vagas e duas pesquisas rodam juntas.
-- [ ] Desligar o servidor no meio de uma pesquisa, esperar mais que o tempo restante, ligar e abrir a Mesa: a pesquisa já está concluída (e a da fila, se cabia no tempo, também).
-- [ ] Visitante sem permissão: shift + clique na Mesa de outra ilha não abre nada.
+- [ ] Desligar o servidor no meio de uma pesquisa, esperar mais que o tempo restante, ligar e rodar `/pesquisa`: a pesquisa já está concluída (e a da fila, se cabia no tempo, também).
+- [ ] Visitante numa ilha alheia: `/pesquisa` abre a pesquisa da própria ilha, nunca a da ilha visitada.
 
 ### Peneira automática
 - [ ] Pesquisar e craftar a Peneira automática. Baú com cascalho em cima, funil embaixo levando para um baú: a peneira puxa do baú de cima e manda as saídas para o funil sozinha, um passo por segundo.

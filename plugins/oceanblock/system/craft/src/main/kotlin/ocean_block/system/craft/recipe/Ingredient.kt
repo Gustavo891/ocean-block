@@ -8,6 +8,7 @@ class Ingredient(
     val label: String,
     val amount: Int,
     val plural: String = label,
+    val icon: String? = null,
     val matches: (ItemStack) -> Boolean,
 ) {
 
@@ -22,9 +23,9 @@ class Ingredient(
     companion object {
 
         fun material(material: Material, label: String, amount: Int, plural: String = label): Ingredient =
-            Ingredient(label, amount, plural) { it.type == material }
+            Ingredient(label, amount, plural, material.name.lowercase()) { it.type == material }
 
-        fun tag(tag: Tag<Material>, label: String, amount: Int, plural: String = label): Ingredient =
-            Ingredient(label, amount, plural) { tag.isTagged(it.type) }
+        fun tag(tag: Tag<Material>, label: String, amount: Int, plural: String = label, icon: String? = null): Ingredient =
+            Ingredient(label, amount, plural, icon) { tag.isTagged(it.type) }
     }
 }

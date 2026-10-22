@@ -53,12 +53,24 @@ class ReceitasScreenTest : StringSpec({
         "custo" to "3 Tábuas ∙ 2 Linhas",
         "custo_lista" to "∙ 3 Tábuas\n∙ 2 Linhas",
         "falta" to falta.toString(),
+        "rende" to "1 unidade",
         "acao" to if (falta) "⌀ Falta: 1 Linha" else "✔ Pronto! Clique para craftar.",
-    )
+        "status" to if (falta) "Faltam itens" else "Pronto para craftar",
+        "status_icone" to if (falta) "ui:dot-red" else "ui:check",
+        "status_estilo" to if (falta) "bad" else "good",
+        "i0_item" to "oak_planks",
+        "i0_qtd" to "3",
+        "i0_nome" to "Tábuas",
+        "i0_tem" to "<green>Você tem 12",
+        "i0_falta" to "false",
+        "i1_item" to "string",
+        "i1_qtd" to "2",
+        "i1_nome" to "Linhas",
+        "i1_tem" to if (falta) "<red>Você tem 1, falta 1" else "<green>Você tem 2",
+        "i1_falta" to falta.toString(),
+    ) + (2 until 5).flatMap { i -> listOf("i${i}_item", "i${i}_qtd", "i${i}_nome", "i${i}_tem", "i${i}_falta").map { it to "" } }
 
     fun binds(receitas: List<Map<String, String>>, page: Int, paginacao: Boolean) = DialogBinds().apply {
-        text("titulo") { "Ferramentas" }
-        text("titulo_icone") { "ui:pickaxe" }
         list("categorias") {
             listOf(
                 mapOf("nome" to "Ferramentas", "icone" to "ui:pickaxe", "ativa" to "true", "descricao" to "x", "acao" to "✔ Aberta agora!"),
@@ -92,7 +104,7 @@ class ReceitasScreenTest : StringSpec({
         warnings.shouldBeEmpty()
         definition.shouldNotBeNull().theme shouldBe "stone"
         definition.keys shouldContainAll listOf(
-            "categorias", "receitas", "paginacao", "categoria", "titulo", "titulo_icone", "craftar", "anterior", "proxima",
+            "categorias", "receitas", "paginacao", "categoria", "craftar", "anterior", "proxima",
         )
     }
 
@@ -102,8 +114,13 @@ class ReceitasScreenTest : StringSpec({
         run.warnings.shouldBeEmpty()
         run.unknownBinds.shouldBeEmpty()
         run.laid.width shouldBeLessThanOrEqual ScreenCompiler.MAX_WIDTH
-        run.laid.texts.map { it.text } shouldContainAll listOf("Ferramentas", "Coleta", "Gancho", "Rede de Detritos", "3 Tábuas ∙ 2 Linhas")
+        run.laid.texts.map { it.text } shouldContainAll listOf(
+            "Categorias", "Ferramentas", "Coleta", "Gancho", "Rede de Detritos", "Pronto para craftar", "Faltam itens", "1 unidade",
+        )
+        run.laid.texts.map { it.text } shouldNotContain "Os itens vão para o seu inventário."
         run.laid.images.map { it.id } shouldContain "ui:stone/icons/pickaxe"
+        run.laid.images.count { it.id == "ui:stone/slot" } shouldBe 3
+        run.laid.images.count { it.id == "ui:stone/slot_missing" } shouldBe 1
     }
 
     "card sem material fica sem ação e o pronto tem ação" {

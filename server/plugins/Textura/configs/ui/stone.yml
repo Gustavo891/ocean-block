@@ -10,6 +10,7 @@ stone:
     count: { color: "#ffffff" }
     segment: { color: "#1e1e1e", shadow: false }
     good: { color: "#1f7a1f", shadow: false }
+    bad: { color: "#b02e26", shadow: false }
     disabled: { color: "#777777", shadow: false }
     body-bare: { color: "#ffffff" }
     heading-bare: { color: "#ffffff", bold: true }
@@ -41,6 +42,13 @@ stone:
         selected-text-style: selected
         disabled-art: ui:stone/button_light_disabled
         disabled-text-style: disabled
+      craft:
+        art: ui:stone/button_light_selected
+        text-style: selected
+        selected-art: ui:stone/button_light_selected
+        selected-text-style: selected
+        disabled-art: ui:stone/button_light_disabled
+        disabled-text-style: disabled
   nav:
     art: ui:stone/nav
     active-art: ui:stone/nav_active
@@ -57,6 +65,7 @@ stone:
     text-style: body
   slots:
     art: ui:stone/slot
+    missing-art: ui:stone/slot_missing
     text-style: count
   chip:
     art: ui:stone/chip

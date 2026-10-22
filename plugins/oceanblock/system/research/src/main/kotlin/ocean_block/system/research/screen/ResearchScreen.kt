@@ -35,7 +35,7 @@ object ResearchScreen {
         when (DialogApi.openResult(player, SCREEN_ID) { it.bind(player, islandUuid) }) {
             DialogOpenResult.Shown, DialogOpenResult.NeedsPack -> Unit
             DialogOpenResult.MissingScreen, DialogOpenResult.Failed -> {
-                player.sendRichMessage("<red>A Mesa de Pesquisa não está disponível.")
+                player.sendRichMessage("<red>A tela de pesquisa não está disponível.")
                 if (warned.add(SCREEN_ID)) Instance.logger.warning("[pesquisa] a tela '$SCREEN_ID' do Textura não abriu; confira configs/ui/$SCREEN_ID.json")
             }
         }

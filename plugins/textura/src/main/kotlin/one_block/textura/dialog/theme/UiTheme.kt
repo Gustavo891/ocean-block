@@ -54,7 +54,7 @@ data class DropdownTheme(val art: String, val arrow: String, val textStyle: Stri
 
 data class SliderTheme(val track: String, val fill: String, val textStyle: String)
 
-data class SlotsTheme(val art: String, val textStyle: String)
+data class SlotsTheme(val art: String, val textStyle: String, val missingArt: String? = null)
 
 data class UiTheme(
     val id: String,
@@ -79,7 +79,7 @@ data class UiTheme(
     fun controlArt(): Set<String> = setOf(
         switch.on, switch.off, segmented.art, segmented.selectedArt, button.art,
         nav.art, nav.activeArt, dropdown.art, dropdown.arrow, slider.track, slider.fill, slots.art,
-    ) + button.looks.values.flatMap { it.arts() }
+    ) + listOfNotNull(slots.missingArt) + button.looks.values.flatMap { it.arts() }
 
     companion object {
         const val DEFAULT_STYLE = "body"

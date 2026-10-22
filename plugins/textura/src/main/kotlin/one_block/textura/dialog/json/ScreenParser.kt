@@ -155,6 +155,7 @@ class ScreenParser(private val logger: Logger) {
                 is DefContainer -> node.children.forEach(::walk)
                 is DefText -> {
                     placeholders(node.text)
+                    placeholders(node.style)
                     placeholders(node.icon)
                     placeholders(node.tooltip)
                 }
@@ -201,6 +202,7 @@ class ScreenParser(private val logger: Logger) {
                     placeholders(item.count)
                     placeholders(item.name)
                     item.lore.forEach(::placeholders)
+                    flag(item.missing)
                 }
                 is DefIcon -> node.bind?.let(keys::add)
                 is DefChip -> {
@@ -435,10 +437,10 @@ class ScreenParser(private val logger: Logger) {
                         warn(path, "item '$material' em 'at' $at fora da grade ${columns}x$rows")
                         null
                     }
-                    else -> DefSlotItem(at, material, count(item, path), item.string("name"), lore(item, path))
+                    else -> DefSlotItem(at, material, count(item, path), item.string("name"), lore(item, path), flag(item, "missing", path))
                 }
             }
-            return DefSlots(columns, rows, items, align(obj, "align", path), path)
+            return DefSlots(columns, rows, items, align(obj, "align", path), obj.bool("hideEmpty", path), path)
         }
 
         private fun count(item: JsonObject, path: String): String {
@@ -623,7 +625,7 @@ class ScreenParser(private val logger: Logger) {
             "chip" to setOf("chip", "icon", "tooltip"),
             "pair" to setOf("pair", "style", "w"),
             "nav" to setOf("nav", "icon", "w", "onClick", "selected", "tooltip", "bind"),
-            "slots" to setOf("slots", "items", "align"),
+            "slots" to setOf("slots", "items", "align", "hideEmpty"),
             "dropdown" to setOf("dropdown", "options", "bind", "w", "tooltip"),
             "slider" to setOf("slider", "min", "max", "step", "unit", "bind", "w", "tooltip"),
         )

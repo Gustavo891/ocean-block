@@ -11,17 +11,19 @@ data class CardInput(
     val amount: Int,
     val shortages: List<Shortage>,
     val lockedBy: String? = null,
+    val owned: List<Int> = emptyList(),
 )
 
 object RecipeEntries {
 
-    const val CARDS_PER_PAGE = 6
+    const val CARDS_PER_PAGE = 4
     const val CATEGORIES_PER_PAGE = 6
     private const val SEPARATOR = " ∙ "
     private const val BULLET = "∙ "
     private const val READY = "✔ Pronto! Clique para craftar."
     private const val MISSING = "⌀ Falta: "
-    private const val LOCKED = "⌀ Pesquise na Mesa: "
+    const val INGREDIENT_SLOTS = 5
+    private const val LOCKED = "⌀ Pesquise em /pesquisa: "
     private const val OPEN = "✔ Aberta agora!"
     private const val BROWSE = "Clique para ver!"
 
@@ -51,13 +53,41 @@ object RecipeEntries {
             "custo" to cost(recipe.ingredients),
             "custo_lista" to recipe.ingredients.joinToString("\n") { BULLET + amountOf(it, it.amount) },
             "falta" to missing.toString(),
+            "rende" to if (input.amount == 1) "1 unidade" else "${input.amount} unidades",
             "acao" to when {
                 locked != null -> lockedText(locked)
                 missing -> missingText(input.shortages)
                 else -> READY
             },
-        )
+        ) + status(locked != null, input.shortages.isNotEmpty()) + ingredientSlots(input)
     }
+
+    private fun status(locked: Boolean, short: Boolean): Map<String, String> {
+        val (text, icon, style) = when {
+            locked -> Triple("Requer pesquisa", "ui:lock", "bad")
+            short -> Triple("Faltam itens", "ui:dot-red", "bad")
+            else -> Triple("Pronto para craftar", "ui:check", "good")
+        }
+        return mapOf("status" to text, "status_icone" to icon, "status_estilo" to style)
+    }
+
+    private fun ingredientSlots(input: CardInput): Map<String, String> =
+        (0 until INGREDIENT_SLOTS).flatMap { index ->
+            val ingredient = input.recipe.ingredients.getOrNull(index)
+            val have = input.owned.getOrNull(index) ?: 0
+            val short = input.shortages.firstOrNull { it.ingredient === ingredient }
+            listOf(
+                "i${index}_item" to (ingredient?.icon.orEmpty()),
+                "i${index}_qtd" to (ingredient?.amount?.toString().orEmpty()),
+                "i${index}_nome" to (ingredient?.let { it.labelFor(it.amount) }.orEmpty()),
+                "i${index}_tem" to when {
+                    ingredient == null -> ""
+                    short != null -> "<red>Você tem $have, falta ${short.missing}"
+                    else -> "<green>Você tem $have"
+                },
+                "i${index}_falta" to (short != null).toString(),
+            )
+        }.toMap()
 
     fun cost(ingredients: List<Ingredient>): String =
         ingredients.joinToString(SEPARATOR) { amountOf(it, it.amount) }
