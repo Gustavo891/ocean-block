@@ -60,13 +60,6 @@
         {
           "column": [
             {
-              "text": "{subtitulo}",
-              "style": "muted",
-              "align": "left",
-              "scale": 1,
-              "w": "grow"
-            },
-            {
               "grid": [
                 {
                   "repeat": "receitas",

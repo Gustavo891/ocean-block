@@ -52,7 +52,6 @@ class RecipesScreen(private val logger: Logger) {
         val id = player.uniqueId
         text("titulo") { category(id).displayName }
         text("titulo_icone") { category(id).icon }
-        text("subtitulo") { category(id).description }
         list("categorias") { RecipeEntries.categories(available(), category(id)) }
         list("receitas") { recipes(id).map { RecipeEntries.card(cardInput(player, it)) } }
         listPage("receitas") { page(id) }

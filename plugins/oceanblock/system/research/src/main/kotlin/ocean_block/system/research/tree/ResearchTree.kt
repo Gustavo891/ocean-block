@@ -25,7 +25,7 @@ object ResearchTree {
             ResearchCategory.COLETA, "item:composter", listOf(iron(4), string(8)), 60, emptyList(), listOf("peneira_ferro"),
         ),
         ResearchDefinition(
-            "fundicao_melhorada", "Fundição melhorada", "Funde duas vezes mais rápido e pode dobrar o lingote.",
+            "fundicao_melhorada", "Fundição rápida", "Funde duas vezes mais rápido e pode dobrar o lingote.",
             ResearchCategory.FUNDICAO, "item:blast_furnace", listOf(iron(6), copper(4), clay(8)), 120, emptyList(), listOf("fundicao_melhorada"),
         ),
         ResearchDefinition(
@@ -33,7 +33,7 @@ object ResearchTree {
             ResearchCategory.RAFT, "item:cartography_table", listOf(planks(12), iron(6)), 90, listOf("rede"), emptyList(), extraSlots = 1,
         ),
         ResearchDefinition(
-            "peneira_diamante", "Peneira de diamante", "A peneira mais rápida, com as melhores chances.",
+            "peneira_diamante", "Peneira diamante", "A peneira mais rápida, com as melhores chances.",
             ResearchCategory.COLETA, "item:composter", listOf(diamond(2), iron(8)), 240, listOf("peneira_ferro"), listOf("peneira_diamante"),
         ),
         ResearchDefinition(

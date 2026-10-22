@@ -25,7 +25,7 @@ object StationRecipes {
                 custom(SieveTier.WOOD.blockId, "Peneira", 1, "Peneiras"), material(Material.IRON_INGOT, "Lingote de ferro", 4, "Lingotes de ferro")),
         )
         Recipes.register(
-            sieve(SieveTier.DIAMOND, "Peneira de diamante", "A peneira mais rápida, com as melhores chances.", SieveTier.DIAMOND.blockId,
+            sieve(SieveTier.DIAMOND, "Peneira diamante", "A peneira mais rápida, com as melhores chances.", SieveTier.DIAMOND.blockId,
                 custom(SieveTier.IRON.blockId, "Peneira de ferro", 1, "Peneiras de ferro"),
                 material(Material.DIAMOND, "Diamante", 2, "Diamantes"),
                 material(Material.GOLD_INGOT, "Lingote de ouro", 4, "Lingotes de ouro")),
@@ -45,14 +45,14 @@ object StationRecipes {
                 material(Material.CLAY_BALL, "Argila", 8, "Argilas"), planks(4)),
         )
         Recipes.register(
-            smelter(SmelterTier.IMPROVED, "Fundição melhorada", "Duas vezes mais rápida, com chance de lingote extra.", SmelterTier.IMPROVED.blockId,
+            smelter(SmelterTier.IMPROVED, "Fundição rápida", "Duas vezes mais rápida, com chance de lingote extra.", SmelterTier.IMPROVED.blockId,
                 custom(SmelterTier.BASIC.blockId, "Fundição", 1, "Fundições"),
                 material(Material.IRON_INGOT, "Lingote de ferro", 6, "Lingotes de ferro"),
                 material(Material.COPPER_INGOT, "Lingote de cobre", 4, "Lingotes de cobre")),
         )
         Recipes.register(
             smelter(SmelterTier.HOPPER, "Fundição com funil", "Recebe e entrega por funis e baús.", SmelterTier.HOPPER.blockId,
-                custom(SmelterTier.IMPROVED.blockId, "Fundição melhorada", 1, "Fundições melhoradas"),
+                custom(SmelterTier.IMPROVED.blockId, "Fundição rápida", 1, "Fundições rápidas"),
                 material(Material.HOPPER, "Funil", 2, "Funis"),
                 material(Material.REDSTONE, "Redstone", 2)),
         )

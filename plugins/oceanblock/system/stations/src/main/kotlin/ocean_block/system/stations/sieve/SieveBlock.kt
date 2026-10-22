@@ -45,7 +45,7 @@ class SieveBlock(val tier: SieveTier) : CustomBlock() {
         private val NAMES = mapOf(
             SieveTier.WOOD to "Peneira",
             SieveTier.IRON to "Peneira de ferro",
-            SieveTier.DIAMOND to "Peneira de diamante",
+            SieveTier.DIAMOND to "Peneira diamante",
             SieveTier.AUTOMATIC to "Peneira automática",
         )
 

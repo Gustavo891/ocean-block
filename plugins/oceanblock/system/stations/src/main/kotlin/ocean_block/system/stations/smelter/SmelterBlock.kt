@@ -44,7 +44,7 @@ class SmelterBlock(val tier: SmelterTier) : CustomBlock() {
         private const val TICKS = 5
         private val NAMES = mapOf(
             SmelterTier.BASIC to "Fundição",
-            SmelterTier.IMPROVED to "Fundição melhorada",
+            SmelterTier.IMPROVED to "Fundição rápida",
             SmelterTier.HOPPER to "Fundição com funil",
         )
 
