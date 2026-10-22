@@ -293,7 +293,9 @@ tira o botão de fechar.
 
 Ícones `item:<material>` (ex.: `item:diamond_sword`) usam a textura vanilla do item. Item sem
 textura própria (ex.: `item:loom`, que usa o modelo do bloco) cai na textura do bloco,
-nesta ordem: `block/<nome>`, `<nome>_front`, `<nome>_side`, `<nome>_top`. No primeiro
+como um cubo em perspectiva, igual ao inventário: topo (`<nome>_top` ou `<nome>`), frente à esquerda
+(`_front`, `_side1`, `_side`) e lado à direita (`_side`, `_side2`, `_side1`), mais escuros; topo vazado
+mostra o `_bottom`. No primeiro
 `/textura gerar` o client da versão é baixado da Mojang para `generated/vanilla/` (uma vez só).
 No tema, `icons:` aceita alias com prefixo (`apple: item:golden_apple`).
 
@@ -383,10 +385,10 @@ DialogApi.registerItemIcons(listOf("fishing_rod", "cobweb"))
 categoria com `"icone": "ui:pickaxe"`). Como o gerar não sabe o valor, uma tela
 com ícone por placeholder assa, no `icon-size` do tema, **todos os aliases de
 `icons:` do tema** (`ui:<alias>`) e os itens de `registerItemIcons`
-(`item:<material>`). Por isso o valor do campo precisa ser um desses: um
+(`item:<material>`). O nó `{"icon": "item:{campo}", "size": 18}` também aceita placeholder: o gerar
+assa os mesmos ícones no `size` do nó; enquanto o valor não resolve, o nó ocupa o espaço vazio. Por isso o valor do campo precisa ser um desses: um
 `ui:<caminho>` que não seja alias, ou um glyph solto, fica sem ícone. Valor vazio
-ou sem resolver também não desenha ícone. O nó `{"icon": ...}` não aceita
-placeholder.
+ou sem resolver também não desenha ícone.
 
 Limites: `perPage` acima de 64 vira 64 (com aviso); `count` de slot fica entre
 1 e 99.

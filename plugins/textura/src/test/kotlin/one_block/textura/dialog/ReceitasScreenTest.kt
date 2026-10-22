@@ -115,7 +115,7 @@ class ReceitasScreenTest : StringSpec({
         run.unknownBinds.shouldBeEmpty()
         run.laid.width shouldBeLessThanOrEqual ScreenCompiler.MAX_WIDTH
         run.laid.texts.map { it.text } shouldContainAll listOf(
-            "Categorias", "Ferramentas", "Coleta", "Gancho", "Rede de Detritos", "Pronto para craftar", "Faltam itens", "1 unidade",
+            "Categorias", "Ferramentas", "Coleta", "Gancho", "Rede de Detritos", "Pronto para craftar", "Faltam itens", "Rende 1 unidade",
         )
         run.laid.texts.map { it.text } shouldNotContain "Os itens vão para o seu inventário."
         run.laid.images.map { it.id } shouldContain "ui:stone/icons/pickaxe"

@@ -52,11 +52,15 @@ class PesquisaScreenTest : StringSpec({
         "pode_entregar" to (!bloqueado).toString(),
         "bloqueado" to bloqueado.toString(),
         "acao" to acao,
-    )
+        "botao" to acao,
+        "rotulo" to "Leva 20s",
+        "status" to if (bloqueado) "Pronta em 40s" else "Entregue os itens",
+        "status_estilo" to if (bloqueado) "muted" else "good",
+        "c0_item" to "oak_planks", "c0_qtd" to "7", "c0_nome" to "Tábuas", "c0_tem" to "<gray>Entregue 3/10", "c0_falta" to (!bloqueado).toString(),
+        "c1_item" to "string", "c1_qtd" to "6", "c1_nome" to "Linhas", "c1_tem" to "<gray>Entregue 0/6", "c1_falta" to (!bloqueado).toString(),
+    ) + (2 until 4).flatMap { i -> listOf("c${i}_item", "c${i}_qtd", "c${i}_nome", "c${i}_tem", "c${i}_falta").map { it to "" } }
 
     fun binds(pesquisas: List<Map<String, String>>) = DialogBinds().apply {
-        text("titulo") { "Coleta" }
-        text("titulo_icone") { "ui:chest" }
         text("vagas") { "Vagas: 1/1" }
         list("categorias") {
             listOf(
@@ -91,7 +95,7 @@ class PesquisaScreenTest : StringSpec({
 
         warnings.shouldBeEmpty()
         definition.shouldNotBeNull().theme shouldBe "stone"
-        definition.keys shouldContainAll listOf("categorias", "fila", "pesquisas", "paginacao", "categoria", "entregar", "atualizar", "vagas", "titulo")
+        definition.keys shouldContainAll listOf("categorias", "fila", "pesquisas", "paginacao", "categoria", "entregar", "atualizar", "vagas")
     }
 
     "a tela compila com o kit real, sem avisos e dentro da largura do dialog" {
@@ -100,7 +104,7 @@ class PesquisaScreenTest : StringSpec({
         run.warnings.shouldBeEmpty()
         run.unknownBinds.shouldBeEmpty()
         run.laid.width shouldBeLessThanOrEqual ScreenCompiler.MAX_WIDTH
-        run.laid.texts.map { it.text } shouldContainAll listOf("Coleta", "Vagas: 1/1", "Rede de Detritos", "faltam 12s", "Entregar", "faltam 40s")
+        run.laid.texts.map { it.text } shouldContainAll listOf("Categorias", "Coleta", "Vagas: 1/1", "Rede de Detritos", "faltam 12s", "Entregar", "faltam 40s", "Leva 20s", "Entregue os itens")
     }
 
     "cartao em andamento fica sem acao e o disponivel tem acao" {

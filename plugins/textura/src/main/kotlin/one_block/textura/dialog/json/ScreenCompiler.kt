@@ -85,7 +85,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             is DefContainer -> container(def)
             is DefSpace -> if (def.grow) ContainerNode(ContainerKind.Box, emptyList(), w = UiSize.Grow, h = UiSize.Px(0)) else ContainerNode.space(def.px)
             is DefText -> text(def)
-            is DefIcon -> IconNode(icon(stateIcon(def)), def.size, def.position)
+            is DefIcon -> iconNode(def)
             is DefImage -> ImageNode(def.id, def.w, def.position)
             is DefSwitch -> switch(def)
             is DefSegmented -> segmented(def)
@@ -112,6 +112,14 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
 
         private fun stateIcon(def: DefIcon): String =
             def.bind?.let { session.value(it) }?.let { def.states[it] } ?: def.id
+
+        private fun iconNode(def: DefIcon): UiNode {
+            val id = placeholders.plain(stateIcon(def)).trim()
+            if (id.isEmpty() || PLACEHOLDER_MARK in id) {
+                return ContainerNode(ContainerKind.Box, emptyList(), w = UiSize.Px(def.size), h = UiSize.Px(def.size), position = def.position)
+            }
+            return IconNode(icon(id), def.size, def.position)
+        }
 
         private fun clickAction(click: DefClick, bind: String?): UiAction {
             val at = scope

@@ -5,6 +5,13 @@
         {
           "column": [
             {
+              "text": "Categorias",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "w": "fit"
+            },
+            {
               "repeat": "categorias",
               "perPage": 3,
               "nav": "{nome}",
@@ -17,7 +24,7 @@
           ],
           "w": "grow",
           "h": "fit",
-          "gap": 1,
+          "gap": 2,
           "pad": 2,
           "align": "start",
           "cross": "start",
@@ -26,13 +33,31 @@
         },
         {
           "column": [
-            { "text": "{vagas}", "style": "heading", "align": "left", "scale": 1, "w": "fit" },
+            {
+              "text": "{vagas}",
+              "style": "heading",
+              "align": "left",
+              "scale": 1,
+              "w": "fit"
+            },
             {
               "repeat": "fila",
               "perPage": 3,
               "column": [
-                { "text": "{nome}", "style": "body", "align": "left", "scale": 1, "w": "fit" },
-                { "text": "{tempo}", "style": "muted", "align": "left", "scale": 1, "w": "fit" }
+                {
+                  "text": "{nome}",
+                  "style": "body",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                },
+                {
+                  "text": "{tempo}",
+                  "style": "muted",
+                  "align": "left",
+                  "scale": 1,
+                  "w": "fit"
+                }
               ],
               "w": "grow",
               "h": "fit",
@@ -45,16 +70,16 @@
           "w": "grow",
           "h": "fit",
           "gap": 4,
-          "pad": 4,
+          "pad": 3,
           "align": "start",
           "cross": "start",
-          "surface": "well",
+          "surface": "sheet",
           "name": "Fila"
         }
       ],
-      "w": 104,
+      "w": 90,
       "h": "fit",
-      "gap": 6,
+      "gap": 4,
       "pad": 0,
       "align": "start",
       "cross": "start",
@@ -63,130 +88,220 @@
     {
       "column": [
         {
-          "row": [
-            { "space": 3 },
-            { "text": "{titulo}", "style": "heading", "align": "left", "scale": 1, "icon": "{titulo_icone}", "w": "grow" },
-            { "space": 2 }
-          ],
-          "w": "grow",
-          "h": 15,
-          "gap": 3,
-          "pad": 0,
-          "align": "start",
-          "cross": "center",
-          "surface": "head",
-          "name": "Heading"
-        },
-        {
-          "column": [
+          "grid": [
             {
-              "grid": [
+              "repeat": "pesquisas",
+              "perPage": 4,
+              "column": [
                 {
-                  "repeat": "pesquisas",
-                  "perPage": 6,
-                  "column": [
+                  "row": [
                     {
-                      "row": [
-                        { "icon": "{icone}", "size": 16 },
+                      "icon": "{icone}",
+                      "size": 18
+                    },
+                    {
+                      "column": [
                         {
-                          "column": [
-                            { "text": "{nome}", "style": "heading", "align": "left", "scale": 1, "w": "fit" },
-                            { "text": "{tempo}", "style": "muted", "align": "left", "scale": 1, "w": "fit" }
-                          ],
+                          "text": "{rotulo}",
+                          "style": "muted",
+                          "align": "left",
+                          "scale": 1,
+                          "w": "grow"
+                        },
+                        {
+                          "text": "{nome}",
+                          "style": "heading",
+                          "align": "left",
+                          "scale": 1,
                           "w": "grow",
-                          "h": "fit",
-                          "gap": 1,
-                          "pad": 0,
-                          "align": "start",
-                          "cross": "start"
+                          "tooltip": "{nome}\n{descricao}"
                         }
                       ],
                       "w": "grow",
                       "h": "fit",
-                      "gap": 4,
+                      "gap": 2,
                       "pad": 0,
                       "align": "start",
-                      "cross": "center"
-                    },
-                    {
-                      "button": "{acao}",
-                      "look": "light",
-                      "bind": "entregar",
-                      "disabled": "{bloqueado}",
-                      "w": "grow",
-                      "tooltip": "{nome}\n{descricao}\n\nCusto\n{custo_lista}\n\n{estado}"
+                      "cross": "start"
                     }
                   ],
                   "w": "grow",
                   "h": "fit",
-                  "gap": 4,
-                  "pad": 5,
+                  "gap": 3,
+                  "pad": 0,
                   "align": "start",
-                  "cross": "start",
-                  "surface": "well"
+                  "cross": "center",
+                  "name": "Pesquisa"
+                },
+                {
+                  "slots": [
+                    4,
+                    1
+                  ],
+                  "hideEmpty": true,
+                  "items": [
+                    {
+                      "at": 0,
+                      "item": "{c0_item}",
+                      "count": "{c0_qtd}",
+                      "name": "<white>{c0_nome}",
+                      "lore": [
+                        "{c0_tem}"
+                      ],
+                      "missing": "{c0_falta}"
+                    },
+                    {
+                      "at": 1,
+                      "item": "{c1_item}",
+                      "count": "{c1_qtd}",
+                      "name": "<white>{c1_nome}",
+                      "lore": [
+                        "{c1_tem}"
+                      ],
+                      "missing": "{c1_falta}"
+                    },
+                    {
+                      "at": 2,
+                      "item": "{c2_item}",
+                      "count": "{c2_qtd}",
+                      "name": "<white>{c2_nome}",
+                      "lore": [
+                        "{c2_tem}"
+                      ],
+                      "missing": "{c2_falta}"
+                    },
+                    {
+                      "at": 3,
+                      "item": "{c3_item}",
+                      "count": "{c3_qtd}",
+                      "name": "<white>{c3_nome}",
+                      "lore": [
+                        "{c3_tem}"
+                      ],
+                      "missing": "{c3_falta}"
+                    }
+                  ],
+                  "align": "center"
+                },
+                {
+                  "row": [
+                    {
+                      "text": "{status}",
+                      "style": "{status_estilo}",
+                      "align": "left",
+                      "scale": 1,
+                      "w": "grow"
+                    }
+                  ],
+                  "w": "grow",
+                  "h": 10,
+                  "gap": 0,
+                  "pad": 0,
+                  "align": "start",
+                  "cross": "center",
+                  "name": "Status"
+                },
+                {
+                  "button": "{botao}",
+                  "look": "craft",
+                  "bind": "entregar",
+                  "disabled": "{bloqueado}",
+                  "w": "grow",
+                  "tooltip": "{nome}\n{descricao}\n\nCusto\n{custo_lista}\n\n{estado}"
                 }
               ],
               "w": "grow",
               "h": "fit",
               "gap": 4,
-              "pad": 0,
-              "align": "center",
-              "cross": "center",
-              "columns": 2,
-              "name": "Cards"
-            },
-            {
-              "repeat": "paginacao",
-              "perPage": 1,
-              "row": [
-                { "button": "«", "look": "light", "bind": "anterior", "disabled": "{sem_anterior}", "w": 24, "tooltip": "Página anterior" },
-                { "text": "{pagina}/{paginas}", "style": "body", "align": "center", "scale": 1, "w": "grow" },
-                { "button": "»", "look": "light", "bind": "proxima", "disabled": "{sem_proxima}", "w": 24, "tooltip": "Próxima página" }
-              ],
-              "w": "grow",
-              "h": "fit",
-              "gap": 4,
-              "pad": 0,
+              "pad": 3,
               "align": "start",
-              "cross": "center",
-              "name": "Paginas"
-            },
-            {
-              "row": [
-                { "text": "Entregue aos poucos; o time todo ajuda.", "style": "muted", "align": "left", "scale": 1, "w": "grow" },
-                { "button": "Atualizar", "look": "light", "bind": "atualizar", "w": 64, "tooltip": "Redesenha a tela com o tempo atual." }
-              ],
-              "w": "grow",
-              "h": "fit",
-              "gap": 4,
-              "pad": 0,
-              "align": "start",
-              "cross": "center",
-              "name": "Rodape"
+              "cross": "start",
+              "surface": "sheet"
             }
           ],
           "w": "grow",
           "h": "fit",
-          "gap": 7,
-          "pad": 5,
-          "align": "start",
+          "gap": 3,
+          "pad": 0,
+          "align": "center",
           "cross": "start",
-          "name": "Body"
+          "columns": 2,
+          "name": "Cards"
+        },
+        {
+          "repeat": "paginacao",
+          "perPage": 1,
+          "row": [
+            {
+              "button": "«",
+              "look": "light",
+              "bind": "anterior",
+              "disabled": "{sem_anterior}",
+              "w": 24,
+              "tooltip": "Página anterior"
+            },
+            {
+              "text": "{pagina}/{paginas}",
+              "style": "body",
+              "align": "center",
+              "scale": 1,
+              "w": "grow"
+            },
+            {
+              "button": "»",
+              "look": "light",
+              "bind": "proxima",
+              "disabled": "{sem_proxima}",
+              "w": 24,
+              "tooltip": "Próxima página"
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 0,
+          "align": "start",
+          "cross": "center",
+          "name": "Paginas"
+        },
+        {
+          "row": [
+            {
+              "text": "Entregue aos poucos.",
+              "style": "muted",
+              "align": "left",
+              "scale": 1,
+              "w": "grow"
+            },
+            {
+              "button": "Atualizar",
+              "look": "light",
+              "bind": "atualizar",
+              "w": 64,
+              "tooltip": "Redesenha a tela com o tempo atual."
+            }
+          ],
+          "w": "grow",
+          "h": "fit",
+          "gap": 4,
+          "pad": 0,
+          "align": "start",
+          "cross": "center",
+          "name": "Rodape"
         }
       ],
       "w": "grow",
       "h": "fit",
-      "gap": 0,
-      "pad": 1,
+      "gap": 6,
+      "pad": 0,
       "align": "start",
       "cross": "start",
-      "surface": "sheet",
       "name": "Pesquisas"
     }
   ],
-  "w": 390,
+  "w": "fit",
   "h": "fit",
-  "gap": 8,
+  "gap": 4,
   "pad": 0,
   "align": "start",
   "cross": "start",

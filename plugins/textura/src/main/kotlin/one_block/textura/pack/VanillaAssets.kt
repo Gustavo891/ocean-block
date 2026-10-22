@@ -24,7 +24,9 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         val jar = jar(download) ?: return null
         val image = runCatching {
             ZipFile(jar).use { zip ->
-                val base = VanillaTextures.find(name) { path -> read(zip, path) }
+                val base = read(zip, "item/$name")
+                    ?: VanillaTextures.faces(name) { path -> read(zip, path)?.let(::firstFrame) }?.let(BlockIcon::render)
+                    ?: VanillaTextures.find(name) { path -> read(zip, path) }
                 val overlay = if (name in TINTED_POTIONS) read(zip, "item/potion_overlay") else null
                 if (base != null && overlay != null) tinted(base, overlay) else base
             }

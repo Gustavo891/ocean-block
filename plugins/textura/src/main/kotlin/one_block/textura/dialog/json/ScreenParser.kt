@@ -204,7 +204,10 @@ class ScreenParser(private val logger: Logger) {
                     item.lore.forEach(::placeholders)
                     flag(item.missing)
                 }
-                is DefIcon -> node.bind?.let(keys::add)
+                is DefIcon -> {
+                    node.bind?.let(keys::add)
+                    placeholders(node.id)
+                }
                 is DefChip -> {
                     placeholders(node.label)
                     placeholders(node.icon)

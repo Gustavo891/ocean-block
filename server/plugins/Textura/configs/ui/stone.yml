@@ -10,6 +10,7 @@ stone:
     count: { color: "#ffffff" }
     segment: { color: "#1e1e1e", shadow: false }
     good: { color: "#1f7a1f", shadow: false }
+    accent: { color: "#a35f12", shadow: false }
     bad: { color: "#b02e26", shadow: false }
     disabled: { color: "#777777", shadow: false }
     body-bare: { color: "#ffffff" }

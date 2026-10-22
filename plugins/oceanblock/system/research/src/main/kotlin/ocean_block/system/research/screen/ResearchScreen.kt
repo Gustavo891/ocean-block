@@ -47,8 +47,6 @@ object ResearchScreen {
 
     private fun DialogBinds.bind(player: Player, islandUuid: UUID) {
         val id = player.uniqueId
-        text("titulo") { view(id).category.displayName }
-        text("titulo_icone") { view(id).category.icon }
         text("vagas") {
             ResearchManager.read(islandUuid) { ResearchEntries.slotsText(it.running.size, ResearchRules.slots(it, ResearchTree.byId)) }
         }

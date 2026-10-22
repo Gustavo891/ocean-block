@@ -9,7 +9,10 @@ import ocean_block.system.research.tree.ResearchTree
 
 object ResearchEntries {
 
-    const val CARDS_PER_PAGE = 6
+    const val CARDS_PER_PAGE = 4
+    const val COST_SLOTS = 4
+    private const val PLANKS = "planks"
+    private const val PLANKS_ICON = "oak_planks"
     private const val BULLET = "∙ "
     private const val OPEN = "✔ Aberta agora!"
     private const val BROWSE = "Clique para ver!"
@@ -41,7 +44,39 @@ object ResearchEntries {
             "pode_entregar" to available.toString(),
             "bloqueado" to (!available).toString(),
             "acao" to action(status),
-        )
+            "rotulo" to "Leva ${duration(def.durationMs)}",
+            "botao" to button(status),
+        ) + status(status) + costSlots(def, status, delivered)
+    }
+
+    fun costIcons(): List<String> =
+        ResearchTree.all.flatMap { it.cost }.map { if (it.key == PLANKS) PLANKS_ICON else it.key }.distinct()
+
+    private fun status(status: ResearchStatus): Map<String, String> {
+        val (text, style) = when (status) {
+            is ResearchStatus.Locked -> "Bloqueada" to "bad"
+            ResearchStatus.Available -> "Entregue os itens" to "good"
+            ResearchStatus.Queued -> "Na fila" to "muted"
+            is ResearchStatus.Running -> "Pronta em ${duration(status.remainingMs)}" to "muted"
+            ResearchStatus.Done -> "✔ Concluída" to "good"
+        }
+        return mapOf("status" to text, "status_estilo" to style)
+    }
+
+    private fun costSlots(def: ResearchDefinition, status: ResearchStatus, delivered: Map<String, Int>): Map<String, String> {
+        val paid = status !is ResearchStatus.Locked && status != ResearchStatus.Available
+        return (0 until COST_SLOTS).flatMap { index ->
+            val cost = def.cost.getOrNull(index)
+            val have = cost?.let { if (paid) it.amount else minOf(it.amount, delivered[it.key] ?: 0) } ?: 0
+            val left = (cost?.amount ?: 0) - have
+            listOf(
+                "c${index}_item" to (cost?.let { if (it.key == PLANKS) PLANKS_ICON else it.key }.orEmpty()),
+                "c${index}_qtd" to (cost?.let { (if (left > 0) left else it.amount).toString() }.orEmpty()),
+                "c${index}_nome" to (cost?.let { it.labelFor(it.amount) }.orEmpty()),
+                "c${index}_tem" to (cost?.let { "<gray>Entregue $have/${it.amount}" }.orEmpty()),
+                "c${index}_falta" to (left > 0).toString(),
+            )
+        }.toMap()
     }
 
     fun queue(state: IslandResearch, now: Long): List<Map<String, String>> {
@@ -81,6 +116,14 @@ object ResearchEntries {
         is ResearchStatus.Running -> "faltam ${duration(status.remainingMs)}"
         ResearchStatus.Done -> ""
         else -> "leva ${duration(def.durationMs)}"
+    }
+
+    private fun button(status: ResearchStatus): String = when (status) {
+        is ResearchStatus.Locked -> "Bloqueada"
+        ResearchStatus.Available -> "Entregar"
+        ResearchStatus.Queued -> "Na fila"
+        is ResearchStatus.Running -> "Pesquisando"
+        ResearchStatus.Done -> "Concluída"
     }
 
     private fun action(status: ResearchStatus): String = when (status) {

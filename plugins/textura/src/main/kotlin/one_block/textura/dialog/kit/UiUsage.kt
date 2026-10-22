@@ -75,6 +75,9 @@ data class UiUsage(val images: Set<String>, val icons: Set<IconSize>, val surfac
                     dynamicItems.forEach { item -> icons += IconSize(compiler.resolveIcon(theme, UiArtCatalog.ITEM_PREFIX + item), size) }
                 }
                 if (definition.containers().any(::hasDynamicIcon)) icons += dynamicLabelIcons(theme, compiler, dynamicItems)
+                definition.containers().forEach { container ->
+                    collectDynamicIcons(container) { size -> icons += dynamicIcons(theme, compiler, dynamicItems, size) }
+                }
             }
             return UiUsage(images, icons, surfaces)
         }
@@ -84,9 +87,22 @@ data class UiUsage(val images: Set<String>, val icons: Set<IconSize>, val surfac
         }
 
         private fun dynamicLabelIcons(theme: UiTheme, compiler: ScreenCompiler, dynamicItems: Set<String>): Set<IconSize> =
+            dynamicIcons(theme, compiler, dynamicItems, theme.iconSize)
+
+        private fun dynamicIcons(theme: UiTheme, compiler: ScreenCompiler, dynamicItems: Set<String>, size: Int): Set<IconSize> =
             (theme.icons.keys.map { compiler.resolveIcon(theme, UiArtCatalog.UI_PREFIX + it) } + dynamicItems.map { UiArtCatalog.ITEM_PREFIX + it })
-                .map { IconSize(it, theme.iconSize) }
+                .map { IconSize(it, size) }
                 .toSet()
+
+        private fun collectDynamicIcons(node: DefNode, sink: (Int) -> Unit) {
+            when (node) {
+                is DefContainer -> node.children.forEach { collectDynamicIcons(it, sink) }
+                is DefRepeat -> collectDynamicIcons(node.node, sink)
+                is DefScoped -> collectDynamicIcons(node.node, sink)
+                is DefIcon -> if (dynamic(node.id)) sink(node.size)
+                else -> Unit
+            }
+        }
 
         private fun hasDynamicIcon(node: DefNode): Boolean = when (node) {
             is DefContainer -> node.children.any(::hasDynamicIcon)
