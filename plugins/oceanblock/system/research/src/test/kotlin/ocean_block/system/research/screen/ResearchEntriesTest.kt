@@ -57,7 +57,7 @@ class ResearchEntriesTest : StringSpec({
             it["c0_qtd"] shouldBe "10"
         }
         ResearchEntries.card(def("rede"), done, NOW).let {
-            it["status"] shouldBe "✔ Concluída"
+            it["status"] shouldBe "Concluída"
             it["status_estilo"] shouldBe "good"
         }
         ResearchEntries.card(def("peneira_diamante"), done, NOW).let {

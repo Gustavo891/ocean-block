@@ -77,7 +77,6 @@ class PesquisaScreenTest : StringSpec({
         listButton("entregar") { _, _ -> }
         button("anterior") { }
         button("proxima") { }
-        button("atualizar") { }
     }
 
     class Render(val laid: LaidOut, val warnings: List<String>, val unknownBinds: Set<String>)
@@ -95,7 +94,7 @@ class PesquisaScreenTest : StringSpec({
 
         warnings.shouldBeEmpty()
         definition.shouldNotBeNull().theme shouldBe "stone"
-        definition.keys shouldContainAll listOf("categorias", "fila", "pesquisas", "paginacao", "categoria", "entregar", "atualizar", "vagas")
+        definition.keys shouldContainAll listOf("categorias", "fila", "pesquisas", "paginacao", "categoria", "entregar", "vagas")
     }
 
     "a tela compila com o kit real, sem avisos e dentro da largura do dialog" {

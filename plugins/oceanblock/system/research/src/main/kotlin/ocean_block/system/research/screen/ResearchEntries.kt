@@ -58,7 +58,7 @@ object ResearchEntries {
             ResearchStatus.Available -> "Entregue os itens" to "good"
             ResearchStatus.Queued -> "Na fila" to "muted"
             is ResearchStatus.Running -> "Pronta em ${duration(status.remainingMs)}" to "muted"
-            ResearchStatus.Done -> "✔ Concluída" to "good"
+            ResearchStatus.Done -> "Concluída" to "good"
         }
         return mapOf("status" to text, "status_estilo" to style)
     }

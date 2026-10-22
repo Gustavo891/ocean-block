@@ -62,7 +62,6 @@ object ResearchScreen {
         listButton("entregar") { _, index -> definitions(id).getOrNull(index)?.let { deliver(player, islandUuid, it) } }
         button("anterior") { turn(id, -1) }
         button("proxima") { turn(id, 1) }
-        button("atualizar") { ResearchTimer.completeDue(islandUuid) }
     }
 
     private fun view(id: UUID): View = views[id] ?: View(ResearchCategory.COLETA, 0)

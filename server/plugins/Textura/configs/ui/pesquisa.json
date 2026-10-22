@@ -134,84 +134,72 @@
                   "name": "Pesquisa"
                 },
                 {
-                  "column": [
+                  "slots": [
+                    4,
+                    1
+                  ],
+                  "hideEmpty": true,
+                  "items": [
                     {
-                      "slots": [
-                        4,
-                        1
+                      "at": 0,
+                      "item": "{c0_item}",
+                      "count": "{c0_qtd}",
+                      "name": "<white>{c0_nome}",
+                      "lore": [
+                        "{c0_tem}"
                       ],
-                      "hideEmpty": true,
-                      "items": [
-                        {
-                          "at": 0,
-                          "item": "{c0_item}",
-                          "count": "{c0_qtd}",
-                          "name": "<white>{c0_nome}",
-                          "lore": [
-                            "{c0_tem}"
-                          ],
-                          "missing": "{c0_falta}"
-                        },
-                        {
-                          "at": 1,
-                          "item": "{c1_item}",
-                          "count": "{c1_qtd}",
-                          "name": "<white>{c1_nome}",
-                          "lore": [
-                            "{c1_tem}"
-                          ],
-                          "missing": "{c1_falta}"
-                        },
-                        {
-                          "at": 2,
-                          "item": "{c2_item}",
-                          "count": "{c2_qtd}",
-                          "name": "<white>{c2_nome}",
-                          "lore": [
-                            "{c2_tem}"
-                          ],
-                          "missing": "{c2_falta}"
-                        },
-                        {
-                          "at": 3,
-                          "item": "{c3_item}",
-                          "count": "{c3_qtd}",
-                          "name": "<white>{c3_nome}",
-                          "lore": [
-                            "{c3_tem}"
-                          ],
-                          "missing": "{c3_falta}"
-                        }
-                      ],
-                      "align": "center"
+                      "missing": "{c0_falta}"
                     },
                     {
-                      "row": [
-                        {
-                          "text": "{status}",
-                          "style": "{status_estilo}",
-                          "align": "left",
-                          "scale": 1,
-                          "w": "grow"
-                        }
+                      "at": 1,
+                      "item": "{c1_item}",
+                      "count": "{c1_qtd}",
+                      "name": "<white>{c1_nome}",
+                      "lore": [
+                        "{c1_tem}"
                       ],
-                      "w": "grow",
-                      "h": 10,
-                      "gap": 0,
-                      "pad": 0,
-                      "align": "start",
-                      "cross": "center",
-                      "name": "Status"
+                      "missing": "{c1_falta}"
+                    },
+                    {
+                      "at": 2,
+                      "item": "{c2_item}",
+                      "count": "{c2_qtd}",
+                      "name": "<white>{c2_nome}",
+                      "lore": [
+                        "{c2_tem}"
+                      ],
+                      "missing": "{c2_falta}"
+                    },
+                    {
+                      "at": 3,
+                      "item": "{c3_item}",
+                      "count": "{c3_qtd}",
+                      "name": "<white>{c3_nome}",
+                      "lore": [
+                        "{c3_tem}"
+                      ],
+                      "missing": "{c3_falta}"
+                    }
+                  ],
+                  "align": "center"
+                },
+                {
+                  "row": [
+                    {
+                      "text": "{status}",
+                      "style": "{status_estilo}",
+                      "align": "left",
+                      "scale": 1,
+                      "w": "grow"
                     }
                   ],
                   "w": "grow",
-                  "h": "fit",
-                  "gap": 3,
-                  "pad": 4,
+                  "h": 10,
+                  "gap": 0,
+                  "pad": 0,
                   "align": "start",
-                  "cross": "start",
-                  "surface": "well",
-                  "name": "Custo"
+                  "cross": "center",
+                  "name": "Status"
                 },
                 {
                   "button": "{botao}",
@@ -224,11 +212,11 @@
               ],
               "w": "grow",
               "h": "fit",
-              "gap": 5,
-              "pad": 4,
+              "gap": 4,
+              "pad": 3,
               "align": "start",
               "cross": "start",
-              "surface": "sheet"
+              "surface": "well"
             }
           ],
           "w": "grow",
@@ -275,39 +263,15 @@
           "align": "start",
           "cross": "center",
           "name": "Paginas"
-        },
-        {
-          "row": [
-            {
-              "text": "Entregue aos poucos.",
-              "style": "muted",
-              "align": "left",
-              "scale": 1,
-              "w": "grow"
-            },
-            {
-              "button": "Atualizar",
-              "look": "light",
-              "bind": "atualizar",
-              "w": 64,
-              "tooltip": "Redesenha a tela com o tempo atual."
-            }
-          ],
-          "w": "grow",
-          "h": "fit",
-          "gap": 4,
-          "pad": 0,
-          "align": "start",
-          "cross": "center",
-          "name": "Rodape"
         }
       ],
       "w": "grow",
       "h": "fit",
-      "gap": 6,
-      "pad": 0,
+      "gap": 5,
+      "pad": 5,
       "align": "start",
       "cross": "start",
+      "surface": "sheet",
       "name": "Pesquisas"
     }
   ],
