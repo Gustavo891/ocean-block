@@ -97,7 +97,7 @@
                   "row": [
                     {
                       "icon": "{icone}",
-                      "size": 18
+                      "size": 16
                     },
                     {
                       "column": [
@@ -127,79 +127,91 @@
                   ],
                   "w": "grow",
                   "h": "fit",
-                  "gap": 3,
+                  "gap": 2,
                   "pad": 0,
                   "align": "start",
                   "cross": "center",
                   "name": "Pesquisa"
                 },
                 {
-                  "slots": [
-                    4,
-                    1
-                  ],
-                  "hideEmpty": true,
-                  "items": [
+                  "column": [
                     {
-                      "at": 0,
-                      "item": "{c0_item}",
-                      "count": "{c0_qtd}",
-                      "name": "<white>{c0_nome}",
-                      "lore": [
-                        "{c0_tem}"
+                      "slots": [
+                        4,
+                        1
                       ],
-                      "missing": "{c0_falta}"
+                      "hideEmpty": true,
+                      "items": [
+                        {
+                          "at": 0,
+                          "item": "{c0_item}",
+                          "count": "{c0_qtd}",
+                          "name": "<white>{c0_nome}",
+                          "lore": [
+                            "{c0_tem}"
+                          ],
+                          "missing": "{c0_falta}"
+                        },
+                        {
+                          "at": 1,
+                          "item": "{c1_item}",
+                          "count": "{c1_qtd}",
+                          "name": "<white>{c1_nome}",
+                          "lore": [
+                            "{c1_tem}"
+                          ],
+                          "missing": "{c1_falta}"
+                        },
+                        {
+                          "at": 2,
+                          "item": "{c2_item}",
+                          "count": "{c2_qtd}",
+                          "name": "<white>{c2_nome}",
+                          "lore": [
+                            "{c2_tem}"
+                          ],
+                          "missing": "{c2_falta}"
+                        },
+                        {
+                          "at": 3,
+                          "item": "{c3_item}",
+                          "count": "{c3_qtd}",
+                          "name": "<white>{c3_nome}",
+                          "lore": [
+                            "{c3_tem}"
+                          ],
+                          "missing": "{c3_falta}"
+                        }
+                      ],
+                      "align": "center"
                     },
                     {
-                      "at": 1,
-                      "item": "{c1_item}",
-                      "count": "{c1_qtd}",
-                      "name": "<white>{c1_nome}",
-                      "lore": [
-                        "{c1_tem}"
+                      "row": [
+                        {
+                          "text": "{status}",
+                          "style": "{status_estilo}",
+                          "align": "left",
+                          "scale": 1,
+                          "w": "grow"
+                        }
                       ],
-                      "missing": "{c1_falta}"
-                    },
-                    {
-                      "at": 2,
-                      "item": "{c2_item}",
-                      "count": "{c2_qtd}",
-                      "name": "<white>{c2_nome}",
-                      "lore": [
-                        "{c2_tem}"
-                      ],
-                      "missing": "{c2_falta}"
-                    },
-                    {
-                      "at": 3,
-                      "item": "{c3_item}",
-                      "count": "{c3_qtd}",
-                      "name": "<white>{c3_nome}",
-                      "lore": [
-                        "{c3_tem}"
-                      ],
-                      "missing": "{c3_falta}"
-                    }
-                  ],
-                  "align": "center"
-                },
-                {
-                  "row": [
-                    {
-                      "text": "{status}",
-                      "style": "{status_estilo}",
-                      "align": "left",
-                      "scale": 1,
-                      "w": "grow"
+                      "w": "grow",
+                      "h": 10,
+                      "gap": 0,
+                      "pad": 0,
+                      "align": "start",
+                      "cross": "center",
+                      "name": "Status"
                     }
                   ],
                   "w": "grow",
-                  "h": 10,
-                  "gap": 0,
-                  "pad": 0,
+                  "h": "fit",
+                  "gap": 3,
+                  "pad": 4,
                   "align": "start",
-                  "cross": "center",
-                  "name": "Status"
+                  "cross": "start",
+                  "surface": "well",
+                  "name": "Custo"
                 },
                 {
                   "button": "{botao}",
@@ -212,8 +224,8 @@
               ],
               "w": "grow",
               "h": "fit",
-              "gap": 4,
-              "pad": 3,
+              "gap": 5,
+              "pad": 4,
               "align": "start",
               "cross": "start",
               "surface": "sheet"
@@ -221,7 +233,7 @@
           ],
           "w": "grow",
           "h": "fit",
-          "gap": 3,
+          "gap": 2,
           "pad": 0,
           "align": "center",
           "cross": "start",

@@ -41,7 +41,7 @@
                   "row": [
                     {
                       "icon": "item:{item}",
-                      "size": 18
+                      "size": 16
                     },
                     {
                       "column": [
@@ -71,90 +71,102 @@
                   ],
                   "w": "grow",
                   "h": "fit",
-                  "gap": 3,
+                  "gap": 2,
                   "pad": 0,
                   "align": "start",
                   "cross": "center",
                   "name": "Item"
                 },
                 {
-                  "slots": [
-                    5,
-                    1
-                  ],
-                  "hideEmpty": true,
-                  "items": [
+                  "column": [
                     {
-                      "at": 0,
-                      "item": "{i0_item}",
-                      "count": "{i0_qtd}",
-                      "name": "<white>{i0_nome}",
-                      "lore": [
-                        "{i0_tem}"
+                      "slots": [
+                        5,
+                        1
                       ],
-                      "missing": "{i0_falta}"
+                      "hideEmpty": true,
+                      "items": [
+                        {
+                          "at": 0,
+                          "item": "{i0_item}",
+                          "count": "{i0_qtd}",
+                          "name": "<white>{i0_nome}",
+                          "lore": [
+                            "{i0_tem}"
+                          ],
+                          "missing": "{i0_falta}"
+                        },
+                        {
+                          "at": 1,
+                          "item": "{i1_item}",
+                          "count": "{i1_qtd}",
+                          "name": "<white>{i1_nome}",
+                          "lore": [
+                            "{i1_tem}"
+                          ],
+                          "missing": "{i1_falta}"
+                        },
+                        {
+                          "at": 2,
+                          "item": "{i2_item}",
+                          "count": "{i2_qtd}",
+                          "name": "<white>{i2_nome}",
+                          "lore": [
+                            "{i2_tem}"
+                          ],
+                          "missing": "{i2_falta}"
+                        },
+                        {
+                          "at": 3,
+                          "item": "{i3_item}",
+                          "count": "{i3_qtd}",
+                          "name": "<white>{i3_nome}",
+                          "lore": [
+                            "{i3_tem}"
+                          ],
+                          "missing": "{i3_falta}"
+                        },
+                        {
+                          "at": 4,
+                          "item": "{i4_item}",
+                          "count": "{i4_qtd}",
+                          "name": "<white>{i4_nome}",
+                          "lore": [
+                            "{i4_tem}"
+                          ],
+                          "missing": "{i4_falta}"
+                        }
+                      ],
+                      "align": "center"
                     },
                     {
-                      "at": 1,
-                      "item": "{i1_item}",
-                      "count": "{i1_qtd}",
-                      "name": "<white>{i1_nome}",
-                      "lore": [
-                        "{i1_tem}"
+                      "row": [
+                        {
+                          "text": "{status}",
+                          "style": "{status_estilo}",
+                          "align": "left",
+                          "scale": 1,
+                          "icon": "{status_icone}",
+                          "w": "grow"
+                        }
                       ],
-                      "missing": "{i1_falta}"
-                    },
-                    {
-                      "at": 2,
-                      "item": "{i2_item}",
-                      "count": "{i2_qtd}",
-                      "name": "<white>{i2_nome}",
-                      "lore": [
-                        "{i2_tem}"
-                      ],
-                      "missing": "{i2_falta}"
-                    },
-                    {
-                      "at": 3,
-                      "item": "{i3_item}",
-                      "count": "{i3_qtd}",
-                      "name": "<white>{i3_nome}",
-                      "lore": [
-                        "{i3_tem}"
-                      ],
-                      "missing": "{i3_falta}"
-                    },
-                    {
-                      "at": 4,
-                      "item": "{i4_item}",
-                      "count": "{i4_qtd}",
-                      "name": "<white>{i4_nome}",
-                      "lore": [
-                        "{i4_tem}"
-                      ],
-                      "missing": "{i4_falta}"
-                    }
-                  ],
-                  "align": "center"
-                },
-                {
-                  "row": [
-                    {
-                      "text": "{status}",
-                      "style": "{status_estilo}",
-                      "align": "left",
-                      "scale": 1,
-                      "icon": "{status_icone}",
-                      "w": "grow"
+                      "w": "grow",
+                      "h": 10,
+                      "gap": 0,
+                      "pad": 0,
+                      "align": "start",
+                      "cross": "center",
+                      "name": "Status"
                     }
                   ],
                   "w": "grow",
-                  "h": 10,
-                  "gap": 0,
-                  "pad": 0,
+                  "h": "fit",
+                  "gap": 3,
+                  "pad": 4,
                   "align": "start",
-                  "cross": "center",
-                  "name": "Status"
+                  "cross": "start",
+                  "surface": "well",
+                  "name": "Ingredientes"
                 },
                 {
                   "button": "Craftar",
@@ -168,8 +180,8 @@
               ],
               "w": "grow",
               "h": "fit",
-              "gap": 4,
-              "pad": 3,
+              "gap": 5,
+              "pad": 4,
               "align": "start",
               "cross": "start",
               "surface": "sheet",
@@ -178,7 +190,7 @@
           ],
           "w": "grow",
           "h": "fit",
-          "gap": 3,
+          "gap": 2,
           "pad": 0,
           "align": "center",
           "cross": "start",

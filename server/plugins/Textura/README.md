@@ -293,9 +293,7 @@ tira o botão de fechar.
 
 Ícones `item:<material>` (ex.: `item:diamond_sword`) usam a textura vanilla do item. Item sem
 textura própria (ex.: `item:loom`, que usa o modelo do bloco) cai na textura do bloco,
-como um cubo em perspectiva, igual ao inventário: topo (`<nome>_top` ou `<nome>`), frente à esquerda
-(`_front`, `_side1`, `_side`) e lado à direita (`_side`, `_side2`, `_side1`), mais escuros; topo vazado
-mostra o `_bottom`. No primeiro
+nesta ordem: `block/<nome>`, `<nome>_front`, `<nome>_side`, `<nome>_top`. No primeiro
 `/textura gerar` o client da versão é baixado da Mojang para `generated/vanilla/` (uma vez só).
 No tema, `icons:` aceita alias com prefixo (`apple: item:golden_apple`).
 
