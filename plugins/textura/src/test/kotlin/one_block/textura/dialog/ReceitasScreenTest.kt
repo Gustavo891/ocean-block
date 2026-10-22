@@ -71,6 +71,9 @@ class ReceitasScreenTest : StringSpec({
     ) + (2 until 5).flatMap { i -> listOf("i${i}_item", "i${i}_qtd", "i${i}_nome", "i${i}_tem", "i${i}_falta").map { it to "" } }
 
     fun binds(receitas: List<Map<String, String>>, page: Int, paginacao: Boolean) = DialogBinds().apply {
+        text("titulo") { "Ferramentas" }
+        text("titulo_icone") { "ui:pickaxe" }
+        text("subtitulo") { "Ferramentas para puxar o que o mar traz." }
         list("categorias") {
             listOf(
                 mapOf("nome" to "Ferramentas", "icone" to "ui:pickaxe", "ativa" to "true", "descricao" to "x", "acao" to "✔ Aberta agora!"),
@@ -104,7 +107,7 @@ class ReceitasScreenTest : StringSpec({
         warnings.shouldBeEmpty()
         definition.shouldNotBeNull().theme shouldBe "stone"
         definition.keys shouldContainAll listOf(
-            "categorias", "receitas", "paginacao", "categoria", "craftar", "anterior", "proxima",
+            "categorias", "receitas", "paginacao", "categoria", "craftar", "anterior", "proxima", "titulo", "titulo_icone", "subtitulo",
         )
     }
 
@@ -115,7 +118,7 @@ class ReceitasScreenTest : StringSpec({
         run.unknownBinds.shouldBeEmpty()
         run.laid.width shouldBeLessThanOrEqual ScreenCompiler.MAX_WIDTH
         run.laid.texts.map { it.text } shouldContainAll listOf(
-            "Categorias", "Ferramentas", "Coleta", "Gancho", "Rede de Detritos", "Pronto para craftar", "Faltam itens", "Rende 1 unidade",
+            "Categorias", "Ferramentas", "Ferramentas para puxar o que o mar traz.", "Coleta", "Gancho", "Rede de Detritos", "Pronto para craftar", "Faltam itens", "Rende 1 unidade",
         )
         run.laid.texts.map { it.text } shouldNotContain "Os itens vão para o seu inventário."
         run.laid.images.map { it.id } shouldContain "ui:stone/icons/pickaxe"
