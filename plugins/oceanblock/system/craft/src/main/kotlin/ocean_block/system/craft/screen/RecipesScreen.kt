@@ -50,8 +50,6 @@ class RecipesScreen(private val logger: Logger) {
 
     private fun DialogBinds.bind(player: Player) {
         val id = player.uniqueId
-        text("titulo") { category(id).displayName }
-        text("titulo_icone") { category(id).icon }
         list("categorias") { RecipeEntries.categories(available(), category(id)) }
         list("receitas") { recipes(id).map { RecipeEntries.card(cardInput(player, it)) } }
         listPage("receitas") { page(id) }

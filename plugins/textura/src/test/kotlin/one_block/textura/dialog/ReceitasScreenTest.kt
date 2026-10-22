@@ -71,8 +71,6 @@ class ReceitasScreenTest : StringSpec({
     ) + (2 until 5).flatMap { i -> listOf("i${i}_item", "i${i}_qtd", "i${i}_nome", "i${i}_tem", "i${i}_falta").map { it to "" } }
 
     fun binds(receitas: List<Map<String, String>>, page: Int, paginacao: Boolean) = DialogBinds().apply {
-        text("titulo") { "Ferramentas" }
-        text("titulo_icone") { "ui:pickaxe" }
         list("categorias") {
             listOf(
                 mapOf("nome" to "Ferramentas", "icone" to "ui:pickaxe", "ativa" to "true", "descricao" to "x", "acao" to "✔ Aberta agora!"),
@@ -106,7 +104,7 @@ class ReceitasScreenTest : StringSpec({
         warnings.shouldBeEmpty()
         definition.shouldNotBeNull().theme shouldBe "stone"
         definition.keys shouldContainAll listOf(
-            "categorias", "receitas", "paginacao", "categoria", "craftar", "anterior", "proxima", "titulo", "titulo_icone",
+            "categorias", "receitas", "paginacao", "categoria", "craftar", "anterior", "proxima",
         )
     }
 
