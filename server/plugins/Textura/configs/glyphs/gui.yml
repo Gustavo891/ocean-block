@@ -97,7 +97,7 @@ receitas_menu:
   default: true
   show_in_gui: true
   size: 256
-  unicode: \uE00C
+  unicode: \uE030
 
 pesquisa_menu:
   id: pesquisa_menu
@@ -107,4 +107,4 @@ pesquisa_menu:
   default: true
   show_in_gui: true
   size: 256
-  unicode: \uE00D
+  unicode: \uE031
