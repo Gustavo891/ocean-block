@@ -1,9 +1,9 @@
 package ocean_block.system.research.model
 
-enum class ResearchCategory(val displayName: String, val icon: String) {
-    COLETA("Coleta", "ui:chest"),
-    FUNDICAO("Fundição", "ui:pickaxe"),
-    RAFT("Raft", "ui:sparkle"),
+enum class ResearchCategory(val displayName: String, val material: String) {
+    COLETA("Coleta", "chest"),
+    FUNDICAO("Fundição", "blast_furnace"),
+    RAFT("Raft", "bamboo_raft"),
 }
 
 data class ResearchCost(val key: String, val label: String, val plural: String, val amount: Int) {

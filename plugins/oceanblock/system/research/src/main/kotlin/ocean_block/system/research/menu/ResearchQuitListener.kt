@@ -1,4 +1,4 @@
-package ocean_block.system.research.screen
+package ocean_block.system.research.menu
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -8,6 +8,6 @@ class ResearchQuitListener : Listener {
 
     @EventHandler
     fun onQuit(event: PlayerQuitEvent) {
-        ResearchScreen.forget(event.player.uniqueId)
+        ResearchSelections.forget(event.player.uniqueId)
     }
 }

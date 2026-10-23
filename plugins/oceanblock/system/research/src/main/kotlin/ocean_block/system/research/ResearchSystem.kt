@@ -1,30 +1,30 @@
 package ocean_block.system.research
 
 import co.aikar.commands.PaperCommandManager
+import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.system.craft.recipe.RecipeLocks
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.research.command.PesquisaCommand
 import ocean_block.system.research.data.ResearchManager
-import ocean_block.system.research.screen.ResearchEntries
-import ocean_block.system.research.screen.ResearchQuitListener
+import ocean_block.system.research.menu.ResearchMenu
+import ocean_block.system.research.menu.ResearchQuitListener
 import ocean_block.system.research.tree.ResearchTree
-import one_block.textura.api.DialogApi
 import one_block.textura.api.NotificationApi
 import org.bukkit.plugin.java.JavaPlugin
 
 object ResearchSystem {
 
-    fun init(plugin: JavaPlugin, paperCommandManager: PaperCommandManager) {
+    fun init(plugin: JavaPlugin, viewFrame: ViewFrame, paperCommandManager: PaperCommandManager) {
         ResearchManager.onInit()
         RecipeLocks.install { player, recipe ->
             val island = IslandManager.getIslandByPlayer(player.uniqueId)
             ResearchLocks.reason(recipe, island?.let { ResearchManager.completed(it.uuid) })
         }
-        paperCommandManager.registerCommand(PesquisaCommand())
+        viewFrame.with(ResearchMenu())
+        paperCommandManager.registerCommand(PesquisaCommand(viewFrame))
         plugin.server.pluginManager.registerEvents(ResearchQuitListener(), plugin)
         ResearchTimer.start(plugin)
         NotificationApi.registerItemIcons(ResearchTree.iconMaterials())
-        DialogApi.registerItemIcons(ResearchTree.iconMaterials() + ResearchEntries.costIcons())
     }
 
     fun onDisable() {

@@ -88,3 +88,23 @@ spawner:
   show_in_gui: true
   size: 256
   unicode: \uE00A
+
+receitas_menu:
+  id: receitas_menu
+  caminho: assets/oneblock/textures/gui/receitas_menu.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE00C
+
+pesquisa_menu:
+  id: pesquisa_menu
+  caminho: assets/oneblock/textures/gui/pesquisa_menu.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE00D

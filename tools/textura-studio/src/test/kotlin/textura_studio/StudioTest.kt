@@ -36,8 +36,15 @@ class StudioTest : FunSpec({
     }
 
     test("caixas do preview levam o caminho do parser, com instâncias de lista indexadas") {
-        val json = checkNotNull(studio.store.read("receitas"))
-        val result = studio.preview(PreviewRequest("receitas", json, lists = mapOf("categorias" to List(2) { mapOf("nome" to "Cat $it") })))
+        val json = """
+            {"theme": "stone", "row": [
+              {"column": [
+                {"text": "Categorias", "style": "heading"},
+                {"repeat": "categorias", "perPage": 6, "nav": "{nome}", "w": "grow"}
+              ], "w": 100, "surface": "sheet", "name": "Categorias"}
+            ]}
+        """.trimIndent()
+        val result = studio.preview(PreviewRequest("lista", json, lists = mapOf("categorias" to List(2) { mapOf("nome" to "Cat $it") })))
         val tags = result.boxes.map { it.tag }
 
         tags shouldContain "row#0"

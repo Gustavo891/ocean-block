@@ -3,7 +3,8 @@ plugins {
 }
 
 dependencies {
-    compileOnly(projects.plugins.textura)
+    compileOnly(projects.lib.formatter)
+    compileOnly(projects.lib.itemBuilder)
 
     testImplementation(libs.paperApi)
     testImplementation(libs.kotest.runner)

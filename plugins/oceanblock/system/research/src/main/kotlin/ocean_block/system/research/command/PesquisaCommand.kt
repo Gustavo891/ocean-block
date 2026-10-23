@@ -3,12 +3,14 @@ package ocean_block.system.research.command
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.Default
+import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.system.islands.island.IslandManager
-import ocean_block.system.research.screen.ResearchScreen
+import ocean_block.system.research.ResearchTimer
+import ocean_block.system.research.menu.ResearchMenu
 import org.bukkit.entity.Player
 
 @CommandAlias("pesquisa|pesquisas")
-class PesquisaCommand : BaseCommand() {
+class PesquisaCommand(private val viewFrame: ViewFrame) : BaseCommand() {
 
     @Default
     fun onDefault(player: Player) {
@@ -16,6 +18,7 @@ class PesquisaCommand : BaseCommand() {
             player.sendRichMessage("<red>Você precisa de uma ilha para pesquisar. Use <white>/ilha</white>.")
             return
         }
-        ResearchScreen.open(player, island.uuid)
+        ResearchTimer.completeDue(island.uuid)
+        viewFrame.open(ResearchMenu::class.java, player, island.uuid)
     }
 }
