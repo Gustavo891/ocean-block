@@ -122,31 +122,26 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Com a barra do battle pass ativa, as notificações continuam no lugar certo e nenhuma barra fica pulando.
 - [ ] Textos normais (chat, títulos, nomes) não mudam de lugar nem de cor.
 
-## 10. Peneira, fundição e pesquisa
+## 10. Gerador, fundição e pesquisa
 
 ### Preparação
-- [ ] `server/plugins/ocean-block/drift.yml` atualizado com os torrões (`torrao_areia`, `torrao_cascalho`, `torrao_lodo`) e o barril com areia e cascalho; `peneira.yml` copiado na primeira subida.
+- [ ] `server/plugins/ocean-block/drift.yml` sem os torrões e sem areia/cascalho no barril; `gerador.yml` copiado na primeira subida.
 - [ ] Depois de reiniciar, o pack sobe com o glyph `pesquisa_menu` e os itens do `/pesquisa` usam os blocos certos (tear, composteira, alto-forno, mesa de cartografia, funil).
 
-### Peneira
-- [ ] Puxar torrões da corrente rende areia, cascalho e terra.
-- [ ] Craftar a Peneira no `/receitas` (categoria `Estações`): 4 Tábuas, 2 Linhas, 2 Gravetos. Colocar: aparece uma composteira.
-- [ ] Clique direito com cascalho na mão: carrega 1 cascalho; cada clique seguinte avança uma etapa (a composteira baixa um nível) até a 6ª, que entrega as saídas no inventário com notificação na região `coleta` (`+1 Pedaço de ferro` etc.). Cliques rápidos demais não pulam etapas.
-- [ ] Shift + clique direito com cascalho: carrega e já dá uma etapa, sem abrir nada vanilla.
-- [ ] A composteira nunca chega no nível de farinha de osso; um funil embaixo não puxa nada dela.
-- [ ] Sair do servidor no meio de uma peneirada e voltar: a peneira continua de onde parou.
-
-### Pedaços e fornalha vanilla
-- [ ] Pedaço de ferro na fornalha, no alto-forno e no defumador vanilla: não derrete (a fornalha não começa).
-- [ ] Pedaço na bancada de trabalho (ex.: 9 pedaços para bloco de ferro bruto): nenhum resultado aparece.
+### Gerador
+- [ ] Ilha nova (Gerador nível 0): um gerador de pedra (lava + água) forma pedregulho, pedra e às vezes minério de carvão.
+- [ ] No `/ilha` → upgrades aparece `Gerador` com preço 25.000; comprar sobe para o nível 1 (`Gerador evoluído com sucesso!`) e o gerador passa a formar também cobre e ferro.
+- [ ] Comprar Membros ou Borda não mexe no nível nem no preço do Gerador, e vice-versa.
+- [ ] No nível 4 aparece minério de diamante de vez em quando; antes disso nunca.
+- [ ] Um gerador fora de qualquer ilha (mundo do spawn) continua formando pedregulho vanilla.
+- [ ] Editar `gerador.yml` com um bloco inválido e reiniciar: aviso `[gerador]` no console e o resto da tabela vale.
 
 ### Fundição
 - [ ] Craftar a Fundição (8 Argilas + 4 Tábuas) e colocar: aparece um alto-forno. Clique direito não abre o inventário vanilla.
-- [ ] Clique direito com 8 pedaços de ferro carrega a entrada; com tábua carrega combustível. A fundição acende e, em ~20 s, sai 1 lingote de ferro a cada 4 pedaços; o item em cima mostra o que está fundindo.
+- [ ] Clique direito com 8 minérios de ferro brutos carrega a entrada; com tábua carrega combustível. A fundição acende e sai 1 lingote de ferro a cada ~10 s; o item em cima mostra o que está fundindo.
 - [ ] Shift + clique direito retira todos os lingotes prontos.
-- [ ] Minério bruto vanilla (ex.: `RAW_IRON` sem ser pedaço) funde 1 para 1.
 - [ ] Quebrar a fundição carregada (entrada, combustível e saída) e colocar de novo: o item quebrado guarda tudo e a fundição volta igual.
-- [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica ou de uma Peneira: não entra nem sai nada (o inventário vanilla do alto-forno e da composteira fica intocado).
+- [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica: não entra nem sai nada (o inventário vanilla do alto-forno fica intocado).
 
 ### Pesquisa (`/pesquisa`)
 - [ ] Ilha nova: no `/receitas`, a lore da Rede de Detritos termina com `Pesquise em /pesquisa: Rede de Detritos` e o clique não crafta; o Gancho crafta normal.
@@ -160,7 +155,4 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Desligar o servidor no meio de uma pesquisa, esperar mais que o tempo restante, ligar e rodar `/pesquisa`: a pesquisa já está concluída (e a da fila, se cabia no tempo, também).
 - [ ] Visitante numa ilha alheia: `/pesquisa` abre a pesquisa da própria ilha, nunca a da ilha visitada.
 
-### Peneira automática
-- [ ] Pesquisar e craftar a Peneira automática. Baú com cascalho em cima, funil embaixo levando para um baú: a peneira puxa do baú de cima e manda as saídas para o funil sozinha, um passo por segundo.
-- [ ] Com o baú de baixo cheio, a peneira espera na última etapa sem perder itens.
-- [ ] Sem erros `[peneira]` ou `[pesquisa]` no log durante toda a sessão.
+- [ ] Sem erros `[gerador]` ou `[pesquisa]` no log durante toda a sessão.

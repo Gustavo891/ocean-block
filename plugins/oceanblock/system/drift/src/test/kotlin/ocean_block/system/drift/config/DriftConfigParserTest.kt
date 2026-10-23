@@ -41,14 +41,11 @@ private val DEFAULT_OBSTACLE = ObstacleSettings(
 
 class DriftConfigParserTest : StringSpec({
 
-    "yaml padrao traz torroes de areia, cascalho e lodo para a peneira" {
+    "yaml padrao nao traz mais os torroes nem areia e cascalho da antiga peneira" {
         val config = parse(defaultYaml())!!
-        val drops = config.types.associate { type -> type.id to type.drops.map { Triple(it.material, it.min, it.max) to it.chance } }
 
-        drops["torrao_areia"] shouldBe listOf(Triple(Material.SAND, 1, 3) to 1.0)
-        drops["torrao_cascalho"] shouldBe listOf(Triple(Material.GRAVEL, 1, 3) to 1.0)
-        drops["torrao_lodo"] shouldBe listOf(Triple(Material.DIRT, 1, 2) to 1.0)
-        drops["barril"].orEmpty() shouldContainAll listOf(Triple(Material.SAND, 2, 4) to 0.3, Triple(Material.GRAVEL, 2, 4) to 0.3)
+        config.types.none { it.id.startsWith("torrao_") } shouldBe true
+        config.types.flatMap { it.drops }.none { it.material == Material.SAND || it.material == Material.GRAVEL } shouldBe true
     }
 
     "yaml padrao gera os tipos com pesos da spec" {
@@ -60,9 +57,6 @@ class DriftConfigParserTest : StringSpec({
                 "folhas" to 25,
                 "sucata" to 17,
                 "barril" to 8,
-                "torrao_areia" to 12,
-                "torrao_cascalho" to 12,
-                "torrao_lodo" to 8,
             )
         config.settings.direction shouldBe CurrentDirection.EAST
         config.settings.speed shouldBe 0.05
@@ -76,9 +70,6 @@ class DriftConfigParserTest : StringSpec({
             "folhas" to 0.0,
             "sucata" to 0.0,
             "barril" to 0.12,
-            "torrao_areia" to 0.0,
-            "torrao_cascalho" to 0.0,
-            "torrao_lodo" to 0.0,
         )
         config.settings.laneLength shouldBe 40.0
         config.settings.laneWidth shouldBe 13.0
@@ -95,9 +86,6 @@ class DriftConfigParserTest : StringSpec({
             "folhas" to Material.OAK_LEAVES,
             "sucata" to Material.IRON_NUGGET,
             "barril" to Material.BARREL,
-            "torrao_areia" to Material.SAND,
-            "torrao_cascalho" to Material.GRAVEL,
-            "torrao_lodo" to Material.DIRT,
         )
         val drops = config.types.associate { it.id to it.drops }
         drops["tabua"] shouldBe listOf(DropEntry(Material.OAK_PLANKS, 1, 2, 1.0))
@@ -119,8 +107,6 @@ class DriftConfigParserTest : StringSpec({
             DropEntry(Material.COD, 1, 2, 0.4),
             DropEntry(Material.IRON_INGOT, 1, 1, 0.1),
             DropEntry(Material.NAME_TAG, 1, 1, 0.02),
-            DropEntry(Material.SAND, 2, 4, 0.3),
-            DropEntry(Material.GRAVEL, 2, 4, 0.3),
         )
     }
 

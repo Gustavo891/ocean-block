@@ -45,7 +45,7 @@ class ResearchLoreTest : StringSpec({
 
         ResearchLore.lore(def("rede"), done, NOW).last() shouldBe "<green>✔ Concluída"
         ResearchLore.lore(def("rede"), queued, NOW).last() shouldBe "<gold>Na fila."
-        ResearchLore.lore(def("peneira_diamante"), done, NOW).last() shouldBe "<red>Requer: Peneira de ferro"
+        ResearchLore.lore(def("fundicao_funil"), done, NOW).last() shouldBe "<red>Requer: Fundição rápida"
     }
 
     "nome fica verde quando concluida" {
@@ -58,14 +58,14 @@ class ResearchLoreTest : StringSpec({
     "vagas e fila no item de informacao" {
         val state = IslandResearch(
             UUID.randomUUID(),
-            queue = mutableListOf("peneira_ferro"),
+            queue = mutableListOf("fundicao_melhorada"),
             running = mutableListOf(RunningResearch("rede", NOW, 20_000)),
         )
 
         ResearchLore.slotsName(1, 2) shouldBe "<white>Vagas: 1/2"
         ResearchLore.queueLore(state, NOW) shouldContainExactly listOf(
             "<aqua>Rede de Detritos <gray>faltam 20s",
-            "<gold>Peneira de ferro <gray>na fila, leva 1min",
+            "<gold>Fundição rápida <gray>na fila, leva 2min",
         )
         ResearchLore.queueLore(IslandResearch(UUID.randomUUID()), NOW) shouldContainExactly listOf("<gray>Nenhuma pesquisa em andamento.")
     }

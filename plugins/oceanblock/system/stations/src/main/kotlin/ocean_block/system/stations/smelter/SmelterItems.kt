@@ -1,7 +1,6 @@
 package ocean_block.system.stations.smelter
 
 import ocean_block.system.custom_items.CustomIds
-import ocean_block.system.stations.item.OrePiece
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -14,6 +13,5 @@ object SmelterItems {
 
     fun isVanilla(stack: ItemStack?): Boolean = stack != null && !stack.type.isAir && CustomIds.of(stack) == null
 
-    fun stackOf(id: String, amount: Int): ItemStack? =
-        OrePiece.byId(id)?.build(amount) ?: Material.matchMaterial(id)?.let { ItemStack(it, amount) }
+    fun stackOf(id: String, amount: Int): ItemStack? = Material.matchMaterial(id)?.let { ItemStack(it, amount) }
 }

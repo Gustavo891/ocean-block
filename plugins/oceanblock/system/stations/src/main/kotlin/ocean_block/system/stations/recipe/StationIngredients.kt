@@ -2,7 +2,6 @@ package ocean_block.system.stations.recipe
 
 import ocean_block.system.craft.recipe.Ingredient
 import ocean_block.system.custom_items.CustomIds
-import ocean_block.system.stations.sieve.SieveBlock
 import ocean_block.system.stations.smelter.SmelterBlock
 import org.bukkit.Material
 import org.bukkit.Tag
@@ -18,5 +17,5 @@ object StationIngredients {
         Ingredient(label, amount, plural, baseMaterial(id)) { CustomIds.of(it) == id }
 
     private fun baseMaterial(id: String): String? =
-        (SieveBlock.of(id)?.material ?: SmelterBlock.of(id)?.material)?.name?.lowercase()
+        SmelterBlock.of(id)?.material?.name?.lowercase()
 }

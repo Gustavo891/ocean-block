@@ -37,6 +37,17 @@ enum class IslandUpgrade(
         listOf("Aumente a velocidade que as", "plantações crescem.")) {
         override fun execute(player: Player, island: Island) {
         }
+    },
+    Generator("Gerador",
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==",
+        4,
+        listOf("O gerador de pedra da ilha passa", "a formar minérios melhores.")) {
+        override fun execute(player: Player, island: Island) {
+            val level = island.getUpgradeLevel(this) + 1
+            island.setUpgradeLevel(this, level)
+
+            player.sendRichMessage("<green>Gerador evoluído com sucesso! <dark_gray>(nível ${level - 1} -> $level)")
+        }
     };
 
     abstract fun execute(player: Player, island: Island)
@@ -55,6 +66,14 @@ enum class IslandUpgrade(
 
             CropGrowth -> when (level) {
                 0 -> 5000000.0
+                else -> Double.MAX_VALUE
+            }
+
+            Generator -> when (level) {
+                0 -> 25000.0
+                1 -> 100000.0
+                2 -> 400000.0
+                3 -> 1500000.0
                 else -> Double.MAX_VALUE
             }
         }

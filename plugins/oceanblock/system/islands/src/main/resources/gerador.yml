@@ -1,0 +1,40 @@
+niveis:
+  0:
+    COBBLESTONE: 85
+    STONE: 10
+    COAL_ORE: 5
+  1:
+    COBBLESTONE: 70
+    STONE: 10
+    COAL_ORE: 8
+    COPPER_ORE: 7
+    IRON_ORE: 5
+  2:
+    COBBLESTONE: 60
+    STONE: 10
+    COAL_ORE: 8
+    COPPER_ORE: 8
+    IRON_ORE: 7
+    GOLD_ORE: 4
+    REDSTONE_ORE: 3
+  3:
+    COBBLESTONE: 52
+    STONE: 8
+    COAL_ORE: 8
+    COPPER_ORE: 8
+    IRON_ORE: 9
+    GOLD_ORE: 5
+    REDSTONE_ORE: 4
+    LAPIS_ORE: 4
+    EMERALD_ORE: 2
+  4:
+    COBBLESTONE: 45
+    STONE: 8
+    COAL_ORE: 8
+    COPPER_ORE: 8
+    IRON_ORE: 10
+    GOLD_ORE: 6
+    REDSTONE_ORE: 5
+    LAPIS_ORE: 4
+    EMERALD_ORE: 3
+    DIAMOND_ORE: 3

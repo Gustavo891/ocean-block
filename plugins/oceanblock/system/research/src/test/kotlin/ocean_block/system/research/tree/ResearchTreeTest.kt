@@ -9,13 +9,12 @@ import io.kotest.matchers.shouldBe
 class ResearchTreeTest : StringSpec({
 
     "materiais dos icones incluem os que nao sao resultado de receita" {
-        ResearchTree.iconMaterials() shouldContainExactlyInAnyOrder listOf("loom", "composter", "blast_furnace", "cartography_table", "hopper")
+        ResearchTree.iconMaterials() shouldContainExactlyInAnyOrder listOf("loom", "blast_furnace", "cartography_table", "hopper")
     }
 
     "arvore v1 tem as pesquisas do spec" {
         ResearchTree.all.map { it.id } shouldContainExactlyInAnyOrder listOf(
-            "rede", "peneira_ferro", "fundicao_melhorada", "bancada_auxiliar",
-            "peneira_diamante", "peneira_automatica", "fundicao_funil", "bancada_auxiliar_2",
+            "rede", "fundicao_melhorada", "bancada_auxiliar", "fundicao_funil", "bancada_auxiliar_2",
         )
     }
 
@@ -43,6 +42,6 @@ class ResearchTreeTest : StringSpec({
 
     "bancadas somam uma vaga cada" {
         ResearchTree.byId.getValue("bancada_auxiliar").extraSlots shouldBe 1
-        ResearchTree.byId.getValue("bancada_auxiliar_2").requires shouldContainExactlyInAnyOrder listOf("bancada_auxiliar", "peneira_diamante")
+        ResearchTree.byId.getValue("bancada_auxiliar_2").requires shouldContainExactlyInAnyOrder listOf("bancada_auxiliar", "fundicao_melhorada")
     }
 })

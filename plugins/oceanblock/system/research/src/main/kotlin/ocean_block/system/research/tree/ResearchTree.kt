@@ -21,10 +21,6 @@ object ResearchTree {
             ResearchCategory.COLETA, "item:loom", listOf(planks(10), string(6)), 20, emptyList(), listOf("rede"),
         ),
         ResearchDefinition(
-            "peneira_ferro", "Peneira de ferro", "Menos etapas e chance de redstone e diamante.",
-            ResearchCategory.COLETA, "item:composter", listOf(iron(4), string(8)), 60, emptyList(), listOf("peneira_ferro"),
-        ),
-        ResearchDefinition(
             "fundicao_melhorada", "Fundição rápida", "Funde duas vezes mais rápido e pode dobrar o lingote.",
             ResearchCategory.FUNDICAO, "item:blast_furnace", listOf(iron(6), copper(4), clay(8)), 120, emptyList(), listOf("fundicao_melhorada"),
         ),
@@ -33,21 +29,13 @@ object ResearchTree {
             ResearchCategory.RAFT, "item:cartography_table", listOf(planks(12), iron(6)), 90, listOf("rede"), emptyList(), extraSlots = 1,
         ),
         ResearchDefinition(
-            "peneira_diamante", "Peneira diamante", "A peneira mais rápida, com as melhores chances.",
-            ResearchCategory.COLETA, "item:composter", listOf(diamond(2), iron(8)), 240, listOf("peneira_ferro"), listOf("peneira_diamante"),
-        ),
-        ResearchDefinition(
-            "peneira_automatica", "Peneira automática", "Peneira sozinha entre um baú acima e um abaixo.",
-            ResearchCategory.COLETA, "item:hopper", listOf(iron(10), redstone(4)), 300, listOf("peneira_ferro"), listOf("peneira_automatica"),
-        ),
-        ResearchDefinition(
             "fundicao_funil", "Fundição com funil", "Recebe minério e combustível por funis e entrega lingotes.",
             ResearchCategory.FUNDICAO, "item:hopper", listOf(iron(10), copper(4), redstone(2)), 300, listOf("fundicao_melhorada"), listOf("fundicao_funil"),
         ),
         ResearchDefinition(
             "bancada_auxiliar_2", "Bancada auxiliar II", "Libera uma terceira pesquisa ao mesmo tempo.",
             ResearchCategory.RAFT, "item:cartography_table", listOf(iron(12), gold(6), diamond(2)), 300,
-            listOf("bancada_auxiliar", "peneira_diamante"), emptyList(), extraSlots = 1,
+            listOf("bancada_auxiliar", "fundicao_melhorada"), emptyList(), extraSlots = 1,
         ),
     )
 

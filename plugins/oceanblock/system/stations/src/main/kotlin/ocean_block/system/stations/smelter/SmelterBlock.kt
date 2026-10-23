@@ -13,8 +13,8 @@ class SmelterBlock(val tier: SmelterTier) : CustomBlock() {
     override val material: Material = Material.BLAST_FURNACE
     override val displayName: String = "<white>${NAMES.getValue(tier)}"
     override val lore: List<String> = listOfNotNull(
-        "<gray>Clique com pedaços de minério e combustível.",
-        "<gray>4 pedaços viram 1 lingote.",
+        "<gray>Clique com minério bruto e combustível.",
+        "<gray>Cada minério bruto vira 1 lingote.",
         "<gray>Mão vazia retira os lingotes.",
         if (tier.bonusChance > 0) "<gray>Mais rápida, com chance de lingote extra." else null,
         if (tier.hoppers) "<gray>Funciona com funis e baús." else null,

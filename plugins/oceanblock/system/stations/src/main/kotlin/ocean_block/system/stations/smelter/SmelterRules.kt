@@ -9,17 +9,12 @@ object SmelterRules {
     const val MAX_OUTPUT = 16
 
     private val INGOTS = mapOf(
-        "pedaco_ferro" to "IRON_INGOT",
-        "pedaco_cobre" to "COPPER_INGOT",
-        "pedaco_ouro" to "GOLD_INGOT",
         "RAW_IRON" to "IRON_INGOT",
         "RAW_COPPER" to "COPPER_INGOT",
         "RAW_GOLD" to "GOLD_INGOT",
     )
 
     fun accepts(id: String): Boolean = id in INGOTS
-
-    fun ratio(id: String): Int = if (id.startsWith("pedaco_")) 4 else 1
 
     fun ingotOf(id: String): String = INGOTS.getValue(id)
 
@@ -66,7 +61,7 @@ object SmelterRules {
 
     private fun canSmelt(state: SmelterState): Boolean {
         val input = state.input ?: return false
-        if (state.inputCount < ratio(input)) return false
+        if (state.inputCount < 1) return false
         val ingot = ingotOf(input)
         return (state.output == null || state.output == ingot) && state.outputCount < MAX_OUTPUT
     }
@@ -79,7 +74,7 @@ object SmelterRules {
 
     private fun finish(state: SmelterState, tier: SmelterTier, random: Random): SmelterState {
         val input = checkNotNull(state.input)
-        val left = state.inputCount - ratio(input)
+        val left = state.inputCount - 1
         val made = 1 + if (random.nextDouble() < tier.bonusChance) 1 else 0
         return state.copy(
             input = input.takeIf { left > 0 },

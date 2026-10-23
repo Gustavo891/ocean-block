@@ -19,17 +19,17 @@ private fun loaded(id: String, amount: Int, fuel: String, fuelAmount: Int): Smel
 
 class SmelterRulesTest : StringSpec({
 
-    "quatro pedacos e uma tabua fazem um lingote em 10 segundos" {
-        val state = SmelterRules.tick(loaded("pedaco_ferro", 8, "OAK_PLANKS", 1), SmelterTier.BASIC, 200, NeverHits)
+    "um minerio bruto e uma tabua fazem um lingote em 10 segundos" {
+        val state = SmelterRules.tick(loaded("RAW_IRON", 8, "OAK_PLANKS", 1), SmelterTier.BASIC, 200, NeverHits)
 
         state.output shouldBe "IRON_INGOT"
         state.outputCount shouldBe 1
-        state.inputCount shouldBe 4
+        state.inputCount shouldBe 7
         state.burnTicks shouldBe 100
     }
 
     "sem combustivel o progresso para" {
-        val first = SmelterRules.tick(loaded("pedaco_ferro", 8, "OAK_PLANKS", 1), SmelterTier.BASIC, 200, NeverHits)
+        val first = SmelterRules.tick(loaded("RAW_IRON", 8, "OAK_PLANKS", 1), SmelterTier.BASIC, 200, NeverHits)
         val burnedOut = SmelterRules.tick(first, SmelterTier.BASIC, 100, NeverHits)
         val idle = SmelterRules.tick(burnedOut, SmelterTier.BASIC, 400, NeverHits)
 
@@ -39,10 +39,10 @@ class SmelterRulesTest : StringSpec({
     }
 
     "um tipo de minerio por vez e no maximo 32 na entrada" {
-        val iron = SmelterRules.insertOre(SmelterState.EMPTY, "pedaco_ferro", 40)
+        val iron = SmelterRules.insertOre(SmelterState.EMPTY, "RAW_IRON", 40)
 
         iron.second shouldBe 32
-        SmelterRules.insertOre(iron.first, "pedaco_cobre", 4).second shouldBe 0
+        SmelterRules.insertOre(iron.first, "RAW_COPPER", 4).second shouldBe 0
         SmelterRules.insertOre(SmelterState.EMPTY, "DIRT", 4).second shouldBe 0
     }
 
@@ -63,35 +63,40 @@ class SmelterRulesTest : StringSpec({
     }
 
     "fundicao melhorada leva metade do tempo e pode dobrar" {
-        val state = SmelterRules.tick(loaded("pedaco_ouro", 4, "COAL", 1), SmelterTier.IMPROVED, 100, AlwaysHits)
+        val state = SmelterRules.tick(loaded("RAW_GOLD", 1, "COAL", 1), SmelterTier.IMPROVED, 100, AlwaysHits)
 
         state.output shouldBe "GOLD_INGOT"
         state.outputCount shouldBe 2
     }
 
     "saida cheia nao avanca" {
-        val full = loaded("pedaco_ferro", 8, "COAL", 4).copy(output = "IRON_INGOT", outputCount = 16)
+        val full = loaded("RAW_IRON", 8, "COAL", 4).copy(output = "IRON_INGOT", outputCount = 16)
 
         SmelterRules.tick(full, SmelterTier.BASIC, 400, NeverHits) shouldBe full
     }
 
     "retirar devolve lingotes; retirar tudo devolve entrada e combustivel" {
-        val state = SmelterRules.tick(loaded("pedaco_ferro", 8, "OAK_PLANKS", 3), SmelterTier.BASIC, 200, NeverHits)
+        val state = SmelterRules.tick(loaded("RAW_IRON", 8, "OAK_PLANKS", 3), SmelterTier.BASIC, 200, NeverHits)
 
         val (afterTake, taken) = SmelterRules.takeOutput(state)
         taken shouldBe ("IRON_INGOT" to 1)
         afterTake.outputCount shouldBe 0
 
         val (empty, all) = SmelterRules.takeAll(state)
-        all shouldBe listOf("IRON_INGOT" to 1, "pedaco_ferro" to 4, "OAK_PLANKS" to 2)
+        all shouldBe listOf("IRON_INGOT" to 1, "RAW_IRON" to 7, "OAK_PLANKS" to 2)
         empty shouldBe SmelterState.EMPTY
     }
 
     "estado vai e volta pelos contadores do bloco" {
-        val state = SmelterRules.tick(loaded("pedaco_cobre", 9, "DRIED_KELP_BLOCK", 2), SmelterTier.BASIC, 250, NeverHits)
+        val state = SmelterRules.tick(loaded("RAW_COPPER", 9, "DRIED_KELP_BLOCK", 2), SmelterTier.BASIC, 250, NeverHits)
 
         SmelterState.fromCounters(state.toCounters()) shouldBe state
         SmelterState.fromCounters(emptyMap()) shouldBe SmelterState.EMPTY
+    }
+
+    "so aceita minerio bruto vanilla, sem os antigos pedacos" {
+        SmelterRules.accepts("RAW_IRON") shouldBe true
+        SmelterRules.accepts("pedaco_ferro") shouldBe false
     }
 
     "combustiveis e tempos da spec" {

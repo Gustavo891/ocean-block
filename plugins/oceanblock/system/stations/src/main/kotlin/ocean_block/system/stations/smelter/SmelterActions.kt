@@ -21,7 +21,7 @@ object SmelterActions {
             id != null && SmelterItems.isVanilla(hand) && Fuel.ticks(id) != null ->
                 insert(player, state, SmelterRules.insertFuel(state, id, hand.amount)) ?: return
             id == null -> SmelterRules.takeOutput(state).also { (_, item) ->
-                if (item == null) player.sendRichMessage("<gray>Coloque pedaços de minério e combustível.") else give(player, listOf(item))
+                if (item == null) player.sendRichMessage("<gray>Coloque minério bruto e combustível.") else give(player, listOf(item))
             }.first
             else -> return player.sendRichMessage("<gray>Isso não entra na fundição.")
         }

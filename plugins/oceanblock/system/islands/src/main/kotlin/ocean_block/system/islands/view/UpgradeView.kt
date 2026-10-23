@@ -135,13 +135,13 @@ class UpgradeView : View() {
         val island = islandState.get(ctx)
         val player = ctx.player
 
-        val size = island.getUpgradeLevel(IslandUpgrade.Size)
-        if (size == IslandUpgrade.Size.maxLevel) {
+        val level = island.getUpgradeLevel(value)
+        if (level >= value.maxLevel) {
             player.sendRichMessage("<red>Você já chegou ao nível máximo.")
             return
         }
 
-        val price = IslandUpgrade.Size.getPrice(size)
+        val price = value.getPrice(level)
         if (!Currencies.has(player.uniqueId, "coins", price)) {
             player.sendRichMessage("<red>Você não possui dinheiro suficiente para upar!")
             return

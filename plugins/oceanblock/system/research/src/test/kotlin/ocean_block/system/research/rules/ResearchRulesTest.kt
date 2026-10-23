@@ -44,47 +44,47 @@ class ResearchRulesTest : StringSpec({
     "com uma vaga a segunda pesquisa completa espera na fila" {
         val state = fresh()
         complete(state, "rede")
-        complete(state, "peneira_ferro")
+        complete(state, "fundicao_melhorada")
 
         ResearchRules.status(def("rede"), state, T0).shouldBeInstanceOf<ResearchStatus.Running>()
-        ResearchRules.status(def("peneira_ferro"), state, T0) shouldBe ResearchStatus.Queued
+        ResearchRules.status(def("fundicao_melhorada"), state, T0) shouldBe ResearchStatus.Queued
     }
 
     "conclui no fim e a fila comeca de onde a anterior terminou" {
         val state = fresh()
         complete(state, "rede")
-        complete(state, "peneira_ferro")
+        complete(state, "fundicao_melhorada")
 
         ResearchRules.completeDue(state, T0 + 19_999, tree).shouldBeEmpty()
         ResearchRules.completeDue(state, T0 + 20_000, tree) shouldBe listOf("rede")
-        ResearchRules.status(def("peneira_ferro"), state, T0 + 20_000) shouldBe ResearchStatus.Running(60_000)
+        ResearchRules.status(def("fundicao_melhorada"), state, T0 + 20_000) shouldBe ResearchStatus.Running(120_000)
         ResearchRules.status(def("rede"), state, T0 + 20_000) shouldBe ResearchStatus.Done
     }
 
     "conclui o que venceu enquanto offline" {
         val state = fresh()
         complete(state, "rede")
-        complete(state, "peneira_ferro")
+        complete(state, "fundicao_melhorada")
 
-        ResearchRules.completeDue(state, T0 + 10 * 60_000, tree) shouldBe listOf("rede", "peneira_ferro")
+        ResearchRules.completeDue(state, T0 + 10 * 60_000, tree) shouldBe listOf("rede", "fundicao_melhorada")
         state.running.shouldBeEmpty()
         state.queue.shouldBeEmpty()
     }
 
     "bancada auxiliar libera a segunda vaga" {
         val state = fresh()
-        state.completed += listOf("rede", "bancada_auxiliar")
+        state.completed += listOf("rede", "bancada_auxiliar", "fundicao_melhorada")
 
         ResearchRules.slots(state, tree) shouldBe 2
-        complete(state, "peneira_ferro")
-        complete(state, "fundicao_melhorada")
-        ResearchRules.status(def("fundicao_melhorada"), state, T0).shouldBeInstanceOf<ResearchStatus.Running>()
+        complete(state, "fundicao_funil")
+        complete(state, "bancada_auxiliar_2")
+        ResearchRules.status(def("bancada_auxiliar_2"), state, T0).shouldBeInstanceOf<ResearchStatus.Running>()
     }
 
     "sem pre-requisito fica bloqueada e nao aceita entrega" {
         val state = fresh()
 
-        ResearchRules.status(def("peneira_diamante"), state, T0) shouldBe ResearchStatus.Locked(listOf("peneira_ferro"))
-        ResearchRules.deliver(def("peneira_diamante"), state, mapOf("diamond" to 5), T0, tree) shouldBe emptyMap()
+        ResearchRules.status(def("fundicao_funil"), state, T0) shouldBe ResearchStatus.Locked(listOf("fundicao_melhorada"))
+        ResearchRules.deliver(def("fundicao_funil"), state, mapOf("iron_ingot" to 10), T0, tree) shouldBe emptyMap()
     }
 })
