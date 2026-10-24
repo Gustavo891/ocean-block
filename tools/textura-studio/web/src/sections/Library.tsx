@@ -1,6 +1,6 @@
-import { Bell, Palette, PanelTop, ScrollText, Sparkles, type LucideIcon } from 'lucide-react'
+import { Bell, Box, Palette, PanelTop, ScrollText, Sparkles, type LucideIcon } from 'lucide-react'
 
-export type SectionId = 'dialogs' | 'notificacoes' | 'hud' | 'glyphs' | 'temas'
+export type SectionId = 'dialogs' | 'notificacoes' | 'hud' | 'glyphs' | 'temas' | 'blocos'
 
 const SECTIONS: { id: SectionId; icon: LucideIcon; label: string; hash: string }[] = [
   { id: 'dialogs', icon: ScrollText, label: 'Dialogs', hash: '#/' },
@@ -8,6 +8,7 @@ const SECTIONS: { id: SectionId; icon: LucideIcon; label: string; hash: string }
   { id: 'hud', icon: PanelTop, label: 'HUD bossbar', hash: '#/hud' },
   { id: 'glyphs', icon: Sparkles, label: 'Glyphs / ícones', hash: '#/glyphs' },
   { id: 'temas', icon: Palette, label: 'Temas', hash: '#/temas' },
+  { id: 'blocos', icon: Box, label: 'Blocos e itens', hash: '#/blocos' },
 ]
 
 export function sectionLabel(id: SectionId): string {

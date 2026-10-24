@@ -13,6 +13,19 @@ async function failure(response: Response): Promise<never> {
 
 const at = (path: string) => `path=${encodeURIComponent(path)}`
 
+export interface TextureFace {
+  face: string
+  path: string
+}
+
+export interface BlockEntry {
+  id: string
+  name: string
+  kind: 'bloco' | 'item'
+  file: string
+  faces: TextureFace[]
+}
+
 export const filesApi = {
   async list(dir: string, ext = 'yml'): Promise<string[]> {
     const response = await fetch(`/api/files?dir=${encodeURIComponent(dir)}&ext=${ext}`)
@@ -36,6 +49,14 @@ export const filesApi = {
     if (!response.ok) await failure(response)
   },
   rawUrl: (path: string, version = 0) => `/api/raw?${at(path)}&v=${version}`,
+  async blocks(): Promise<BlockEntry[]> {
+    const response = await fetch('/api/blocks')
+    return response.ok ? ((await response.json()) as BlockEntry[]) : failure(response)
+  },
+  async saveBlockTexture(path: string, file: Blob): Promise<void> {
+    const response = await fetch(`/api/blocks/texture?${at(path)}`, { method: 'POST', body: file, headers: { 'Content-Type': 'image/png' } })
+    if (!response.ok) await failure(response)
+  },
   async post<T>(url: string, body: unknown): Promise<T> {
     const response = await fetch(url, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } })
     return response.ok ? ((await response.json()) as T) : failure(response)

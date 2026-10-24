@@ -25,6 +25,8 @@ class Studio(val data: File) {
 
     val files = StudioFiles(data)
 
+    val blocks = BlockCatalog(data)
+
     @Volatile
     private var cached: StudioAssets? = null
 

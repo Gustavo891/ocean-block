@@ -4,12 +4,15 @@ import { Editor } from './editor/Editor'
 import { GlyphsPage } from './sections/glyphs/GlyphsPage'
 import { NotifyPage } from './sections/notify/NotifyPage'
 import { ThemesPage } from './sections/themes/ThemesPage'
+import { BlocksPage } from './sections/blocks/BlocksPage'
 
-type Route = { name: 'home' } | { name: 'notificacoes' } | { name: 'hud' } | { name: 'glyphs' } | { name: 'temas' } | { name: 'dialog'; id: string; fresh: boolean; from: string | null }
+type Section = 'notificacoes' | 'hud' | 'glyphs' | 'temas' | 'blocos'
+
+type Route = { name: 'home' } | { name: Section } | { name: 'dialog'; id: string; fresh: boolean; from: string | null }
 
 function parse(hash: string): Route {
-  const section = /^#\/(notificacoes|hud|glyphs|temas)$/.exec(hash)?.[1]
-  if (section) return { name: section as 'notificacoes' | 'hud' | 'glyphs' | 'temas' }
+  const section = /^#\/(notificacoes|hud|glyphs|temas|blocos)$/.exec(hash)?.[1]
+  if (section) return { name: section as Section }
   const match = /^#\/dialog\/([a-z0-9_-]+)(\?novo(?:&de=([a-z0-9_-]+))?)?$/.exec(hash)
   return match ? { name: 'dialog', id: match[1], fresh: Boolean(match[2]), from: match[3] ?? null } : { name: 'home' }
 }
@@ -29,5 +32,6 @@ export function App() {
   if (route.name === 'hud') return <NotifyPage key="hud" mode="hud" />
   if (route.name === 'glyphs') return <GlyphsPage />
   if (route.name === 'temas') return <ThemesPage />
+  if (route.name === 'blocos') return <BlocksPage />
   return <Home />
 }

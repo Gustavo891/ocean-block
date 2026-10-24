@@ -68,6 +68,45 @@ class SectionsTest : FunSpec({
         shouldThrow<StudioFileException> { studio.files.writeText("configs/hud/x.yml", "a: [") }
     }
 
+    test("blocos: catálogo lista as máquinas com as faces e a picareta") {
+        val entries = BlockCatalog(data).entries()
+        val gerador = entries.single { it.id == "gerador_energia" }
+        gerador.kind shouldBe "bloco"
+        gerador.faces.map { it.face } shouldBe listOf("top", "bottom", "side")
+        gerador.faces.first().path shouldBe "resource/assets/oneblock/textures/block/maquinas/gerador_energia_top.png"
+        entries.single { it.id == "minerador" }.faces.map { it.face } shouldContain "broca"
+        entries.single { it.id == "picareta_fundidora" }.kind shouldBe "item"
+        entries.flatMap { it.faces }.forEach { File(data, it.path).isFile shouldBe true }
+    }
+
+    test("blocos: tamanho aceito é 16x16 ou o tamanho atual, até 256") {
+        BlockCatalog.sizeProblem(16, 16, 16, 16) shouldBe null
+        BlockCatalog.sizeProblem(32, 32, 32, 32) shouldBe null
+        BlockCatalog.sizeProblem(32, 32, 16, 16) shouldBe null
+        (BlockCatalog.sizeProblem(16, 16, 32, 32) ?: "") shouldContain "16x16"
+        (BlockCatalog.sizeProblem(null, null, 512, 512) ?: "") shouldContain "256"
+        BlockCatalog.sizeProblem(null, null, 64, 64) shouldBe null
+    }
+
+    test("blocos: grava só texturas do catálogo e no tamanho certo") {
+        val folder = Files.createTempDirectory("studio-blocos").toFile()
+        File(folder, "configs/blocks").mkdirs()
+        File(folder, "configs/blocks/maquinas.yml").writeText(
+            "caixa:\n  type: CUSTOM\n  textures:\n    side: assets/oneblock/textures/block/caixa_side.png\n",
+        )
+        val png = File(data, "resource/assets/oneblock/textures/block/maquinas/gerador_energia_side.png").readBytes()
+        File(folder, "resource/assets/oneblock/textures/block").mkdirs()
+        File(folder, "resource/assets/oneblock/textures/block/caixa_side.png").writeBytes(png)
+        val catalog = BlockCatalog(folder)
+        val files = StudioFiles(folder)
+
+        catalog.write(files, "resource/assets/oneblock/textures/block/caixa_side.png", png)
+        shouldThrow<StudioFileException> { catalog.write(files, "resource/assets/oneblock/textures/block/outra.png", png) }
+        val big = java.io.ByteArrayOutputStream().also { ImageIO.write(java.awt.image.BufferedImage(32, 32, 2), "png", it) }.toByteArray()
+        shouldThrow<StudioFileException> { catalog.write(files, "resource/assets/oneblock/textures/block/caixa_side.png", big) }
+        folder.deleteRecursively()
+    }
+
     test("arquivos: grava yml e PNG numa pasta temporária") {
         val folder = Files.createTempDirectory("studio-files").toFile()
         val files = StudioFiles(folder)

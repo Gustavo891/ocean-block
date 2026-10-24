@@ -29,6 +29,8 @@ class PackRoutes(private val studio: Studio) {
             method == "POST" && parts == listOf("upload") -> upload(exchange)
             method == "POST" && parts == listOf("hud", "preview") -> hudPreview(exchange)
             method == "POST" && parts == listOf("glyph", "preview") -> glyphPreview(exchange)
+            method == "GET" && parts == listOf("blocks") -> HttpIo.json(exchange, 200, studio.blocks.entries())
+            method == "POST" && parts == listOf("blocks", "texture") -> blockTexture(exchange)
             else -> throw HttpError(404, "Rota não encontrada: $method /api/${parts.joinToString("/")}")
         }
     }
@@ -69,6 +71,13 @@ class PackRoutes(private val studio: Studio) {
     private fun upload(exchange: HttpExchange) {
         val path = path(exchange)
         guard { studio.files.writeImage(path, exchange.requestBody.readNBytes(MAX_UPLOAD)) }
+        studio.reload()
+        HttpIo.json(exchange, 200, mapOf("saved" to path))
+    }
+
+    private fun blockTexture(exchange: HttpExchange) {
+        val path = path(exchange)
+        guard { studio.blocks.write(studio.files, path, exchange.requestBody.readNBytes(MAX_UPLOAD)) }
         studio.reload()
         HttpIo.json(exchange, 200, mapOf("saved" to path))
     }
@@ -131,7 +140,7 @@ class PackRoutes(private val studio: Studio) {
     }
 
     private companion object {
-        val PREFIXES = setOf("files", "file", "raw", "upload", "hud", "glyph")
+        val PREFIXES = setOf("files", "file", "raw", "upload", "hud", "glyph", "blocks")
         const val MAX_UPLOAD = 2 * 1024 * 1024 + 1
     }
 }
