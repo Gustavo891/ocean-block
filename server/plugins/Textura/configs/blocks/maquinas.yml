@@ -7,7 +7,41 @@ gerador_energia:
     top: assets/oneblock/textures/block/maquinas/gerador_energia_top.png
     bottom: assets/oneblock/textures/block/maquinas/gerador_energia_bottom.png
     side: assets/oneblock/textures/block/maquinas/gerador_energia_side.png
+    front: assets/oneblock/textures/block/maquinas/gerador_energia_front.png
   model: assets/oneblock/models/block/gerador_energia.json
+gerador_energia_leste:
+  type: CUSTOM
+  name: "Gerador de energia"
+  item_material: note_block
+  block_default_drop: false
+  textures:
+    top: assets/oneblock/textures/block/maquinas/gerador_energia_top.png
+    bottom: assets/oneblock/textures/block/maquinas/gerador_energia_bottom.png
+    side: assets/oneblock/textures/block/maquinas/gerador_energia_side.png
+    front: assets/oneblock/textures/block/maquinas/gerador_energia_front.png
+  model: assets/oneblock/models/block/gerador_energia_leste.json
+gerador_energia_sul:
+  type: CUSTOM
+  name: "Gerador de energia"
+  item_material: note_block
+  block_default_drop: false
+  textures:
+    top: assets/oneblock/textures/block/maquinas/gerador_energia_top.png
+    bottom: assets/oneblock/textures/block/maquinas/gerador_energia_bottom.png
+    side: assets/oneblock/textures/block/maquinas/gerador_energia_side.png
+    front: assets/oneblock/textures/block/maquinas/gerador_energia_front.png
+  model: assets/oneblock/models/block/gerador_energia_sul.json
+gerador_energia_oeste:
+  type: CUSTOM
+  name: "Gerador de energia"
+  item_material: note_block
+  block_default_drop: false
+  textures:
+    top: assets/oneblock/textures/block/maquinas/gerador_energia_top.png
+    bottom: assets/oneblock/textures/block/maquinas/gerador_energia_bottom.png
+    side: assets/oneblock/textures/block/maquinas/gerador_energia_side.png
+    front: assets/oneblock/textures/block/maquinas/gerador_energia_front.png
+  model: assets/oneblock/models/block/gerador_energia_oeste.json
 minerador:
   type: CUSTOM
   name: "Minerador"

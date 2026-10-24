@@ -1,9 +1,10 @@
 {
-  "parent": "oneblock:block/maquina_base",
+  "parent": "oneblock:block/maquina_frente_norte",
   "textures": {
     "particle": "oneblock:block/maquinas/gerador_energia_side",
     "side": "oneblock:block/maquinas/gerador_energia_side",
     "top": "oneblock:block/maquinas/gerador_energia_top",
-    "bottom": "oneblock:block/maquinas/gerador_energia_bottom"
+    "bottom": "oneblock:block/maquinas/gerador_energia_bottom",
+    "front": "oneblock:block/maquinas/gerador_energia_front"
   }
 }

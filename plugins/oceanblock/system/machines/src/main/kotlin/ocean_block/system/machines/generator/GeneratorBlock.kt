@@ -2,7 +2,11 @@ package ocean_block.system.machines.generator
 
 import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
+import ocean_block.libs.instance.Instance
 import ocean_block.system.custom_items.block.context.BlockClickContext
+import ocean_block.system.custom_items.block.context.PlaceContext
+import ocean_block.system.machines.MachineFacing
+import org.bukkit.Bukkit
 import ocean_block.system.machines.MachineBlock
 import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.MachineItems
@@ -33,6 +37,14 @@ object GeneratorBlock : MachineBlock() {
             }
         }
         ctx.viewFrame.open(GeneratorMenu::class.java, ctx.player, ctx.placed)
+    }
+
+    override fun appearanceId(placed: PlacedBlock): String =
+        MachineFacing.fromCounter(placed.counters[MachineFacing.KEY]).textureId(id)
+
+    override fun onPlace(ctx: PlaceContext) {
+        ctx.placed.counters[MachineFacing.KEY] = MachineFacing.frontFor(ctx.player.facing.name).ordinal.toLong()
+        Bukkit.getScheduler().runTask(Instance, Runnable { restoreAppearance(ctx.placed) })
     }
 
     override fun work(placed: PlacedBlock) {

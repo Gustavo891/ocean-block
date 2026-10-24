@@ -242,3 +242,4 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Todo alto-forno do jogo passa a ter essa textura; a fornalha comum continua vanilla.
 - [ ] O Painel solar é um sensor de luz (6 px de altura) com células azuis em cima; clicar nele não inverte o sensor, mostra a energia e liga/desliga o círculo do raio. Painéis antigos viram sensor sozinhos com a energia intacta.
 - [ ] Agachado com a mão vazia, clicar numa máquina não abre inventário vanilla nenhum.
+- [ ] O Gerador de energia é um bloco de aço com cantoneiras, chapas e grelha nas laterais e uma janela de fogo na frente; a frente fica virada para quem colocou. Geradores antigos ficam com a frente para o norte.

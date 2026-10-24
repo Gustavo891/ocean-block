@@ -72,7 +72,8 @@ class SectionsTest : FunSpec({
         val entries = BlockCatalog(data).entries()
         val gerador = entries.single { it.id == "gerador_energia" }
         gerador.kind shouldBe "bloco"
-        gerador.faces.map { it.face } shouldBe listOf("top", "bottom", "side")
+        gerador.faces.map { it.face } shouldBe listOf("top", "bottom", "side", "front")
+        entries.count { it.id.startsWith("gerador_energia") } shouldBe 1
         gerador.faces.first().path shouldBe "resource/assets/oneblock/textures/block/maquinas/gerador_energia_top.png"
         entries.single { it.id == "minerador" }.faces.map { it.face } shouldContain "broca"
         entries.single { it.id == "picareta_fundidora" }.kind shouldBe "item"

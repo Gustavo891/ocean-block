@@ -13,7 +13,8 @@ data class BlockEntry(val id: String, val name: String, val kind: String, val fi
 class BlockCatalog(private val data: File) {
 
     fun entries(): List<BlockEntry> =
-        read("configs/blocks", "bloco", ::blockFaces) + read("configs/items", "item", ::itemFaces) + vanilla()
+        (read("configs/blocks", "bloco", ::blockFaces) + read("configs/items", "item", ::itemFaces) + vanilla())
+            .distinctBy { entry -> entry.faces.map { it.path }.toSet() }
 
     private fun vanilla(): List<BlockEntry> {
         val dir = File(data, VANILLA_BLOCKS).takeIf { it.isDirectory } ?: return emptyList()
