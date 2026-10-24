@@ -1,18 +1,13 @@
 package ocean_block.system.machines.energy
 
-import ocean_block.libs.instance.Instance
 import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.preferences.Preference
 import ocean_block.system.preferences.Preferences
 import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.entity.BlockDisplay
-import org.bukkit.entity.Display
-import org.bukkit.util.Transformation
-import org.joml.Quaternionf
-import org.joml.Vector3f
+import org.bukkit.Particle
+import org.bukkit.entity.Player
 import java.util.UUID
 import kotlin.random.Random
 
@@ -20,92 +15,63 @@ object EnergyBeams {
 
     const val REFRESH_TICKS = 2L
 
-    private const val THICKNESS = 0.06f
-    private const val JITTER = 0.18
+    private const val JITTER = 0.35
+    private const val SPACING = 0.12
     private const val LIFE_TICKS = 25
     private const val VIEW_DISTANCE = 32.0
-    private const val FULL_BRIGHT = 15
+    private const val LIFT = 0.08
 
-    private val GLOW = Color.fromRGB(90, 220, 255)
-    private val CORE = Material.LIGHT_BLUE_CONCRETE.createBlockData()
-    private val AXIS = Vector3f(0f, 0f, 1f)
+    private val CORE = Particle.DustOptions(Color.fromRGB(225, 250, 255), 0.45f)
+    private val GLOW = Particle.DustOptions(Color.fromRGB(70, 200, 255), 0.8f)
 
-    private class Beam(val origin: Location, val target: BeamPoint, val segments: List<BlockDisplay>, var expires: Int) {
-        val isValid: Boolean get() = segments.all { it.isValid }
-        fun remove() = segments.forEach { it.remove() }
-    }
+    private class Beam(val origin: Location, val target: BeamPoint, var expires: Int)
 
     private val beams = mutableMapOf<Pair<UUID, UUID>, Beam>()
 
     fun pulse(source: PlacedBlock, consumer: PlacedBlock) {
-        val origin = source.location.toBukkit()?.add(0.5, 0.5, 0.5) ?: return
-        val end = consumer.location.toBukkit()?.add(0.5, 0.5, 0.5) ?: return
+        val origin = topOf(source) ?: return
+        val end = topOf(consumer) ?: return
         if (origin.world != end.world) return
-        val key = source.uuid to consumer.uuid
-        val beam = beams[key]?.takeIf { it.isValid } ?: create(origin, end).also { beams.put(key, it)?.remove() }
-        beam.expires = Bukkit.getCurrentTick() + LIFE_TICKS
+        val target = BeamPoint(end.x - origin.x, end.y - origin.y, end.z - origin.z)
+        beams[source.uuid to consumer.uuid] = Beam(origin, target, Bukkit.getCurrentTick() + LIFE_TICKS)
     }
 
     fun refresh() {
         val now = Bukkit.getCurrentTick()
-        beams.entries.removeIf { (_, beam) ->
-            val gone = now > beam.expires || !beam.isValid
-            if (gone) beam.remove() else {
-                reshape(beam)
-                updateViewers(beam)
+        beams.entries.removeIf { (_, beam) -> now > beam.expires }
+        beams.values.forEach(::draw)
+    }
+
+    fun removeAll() = beams.clear()
+
+    private fun draw(beam: Beam) {
+        val viewers = viewersOf(beam)
+        if (viewers.isEmpty()) return
+        val start = BeamPoint(0.0, 0.0, 0.0)
+        val nodes = BeamPath.points(start, beam.target, BeamPath.segmentsFor(start.distanceTo(beam.target)), JITTER, Random.Default)
+        val samples = BeamPath.sample(nodes, SPACING)
+        viewers.forEach { player ->
+            samples.forEachIndexed { index, point ->
+                val at = beam.origin.clone().add(point.x, point.y, point.z)
+                player.spawnParticle(Particle.DUST, at, 1, 0.0, 0.0, 0.0, 0.0, CORE)
+                if (index % 2 == 0) player.spawnParticle(Particle.DUST, at, 1, 0.02, 0.02, 0.02, 0.0, GLOW)
             }
-            gone
-        }
-    }
-
-    fun removeAll() {
-        beams.values.forEach { it.remove() }
-        beams.clear()
-    }
-
-    private fun create(origin: Location, end: Location): Beam {
-        val target = BeamPoint(end.x - origin.x, end.y - origin.y, end.z - origin.z)
-        val count = BeamPath.segmentsFor(BeamPoint(0.0, 0.0, 0.0).distanceTo(target))
-        val segments = List(count) {
-            origin.world.spawn(origin, BlockDisplay::class.java) { display ->
-                display.isPersistent = false
-                display.isVisibleByDefault = false
-                display.block = CORE
-                display.brightness = Display.Brightness(FULL_BRIGHT, FULL_BRIGHT)
-                display.isGlowing = true
-                display.glowColorOverride = GLOW
+            nodes.drop(1).dropLast(1).forEach { node ->
+                if (Random.nextInt(3) == 0) player.spawnParticle(Particle.ELECTRIC_SPARK, beam.origin.clone().add(node.x, node.y, node.z), 1, 0.0, 0.0, 0.0, 0.0)
             }
         }
-        return Beam(origin, target, segments, Bukkit.getCurrentTick() + LIFE_TICKS).also {
-            reshape(it)
-            updateViewers(it)
-        }
     }
 
-    private fun reshape(beam: Beam) {
-        val points = BeamPath.points(BeamPoint(0.0, 0.0, 0.0), beam.target, beam.segments.size, JITTER, Random.Default)
-        beam.segments.forEachIndexed { index, display ->
-            val start = points[index]
-            val end = points[index + 1]
-            val direction = Vector3f((end.x - start.x).toFloat(), (end.y - start.y).toFloat(), (end.z - start.z).toFloat())
-            val length = direction.length()
-            val rotation = Quaternionf().rotationTo(AXIS, direction.normalize())
-            val translation = Vector3f(start.x.toFloat(), start.y.toFloat(), start.z.toFloat())
-                .add(Vector3f(-THICKNESS / 2, -THICKNESS / 2, 0f).rotate(rotation))
-            display.interpolationDelay = 0
-            display.interpolationDuration = REFRESH_TICKS.toInt()
-            display.transformation = Transformation(translation, rotation, Vector3f(THICKNESS, THICKNESS, length), Quaternionf())
-        }
+    private fun topOf(placed: PlacedBlock): Location? {
+        val block = placed.location.toBukkit()?.block ?: return null
+        val top = block.boundingBox.takeIf { it.volume > 0 }?.maxY ?: (block.y + 1.0)
+        return Location(block.world, block.x + 0.5, top + LIFT, block.z + 0.5)
     }
 
-    private fun updateViewers(beam: Beam) {
+    private fun viewersOf(beam: Beam): List<Player> {
         val center = beam.origin.clone().add(beam.target.x / 2, beam.target.y / 2, beam.target.z / 2)
-        beam.origin.world.players.forEach { player ->
-            val sees = player.location.distanceSquared(center) <= VIEW_DISTANCE * VIEW_DISTANCE &&
-                Preferences.isEnabled(player, Preference.ENERGY_TRAIL)
-            beam.segments.forEach { display ->
-                if (sees) player.showEntity(Instance, display) else player.hideEntity(Instance, display)
-            }
+        return beam.origin.world.players.filter {
+            it.location.distanceSquared(center) <= VIEW_DISTANCE * VIEW_DISTANCE && Preferences.isEnabled(it, Preference.ENERGY_TRAIL)
         }
     }
 }

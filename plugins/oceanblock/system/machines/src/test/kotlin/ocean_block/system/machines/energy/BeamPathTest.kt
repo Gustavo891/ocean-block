@@ -27,14 +27,27 @@ class BeamPathTest : StringSpec({
         }
     }
 
+    "desvio afina perto das pontas" {
+        val path = BeamPath.points(from, to, 20, 0.3, Random(4))
+        val near = path[1].distanceTo(BeamPoint(0.4, 0.1, 0.0))
+        near shouldBeLessThanOrEqual 0.3 * Math.sqrt(3.0) * Math.sin(Math.PI / 20) + 1e-9
+    }
+
     "sem desvio e uma linha reta" {
         BeamPath.points(from, to, 4, 0.0, Random(3))[2] shouldBe BeamPoint(4.0, 1.0, 0.0)
     }
 
     "quantidade de segmentos cresce com a distancia" {
-        BeamPath.segmentsFor(1.0) shouldBe 2
-        BeamPath.segmentsFor(8.0) shouldBe 8
-        BeamPath.segmentsFor(40.0) shouldBe 12
+        BeamPath.segmentsFor(1.0) shouldBe 6
+        BeamPath.segmentsFor(3.0) shouldBe 12
+        BeamPath.segmentsFor(40.0) shouldBe 32
+    }
+
+    "amostra pontos ao longo da linha quebrada" {
+        val samples = BeamPath.sample(listOf(BeamPoint(0.0, 0.0, 0.0), BeamPoint(1.0, 0.0, 0.0), BeamPoint(1.0, 1.0, 0.0)), 0.25)
+        samples.first() shouldBe BeamPoint(0.0, 0.0, 0.0)
+        samples.size shouldBe 9
+        samples.last() shouldBe BeamPoint(1.0, 1.0, 0.0)
     }
 
     "distancia entre pontos" {
