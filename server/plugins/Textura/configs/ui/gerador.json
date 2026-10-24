@@ -6,26 +6,17 @@
     {
       "column": [
         {
-          "row": [
-            { "space": 3 },
-            { "text": "Gerador", "style": "heading", "align": "left", "icon": "item:coal", "w": "grow" },
-            { "space": 2 }
-          ],
-          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
-        },
-        {
           "column": [
             {
               "row": [
-                { "icon": "item:blast_furnace", "size": 24 },
+                { "icon": "ui:gerador", "size": 24 },
                 {
                   "column": [
                     { "text": "Gerador de energia", "style": "heading", "align": "left", "w": "fit" },
-                    { "text": "{status}", "style": "muted", "align": "left", "w": 150 }
+                    { "text": "{status}", "style": "muted", "align": "left", "w": 210 }
                   ],
                   "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
-                },
-                { "chip": "{estado}" }
+                }
               ],
               "w": "grow", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "center", "name": "Topo"
             },
@@ -50,8 +41,30 @@
               ],
               "w": "grow", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "center", "name": "Fluxo"
             },
-            { "pair": ["Máquinas no raio", "{maquinas}"], "style": "body", "w": "grow" },
-            { "button": "{raio_botao}", "bind": "raio", "icon": "item:ender_eye", "look": "light", "w": "grow", "tooltip": "Raio de 8 blocos\n∙ Só você vê o círculo.\n\nClique para alternar." }
+            { "text": "{maquinas_info}", "style": "muted", "align": "left", "w": "fit" },
+            {
+              "grid": [
+                {
+                  "repeat": "maquinas", "perPage": 9,
+                  "slots": [1, 1], "items": [{ "at": 0, "item": "{icone}", "name": "{nome}", "lore": ["{coord}"] }]
+                }
+              ],
+              "columns": 9, "w": "grow", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Maquinas"
+            },
+            {
+              "row": [
+                {
+                  "column": [
+                    { "space": 3 },
+                    { "text": "Mostrar raio", "style": "body", "align": "left", "w": "fit" },
+                    { "text": "Círculo de 8 blocos, só você vê.", "style": "muted", "align": "left", "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 1, "pad": 0, "align": "start", "cross": "start", "name": "Textos"
+                },
+                { "switch": false, "bind": "raio", "tooltip": "Mostrar raio\n⏵ Agora: {value}\n\nClique para alternar." }
+              ],
+              "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "center", "name": "Raio"
+            }
           ],
           "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
         }
@@ -63,7 +76,7 @@
         {
           "row": [
             { "space": 3 },
-            { "text": "Combustível", "style": "heading", "align": "left", "icon": "item:oak_log", "w": "grow" },
+            { "text": "Combustível", "style": "heading", "align": "left", "icon": "item:coal", "w": "grow" },
             { "space": 2 }
           ],
           "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
@@ -71,30 +84,22 @@
         {
           "column": [
             {
-              "row": [
-                { "slots": [1, 1], "items": [{ "at": 0, "item": "{comb_item}", "count": "{comb_qtd}" }] },
-                {
-                  "column": [
-                    { "text": "{comb_nome}", "style": "body", "align": "left", "w": 130 },
-                    { "text": "{comb_info}", "style": "muted", "align": "left", "w": 130 }
-                  ],
-                  "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
-                },
-                { "button": "Retirar", "bind": "retirar", "look": "light", "disabled": "{sem_comb}", "tooltip": "Retirar combustível\n\nVolta para o seu inventário." }
+              "slots": [9, 1],
+              "items": [
+                { "at": 0, "item": "{s0}", "count": "{s0_qtd}", "name": "{s0_nome}", "lore": ["{s0_info}"] },
+                { "at": 1, "item": "{s1}", "count": "{s1_qtd}", "name": "{s1_nome}", "lore": ["{s1_info}"] },
+                { "at": 2, "item": "{s2}", "count": "{s2_qtd}", "name": "{s2_nome}", "lore": ["{s2_info}"] },
+                { "at": 3, "item": "{s3}", "count": "{s3_qtd}", "name": "{s3_nome}", "lore": ["{s3_info}"] },
+                { "at": 4, "item": "{s4}", "count": "{s4_qtd}", "name": "{s4_nome}", "lore": ["{s4_info}"] },
+                { "at": 5, "item": "{s5}", "count": "{s5_qtd}", "name": "{s5_nome}", "lore": ["{s5_info}"] },
+                { "at": 6, "item": "{s6}", "count": "{s6_qtd}", "name": "{s6_nome}", "lore": ["{s6_info}"] },
+                { "at": 7, "item": "{s7}", "count": "{s7_qtd}", "name": "{s7_nome}", "lore": ["{s7_info}"] },
+                { "at": 8, "item": "{s8}", "count": "{s8_qtd}", "name": "{s8_nome}", "lore": ["{s8_info}"] }
               ],
-              "w": "grow", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "center", "name": "Guardado"
+              "align": "start", "name": "Slots"
             },
-            { "text": "Clique num combustível seu para colocar:", "style": "muted", "align": "left", "w": "fit" },
-            {
-              "grid": [
-                {
-                  "repeat": "inventario", "perPage": 6,
-                  "button": "{qtd}x", "icon": "item:{material}", "bind": "colocar", "look": "light", "w": "grow",
-                  "tooltip": "{nome}\n∙ Você tem {qtd}.\n\nClique para colocar no gerador."
-                }
-              ],
-              "columns": 3, "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "start", "name": "Inventario"
-            }
+            { "text": "Clique na máquina com combustível na mão.", "style": "muted", "align": "left", "w": "grow" },
+            { "button": "Retirar tudo", "bind": "retirar", "look": "light", "w": "grow", "disabled": "{sem_comb}", "tooltip": "Retirar combustível\n\nVolta tudo para o seu inventário." }
           ],
           "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
         }

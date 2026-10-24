@@ -1,29 +1,28 @@
 package ocean_block.system.machines.generator
 
 import ocean_block.libs.formatter.NumberFormatter
-import ocean_block.system.custom_items.CustomIds
 import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.MachineItems
 import ocean_block.system.machines.energy.EnergyEffects
 import ocean_block.system.machines.energy.EnergyNetwork
-import ocean_block.system.machines.energy.EnergyRules
 import ocean_block.system.stations.smelter.Fuel
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
 import one_block.textura.api.DialogOpenResult
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 object GeneratorDialog {
 
     private const val SCREEN = "gerador"
     private const val PER_SECOND = 20
 
-    private val CONSUMERS = setOf(MachineIds.FURNACE, MachineIds.MINER)
+    private val MACHINE_ICONS = mapOf(
+        MachineIds.FURNACE to ("ui:fornalha_eletrica" to "Fornalha elétrica"),
+        MachineIds.MINER to ("ui:minerador" to "Minerador"),
+    )
 
     fun registerIcons() {
         DialogApi.registerItemIcons(Material.entries.filter { it.isItem && Fuel.ticks(it.name) != null }.map { iconFor(it.name) }.distinct())
@@ -38,7 +37,6 @@ object GeneratorDialog {
 
     private fun bind(binds: DialogBinds, player: Player, placed: PlacedBlock) {
         binds.text("status") { status(placed) }
-        binds.text("estado") { if (state(placed).burnTicks > 0) "Queimando" else "Parado" }
         binds.text("energia") {
             "${NumberFormatter.format(state(placed).energy.toDouble())} / ${NumberFormatter.format(GeneratorRules.CAPACITY.toDouble())} E"
         }
@@ -46,35 +44,42 @@ object GeneratorDialog {
         binds.text("energia_max") { GeneratorRules.CAPACITY.toString() }
         binds.text("gerando") { "${generating(state(placed))} E/s" }
         binds.text("gasto") { "${EnergyNetwork.spentPerSecond(placed)} E/s" }
-        binds.text("maquinas") { consumersNear(placed).toString() }
-        binds.text("raio_botao") { if (EnergyEffects.isShowingRadius(player, placed)) "Esconder raio" else "Mostrar raio" }
-        binds.text("comb_item") { state(placed).fuel?.lowercase() ?: "" }
-        binds.text("comb_qtd") { state(placed).fuelCount.coerceAtLeast(1).toString() }
-        binds.text("comb_nome") { state(placed).fuel?.let(::fuelName) ?: "Sem combustível" }
-        binds.text("comb_info") { fuelInfo(state(placed)) }
-        binds.text("sem_comb") { (state(placed).fuel == null).toString() }
-        binds.list("inventario") { inventoryFuels(player).map { mapOf("material" to iconFor(it.material), "qtd" to it.amount.toString(), "nome" to fuelName(it.material)) } }
-        binds.listPage("inventario") { 0 }
-        binds.button("raio") { click ->
-            if (!MachineItems.canUse(click.player, placed)) return@button click.close()
-            EnergyEffects.toggleRadius(click.player, placed)
+        binds.text("maquinas_info") { machinesInfo(EnergyNetwork.consumersOf(placed).size) }
+        binds.list("maquinas") { EnergyNetwork.consumersOf(placed).mapNotNull(::machineEntry) }
+        binds.listPage("maquinas") { 0 }
+        binds.switch("raio", { EnergyEffects.isShowingRadius(player, placed) }) { show ->
+            if (MachineItems.canUse(player, placed) && show != EnergyEffects.isShowingRadius(player, placed)) EnergyEffects.toggleRadius(player, placed)
         }
+        (0 until GeneratorState.SLOTS).forEach { index -> bindSlot(binds, placed, index) }
+        binds.text("sem_comb") { (!state(placed).hasFuel).toString() }
         binds.button("retirar") { click ->
             if (!MachineItems.canUse(click.player, placed)) return@button click.close()
             val (next, fuel) = GeneratorRules.takeFuel(state(placed))
-            if (fuel == null) return@button
+            if (fuel.isEmpty()) return@button
             GeneratorBlock.save(placed, next)
             PlacedBlockManager.saveNow(placed)
-            MachineItems.give(click.player, listOf(fuel))
+            MachineItems.give(click.player, fuel.map { it.material to it.amount })
         }
-        binds.listButton("colocar") { click, index ->
-            if (!MachineItems.canUse(click.player, placed)) return@listButton click.close()
-            val stack = inventoryFuels(click.player).getOrNull(index) ?: return@listButton
-            val taken = GeneratorBlock.insertFuel(placed, stack.material, stack.amount)
-            if (taken <= 0) return@listButton click.player.playSound(click.player, Sound.BLOCK_NOTE_BLOCK_BASS, 0.7f, 1f)
-            removeFromInventory(click.player, stack.material, taken)
-            click.player.playSound(click.player, Sound.BLOCK_FURNACE_FIRE_CRACKLE, 0.8f, 1.2f)
-        }
+    }
+
+    private fun bindSlot(binds: DialogBinds, placed: PlacedBlock, index: Int) {
+        fun stack() = state(placed).slots.getOrNull(index)
+        binds.text("s$index") { stack()?.let { iconFor(it.material) } ?: "" }
+        binds.text("s${index}_qtd") { (stack()?.amount ?: 1).toString() }
+        binds.text("s${index}_nome") { stack()?.let { fuelName(it.material) } ?: "" }
+        binds.text("s${index}_info") { stack()?.let(::fuelInfo) ?: "" }
+    }
+
+    private fun machineEntry(consumer: PlacedBlock): Map<String, String>? {
+        val (icon, name) = MACHINE_ICONS[consumer.blockId] ?: return null
+        val location = consumer.location
+        return mapOf("icone" to icon, "nome" to name, "coord" to "X ${location.x.toInt()}, Y ${location.y.toInt()}, Z ${location.z.toInt()}")
+    }
+
+    private fun machinesInfo(count: Int): String = when (count) {
+        0 -> "Nenhuma máquina puxando energia"
+        1 -> "1 máquina puxando energia:"
+        else -> "$count máquinas puxando energia:"
     }
 
     private fun generating(state: GeneratorState): Int =
@@ -85,48 +90,18 @@ object GeneratorDialog {
         return when {
             state.energy >= GeneratorRules.CAPACITY -> "Bateria cheia, esperando gasto"
             state.burnTicks > 0 -> "Queima por mais ${duration(GeneratorView.burnSeconds(state, Fuel::ticks))}"
-            state.fuel != null -> "Pronto para queimar"
+            state.hasFuel -> "Pronto para queimar"
             else -> "Coloque combustível para gerar"
         }
     }
 
-    private fun fuelInfo(state: GeneratorState): String {
-        val fuel = state.fuel ?: return "Até ${GeneratorRules.MAX_FUEL} de um tipo"
-        val ticks = Fuel.ticks(fuel) ?: return ""
-        return "${state.fuelCount}/${GeneratorRules.MAX_FUEL} - ${ticks * GeneratorRules.RATE} E cada"
+    private fun fuelInfo(stack: FuelStack): String {
+        val ticks = Fuel.ticks(stack.material) ?: return ""
+        return "${stack.amount}/${GeneratorRules.MAX_STACK} - ${ticks * GeneratorRules.RATE} E cada"
     }
 
     private fun duration(seconds: Int): String =
         if (seconds >= 60) "${seconds / 60}m ${seconds % 60}s" else "${seconds}s"
-
-    private fun consumersNear(placed: PlacedBlock): Int {
-        val center = placed.location.toBukkit() ?: return 0
-        return PlacedBlockManager.all().count { other ->
-            if (other.blockId !in CONSUMERS) return@count false
-            val location = other.location.toBukkit() ?: return@count false
-            location.world == center.world && location.distance(center) <= EnergyRules.RADIUS
-        }
-    }
-
-    private fun inventoryFuels(player: Player): List<FuelStack> =
-        GeneratorView.fuelEntries(
-            player.inventory.storageContents.filterNotNull().filter(::isPlainItem).map { it.type.name to it.amount },
-            Fuel::ticks,
-        )
-
-    private fun isPlainItem(item: ItemStack): Boolean = !item.type.isAir && CustomIds.of(item) == null
-
-    private fun removeFromInventory(player: Player, material: String, amount: Int) {
-        var left = amount
-        val contents = player.inventory.storageContents
-        contents.forEachIndexed { slot, item ->
-            if (left == 0 || item == null || item.type.name != material || !isPlainItem(item)) return@forEachIndexed
-            val take = minOf(left, item.amount)
-            item.amount -= take
-            left -= take
-            player.inventory.setItem(slot, item.takeIf { it.amount > 0 })
-        }
-    }
 
     private fun iconFor(material: String): String = when {
         material == "DRIED_KELP_BLOCK" -> "dried_kelp"

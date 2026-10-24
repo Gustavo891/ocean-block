@@ -186,7 +186,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                 frame,
                 ContainerNode(
                     ContainerKind.Box,
-                    listOf(IconNode(icon(UiArtCatalog.ITEM_PREFIX + item.item), size - SLOT_BORDER)),
+                    listOf(IconNode(icon(slotIcon(item.item)), size - SLOT_BORDER)),
                     align = UiAlign.Center,
                     cross = UiAlign.Center,
                     w = UiSize.Px(size),
@@ -494,6 +494,8 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         }
 
         private fun icon(id: String): String = resolveIcon(theme, id)
+
+        private fun slotIcon(item: String): String = if (item.startsWith(UiArtCatalog.UI_PREFIX)) item else UiArtCatalog.ITEM_PREFIX + item
 
         private fun labelIcon(raw: String): IconNode? {
             val id = placeholders.plain(raw).trim()

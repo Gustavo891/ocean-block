@@ -51,7 +51,7 @@ object EnergyNetwork {
             val source = PlacedBlockManager.get(id) ?: return@forEach
             source.counters[EnergyRules.KEY] = stored(source) - take
             PlacedBlockManager.markDirty(source)
-            meter.record(source.uuid, take, Bukkit.getCurrentTick())
+            meter.record(source.uuid, take, Bukkit.getCurrentTick(), consumer.uuid)
             EnergyBeams.pulse(source, consumer)
         }
         setNoPower(consumer, plan == null)
@@ -59,6 +59,9 @@ object EnergyNetwork {
     }
 
     fun spentPerSecond(source: PlacedBlock): Long = meter.perSecond(source.uuid, Bukkit.getCurrentTick())
+
+    fun consumersOf(source: PlacedBlock): List<PlacedBlock> =
+        meter.consumers(source.uuid, Bukkit.getCurrentTick()).mapNotNull { PlacedBlockManager.get(it) }.filter { PlacedBlockManager.isRegistered(it) }
 
     fun hasNoPower(consumer: PlacedBlock): Boolean = consumer.counters[MachineIds.NO_POWER_KEY] == 1L
 

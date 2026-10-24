@@ -100,3 +100,7 @@ stone:
     check: ui:stone/icons/check
     cart: ui:stone/icons/cart
     lock: ui:stone/icons/lock
+    gerador: ui:stone/icons/gerador
+    fornalha_eletrica: ui:stone/icons/fornalha_eletrica
+    minerador: ui:stone/icons/minerador
+    painel_solar: ui:stone/icons/painel_solar

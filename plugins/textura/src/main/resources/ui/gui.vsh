@@ -18,6 +18,7 @@ layout(location = 0) out vec4 vertexColor;
 layout(location = 1) out float uiOutline;
 
 const int UI_EDGE_SLACK = 1;
+const int UI_MAX_SCALE = 8;
 
 float uiEdge(vec4 position, vec4 color) {
     if (color.r < 0.99 || color.g < 0.99 || color.b < 0.99 || color.a < 0.99) return 0.0;
@@ -26,10 +27,15 @@ float uiEdge(vec4 position, vec4 color) {
     int x = int(round(position.x));
     int widths[2] = int[2](264, 408);
 
-    for (int i = 0; i < 2; i++) {
-        int left = (screenWidth - widths[i]) / 2;
-        int right = left + widths[i];
-        if (abs(x - left) <= UI_EDGE_SLACK || abs(x - right) <= UI_EDGE_SLACK) return 1.0;
+    for (int scale = 1; scale <= UI_MAX_SCALE; scale++) {
+        int guiWidth = (screenWidth + scale - 1) / scale;
+        int slack = UI_EDGE_SLACK * scale;
+        for (int i = 0; i < 2; i++) {
+            if (guiWidth < widths[i]) continue;
+            int left = ((guiWidth - widths[i]) / 2) * scale;
+            int right = left + widths[i] * scale;
+            if (abs(x - left) <= slack || abs(x - right) <= slack) return 1.0;
+        }
     }
     return 0.0;
 }

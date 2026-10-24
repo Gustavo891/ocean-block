@@ -74,7 +74,7 @@ data class UiUsage(val images: Set<String>, val icons: Set<IconSize>, val surfac
                 }
                 if (definition.containers().any(::hasDynamicSlot)) {
                     val size = compiler.slotIconSize(theme)
-                    dynamicItems.forEach { item -> icons += IconSize(compiler.resolveIcon(theme, UiArtCatalog.ITEM_PREFIX + item), size) }
+                    icons += dynamicIcons(theme, compiler, dynamicItems, size)
                 }
                 if (definition.containers().any(::hasDynamicIcon)) icons += dynamicLabelIcons(theme, compiler, dynamicItems)
                 definition.containers().forEach { container ->

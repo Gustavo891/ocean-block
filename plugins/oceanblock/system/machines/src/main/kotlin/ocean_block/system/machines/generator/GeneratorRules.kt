@@ -4,19 +4,27 @@ object GeneratorRules {
 
     const val CAPACITY = 10_000L
     const val RATE = 2
-    const val MAX_FUEL = 64
+    const val MAX_STACK = 64
 
     fun insertFuel(state: GeneratorState, material: String, amount: Int, fuelTicks: (String) -> Int?): Pair<GeneratorState, Int> {
-        if (fuelTicks(material) == null || (state.fuel != null && state.fuel != material)) return state to 0
-        val taken = minOf(amount, MAX_FUEL - state.fuelCount).coerceAtLeast(0)
-        if (taken == 0) return state to 0
-        return state.copy(fuel = material, fuelCount = state.fuelCount + taken) to taken
+        if (fuelTicks(material) == null || amount <= 0) return state to 0
+        val slots = state.slots.toMutableList()
+        var left = amount
+        val order = slots.indices.filter { slots[it]?.material == material } + slots.indices.filter { slots[it] == null }
+        order.forEach { index ->
+            if (left == 0) return@forEach
+            val current = slots[index]?.amount ?: 0
+            val add = minOf(left, MAX_STACK - current)
+            if (add <= 0) return@forEach
+            slots[index] = FuelStack(material, current + add)
+            left -= add
+        }
+        val taken = amount - left
+        return if (taken == 0) state to 0 else state.copy(slots = slots.toList()) to taken
     }
 
-    fun takeFuel(state: GeneratorState): Pair<GeneratorState, Pair<String, Int>?> {
-        val fuel = state.fuel ?: return state to null
-        return state.copy(fuel = null, fuelCount = 0) to (fuel to state.fuelCount)
-    }
+    fun takeFuel(state: GeneratorState): Pair<GeneratorState, List<FuelStack>> =
+        state.copy(slots = List(GeneratorState.SLOTS) { null }) to state.slots.filterNotNull()
 
     fun tick(state: GeneratorState, ticks: Int, fuelTicks: (String) -> Int?): GeneratorState {
         var current = state
@@ -35,9 +43,11 @@ object GeneratorRules {
     }
 
     private fun ignite(state: GeneratorState, fuelTicks: (String) -> Int?): GeneratorState? {
-        val fuel = state.fuel?.takeIf { state.fuelCount > 0 } ?: return null
-        val burn = fuelTicks(fuel) ?: return null
-        val left = state.fuelCount - 1
-        return state.copy(fuel = fuel.takeIf { left > 0 }, fuelCount = left, burnTicks = burn)
+        val index = state.slots.indexOfFirst { it != null && fuelTicks(it.material) != null }
+        if (index < 0) return null
+        val stack = state.slots[index] ?: return null
+        val burn = fuelTicks(stack.material) ?: return null
+        val slots = state.slots.toMutableList().also { it[index] = stack.copy(amount = stack.amount - 1).takeIf { left -> left.amount > 0 } }
+        return state.copy(slots = slots.toList(), burnTicks = burn)
     }
 }

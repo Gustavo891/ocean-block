@@ -66,22 +66,24 @@ class GeneratorMenu : View() {
         val placed = blockState.get(click)
         if (!MachineMenus.requireAccess(click, placed)) return
         val (next, fuel) = GeneratorRules.takeFuel(GeneratorState.fromCounters(placed.counters))
-        if (fuel == null) return
+        if (fuel.isEmpty()) return
         GeneratorBlock.save(placed, next)
         PlacedBlockManager.saveNow(placed)
-        MachineItems.give(click.player, listOf(fuel))
+        MachineItems.give(click.player, fuel.map { it.material to it.amount })
         click.update()
     }
 
     private fun fuelItem(state: GeneratorState): ItemStack {
-        val fuel = state.fuel?.let { MachineItems.stackOf(it, state.fuelCount) }
+        val stacks = state.slots.filterNotNull()
+        val first = stacks.firstOrNull()?.let { MachineItems.stackOf(it.material, it.amount) }
             ?: return MachineMenus.icon(
                 Material.GRAY_STAINED_GLASS_PANE,
                 "<gray>Sem combustível",
                 listOf("<gray>Clique num combustível do", "<gray>seu inventário para colocar."),
             )
-        return MachineMenus.icon(fuel.type, "<white>Combustível", listOf("<gray>Guardado: <white>${state.fuelCount}/${GeneratorRules.MAX_FUEL}", "", "<yellow>Clique para retirar."))
-            .also { it.amount = fuel.amount }
+        val lines = stacks.map { "<gray>${it.amount}x <white>${it.material.lowercase().replace('_', ' ')}" }
+        return MachineMenus.icon(first.type, "<white>Combustível", lines + listOf("", "<yellow>Clique para retirar tudo."))
+            .also { it.amount = first.amount }
     }
 
     private fun statusItem(state: GeneratorState): ItemStack {
