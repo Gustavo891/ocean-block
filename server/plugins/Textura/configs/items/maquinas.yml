@@ -1,0 +1,5 @@
+picareta_fundidora:
+  material: IRON_PICKAXE
+  item_model: oneblock:picareta_fundidora
+  type: flat
+  texture: assets/oneblock/textures/item/maquinas/picareta_fundidora.png

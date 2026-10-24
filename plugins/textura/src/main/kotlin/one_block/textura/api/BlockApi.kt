@@ -89,6 +89,12 @@ object BlockApi {
         return item
     }
 
+    fun markItem(item: ItemStack, id: String) {
+        item.editMeta { meta ->
+            meta.persistentDataContainer.set(TexturaBlockKeys.BLOCK_ID, PersistentDataType.STRING, id)
+        }
+    }
+
     fun overrideFor(material: Material): BlockDefinition? =
         registry?.overridesByTarget?.get(material.key.value())
 

@@ -1,0 +1,36 @@
+gerador_energia:
+  type: CUSTOM
+  name: "Gerador de energia"
+  item_material: note_block
+  block_default_drop: false
+  textures:
+    top: assets/oneblock/textures/block/maquinas/gerador_energia_top.png
+    bottom: assets/oneblock/textures/block/maquinas/gerador_energia_bottom.png
+    side: assets/oneblock/textures/block/maquinas/gerador_energia_side.png
+painel_solar:
+  type: CUSTOM
+  name: "Painel solar"
+  item_material: note_block
+  block_default_drop: false
+  textures:
+    top: assets/oneblock/textures/block/maquinas/painel_solar_top.png
+    bottom: assets/oneblock/textures/block/maquinas/painel_solar_bottom.png
+    side: assets/oneblock/textures/block/maquinas/painel_solar_side.png
+fornalha_eletrica:
+  type: CUSTOM
+  name: "Fornalha elétrica"
+  item_material: note_block
+  block_default_drop: false
+  textures:
+    top: assets/oneblock/textures/block/maquinas/fornalha_eletrica_top.png
+    bottom: assets/oneblock/textures/block/maquinas/fornalha_eletrica_bottom.png
+    side: assets/oneblock/textures/block/maquinas/fornalha_eletrica_side.png
+minerador:
+  type: CUSTOM
+  name: "Minerador"
+  item_material: note_block
+  block_default_drop: false
+  textures:
+    top: assets/oneblock/textures/block/maquinas/minerador_top.png
+    bottom: assets/oneblock/textures/block/maquinas/minerador_bottom.png
+    side: assets/oneblock/textures/block/maquinas/minerador_side.png
