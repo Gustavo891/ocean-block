@@ -49,6 +49,7 @@ object MinerBlock : MachineBlock() {
 
     override fun onBreak(ctx: BreakContext) {
         MinerDisplay.remove(ctx.placed.uuid)
+        MinerCracks.clear(ctx.placed.uuid)
     }
 
     override fun adopt(placed: PlacedBlock, block: Block): Boolean {
@@ -61,20 +62,24 @@ object MinerBlock : MachineBlock() {
         val block = placed.location.toBukkit()?.block ?: return
         MinerDisplay.ensure(placed, block)
         pushStorage(placed, block)
-        if (!isOn(placed)) return EnergyNetwork.setNoPower(placed, false)
-        if (!EnergyNetwork.draw(placed, MinerRules.cycleEnergy(TICKS))) return
+        if (!isOn(placed)) {
+            MinerCracks.clear(placed.uuid)
+            return EnergyNetwork.setNoPower(placed, false)
+        }
+        if (!EnergyNetwork.draw(placed, MinerRules.cycleEnergy(TICKS))) return MinerCracks.clear(placed.uuid)
         MinerDisplay.spin(placed, TICKS)
         val progress = MinerRules.advance(placed.counters[MinerRules.PROGRESS_KEY]?.toInt() ?: 0, TICKS)
         setCounter(placed, MinerRules.PROGRESS_KEY, progress.toLong())
-        if (!MinerRules.isDue(progress)) return
         val below = block.getRelative(BlockFace.DOWN)
-        if (!canBreak(placed, block, below)) return
+        if (!canBreak(placed, block, below)) return MinerCracks.clear(placed.uuid)
+        if (!MinerRules.isDue(progress)) return MinerCracks.update(placed.uuid, below, progress)
         val drops = below.getDrops(TOOL).toList()
         val storage = placed.buildStorageInventory(MinerRules.STORAGE)
         val full = !fits(storage, drops)
         setCounter(placed, FULL_KEY, if (full) 1 else 0)
-        if (full) return
+        if (full) return MinerCracks.clear(placed.uuid)
 
+        MinerCracks.clear(placed.uuid)
         breakBlock(below)
         val leftovers = drops.flatMap { drop -> outputContainer(block)?.addItem(drop)?.values ?: listOf(drop) }
         leftovers.forEach { storage.addItem(it) }

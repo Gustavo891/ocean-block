@@ -15,6 +15,7 @@ import ocean_block.system.machines.generator.GeneratorDialog
 import ocean_block.system.machines.generator.GeneratorMenu
 import ocean_block.system.machines.miner.MinerBlock
 import ocean_block.system.machines.miner.MinerBreakListener
+import ocean_block.system.machines.miner.MinerCracks
 import ocean_block.system.machines.miner.MinerDisplay
 import ocean_block.system.machines.miner.MinerMenu
 import ocean_block.system.machines.pickaxe.SmelterPickaxeItem
@@ -55,10 +56,12 @@ object MachinesSystem {
         }, 20L, REBUILD_TICKS)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyEffects.drawRadii() }, 20L, RADIUS_TICKS)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyBeams.refresh() }, 20L, EnergyBeams.REFRESH_TICKS)
+        plugin.server.scheduler.runTaskTimer(plugin, Runnable { MinerCracks.refresh() }, 20L, MinerCracks.REFRESH_TICKS)
     }
 
     fun onDisable() {
         MinerDisplay.removeAll()
+        MinerCracks.clearAll()
         EnergyBeams.removeAll()
     }
 
