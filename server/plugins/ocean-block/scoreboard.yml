@@ -27,7 +27,7 @@ boards:
       10: ' <white>Pérolas: <glyph:perola><color:#e9dcff>%walletperolas_balance%'
       9: ' <white>Tempo: <color:#9fe7ff>%playtime_total%'
       8: '  '
-      0: ' <color:#b8d4e3>redescreen.com'
+      0: ' <color:#b8d4e3>oceanblock.com.br'
     defaultHideNumber: true
     defaultRenderEvery: 20
     conditions:
@@ -44,7 +44,7 @@ boards:
       10: ' <white>Pérolas: <glyph:perola><color:#e9dcff>%walletperolas_balance%'
       9: ' <white>Tempo: <color:#9fe7ff>%playtime_total%'
       8: '  '
-      0: ' <color:#b8d4e3>redescreen.com'
+      0: ' <color:#b8d4e3>oceanblock.com.br'
     defaultHideNumber: true
     defaultRenderEvery: 20
     conditions: []
