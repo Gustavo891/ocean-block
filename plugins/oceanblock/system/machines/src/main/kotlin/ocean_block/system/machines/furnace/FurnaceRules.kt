@@ -8,6 +8,8 @@ object FurnaceRules {
     const val MAX_STACK = 64
     const val TICKS_PER_ITEM = 50
 
+    fun adopts(material: String): Boolean = material == "NOTE_BLOCK"
+
     fun insert(state: FurnaceState, material: String, amount: Int, recipes: Map<String, String>): Pair<FurnaceState, Int> {
         if (material !in recipes || amount <= 0) return state to 0
         val order = state.slots.indices.filter { state.slots[it].input == material } +

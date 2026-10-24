@@ -21,7 +21,7 @@ export interface TextureFace {
 export interface BlockEntry {
   id: string
   name: string
-  kind: 'bloco' | 'item'
+  kind: 'bloco' | 'item' | 'vanilla'
   file: string
   faces: TextureFace[]
 }

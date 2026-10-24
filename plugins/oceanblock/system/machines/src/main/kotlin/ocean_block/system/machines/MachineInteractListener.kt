@@ -3,6 +3,7 @@ package ocean_block.system.machines
 import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.custom_items.block.context.BlockClickContext
+import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -19,10 +20,10 @@ class MachineInteractListener(
     fun onInteract(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_BLOCK || event.hand != EquipmentSlot.HAND) return
         val player = event.player
-        if (player.isSneaking) return
         val block = event.clickedBlock ?: return
         val placed = PlacedBlockManager.get(block) ?: return
         val machine = machines[placed.blockId] ?: return
+        if (player.isSneaking) return event.setUseInteractedBlock(Event.Result.DENY)
 
         event.isCancelled = true
         if (!MachineItems.canUse(player, placed)) {

@@ -24,7 +24,7 @@ object ResearchTree {
         ),
         ResearchDefinition(
             "fundicao_melhorada", "Fundição rápida", "Funde duas vezes mais rápido e pode dobrar o lingote.",
-            ResearchCategory.FUNDICAO, "item:blast_furnace", listOf(iron(6), copper(4), clay(8)), 120, emptyList(), listOf("fundicao_melhorada"),
+            ResearchCategory.FUNDICAO, "item:furnace", listOf(iron(6), copper(4), clay(8)), 120, emptyList(), listOf("fundicao_melhorada"),
         ),
         ResearchDefinition(
             "bancada_auxiliar", "Bancada auxiliar", "Libera uma segunda pesquisa ao mesmo tempo.",

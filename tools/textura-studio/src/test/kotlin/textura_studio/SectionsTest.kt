@@ -76,6 +76,10 @@ class SectionsTest : FunSpec({
         gerador.faces.first().path shouldBe "resource/assets/oneblock/textures/block/maquinas/gerador_energia_top.png"
         entries.single { it.id == "minerador" }.faces.map { it.face } shouldContain "broca"
         entries.single { it.id == "picareta_fundidora" }.kind shouldBe "item"
+        val alto = entries.single { it.id == "blast_furnace" }
+        alto.kind shouldBe "vanilla"
+        alto.faces.map { it.face } shouldContain "front_on"
+        alto.faces.map { it.face } shouldContain "side"
         entries.flatMap { it.faces }.forEach { File(data, it.path).isFile shouldBe true }
     }
 

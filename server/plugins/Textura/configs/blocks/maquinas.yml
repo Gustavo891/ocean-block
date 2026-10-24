@@ -18,16 +18,6 @@ painel_solar:
     bottom: assets/oneblock/textures/block/maquinas/painel_solar_bottom.png
     side: assets/oneblock/textures/block/maquinas/painel_solar_side.png
   model: assets/oneblock/models/block/painel_solar.json
-fornalha_eletrica:
-  type: CUSTOM
-  name: "Fornalha elétrica"
-  item_material: note_block
-  block_default_drop: false
-  textures:
-    top: assets/oneblock/textures/block/maquinas/fornalha_eletrica_top.png
-    bottom: assets/oneblock/textures/block/maquinas/fornalha_eletrica_bottom.png
-    side: assets/oneblock/textures/block/maquinas/fornalha_eletrica_side.png
-  model: assets/oneblock/models/block/fornalha_eletrica.json
 minerador:
   type: CUSTOM
   name: "Minerador"

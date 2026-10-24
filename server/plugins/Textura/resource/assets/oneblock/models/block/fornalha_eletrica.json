@@ -1,9 +1,0 @@
-{
-  "parent": "oneblock:block/maquina_base",
-  "textures": {
-    "particle": "oneblock:block/maquinas/fornalha_eletrica_side",
-    "side": "oneblock:block/maquinas/fornalha_eletrica_side",
-    "top": "oneblock:block/maquinas/fornalha_eletrica_top",
-    "bottom": "oneblock:block/maquinas/fornalha_eletrica_bottom"
-  }
-}

@@ -107,4 +107,10 @@ class SmelterRulesTest : StringSpec({
         Fuel.ticks("DRIED_KELP_BLOCK") shouldBe 4000
         Fuel.ticks("SAND") shouldBe null
     }
+
+    "fundicao antiga em alto-forno vira fornalha comum" {
+        SmelterRules.adopts("BLAST_FURNACE") shouldBe true
+        SmelterRules.adopts("FURNACE") shouldBe false
+        SmelterRules.adopts("AIR") shouldBe false
+    }
 })

@@ -13,7 +13,20 @@ data class BlockEntry(val id: String, val name: String, val kind: String, val fi
 class BlockCatalog(private val data: File) {
 
     fun entries(): List<BlockEntry> =
-        read("configs/blocks", "bloco", ::blockFaces) + read("configs/items", "item", ::itemFaces)
+        read("configs/blocks", "bloco", ::blockFaces) + read("configs/items", "item", ::itemFaces) + vanilla()
+
+    private fun vanilla(): List<BlockEntry> {
+        val dir = File(data, VANILLA_BLOCKS).takeIf { it.isDirectory } ?: return emptyList()
+        return dir.listFiles { file -> file.isFile && file.extension == "png" }.orEmpty()
+            .groupBy { file -> VANILLA_FACES.firstOrNull { file.nameWithoutExtension.endsWith("_$it") }?.let { file.nameWithoutExtension.removeSuffix("_$it") } ?: file.nameWithoutExtension }
+            .toSortedMap()
+            .map { (base, files) ->
+                val faces = files.sortedBy { it.name }.map { file ->
+                    TextureFace(file.nameWithoutExtension.removePrefix(base).removePrefix("_").ifEmpty { "all" }, "$VANILLA_BLOCKS/${file.name}")
+                }
+                BlockEntry(base, "$base (vanilla)", "vanilla", "minecraft", faces)
+            }
+    }
 
     fun write(files: StudioFiles, path: String, bytes: ByteArray) {
         if (entries().none { entry -> entry.faces.any { it.path == path } }) {
@@ -54,6 +67,8 @@ class BlockCatalog(private val data: File) {
 
     companion object {
         private const val ASSETS = "assets/"
+        private const val VANILLA_BLOCKS = "resource/assets/minecraft/textures/block"
+        private val VANILLA_FACES = listOf("front_on", "front", "side", "top", "bottom")
         private const val DEFAULT_SIDE = 16
         private const val MAX_SIDE = 256
 

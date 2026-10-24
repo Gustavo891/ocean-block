@@ -7,8 +7,12 @@ import ocean_block.system.machines.MachineBlock
 import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.energy.EnergyNetwork
 import ocean_block.system.machines.MachineItems
+import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.block.Block
+import org.bukkit.block.data.Lightable
 
 object FurnaceBlock : MachineBlock() {
 
@@ -21,6 +25,9 @@ object FurnaceBlock : MachineBlock() {
         "<gray>Precisa de energia a até <white>8 blocos<gray>.",
     )
     override val limitPerIsland: Int = 4
+    override val material: Material = Material.BLAST_FURNACE
+    override val texturaBlock: Boolean = false
+    override val itemModel: NamespacedKey? get() = null
 
     override fun onRightClick(ctx: BlockClickContext) {
         val hand = ctx.player.inventory.itemInMainHand
@@ -41,15 +48,32 @@ object FurnaceBlock : MachineBlock() {
         return taken
     }
 
+    override fun adopt(placed: PlacedBlock, block: Block): Boolean {
+        if (!FurnaceRules.adopts(block.type.name)) return false
+        block.setType(Material.BLAST_FURNACE, false)
+        return true
+    }
+
     override fun work(placed: PlacedBlock) {
+        val block = placed.location.toBukkit()?.block ?: return
         val recipes = FurnaceRecipes.results
         val state = FurnaceState.fromCounters(placed.counters)
         val needed = FurnaceRules.energyNeeded(state, TICKS, recipes)
-        if (needed == 0L) return EnergyNetwork.setNoPower(placed, false)
-        if (!EnergyNetwork.draw(placed, needed)) return
+        if (needed == 0L) {
+            EnergyNetwork.setNoPower(placed, false)
+            return setLit(block, false)
+        }
+        if (!EnergyNetwork.draw(placed, needed)) return setLit(block, false)
         save(placed, FurnaceRules.tick(state, TICKS, recipes))
-        val location = placed.location.toBukkit() ?: return
-        location.world?.spawnParticle(Particle.ELECTRIC_SPARK, location.add(0.5, 1.05, 0.5), 2, 0.2, 0.05, 0.2, 0.0)
+        setLit(block, true)
+        block.world.spawnParticle(Particle.ELECTRIC_SPARK, block.location.add(0.5, 1.05, 0.5), 2, 0.2, 0.05, 0.2, 0.0)
+    }
+
+    private fun setLit(block: Block, lit: Boolean) {
+        val data = block.blockData as? Lightable ?: return
+        if (data.isLit == lit) return
+        data.isLit = lit
+        block.setBlockData(data, false)
     }
 
     fun save(placed: PlacedBlock, state: FurnaceState) {

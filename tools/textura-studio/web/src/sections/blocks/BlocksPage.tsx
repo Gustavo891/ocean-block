@@ -10,6 +10,8 @@ const FACE_LABELS: Record<string, string> = {
   bottom: 'Base',
   side: 'Laterais',
   item: 'Item',
+  front: 'Frente',
+  front_on: 'Frente acesa (animação)',
 }
 
 function faceLabel(face: string): string {
@@ -31,12 +33,13 @@ function CubePreview({ entry, version }: { entry: BlockEntry; version: number })
   }
   const top = faceFor(entry, ['top', 'all'])
   const side = faceFor(entry, ['side', 'all'])
+  const front = faceFor(entry, ['front', 'side', 'all'])
   const url = (face?: TextureFace) => (face ? `url(${filesApi.rawUrl(face.path, version)})` : 'none')
   return (
     <div className="cube-scene">
       <div className="cube">
         <span className="cube-face top" style={{ backgroundImage: url(top) }} />
-        <span className="cube-face front" style={{ backgroundImage: url(side) }} />
+        <span className="cube-face front" style={{ backgroundImage: url(front) }} />
         <span className="cube-face right" style={{ backgroundImage: url(side) }} />
       </div>
     </div>
@@ -138,7 +141,7 @@ export function BlocksPage() {
         {current && face ? (
           <div className="blocks-editor">
             <div className="blocks-editor-head">
-              <span className="eyebrow">{current.kind === 'item' ? 'Item' : 'Bloco'}</span>
+              <span className="eyebrow">{current.kind === 'item' ? 'Item' : current.kind === 'vanilla' ? 'Bloco vanilla substituído' : 'Bloco'}</span>
               <h3>
                 {current.name} · {faceLabel(face.face)}
               </h3>

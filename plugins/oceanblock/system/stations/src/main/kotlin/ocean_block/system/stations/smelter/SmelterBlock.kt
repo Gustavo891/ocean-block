@@ -5,12 +5,21 @@ import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.context.BlockClickContext
 import ocean_block.system.custom_items.block.context.BreakContext
 import org.bukkit.Material
+import org.bukkit.block.Block
+import org.bukkit.block.data.Directional
 import kotlin.random.Random
 
 class SmelterBlock(val tier: SmelterTier) : CustomBlock() {
 
     override val id: String = tier.blockId
-    override val material: Material = Material.BLAST_FURNACE
+    override val material: Material = Material.FURNACE
+
+    override fun adopt(placed: PlacedBlock, block: Block): Boolean {
+        if (!SmelterRules.adopts(block.type.name)) return false
+        val facing = (block.blockData as? Directional)?.facing
+        block.setBlockData(Material.FURNACE.createBlockData { data -> facing?.let { (data as Directional).facing = it } }, false)
+        return true
+    }
     override val displayName: String = "<white>${NAMES.getValue(tier)}"
     override val lore: List<String> = listOfNotNull(
         "<gray>Clique com minério bruto e combustível.",

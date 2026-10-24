@@ -71,6 +71,12 @@ class FurnaceRulesTest : StringSpec({
         FurnaceRules.takeInput(FurnaceState.EMPTY, 9) shouldBe (FurnaceState.EMPTY to null)
     }
 
+    "fornalha antiga em note block vira alto-forno" {
+        FurnaceRules.adopts("NOTE_BLOCK") shouldBe true
+        FurnaceRules.adopts("FURNACE") shouldBe false
+        FurnaceRules.adopts("AIR") shouldBe false
+    }
+
     "ida e volta pelos counters" {
         val start = state(FurnaceSlot("SAND", 3, "GLASS", 2, 30), empty, empty, FurnaceSlot(null, 0, "IRON_INGOT", 7, 0))
         FurnaceState.fromCounters(start.toCounters()) shouldBe start

@@ -2,7 +2,7 @@ package ocean_block.system.research.model
 
 enum class ResearchCategory(val displayName: String, val material: String) {
     COLETA("Coleta", "chest"),
-    FUNDICAO("Fundição", "blast_furnace"),
+    FUNDICAO("Fundição", "furnace"),
     RAFT("Raft", "bamboo_raft"),
     MAQUINAS("Máquinas", "observer"),
 }

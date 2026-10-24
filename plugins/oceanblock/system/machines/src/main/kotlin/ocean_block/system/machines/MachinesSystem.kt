@@ -6,6 +6,7 @@ import ocean_block.system.machines.energy.EnergyEffects
 import ocean_block.system.machines.energy.EnergyIndex
 import org.bukkit.event.player.PlayerQuitEvent
 import ocean_block.system.machines.furnace.FurnaceBlock
+import ocean_block.system.machines.furnace.FurnaceHopperGuard
 import ocean_block.system.machines.furnace.FurnaceMenu
 import ocean_block.system.machines.furnace.FurnaceRecipes
 import ocean_block.system.machines.generator.GeneratorBlock
@@ -42,6 +43,7 @@ object MachinesSystem {
         FurnaceRecipes.load()
         plugin.server.pluginManager.registerEvents(IndexListener(plugin), plugin)
         plugin.server.pluginManager.registerEvents(MinerBreakListener(), plugin)
+        plugin.server.pluginManager.registerEvents(FurnaceHopperGuard(), plugin)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable {
             EnergyIndex.rebuild()
             MinerDisplay.cleanup()

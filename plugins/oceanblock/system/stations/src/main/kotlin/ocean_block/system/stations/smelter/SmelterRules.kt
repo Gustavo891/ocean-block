@@ -16,6 +16,8 @@ object SmelterRules {
 
     fun accepts(id: String): Boolean = id in INGOTS
 
+    fun adopts(material: String): Boolean = material == "BLAST_FURNACE"
+
     fun ingotOf(id: String): String = INGOTS.getValue(id)
 
     fun insertOre(state: SmelterState, id: String, amount: Int): Pair<SmelterState, Int> {
