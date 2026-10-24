@@ -225,7 +225,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 
 ### Visual estilo Create, rastro e raio
 - [ ] As quatro máquinas aparecem no estilo Create (moldura suave de 2 px em relevo e painel rebaixado 1 px em cada face, sem nenhum buraco para o mundo): Gerador em latão com madeira escura e uma porta acesa, tampa de cobre com engrenagem; Fornalha elétrica como um alto-forno de aço com fogo azul; Minerador em andesito com tábuas e a cabeça da broca embaixo; Painel solar em andesito com células azuis em cima. A Picareta fundidora é de latão com fio em brasa.
-- [ ] Com uma Fornalha ou Minerador puxando energia, sai um rastro de pontos amarelos andando do Gerador/Painel até a máquina, só para quem está a até 24 blocos.
+- [ ] Com uma Fornalha ou Minerador puxando energia, sai um raio azul brilhante em zigue-zague, tremendo, do Gerador/Painel até a máquina, só para quem está a até 32 blocos; some menos de 2 s depois que a máquina para.
 - [ ] `/pref` (ou `/preferencias`) abre `Preferências` com `Rastro de energia` ligado; clicar desliga (o rastro some só para você) e a escolha continua depois de sair e entrar.
 - [ ] No menu do Gerador, `Mostrar raio` desenha um círculo ciano de 8 blocos em volta dele, só para você; clicar de novo esconde. Clique direito no Painel solar faz o mesmo. Afastar mais de 48 blocos, sair do servidor ou quebrar a fonte apaga o círculo.
 

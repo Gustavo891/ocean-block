@@ -2,6 +2,7 @@ package ocean_block.system.machines
 
 import ocean_block.system.custom_items.block.CustomBlockRegistry
 import ocean_block.system.custom_items.item.CustomItemRegistry
+import ocean_block.system.machines.energy.EnergyBeams
 import ocean_block.system.machines.energy.EnergyEffects
 import ocean_block.system.machines.energy.EnergyIndex
 import org.bukkit.event.player.PlayerQuitEvent
@@ -51,10 +52,12 @@ object MachinesSystem {
             MinerDisplay.cleanup()
         }, 20L, REBUILD_TICKS)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyEffects.drawRadii() }, 20L, RADIUS_TICKS)
+        plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyBeams.refresh() }, 20L, EnergyBeams.REFRESH_TICKS)
     }
 
     fun onDisable() {
         MinerDisplay.removeAll()
+        EnergyBeams.removeAll()
     }
 
     private class IndexListener(private val plugin: JavaPlugin) : Listener {

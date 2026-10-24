@@ -48,7 +48,7 @@ object EnergyNetwork {
             val source = PlacedBlockManager.get(id) ?: return@forEach
             source.counters[EnergyRules.KEY] = stored(source) - take
             PlacedBlockManager.markDirty(source)
-            EnergyEffects.trail(source, consumer)
+            EnergyBeams.pulse(source, consumer)
         }
         setNoPower(consumer, plan == null)
         return plan != null
