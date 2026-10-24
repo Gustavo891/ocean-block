@@ -63,6 +63,13 @@ class GeneratorRulesTest : StringSpec({
         GeneratorRules.takeFuel(GeneratorState.EMPTY) shouldBe (GeneratorState.EMPTY to emptyList())
     }
 
+    "retirar um slot devolve so aquela pilha" {
+        val current = state(FuelStack("COAL", 5), null, FuelStack("STICK", 3), burn = 100)
+        GeneratorRules.takeSlot(current, 2) shouldBe (state(FuelStack("COAL", 5), burn = 100) to FuelStack("STICK", 3))
+        GeneratorRules.takeSlot(current, 1) shouldBe (current to null)
+        GeneratorRules.takeSlot(current, 20) shouldBe (current to null)
+    }
+
     "ida e volta pelos counters" {
         val current = state(FuelStack("OAK_LOG", 7), null, FuelStack("COAL", 64), burn = 321, energy = 4567)
         GeneratorState.fromCounters(current.toCounters()) shouldBe current

@@ -22,9 +22,18 @@
                 {
                   "column": [
                     { "text": "{status}", "style": "body", "align": "left", "w": 200 },
-                    { "text": "{maquinas_info}", "style": "muted", "align": "left", "w": "fit" }
+                    { "text": "{maquinas_info}", "style": "muted", "align": "left", "w": "fit" },
+                    {
+                      "grid": [
+                        {
+                          "repeat": "maquinas", "perPage": 9,
+                          "slots": [1, 1], "items": [{ "at": 0, "item": "{icone}", "name": "{nome}", "lore": ["{coord}"] }]
+                        }
+                      ],
+                      "columns": 9, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Maquinas"
+                    }
                   ],
-                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "start"
+                  "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
                 }
               ],
               "w": "grow", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "center", "name": "Topo"
@@ -49,16 +58,7 @@
                   "w": "fit", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "end"
                 }
               ],
-              "w": "grow", "h": "fit", "gap": 10, "pad": 6, "align": "start", "cross": "center", "surface": "well", "name": "Energia"
-            },
-            {
-              "grid": [
-                {
-                  "repeat": "maquinas", "perPage": 9,
-                  "slots": [1, 1], "items": [{ "at": 0, "item": "{icone}", "name": "{nome}", "lore": ["{coord}"] }]
-                }
-              ],
-              "columns": 9, "w": "grow", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Maquinas"
+              "w": "grow", "h": "fit", "gap": 10, "pad": 4, "align": "start", "cross": "center", "surface": "well", "name": "Energia"
             },
             {
               "row": [
@@ -68,7 +68,7 @@
               "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "center", "name": "Raio"
             }
           ],
-          "w": "grow", "h": "fit", "gap": 5, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
+          "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
         }
       ],
       "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Informacoes"
@@ -87,28 +87,21 @@
         {
           "column": [
             {
-              "slots": [9, 1],
-              "items": [
-                { "at": 0, "item": "{s0}", "count": "{s0_qtd}", "name": "{s0_nome}", "lore": ["{s0_info}"] },
-                { "at": 1, "item": "{s1}", "count": "{s1_qtd}", "name": "{s1_nome}", "lore": ["{s1_info}"] },
-                { "at": 2, "item": "{s2}", "count": "{s2_qtd}", "name": "{s2_nome}", "lore": ["{s2_info}"] },
-                { "at": 3, "item": "{s3}", "count": "{s3_qtd}", "name": "{s3_nome}", "lore": ["{s3_info}"] },
-                { "at": 4, "item": "{s4}", "count": "{s4_qtd}", "name": "{s4_nome}", "lore": ["{s4_info}"] },
-                { "at": 5, "item": "{s5}", "count": "{s5_qtd}", "name": "{s5_nome}", "lore": ["{s5_info}"] },
-                { "at": 6, "item": "{s6}", "count": "{s6_qtd}", "name": "{s6_nome}", "lore": ["{s6_info}"] },
-                { "at": 7, "item": "{s7}", "count": "{s7_qtd}", "name": "{s7_nome}", "lore": ["{s7_info}"] },
-                { "at": 8, "item": "{s8}", "count": "{s8_qtd}", "name": "{s8_nome}", "lore": ["{s8_info}"] }
+              "grid": [
+                {
+                  "repeat": "combustivel", "perPage": 9,
+                  "slots": [1, 1], "bind": "retirar",
+                  "items": [{ "at": 0, "item": "{item}", "count": "{qtd}", "name": "{nome}", "lore": ["{info}", "Clique para retirar."] }]
+                }
               ],
-              "align": "start", "name": "Slots"
-            },
-            { "text": "Clique na máquina com combustível na mão.", "style": "muted", "align": "left", "w": "grow" },
-            { "button": "Retirar tudo", "bind": "retirar", "look": "light", "w": "grow", "disabled": "{sem_comb}", "tooltip": "Retirar combustível\n\nVolta tudo para o seu inventário." }
+              "columns": 9, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Slots"
+            }
           ],
-          "w": "grow", "h": "fit", "gap": 6, "pad": 6, "align": "start", "cross": "start", "name": "Corpo"
+          "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
         }
       ],
       "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Combustivel"
     }
   ],
-  "w": "fit", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "start"
+  "w": "fit", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "start"
 }

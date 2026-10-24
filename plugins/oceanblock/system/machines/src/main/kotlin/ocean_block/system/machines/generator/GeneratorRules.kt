@@ -23,6 +23,11 @@ object GeneratorRules {
         return if (taken == 0) state to 0 else state.copy(slots = slots.toList()) to taken
     }
 
+    fun takeSlot(state: GeneratorState, index: Int): Pair<GeneratorState, FuelStack?> {
+        val stack = state.slots.getOrNull(index) ?: return state to null
+        return state.copy(slots = state.slots.mapIndexed { i, current -> current.takeIf { i != index } }) to stack
+    }
+
     fun takeFuel(state: GeneratorState): Pair<GeneratorState, List<FuelStack>> =
         state.copy(slots = List(GeneratorState.SLOTS) { null }) to state.slots.filterNotNull()
 

@@ -54,25 +54,24 @@ object GeneratorDialog {
         binds.switch("raio", { EnergyEffects.isShowingRadius(player, placed) }) { show ->
             if (MachineItems.canUse(player, placed) && show != EnergyEffects.isShowingRadius(player, placed)) EnergyEffects.toggleRadius(player, placed)
         }
-        (0 until GeneratorState.SLOTS).forEach { index -> bindSlot(binds, placed, index) }
-        binds.text("sem_comb") { (!state(placed).hasFuel).toString() }
-        binds.button("retirar") { click ->
-            if (!MachineItems.canUse(click.player, placed)) return@button click.close()
-            val (next, fuel) = GeneratorRules.takeFuel(state(placed))
-            if (fuel.isEmpty()) return@button
+        binds.list("combustivel") { state(placed).slots.map(::fuelEntry) }
+        binds.listPage("combustivel") { 0 }
+        binds.listButton("retirar") { click, index ->
+            if (!MachineItems.canUse(click.player, placed)) return@listButton click.close()
+            val (next, fuel) = GeneratorRules.takeSlot(state(placed), index)
+            if (fuel == null) return@listButton
             GeneratorBlock.save(placed, next)
             PlacedBlockManager.saveNow(placed)
-            MachineItems.give(click.player, fuel.map { it.material to it.amount })
+            MachineItems.give(click.player, listOf(fuel.material to fuel.amount))
         }
     }
 
-    private fun bindSlot(binds: DialogBinds, placed: PlacedBlock, index: Int) {
-        fun stack() = state(placed).slots.getOrNull(index)
-        binds.text("s$index") { stack()?.let { ItemLabels.icon(it.material) } ?: "" }
-        binds.text("s${index}_qtd") { (stack()?.amount ?: 1).toString() }
-        binds.text("s${index}_nome") { stack()?.let { fuelName(it.material) } ?: "" }
-        binds.text("s${index}_info") { stack()?.let(::fuelInfo) ?: "" }
-    }
+    private fun fuelEntry(stack: FuelStack?): Map<String, String> = mapOf(
+        "item" to (stack?.let { ItemLabels.icon(it.material) } ?: ""),
+        "qtd" to (stack?.amount ?: 1).toString(),
+        "nome" to (stack?.let { fuelName(it.material) } ?: ""),
+        "info" to (stack?.let(::fuelInfo) ?: ""),
+    )
 
     private fun machineEntry(consumer: PlacedBlock): Map<String, String>? {
         val (icon, name) = MACHINE_ICONS[consumer.blockId] ?: return null
