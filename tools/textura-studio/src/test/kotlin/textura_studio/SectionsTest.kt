@@ -81,6 +81,9 @@ class SectionsTest : FunSpec({
         alto.kind shouldBe "vanilla"
         alto.faces.map { it.face } shouldContain "front_on"
         alto.faces.map { it.face } shouldContain "side"
+        val sensor = entries.single { it.id == "daylight_detector" }
+        sensor.faces.map { it.path } shouldContain "resource/assets/oneblock/textures/block/maquinas/painel_solar_bottom.png"
+        sensor.faces.single { it.path.endsWith("painel_solar_bottom.png") }.face shouldBe "bottom"
         entries.flatMap { it.faces }.forEach { File(data, it.path).isFile shouldBe true }
     }
 

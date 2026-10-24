@@ -1,5 +1,6 @@
 package textura_studio
 
+import com.google.gson.JsonParser
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.ByteArrayInputStream
@@ -25,7 +26,24 @@ class BlockCatalog(private val data: File) {
                 val faces = files.sortedBy { it.name }.map { file ->
                     TextureFace(file.nameWithoutExtension.removePrefix(base).removePrefix("_").ifEmpty { "all" }, "$VANILLA_BLOCKS/${file.name}")
                 }
-                BlockEntry(base, "$base (vanilla)", "vanilla", "minecraft", faces)
+                BlockEntry(base, "$base (vanilla)", "vanilla", "minecraft", (faces + modelTextures(base)).distinctBy { it.path })
+            }
+    }
+
+    private fun modelTextures(base: String): List<TextureFace> {
+        val dir = File(data, VANILLA_MODELS).takeIf { it.isDirectory } ?: return emptyList()
+        return dir.listFiles { file -> file.isFile && file.extension == "json" && file.nameWithoutExtension.startsWith(base) }.orEmpty()
+            .sortedBy { it.name }
+            .flatMap { file ->
+                val textures = runCatching { JsonParser.parseString(file.readText()).asJsonObject.getAsJsonObject("textures") }.getOrNull()
+                    ?: return@flatMap emptyList()
+                textures.entrySet().mapNotNull { (key, value) ->
+                    val reference = value.takeIf { it.isJsonPrimitive }?.asString ?: return@mapNotNull null
+                    val namespace = reference.substringBefore(':', "")
+                    if (namespace.isEmpty() || namespace == "minecraft") return@mapNotNull null
+                    val path = "resource/assets/$namespace/textures/${reference.substringAfter(':')}.png"
+                    TextureFace(key, path).takeIf { File(data, path).isFile }
+                }
             }
     }
 
@@ -69,6 +87,7 @@ class BlockCatalog(private val data: File) {
     companion object {
         private const val ASSETS = "assets/"
         private const val VANILLA_BLOCKS = "resource/assets/minecraft/textures/block"
+        private const val VANILLA_MODELS = "resource/assets/minecraft/models/block"
         private val VANILLA_FACES = listOf("front_on", "front", "inverted_top", "side", "top", "bottom")
         private const val DEFAULT_SIDE = 16
         private const val MAX_SIDE = 256
