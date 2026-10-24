@@ -1,0 +1,9 @@
+{
+  "parent": "oneblock:block/maquina_base",
+  "textures": {
+    "particle": "oneblock:block/maquinas/painel_solar_side",
+    "side": "oneblock:block/maquinas/painel_solar_side",
+    "top": "oneblock:block/maquinas/painel_solar_top",
+    "bottom": "oneblock:block/maquinas/painel_solar_bottom"
+  }
+}

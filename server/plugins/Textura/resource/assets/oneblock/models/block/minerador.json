@@ -1,0 +1,9 @@
+{
+  "parent": "oneblock:block/maquina_base",
+  "textures": {
+    "particle": "oneblock:block/maquinas/minerador_side",
+    "side": "oneblock:block/maquinas/minerador_side",
+    "top": "oneblock:block/maquinas/minerador_top",
+    "bottom": "oneblock:block/maquinas/minerador_bottom"
+  }
+}

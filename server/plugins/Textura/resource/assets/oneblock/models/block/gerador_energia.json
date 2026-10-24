@@ -1,0 +1,9 @@
+{
+  "parent": "oneblock:block/maquina_base",
+  "textures": {
+    "particle": "oneblock:block/maquinas/gerador_energia_side",
+    "side": "oneblock:block/maquinas/gerador_energia_side",
+    "top": "oneblock:block/maquinas/gerador_energia_top",
+    "bottom": "oneblock:block/maquinas/gerador_energia_bottom"
+  }
+}
