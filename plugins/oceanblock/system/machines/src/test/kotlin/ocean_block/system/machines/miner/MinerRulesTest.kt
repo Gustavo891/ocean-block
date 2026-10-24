@@ -51,6 +51,18 @@ class MinerRulesTest : StringSpec({
         MinerRules.HITS_TO_BREAK shouldBe 3
     }
 
+    "broca gira so trabalhando: alvo, espaco e energia para um bloco" {
+        MinerRules.isWorking(canMine = true, full = false, available = 40) shouldBe true
+        MinerRules.isWorking(canMine = false, full = false, available = 400) shouldBe false
+        MinerRules.isWorking(canMine = true, full = true, available = 400) shouldBe false
+        MinerRules.isWorking(canMine = true, full = false, available = 39) shouldBe false
+    }
+
+    "giro anda 90 graus por ciclo e da a volta" {
+        MinerRules.nextSpin(0f) shouldBe 90f
+        MinerRules.nextSpin(270f) shouldBe 0f
+    }
+
     "ids das maquinas" {
         MachineIds.blocks shouldBe listOf("gerador_energia", "painel_solar", "fornalha_eletrica", "minerador")
         MachineIds.PICKAXE shouldBe "picareta_fundidora"

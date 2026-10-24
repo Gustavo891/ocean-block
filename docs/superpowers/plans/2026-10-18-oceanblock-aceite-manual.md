@@ -234,4 +234,5 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Mineradores colocados antes desta versão viram drill sozinhos quando o chunk carrega, com energia, itens guardados e progresso intactos.
 - [ ] Colocar, sair e voltar (ou afastar até descarregar o chunk e voltar): a drill reaparece uma vez só, sem duplicar.
 - [ ] Clique direito abre o menu `Minerador`. Em survival, 3 cliques esquerdos rápidos quebram (som de metal, partículas) e dropam o item com o estado; visitante não quebra nem abre. Em criativo quebra com um clique.
+- [ ] Com energia no raio e pedra ou minério embaixo, a broca gira suave; sem energia, sem alvo ou com o armazenamento cheio, ela para.
 - [ ] Explosão, pistão e água não mexem no Minerador.

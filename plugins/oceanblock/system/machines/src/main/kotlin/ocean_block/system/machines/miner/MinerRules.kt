@@ -24,6 +24,13 @@ object MinerRules {
 
     fun adopts(material: String): Boolean = material == "NOTE_BLOCK"
 
+    const val SPIN_STEP_DEGREES = 90f
+
+    fun isWorking(canMine: Boolean, full: Boolean, available: Long): Boolean =
+        canMine && !full && available >= ENERGY_PER_BLOCK
+
+    fun nextSpin(angle: Float): Float = (angle + SPIN_STEP_DEGREES) % 360f
+
     fun hits(previous: MinerHits?, now: Int): Int =
         if (previous != null && now - previous.lastTick <= HIT_WINDOW_TICKS) previous.count + 1 else 1
 }

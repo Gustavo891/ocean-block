@@ -63,10 +63,13 @@ object MinerBlock : MachineBlock() {
         val progress = MinerRules.advance(placed.counters[MinerRules.PROGRESS_KEY]?.toInt() ?: 0, TICKS)
         setCounter(placed, MinerRules.PROGRESS_KEY, progress.toLong())
         pushStorage(placed, block)
-        if (!MinerRules.isDue(progress)) return
-
         val below = block.getRelative(BlockFace.DOWN)
-        if (!canBreak(placed, block, below)) return
+        val canMine = canBreak(placed, block, below)
+        if (MinerRules.isWorking(canMine, placed.counters[FULL_KEY] == 1L, EnergyNetwork.available(placed))) {
+            MinerDisplay.spin(placed, TICKS)
+        }
+        if (!MinerRules.isDue(progress)) return
+        if (!canMine) return
         val drops = below.getDrops(TOOL).toList()
         val storage = placed.buildStorageInventory(MinerRules.STORAGE)
         val full = !fits(storage, drops)
