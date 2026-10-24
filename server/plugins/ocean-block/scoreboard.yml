@@ -11,6 +11,7 @@
 # defaultRenderEvery: intervalo de redesenho em ticks.
 #
 # Placeholders internos: %player% %online% %date% %time% %serverid%
+# Nível da conta: %nivel% (selo) %nivel_barra% %nivel_progresso%
 
 enabled: true
 
@@ -19,12 +20,13 @@ boards:
     titles: '<glyph:scoreboard_logo>'
     scores:
       15: ''
-      14: ' <color:#3fa9e0>▪</color> <white>Coins: <green>$<white>%walletcoins_balance%'
-      13: ' <color:#3fa9e0>▪</color> <white>Tempo: <color:#9fe7ff>%playtime_total%'
+      14: ' <white>Nível: %nivel%'
+      13: ' %nivel_barra% <gray>%nivel_progresso%'
       12: ' '
-      11: ' <color:#3fa9e0>▪</color> <white>Local: <color:#9fe7ff>Spawn'
-      10: ' <color:#3fa9e0>▪</color> <white>Online: <color:#9fe7ff>%online%'
-      9: '  '
+      11: ' <white>Coins: <green>$<white>%walletcoins_balance%'
+      10: ' <white>Pérolas: <color:#e9dcff>%walletperolas_balance%'
+      9: ' <white>Tempo: <color:#9fe7ff>%playtime_total%'
+      8: '  '
       0: ' <color:#5b7a8c>redescreen.com'
     defaultHideNumber: true
     defaultRenderEvery: 20
@@ -35,11 +37,13 @@ boards:
     titles: '<glyph:scoreboard_logo>'
     scores:
       15: ''
-      14: ' <color:#3fa9e0>▪</color> <white>Coins: <green>$<white>%walletcoins_balance%'
-      13: ' <color:#3fa9e0>▪</color> <white>Tempo: <color:#9fe7ff>%playtime_total%'
+      14: ' <white>Nível: %nivel%'
+      13: ' %nivel_barra% <gray>%nivel_progresso%'
       12: ' '
-      11: ' <color:#3fa9e0>▪</color> <white>Online: <color:#9fe7ff>%online%'
-      10: '  '
+      11: ' <white>Coins: <green>$<white>%walletcoins_balance%'
+      10: ' <white>Pérolas: <color:#e9dcff>%walletperolas_balance%'
+      9: ' <white>Tempo: <color:#9fe7ff>%playtime_total%'
+      8: '  '
       0: ' <color:#5b7a8c>redescreen.com'
     defaultHideNumber: true
     defaultRenderEvery: 20

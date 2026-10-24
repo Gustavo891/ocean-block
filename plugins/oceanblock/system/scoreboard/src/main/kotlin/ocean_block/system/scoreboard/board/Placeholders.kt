@@ -1,6 +1,8 @@
 package ocean_block.system.scoreboard.board
 
 import me.clip.placeholderapi.PlaceholderAPI
+import ocean_block.system.scoreboard.level.AccountLevel
+import ocean_block.system.scoreboard.level.LevelText
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.time.LocalDateTime
@@ -43,8 +45,12 @@ internal object Placeholders {
 
     fun apply(player: Player, text: String): String {
         val now = LocalDateTime.now()
+        val level = AccountLevel.source(player)
 
         val withBuiltIn = text
+            .replace("%nivel_barra%", LevelText.bar(level.progress))
+            .replace("%nivel_progresso%", LevelText.percent(level.progress))
+            .replace("%nivel%", LevelText.badge(level.level))
             .replace("%player%", player.name)
             .replace("%online%", Bukkit.getOnlinePlayers().size.toString())
             .replace("%date%", DATE_FORMAT.format(now))

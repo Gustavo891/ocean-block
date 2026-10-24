@@ -44,7 +44,7 @@ Three paths are wired as file dependencies and must exist on disk or the build f
 
 ### Tests
 
-Tests use **Kotest 5.9 on the JUnit 5 platform**. `paper-common` does *not* wire testing — a module that wants tests must add `testImplementation(libs.kotest.runner)` + `libs.kotest.assertions` (plus `libs.paperApi` when the code under test touches Bukkit types) and `tasks.test { useJUnitPlatform() }` to its own `build.gradle.kts`. Only `plugins/textura`, `system/custom-items`, `system/islands`, `system/drift`, `system/craft`, `system/stations` and `system/research` have tests today; `system/research` depends on `lib:connection`, so it also has a `localTest` alias. Tests live under `src/test/kotlin`.
+Tests use **Kotest 5.9 on the JUnit 5 platform**. `paper-common` does *not* wire testing — a module that wants tests must add `testImplementation(libs.kotest.runner)` + `libs.kotest.assertions` (plus `libs.paperApi` when the code under test touches Bukkit types) and `tasks.test { useJUnitPlatform() }` to its own `build.gradle.kts`. Only `plugins/textura`, `system/custom-items`, `system/islands`, `system/drift`, `system/craft`, `system/stations`, `system/research` and `system/scoreboard` have tests today; `system/research` depends on `lib:connection`, so it also has a `localTest` alias. Tests live under `src/test/kotlin`.
 
 ```bash
 ./gradlew :plugins:oceanblock:system:custom-items:test

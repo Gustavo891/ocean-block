@@ -1,0 +1,209 @@
+scoreboard_logo:
+  id: scoreboard_logo
+  caminho: assets/oneblock/textures/hud/scoreboard_logo.png
+  unicode: 
+  ascent: 10
+  height: 14
+  size: 74
+  default: true
+  show_in_gui: true
+
+nivel_badge_1:
+  id: nivel_badge_1
+  caminho: assets/oneblock/textures/hud/nivel/badge_1.png
+  unicode: \uE201
+  ascent: 8
+  height: 10
+  size: 9
+  default: true
+  show_in_gui: true
+
+nivel_badge_2:
+  id: nivel_badge_2
+  caminho: assets/oneblock/textures/hud/nivel/badge_2.png
+  unicode: \uE202
+  ascent: 8
+  height: 10
+  size: 15
+  default: true
+  show_in_gui: true
+
+nivel_badge_3:
+  id: nivel_badge_3
+  caminho: assets/oneblock/textures/hud/nivel/badge_3.png
+  unicode: \uE203
+  ascent: 8
+  height: 10
+  size: 21
+  default: true
+  show_in_gui: true
+
+nivel_badge_4:
+  id: nivel_badge_4
+  caminho: assets/oneblock/textures/hud/nivel/badge_4.png
+  unicode: \uE204
+  ascent: 8
+  height: 10
+  size: 27
+  default: true
+  show_in_gui: true
+
+nivel_barra_0:
+  id: nivel_barra_0
+  caminho: assets/oneblock/textures/hud/nivel/barra_0.png
+  unicode: \uE210
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_1:
+  id: nivel_barra_1
+  caminho: assets/oneblock/textures/hud/nivel/barra_1.png
+  unicode: \uE211
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_2:
+  id: nivel_barra_2
+  caminho: assets/oneblock/textures/hud/nivel/barra_2.png
+  unicode: \uE212
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_3:
+  id: nivel_barra_3
+  caminho: assets/oneblock/textures/hud/nivel/barra_3.png
+  unicode: \uE213
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_4:
+  id: nivel_barra_4
+  caminho: assets/oneblock/textures/hud/nivel/barra_4.png
+  unicode: \uE214
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_5:
+  id: nivel_barra_5
+  caminho: assets/oneblock/textures/hud/nivel/barra_5.png
+  unicode: \uE215
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_6:
+  id: nivel_barra_6
+  caminho: assets/oneblock/textures/hud/nivel/barra_6.png
+  unicode: \uE216
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_7:
+  id: nivel_barra_7
+  caminho: assets/oneblock/textures/hud/nivel/barra_7.png
+  unicode: \uE217
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_8:
+  id: nivel_barra_8
+  caminho: assets/oneblock/textures/hud/nivel/barra_8.png
+  unicode: \uE218
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_9:
+  id: nivel_barra_9
+  caminho: assets/oneblock/textures/hud/nivel/barra_9.png
+  unicode: \uE219
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_10:
+  id: nivel_barra_10
+  caminho: assets/oneblock/textures/hud/nivel/barra_10.png
+  unicode: \uE21A
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_11:
+  id: nivel_barra_11
+  caminho: assets/oneblock/textures/hud/nivel/barra_11.png
+  unicode: \uE21B
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_12:
+  id: nivel_barra_12
+  caminho: assets/oneblock/textures/hud/nivel/barra_12.png
+  unicode: \uE21C
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_13:
+  id: nivel_barra_13
+  caminho: assets/oneblock/textures/hud/nivel/barra_13.png
+  unicode: \uE21D
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_14:
+  id: nivel_barra_14
+  caminho: assets/oneblock/textures/hud/nivel/barra_14.png
+  unicode: \uE21E
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true
+
+nivel_barra_15:
+  id: nivel_barra_15
+  caminho: assets/oneblock/textures/hud/nivel/barra_15.png
+  unicode: \uE21F
+  ascent: 7
+  height: 8
+  size: 59
+  default: true
+  show_in_gui: true

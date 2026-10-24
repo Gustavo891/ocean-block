@@ -118,12 +118,13 @@ object ScoreboardConfig {
 
         defaults.set("$ROOT.spawn.titles", TITLE)
         defaults.set("$ROOT.spawn.scores.15", "")
-        defaults.set("$ROOT.spawn.scores.14", " $DOT <white>Coins: <green>$<white>%walletcoins_balance%")
-        defaults.set("$ROOT.spawn.scores.13", " $DOT <white>Tempo: <color:#9fe7ff>%playtime_total%")
+        defaults.set("$ROOT.spawn.scores.14", " <white>Nível: %nivel%")
+        defaults.set("$ROOT.spawn.scores.13", " %nivel_barra% <gray>%nivel_progresso%")
         defaults.set("$ROOT.spawn.scores.12", " ")
-        defaults.set("$ROOT.spawn.scores.11", " $DOT <white>Local: <color:#9fe7ff>Spawn")
-        defaults.set("$ROOT.spawn.scores.10", " $DOT <white>Online: <color:#9fe7ff>%online%")
-        defaults.set("$ROOT.spawn.scores.9", "  ")
+        defaults.set("$ROOT.spawn.scores.11", " <white>Coins: <green>$<white>%walletcoins_balance%")
+        defaults.set("$ROOT.spawn.scores.10", " <white>Pérolas: <color:#e9dcff>%walletperolas_balance%")
+        defaults.set("$ROOT.spawn.scores.9", " <white>Tempo: <color:#9fe7ff>%playtime_total%")
+        defaults.set("$ROOT.spawn.scores.8", "  ")
         defaults.set("$ROOT.spawn.scores.0", " <color:#5b7a8c>redescreen.com")
         defaults.set("$ROOT.spawn.defaultHideNumber", true)
         defaults.set("$ROOT.spawn.defaultRenderEvery", 20)
@@ -131,11 +132,13 @@ object ScoreboardConfig {
 
         defaults.set("$ROOT.default.titles", TITLE)
         defaults.set("$ROOT.default.scores.15", "")
-        defaults.set("$ROOT.default.scores.14", " $DOT <white>Coins: <green>$<white>%walletcoins_balance%")
-        defaults.set("$ROOT.default.scores.13", " $DOT <white>Tempo: <color:#9fe7ff>%playtime_total%")
+        defaults.set("$ROOT.default.scores.14", " <white>Nível: %nivel%")
+        defaults.set("$ROOT.default.scores.13", " %nivel_barra% <gray>%nivel_progresso%")
         defaults.set("$ROOT.default.scores.12", " ")
-        defaults.set("$ROOT.default.scores.11", " $DOT <white>Online: <color:#9fe7ff>%online%")
-        defaults.set("$ROOT.default.scores.10", "  ")
+        defaults.set("$ROOT.default.scores.11", " <white>Coins: <green>$<white>%walletcoins_balance%")
+        defaults.set("$ROOT.default.scores.10", " <white>Pérolas: <color:#e9dcff>%walletperolas_balance%")
+        defaults.set("$ROOT.default.scores.9", " <white>Tempo: <color:#9fe7ff>%playtime_total%")
+        defaults.set("$ROOT.default.scores.8", "  ")
         defaults.set("$ROOT.default.scores.0", " <color:#5b7a8c>redescreen.com")
         defaults.set("$ROOT.default.defaultHideNumber", true)
         defaults.set("$ROOT.default.defaultRenderEvery", 20)
@@ -145,6 +148,4 @@ object ScoreboardConfig {
     }
 
     private const val TITLE = "<glyph:scoreboard_logo>"
-
-    private const val DOT = "<color:#3fa9e0>▪</color>"
 }
