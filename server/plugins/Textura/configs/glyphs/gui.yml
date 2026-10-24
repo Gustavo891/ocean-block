@@ -112,7 +112,7 @@ pesquisa_menu:
 fornalha_menu:
   id: fornalha_menu
   caminho: assets/oneblock/textures/gui/fornalha_menu.png
-  ascent: 13
+  ascent: 20
   height: 256
   default: true
   show_in_gui: true
