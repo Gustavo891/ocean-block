@@ -181,3 +181,43 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 ### Configurações e melhorias
 - [ ] Configurações (fundo `ilha_config`) mostra as 7 opções numa linha e voltar leva ao hub.
 - [ ] Melhorias: a lore mostra `Nível: a ➡ b` de cada upgrade (no máximo, `Máx` e sem preço). Comprar atualiza o menu na hora; Membros evoluído mostra `(3 -> 6 membros)`.
+
+## 12. Máquinas e Picareta fundidora
+
+### Preparação
+- [ ] Depois de reiniciar, `server/plugins/Textura/data/block-allocations.yml` ganha `gerador_energia`, `painel_solar`, `fornalha_eletrica` e `minerador`; o pack sobe sem aviso de textura faltando.
+- [ ] `/receitas` mostra 4 categorias na coluna da esquerda (a 4ª é `Máquinas`, observador) com moldura própria; `/pesquisa` mostra `Coleta`, `Fundição`, `Raft` e `Máquinas`, e o relógio `Vagas` fica na linha de baixo, à esquerda das setas.
+- [ ] Sem a pesquisa, cada máquina e a Picareta fundidora dizem `Pesquise em /pesquisa: <nome>` e não craftam. `Gerador de energia` e `Picareta fundidora` pedem `Fundição rápida` concluída; Painel, Fornalha elétrica e Minerador pedem `Gerador de energia`.
+
+### Blocos
+- [ ] Cada máquina craftada aparece na mão com a textura própria; colocada, o bloco tem a textura (nunca o note block vanilla) e clicar não toca nota.
+- [ ] Quebrar uma máquina dropa um único item (sem note block extra) e ele guarda a carga: recolocar continua com energia, combustível, itens da fornalha ou do minerador.
+- [ ] Limites: 4 Geradores, 8 Painéis, 4 Fornalhas, 4 Mineradores por ilha.
+- [ ] Visitante não abre nem quebra máquinas de ilha alheia.
+
+### Gerador de energia
+- [ ] Clique direito com carvão na mão carrega o combustível; sem combustível na mão abre o menu `Gerador de energia` com o slot de combustível e o status (`Energia: x/10.000 E`, `Queimando`/`Parado`).
+- [ ] No menu, clicar num combustível do próprio inventário coloca; clicar no slot de combustível retira. Combustível de outro tipo é recusado (som grave).
+- [ ] Queimando, a energia sobe 40 por segundo e sai fumaça em cima; com 10.000 E ele para sem gastar combustível.
+
+### Painel solar
+- [ ] De dia com céu aberto, clique direito diz `gerando 6 E/s` e a energia sobe; à noite ou com um bloco em cima diz `parado`.
+
+### Fornalha elétrica
+- [ ] Menu com 4 colunas (entrada, progresso, saída) e status de energia à esquerda. Clicar num minério bruto/areia/pedregulho do inventário coloca na primeira entrada livre (ou na que já tem o mesmo item); item que não vai na fornalha é recusado.
+- [ ] Com um gerador carregado a até 8 blocos, as 4 colunas derretem juntas, 1 item a cada 2,5 s por coluna, com faíscas em cima; a energia do gerador cai 20 E/s por coluna ativa.
+- [ ] Sem fonte no raio (ou com o gerador a 9+ blocos), o progresso mostra `Sem energia` e nada anda.
+- [ ] Saída com 64 ou com outro item mostra `Saída cheia` e para só aquela coluna. Clicar na entrada devolve, na saída coleta.
+- [ ] Dois jogadores com o menu aberto retirando ao mesmo tempo: nada duplica.
+
+### Minerador
+- [ ] Colocado em cima da saída do gerador de pedra, com energia no raio, quebra o bloco de baixo a cada 2 s (partículas e som) e o gerador forma o próximo.
+- [ ] Os drops vão para um baú encostado (em cima ou ao lado); sem baú, ficam nos 27 slots do menu `Minerador`, que tem `Coletar tudo` e status (`pronto para minerar`, `Sem energia`, `Armazenamento cheio`).
+- [ ] Terra, grama, troncos, blocos custom ou bloco fora da ilha embaixo: não quebra (`nada para minerar`) e não gasta energia.
+- [ ] Armazenamento cheio sem baú: para sem gastar energia; colocar um baú encostado esvazia e volta a minerar.
+
+### Picareta fundidora
+- [ ] Na mão aparece a picareta laranja `Picareta fundidora`. Minério de ferro, cobre e ouro quebrados dropam lingote (com chamas e um chiado); com Fortuna o número de lingotes sobe como o de brutos; pedregulho dropa pedra; diamante e carvão dropam normal.
+- [ ] Durabilidade e encantamentos funcionam como numa picareta de ferro.
+
+- [ ] Sem erros `[custom-items]` de bloco de máquina no log durante toda a sessão.

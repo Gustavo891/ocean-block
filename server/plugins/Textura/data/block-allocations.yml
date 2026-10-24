@@ -1,3 +1,7 @@
-next: 2
+next: 6
 reserved:
   ruby_block: 1
+  gerador_energia: 2
+  painel_solar: 3
+  fornalha_eletrica: 4
+  minerador: 5
