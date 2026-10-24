@@ -190,13 +190,13 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val rows = (0 until def.rows).map { row ->
                 val cells = (0 until def.columns).map { column -> items[row * def.columns + column] }
                 val shown = if (def.hideEmpty) cells.filterNotNull() else cells
-                ContainerNode(ContainerKind.Row, shown.map { slot(it, size) })
+                ContainerNode(ContainerKind.Row, shown.map { slot(it, size, def.bind) })
             }
             val height = if (def.hideEmpty) UiSize.Px(size * def.rows) else UiSize.Fit
-            return ContainerNode(ContainerKind.Box, listOf(ContainerNode(ContainerKind.Column, rows)), align = def.align, w = UiSize.Grow, h = height)
+            return ContainerNode(ContainerKind.Box, listOf(ContainerNode(ContainerKind.Column, rows)), align = def.align, w = if (def.align == UiAlign.Start) UiSize.Fit else UiSize.Grow, h = height)
         }
 
-        private fun slot(item: SlotView?, size: Int): UiNode {
+        private fun slot(item: SlotView?, size: Int, bind: String?): UiNode {
             val art = if (item?.missing == true) theme.slots.missingArt ?: theme.slots.art else theme.slots.art
             val frame = ContainerNode(ContainerKind.Box, listOf(ImageNode(art)), w = UiSize.Px(size), h = UiSize.Px(size))
             if (item == null) return frame
@@ -224,7 +224,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                 } else {
                     null
                 },
-                HotspotNode(null, itemTooltip(item)),
+                HotspotNode(bind?.let(::pressAction), itemTooltip(item)),
             )
             return ContainerNode(ContainerKind.Box, children, w = UiSize.Px(size), h = UiSize.Px(size))
         }

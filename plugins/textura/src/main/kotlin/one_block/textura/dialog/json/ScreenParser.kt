@@ -197,12 +197,15 @@ class ScreenParser(private val logger: Logger) {
                     walk(node.node)
                 }
                 is DefScoped -> walk(node.node)
-                is DefSlots -> node.items.forEach { item ->
-                    placeholders(item.item)
-                    placeholders(item.count)
-                    placeholders(item.name)
-                    item.lore.forEach(::placeholders)
-                    flag(item.missing)
+                is DefSlots -> {
+                    node.bind?.let(keys::add)
+                    node.items.forEach { item ->
+                        placeholders(item.item)
+                        placeholders(item.count)
+                        placeholders(item.name)
+                        item.lore.forEach(::placeholders)
+                        flag(item.missing)
+                    }
                 }
                 is DefIcon -> {
                     node.bind?.let(keys::add)
@@ -455,7 +458,7 @@ class ScreenParser(private val logger: Logger) {
                     else -> DefSlotItem(at, material, count(item, path), item.string("name"), lore(item, path), flag(item, "missing", path))
                 }
             }
-            return DefSlots(columns, rows, items, align(obj, "align", path), obj.bool("hideEmpty", path), path)
+            return DefSlots(columns, rows, items, align(obj, "align", path), obj.bool("hideEmpty", path), path, obj.string("bind"))
         }
 
         private fun count(item: JsonObject, path: String): String {
@@ -640,7 +643,7 @@ class ScreenParser(private val logger: Logger) {
             "chip" to setOf("chip", "icon", "tooltip"),
             "pair" to setOf("pair", "style", "w"),
             "nav" to setOf("nav", "icon", "w", "onClick", "selected", "tooltip", "bind"),
-            "slots" to setOf("slots", "items", "align", "hideEmpty"),
+            "slots" to setOf("slots", "items", "align", "hideEmpty", "bind"),
             "dropdown" to setOf("dropdown", "options", "bind", "w", "tooltip"),
             "slider" to setOf("slider", "min", "max", "step", "unit", "bind", "w", "tooltip"),
             "progress" to setOf("progress", "max", "track", "fill", "w"),

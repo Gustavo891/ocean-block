@@ -69,6 +69,8 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
         onMain { refreshAll() }
     }
 
+    fun translation(key: String): String? = translations[key]
+
     fun translations(translations: Map<String, String>) {
         this.translations = translations
         onMain { refreshAll() }

@@ -39,7 +39,7 @@ object FurnaceBlock : MachineBlock() {
                 return
             }
         }
-        ctx.viewFrame.open(FurnaceMenu::class.java, ctx.player, ctx.placed)
+        if (!FurnaceDialog.open(ctx.player, ctx.placed)) ctx.viewFrame.open(FurnaceMenu::class.java, ctx.player, ctx.placed)
     }
 
     fun insert(placed: PlacedBlock, material: String, amount: Int): Int {

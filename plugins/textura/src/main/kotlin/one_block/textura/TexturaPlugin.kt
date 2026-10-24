@@ -37,6 +37,7 @@ import one_block.textura.pack.PackBuilder
 import one_block.textura.pack.ResourcePackBuilder
 import one_block.textura.pack.PackHash
 import one_block.textura.api.DialogApi
+import one_block.textura.api.TranslationApi
 import one_block.textura.dialog.DialogOpener
 import one_block.textura.dialog.PlayerSettings
 import one_block.textura.dialog.kit.BaseUiKit
@@ -164,6 +165,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
 
         dialogOpener = DialogOpener(this, { uiKit }, uiScreenRegistry, uiThemeRegistry, packStatus, ::applyPack, PlayerSettings(this))
         DialogApi.init(dialogOpener)
+        TranslationApi.init { key -> notifications.translation(key) }
 
         val commandManager = PaperCommandManager(this)
         commandManager.registerCommand(TexturaCommand(this))

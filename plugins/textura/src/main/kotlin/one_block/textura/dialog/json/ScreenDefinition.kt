@@ -109,6 +109,7 @@ data class DefSlots(
     val align: UiAlign,
     val hideEmpty: Boolean = false,
     override val path: String,
+    val bind: String? = null,
 ) : DefNode
 
 data class DefDropdown(

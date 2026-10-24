@@ -3,6 +3,7 @@ package ocean_block.system.machines.generator
 import ocean_block.libs.formatter.NumberFormatter
 import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
+import ocean_block.system.machines.ItemLabels
 import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.MachineItems
 import ocean_block.system.machines.energy.EnergyEffects
@@ -25,7 +26,7 @@ object GeneratorDialog {
     )
 
     fun registerIcons() {
-        DialogApi.registerItemIcons(Material.entries.filter { it.isItem && Fuel.ticks(it.name) != null }.map { iconFor(it.name) }.distinct())
+        DialogApi.registerItemIcons(Material.entries.filter { it.isItem && Fuel.ticks(it.name) != null }.map { ItemLabels.icon(it.name) }.distinct())
     }
 
     fun open(player: Player, placed: PlacedBlock): Boolean {
@@ -67,7 +68,7 @@ object GeneratorDialog {
 
     private fun bindSlot(binds: DialogBinds, placed: PlacedBlock, index: Int) {
         fun stack() = state(placed).slots.getOrNull(index)
-        binds.text("s$index") { stack()?.let { iconFor(it.material) } ?: "" }
+        binds.text("s$index") { stack()?.let { ItemLabels.icon(it.material) } ?: "" }
         binds.text("s${index}_qtd") { (stack()?.amount ?: 1).toString() }
         binds.text("s${index}_nome") { stack()?.let { fuelName(it.material) } ?: "" }
         binds.text("s${index}_info") { stack()?.let(::fuelInfo) ?: "" }
@@ -116,12 +117,6 @@ object GeneratorDialog {
 
     private fun duration(seconds: Int): String =
         if (seconds >= 60) "${seconds / 60}m ${seconds % 60}s" else "${seconds}s"
-
-    private fun iconFor(material: String): String = when {
-        material == "DRIED_KELP_BLOCK" -> "dried_kelp"
-        material.endsWith("_WOOD") -> material.removeSuffix("_WOOD").lowercase() + "_log"
-        else -> material.lowercase()
-    }
 
     private fun fuelName(material: String): String = when {
         material == "COAL" -> "Carvão"
