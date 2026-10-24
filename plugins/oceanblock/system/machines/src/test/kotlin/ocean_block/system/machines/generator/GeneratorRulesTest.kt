@@ -51,7 +51,7 @@ class GeneratorRulesTest : StringSpec({
         GeneratorRules.insertFuel(GeneratorState.EMPTY, "DIRT", 4, fuel) shouldBe (GeneratorState.EMPTY to 0)
     }
 
-    "guarda no maximo 9 pilhas de 64" {
+    "guarda no maximo uma pilha de 64 por slot" {
         val full = GeneratorState(List(GeneratorState.SLOTS) { FuelStack("COAL", 64) }, 0, 0)
         GeneratorRules.insertFuel(full, "COAL", 10, fuel) shouldBe (full to 0)
         GeneratorRules.insertFuel(full, "STICK", 10, fuel) shouldBe (full to 0)

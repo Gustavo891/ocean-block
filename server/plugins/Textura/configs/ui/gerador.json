@@ -89,15 +89,15 @@
             {
               "grid": [
                 {
-                  "repeat": "combustivel", "perPage": 9,
+                  "repeat": "combustivel", "perPage": 14,
                   "slots": [1, 1], "bind": "retirar",
                   "items": [{ "at": 0, "item": "{item}", "count": "{qtd}", "name": "{nome}", "lore": ["{info}", "Clique para retirar."] }]
                 }
               ],
-              "columns": 9, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Slots"
+              "columns": 14, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Slots"
             }
           ],
-          "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
+          "w": "grow", "h": "fit", "gap": 4, "pad": 3, "align": "start", "cross": "start", "name": "Corpo"
         }
       ],
       "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Combustivel"

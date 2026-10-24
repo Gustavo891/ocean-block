@@ -18,7 +18,7 @@ data class GeneratorState(
 
     companion object {
         const val PREFIX = "gerador_"
-        const val SLOTS = 9
+        const val SLOTS = 14
         private const val BURN = "gerador_burn"
         private const val SLOT = "gerador_slot/"
         private const val LEGACY_FUEL = "gerador_fuel/"
