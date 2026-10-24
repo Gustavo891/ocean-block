@@ -191,6 +191,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 
 ### Blocos
 - [ ] Cada máquina craftada aparece na mão com a textura própria; colocada, o bloco tem a textura (nunca o note block vanilla) e clicar não toca nota.
+- [ ] Minerador sobre o gerador de pedra minerando por vários ciclos mantém a própria textura (não vira note block nem outra máquina); `paper-global.yml` tem `disable-noteblock-updates: true`.
 - [ ] Quebrar uma máquina dropa um único item (sem note block extra) e ele guarda a carga: recolocar continua com energia, combustível, itens da fornalha ou do minerador.
 - [ ] Limites: 4 Geradores, 8 Painéis, 4 Fornalhas, 4 Mineradores por ilha.
 - [ ] Visitante não abre nem quebra máquinas de ilha alheia.

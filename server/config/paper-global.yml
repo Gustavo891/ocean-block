@@ -32,7 +32,7 @@ anticheat:
 block-updates:
   disable-chorus-plant-updates: false
   disable-mushroom-block-updates: false
-  disable-noteblock-updates: false
+  disable-noteblock-updates: true
   disable-tripwire-updates: false
 chunk-loading-advanced:
   auto-config-send-distance: true

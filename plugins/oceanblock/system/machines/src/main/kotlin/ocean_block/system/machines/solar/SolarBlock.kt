@@ -30,7 +30,7 @@ object SolarBlock : MachineBlock() {
         ctx.player.sendRichMessage("<yellow>Painel solar: <white>$stored<gray>/1.000 E, $state")
     }
 
-    override fun tick(placed: PlacedBlock) {
+    override fun work(placed: PlacedBlock) {
         val block = placed.location.toBukkit()?.block ?: return
         val energy = EnergyNetwork.stored(placed)
         val next = SolarRules.produce(energy, TICKS, isActive(block))

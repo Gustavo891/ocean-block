@@ -41,7 +41,7 @@ object FurnaceBlock : MachineBlock() {
         return taken
     }
 
-    override fun tick(placed: PlacedBlock) {
+    override fun work(placed: PlacedBlock) {
         val recipes = FurnaceRecipes.results
         val state = FurnaceState.fromCounters(placed.counters)
         val needed = FurnaceRules.energyNeeded(state, TICKS, recipes)

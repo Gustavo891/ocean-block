@@ -39,7 +39,7 @@ object MinerBlock : MachineBlock() {
         ctx.viewFrame.open(MinerMenu::class.java, ctx.player, ctx.placed)
     }
 
-    override fun tick(placed: PlacedBlock) {
+    override fun work(placed: PlacedBlock) {
         val block = placed.location.toBukkit()?.block ?: return
         val progress = MinerRules.advance(placed.counters[MinerRules.PROGRESS_KEY]?.toInt() ?: 0, TICKS)
         setCounter(placed, MinerRules.PROGRESS_KEY, progress.toLong())

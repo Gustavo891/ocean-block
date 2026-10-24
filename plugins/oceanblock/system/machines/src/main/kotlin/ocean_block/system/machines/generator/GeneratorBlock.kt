@@ -35,7 +35,7 @@ object GeneratorBlock : MachineBlock() {
         ctx.viewFrame.open(GeneratorMenu::class.java, ctx.player, ctx.placed)
     }
 
-    override fun tick(placed: PlacedBlock) {
+    override fun work(placed: PlacedBlock) {
         val state = GeneratorState.fromCounters(placed.counters)
         val next = GeneratorRules.tick(state, TICKS, Fuel::ticks)
         if (next == state) return
