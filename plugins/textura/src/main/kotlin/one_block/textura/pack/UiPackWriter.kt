@@ -62,7 +62,7 @@ class UiPackWriter(
         return PackedUiKit(
             images = arts.mapValues { (id, art) -> image(id, art, packed) },
             surfaces = surfaces.mapValues { (size, surface) -> surfaceImage(surface, size.height, packed) },
-            icons = icons.mapValues { (size, source) -> plain(packed.getValue(source.name), source.image.width, size.size) },
+            icons = icons.mapValues { (size, source) -> plain(packed.getValue(source.name), source.image.width / source.detail, size.size) },
             textFont = textFont,
             hit = packed.getValue(HIT).piece,
         )
@@ -131,11 +131,12 @@ class UiPackWriter(
     private fun icon(size: IconSize): UiPieceSource? {
         val art = catalog.art(size.id) ?: return missing(size.id)
         val native = if (size.id.startsWith(UiArtCatalog.ITEM_PREFIX) && size.size < art.image.height) IconScale.native(art.image, size.size) else null
-        val resized = native ?: IconScale.resize(art.image, size.size) ?: run {
+        val detail = if (native == null && !size.id.startsWith(UiArtCatalog.ITEM_PREFIX)) IconScale.detail(art.image, size.size) else 1
+        val resized = native ?: IconScale.resize(art.image, size.size * detail) ?: run {
             logger.warning("[ui] Ícone '${size.id}' com tamanho inválido ${size.size}")
             return null
         }
-        return UiPieceSource("icon:${size.id}@${size.size}", resized)
+        return UiPieceSource("icon:${size.id}@${size.size}", resized, detail)
     }
 
     private fun <T> missing(id: String): T? {
@@ -147,7 +148,7 @@ class UiPackWriter(
         val padded = UiPieces.padded(source.image)
         val key = Key.key(NAMESPACE, "ui_gen/${hash(source.name)}.png")
         builder.pack.texture(Texture.texture(key, Writable.bytes(png(padded))))
-        return Packed(key, padded.height, UiPiece(char, GlyphAdvance.of(source.image)))
+        return Packed(key, padded.height / source.detail, UiPiece(char, GlyphAdvance.of(source.image, source.detail)))
     }
 
     private fun writeFonts(builder: PackBuilder, pieces: Collection<Packed>) {

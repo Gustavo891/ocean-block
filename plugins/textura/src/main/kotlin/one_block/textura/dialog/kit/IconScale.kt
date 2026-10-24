@@ -34,6 +34,9 @@ object IconScale {
         return result
     }
 
+    fun detail(image: BufferedImage, size: Int): Int =
+        if (size < 1) 1 else (image.height / size).coerceIn(1, MAX_DETAIL)
+
     fun resize(image: BufferedImage, size: Int): BufferedImage? {
         if (size < 1) return null
         val width = width(image.width, image.height, size)
@@ -44,4 +47,6 @@ object IconScale {
         graphics.dispose()
         return result
     }
+
+    const val MAX_DETAIL = 4
 }

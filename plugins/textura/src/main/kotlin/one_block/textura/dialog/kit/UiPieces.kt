@@ -2,7 +2,7 @@ package one_block.textura.dialog.kit
 
 import java.awt.image.BufferedImage
 
-class UiPieceSource(val name: String, val image: BufferedImage)
+class UiPieceSource(val name: String, val image: BufferedImage, val detail: Int = 1)
 
 object UiPieces {
 
