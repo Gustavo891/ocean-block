@@ -85,6 +85,12 @@ class RecipeLoreTest : StringSpec({
         RecipeCategory.entries.size shouldBeLessThanOrEqual RecipeLore.CATEGORY_SLOTS
     }
 
+    "a quarta vaga e a categoria Maquinas" {
+        RecipeLore.CATEGORY_SLOTS shouldBe 4
+        RecipeCategory.entries.last() shouldBe RecipeCategory.MAQUINAS
+        RecipeCategory.MAQUINAS.displayName shouldBe "Máquinas"
+    }
+
     "receita guarda a pesquisa que a libera" {
         recipe("peneira_ferro", tabuas(1)).copy(research = "peneira_ferro").research shouldBe "peneira_ferro"
         gancho.research shouldBe null

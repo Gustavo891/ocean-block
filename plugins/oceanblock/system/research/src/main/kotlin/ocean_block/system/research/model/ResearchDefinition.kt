@@ -4,6 +4,7 @@ enum class ResearchCategory(val displayName: String, val material: String) {
     COLETA("Coleta", "chest"),
     FUNDICAO("Fundição", "blast_furnace"),
     RAFT("Raft", "bamboo_raft"),
+    MAQUINAS("Máquinas", "observer"),
 }
 
 data class ResearchCost(val key: String, val label: String, val plural: String, val amount: Int) {

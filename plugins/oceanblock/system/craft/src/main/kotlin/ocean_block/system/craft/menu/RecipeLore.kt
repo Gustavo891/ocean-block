@@ -15,7 +15,7 @@ data class RecipeCard(
 
 object RecipeLore {
 
-    const val CATEGORY_SLOTS = 3
+    const val CATEGORY_SLOTS = 4
     private const val SEPARATOR = " ∙ "
 
     fun name(card: RecipeCard): String {

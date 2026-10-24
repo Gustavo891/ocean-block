@@ -87,4 +87,10 @@ class ResearchLoreTest : StringSpec({
     "o menu comporta todas as categorias" {
         (ResearchCategory.entries.size <= ResearchLore.CATEGORY_SLOTS) shouldBe true
     }
+
+    "a quarta vaga e a categoria Maquinas" {
+        ResearchLore.CATEGORY_SLOTS shouldBe 4
+        ResearchCategory.entries.last() shouldBe ResearchCategory.MAQUINAS
+        ResearchCategory.MAQUINAS.displayName shouldBe "Máquinas"
+    }
 })

@@ -14,6 +14,8 @@ object ResearchTree {
     private fun clay(n: Int) = ResearchCost("clay_ball", "Argila", "Argilas", n)
     private fun diamond(n: Int) = ResearchCost("diamond", "Diamante", "Diamantes", n)
     private fun redstone(n: Int) = ResearchCost("redstone", "Redstone", "Redstone", n)
+    private fun coal(n: Int) = ResearchCost("coal", "Carvão", "Carvões", n)
+    private fun lapis(n: Int) = ResearchCost("lapis_lazuli", "Lápis-lazúli", "Lápis-lazúli", n)
 
     val all: List<ResearchDefinition> = listOf(
         ResearchDefinition(
@@ -36,6 +38,26 @@ object ResearchTree {
             "bancada_auxiliar_2", "Bancada auxiliar II", "Libera uma terceira pesquisa ao mesmo tempo.",
             ResearchCategory.RAFT, "item:cartography_table", listOf(iron(12), gold(6), diamond(2)), 300,
             listOf("bancada_auxiliar", "fundicao_melhorada"), emptyList(), extraSlots = 1,
+        ),
+        ResearchDefinition(
+            "picareta_fundidora", "Picareta fundidora", "Minério quebrado já sai em lingote.",
+            ResearchCategory.FUNDICAO, "item:iron_pickaxe", listOf(iron(8), gold(4), coal(16)), 120, listOf("fundicao_melhorada"), listOf("picareta_fundidora"),
+        ),
+        ResearchDefinition(
+            "gerador_energia", "Gerador de energia", "Queima combustível e alimenta máquinas a até 8 blocos.",
+            ResearchCategory.MAQUINAS, "item:furnace", listOf(iron(12), copper(8), redstone(8)), 180, listOf("fundicao_melhorada"), listOf("gerador_energia"),
+        ),
+        ResearchDefinition(
+            "painel_solar", "Painel solar", "Gera um pouco de energia de dia, sem combustível.",
+            ResearchCategory.MAQUINAS, "item:daylight_detector", listOf(copper(12), lapis(8), redstone(6)), 180, listOf("gerador_energia"), listOf("painel_solar"),
+        ),
+        ResearchDefinition(
+            "fornalha_eletrica", "Fornalha elétrica", "Derrete 4 itens ao mesmo tempo, 4 vezes mais rápido.",
+            ResearchCategory.MAQUINAS, "item:blast_furnace", listOf(iron(16), gold(8), redstone(12)), 300, listOf("gerador_energia"), listOf("fornalha_eletrica"),
+        ),
+        ResearchDefinition(
+            "minerador", "Minerador", "Quebra sozinho a pedra e o minério logo abaixo.",
+            ResearchCategory.MAQUINAS, "item:observer", listOf(iron(20), gold(6), redstone(12)), 300, listOf("gerador_energia"), listOf("minerador"),
         ),
     )
 

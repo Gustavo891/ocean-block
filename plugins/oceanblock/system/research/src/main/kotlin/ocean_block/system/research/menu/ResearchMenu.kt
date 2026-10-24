@@ -44,8 +44,8 @@ class ResearchMenu : View() {
             "C OOOOOOO",
             "C OOOOOOO",
             "C OOOOOOO",
-            "V OOOOOOO",
-            "    < >  ",
+            "C OOOOOOO",
+            "V   < >  ",
         )
     }
 

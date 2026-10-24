@@ -5,17 +5,37 @@ import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import io.kotest.matchers.shouldBe
+import ocean_block.system.research.model.ResearchCategory
 
 class ResearchTreeTest : StringSpec({
 
     "materiais dos icones incluem os que nao sao resultado de receita" {
-        ResearchTree.iconMaterials() shouldContainExactlyInAnyOrder listOf("loom", "blast_furnace", "cartography_table", "hopper")
+        ResearchTree.iconMaterials() shouldContainExactlyInAnyOrder listOf("loom", "blast_furnace", "cartography_table", "hopper", "iron_pickaxe", "furnace", "daylight_detector", "observer")
     }
 
     "arvore v1 tem as pesquisas do spec" {
         ResearchTree.all.map { it.id } shouldContainExactlyInAnyOrder listOf(
             "rede", "fundicao_melhorada", "bancada_auxiliar", "fundicao_funil", "bancada_auxiliar_2",
+            "picareta_fundidora", "gerador_energia", "painel_solar", "fornalha_eletrica", "minerador",
         )
+    }
+
+    "maquinas ficam na categoria Maquinas e dependem do gerador" {
+        listOf("gerador_energia", "painel_solar", "fornalha_eletrica", "minerador").forEach {
+            ResearchTree.byId.getValue(it).category shouldBe ResearchCategory.MAQUINAS
+            ResearchTree.byId.getValue(it).unlocksRecipes shouldBe listOf(it)
+        }
+        listOf("painel_solar", "fornalha_eletrica", "minerador").forEach {
+            ResearchTree.byId.getValue(it).requires shouldBe listOf("gerador_energia")
+        }
+        ResearchTree.byId.getValue("gerador_energia").requires shouldBe listOf("fundicao_melhorada")
+        ResearchTree.byId.getValue("picareta_fundidora").category shouldBe ResearchCategory.FUNDICAO
+    }
+
+    "minerador custa 20 ferro, 6 ouro e 12 redstone em 5 minutos" {
+        val miner = ResearchTree.byId.getValue("minerador")
+        miner.cost.associate { it.key to it.amount } shouldBe mapOf("iron_ingot" to 20, "gold_ingot" to 6, "redstone" to 12)
+        miner.durationSeconds shouldBe 300
     }
 
     "todo pre-requisito existe e nenhuma pesquisa passa de 5 minutos" {

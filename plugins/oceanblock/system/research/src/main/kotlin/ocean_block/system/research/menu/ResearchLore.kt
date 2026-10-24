@@ -9,7 +9,7 @@ import ocean_block.system.research.tree.ResearchTree
 
 object ResearchLore {
 
-    const val CATEGORY_SLOTS = 3
+    const val CATEGORY_SLOTS = 4
 
     fun name(def: ResearchDefinition, state: IslandResearch, now: Long): String {
         val color = if (ResearchRules.status(def, state, now) == ResearchStatus.Done) "<green>" else "<white>"

@@ -40,7 +40,7 @@ class RecipesMenu : View() {
             "C OOOOOOO",
             "C OOOOOOO",
             "C OOOOOOO",
-            "  OOOOOOO",
+            "C OOOOOOO",
             "    < >  ",
         )
     }

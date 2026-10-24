@@ -20,4 +20,9 @@ enum class RecipeCategory(
         material = "composter",
         description = "Estações que transformam o que o mar traz.",
     ),
+    MAQUINAS(
+        displayName = "Máquinas",
+        material = "observer",
+        description = "Máquinas que trabalham sozinhas com energia.",
+    ),
 }
