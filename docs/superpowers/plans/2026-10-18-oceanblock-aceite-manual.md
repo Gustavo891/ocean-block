@@ -137,17 +137,17 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Editar `gerador.yml` com um bloco inválido e reiniciar: aviso `[gerador]` no console e o resto da tabela vale.
 
 ### Fundição
-- [ ] Craftar a Fundição (8 Argilas + 4 Tábuas) e colocar: aparece um alto-forno. Clique direito não abre o inventário vanilla.
+- [ ] Craftar a Fundição (8 Argilas + 4 Tábuas) e colocar: aparece uma fornalha comum (Fundições antigas viram fornalha comum sozinhas, mantendo a direção). Clique direito não abre o inventário vanilla.
 - [ ] Clique direito com 8 minérios de ferro brutos carrega a entrada; com tábua carrega combustível. A fundição acende e sai 1 lingote de ferro a cada ~10 s; o item em cima mostra o que está fundindo.
 - [ ] Shift + clique direito retira todos os lingotes prontos.
 - [ ] Quebrar a fundição carregada (entrada, combustível e saída) e colocar de novo: o item quebrado guarda tudo e a fundição volta igual.
-- [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica: não entra nem sai nada (o inventário vanilla do alto-forno fica intocado).
+- [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica: não entra nem sai nada (o inventário vanilla da fornalha fica intocado).
 
 ### Pesquisa (`/pesquisa`)
 - [ ] Ilha nova: no `/receitas`, a lore da Rede de Detritos termina com `Pesquise em /pesquisa: Rede de Detritos` e o clique não crafta; o Gancho crafta normal.
 - [ ] `/pesquisa` (e `/pesquisas`) abre o menu `Pesquisa` (baú com o fundo `pesquisa_menu`) da sua ilha; dono e membros veem o mesmo progresso. Sem ilha: chat `Você precisa de uma ilha para pesquisar.`
 - [ ] Não existe mais receita de Mesa de Pesquisa no `/receitas`.
-- [ ] O menu mostra as categorias `Coleta` (baú), `Fundição` (alto-forno) e `Raft` (jangada) na coluna da esquerda, o relógio `Vagas: 0/1` com a fila na lore e cada pesquisa como item com custo (`entregue/total`), duração e estado; o tempo restante atualiza sozinho a cada segundo. Clicar numa pesquisa disponível entrega os itens.
+- [ ] O menu mostra as categorias `Coleta` (baú), `Fundição` (fornalha) e `Raft` (jangada) na coluna da esquerda, o relógio `Vagas: 0/1` com a fila na lore e cada pesquisa como item com custo (`entregue/total`), duração e estado; o tempo restante atualiza sozinho a cada segundo. Clicar numa pesquisa disponível entrega os itens.
 - [ ] Dois membros entregam a Rede aos poucos (cada um uma parte das 10 Tábuas e 6 Linhas): só sai do inventário o que falta; ao completar, a pesquisa inicia (20 s).
 - [ ] Ao concluir, aparece na região `avisos` a notificação para os membros online; a Rede passa a craftar no `/receitas`.
 - [ ] Com 1 vaga, completar o custo de duas pesquisas: a segunda entra na fila e começa sozinha quando a primeira termina.
@@ -236,3 +236,9 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Clique direito abre o menu `Minerador`. Em survival, 3 cliques esquerdos rápidos quebram (som de metal, partículas) e dropam o item com o estado; visitante não quebra nem abre. Em criativo quebra com um clique.
 - [ ] Com energia no raio e pedra ou minério embaixo, a broca gira suave; sem energia, sem alvo ou com o armazenamento cheio, ela para.
 - [ ] Explosão, pistão e água não mexem no Minerador.
+
+### Fornalha elétrica como alto-forno e Painel solar como sensor de luz
+- [ ] A Fornalha elétrica é um alto-forno com textura de aço e fogo azul: a frente vira para quem coloca e acende (fogo azul animado) só enquanto derrete com energia. Funil não põe nem tira nada dela. Fornalhas elétricas antigas viram alto-forno sozinhas com os itens intactos.
+- [ ] Todo alto-forno do jogo passa a ter essa textura; a fornalha comum continua vanilla.
+- [ ] O Painel solar é um sensor de luz (6 px de altura) com células azuis em cima; clicar nele não inverte o sensor, mostra a energia e liga/desliga o círculo do raio. Painéis antigos viram sensor sozinhos com a energia intacta.
+- [ ] Agachado com a mão vazia, clicar numa máquina não abre inventário vanilla nenhum.

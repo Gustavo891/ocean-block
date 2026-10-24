@@ -17,6 +17,11 @@ class SolarRulesTest : StringSpec({
         SolarRules.produce(999, 10, active = true) shouldBe SolarRules.CAPACITY
     }
 
+    "painel antigo em note block vira sensor de luz" {
+        SolarRules.adopts("NOTE_BLOCK") shouldBe true
+        SolarRules.adopts("DAYLIGHT_DETECTOR") shouldBe false
+    }
+
     "dia vai de 0 a 11999" {
         SolarRules.isDay(0) shouldBe true
         SolarRules.isDay(11999) shouldBe true

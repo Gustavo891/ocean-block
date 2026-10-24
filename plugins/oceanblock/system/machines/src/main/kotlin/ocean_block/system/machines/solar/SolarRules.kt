@@ -8,6 +8,8 @@ object SolarRules {
     private const val DAY_LENGTH = 24_000L
     private const val DAY_END = 12_000L
 
+    fun adopts(material: String): Boolean = material == "NOTE_BLOCK"
+
     fun isDay(time: Long): Boolean = Math.floorMod(time, DAY_LENGTH) < DAY_END
 
     fun produce(energy: Long, ticks: Int, active: Boolean): Long {

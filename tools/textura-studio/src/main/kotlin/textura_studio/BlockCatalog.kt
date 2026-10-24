@@ -68,7 +68,7 @@ class BlockCatalog(private val data: File) {
     companion object {
         private const val ASSETS = "assets/"
         private const val VANILLA_BLOCKS = "resource/assets/minecraft/textures/block"
-        private val VANILLA_FACES = listOf("front_on", "front", "side", "top", "bottom")
+        private val VANILLA_FACES = listOf("front_on", "front", "inverted_top", "side", "top", "bottom")
         private const val DEFAULT_SIDE = 16
         private const val MAX_SIDE = 256
 

@@ -9,8 +9,9 @@ import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.energy.EnergyEffects
 import ocean_block.system.machines.energy.EnergyNetwork
 import ocean_block.system.machines.energy.EnergyRules
+import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.block.Block
-import org.bukkit.block.BlockFace
 
 object SolarBlock : MachineBlock() {
 
@@ -24,6 +25,15 @@ object SolarBlock : MachineBlock() {
         "<gray>Alimenta máquinas a até <white>8 blocos<gray>.",
     )
     override val limitPerIsland: Int = 8
+    override val material: Material = Material.DAYLIGHT_DETECTOR
+    override val texturaBlock: Boolean = false
+    override val itemModel: NamespacedKey? get() = null
+
+    override fun adopt(placed: PlacedBlock, block: Block): Boolean {
+        if (!SolarRules.adopts(block.type.name)) return false
+        block.setType(Material.DAYLIGHT_DETECTOR, false)
+        return true
+    }
 
     override fun onRightClick(ctx: BlockClickContext) {
         val stored = NumberFormatter.format(EnergyNetwork.stored(ctx.placed).toDouble())
@@ -43,5 +53,5 @@ object SolarBlock : MachineBlock() {
     }
 
     private fun isActive(block: Block): Boolean =
-        SolarRules.isDay(block.world.time) && block.getRelative(BlockFace.UP).lightFromSky.toInt() == OPEN_SKY
+        SolarRules.isDay(block.world.time) && block.lightFromSky.toInt() == OPEN_SKY
 }

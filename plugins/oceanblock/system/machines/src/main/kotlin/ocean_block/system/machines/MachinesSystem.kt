@@ -32,6 +32,7 @@ object MachinesSystem {
 
     private const val REBUILD_TICKS = 100L
     private const val RADIUS_TICKS = 10L
+    private val SOURCE_MATERIALS = setOf(Material.NOTE_BLOCK, Material.DAYLIGHT_DETECTOR)
 
     fun init(plugin: JavaPlugin, viewFrame: ViewFrame) {
         val machines = listOf(GeneratorBlock, SolarBlock, FurnaceBlock, MinerBlock)
@@ -64,7 +65,7 @@ object MachinesSystem {
 
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
         fun onBreak(event: BlockBreakEvent) {
-            if (event.block.type == Material.NOTE_BLOCK) scheduleRebuild()
+            if (event.block.type in SOURCE_MATERIALS) scheduleRebuild()
         }
 
         @EventHandler

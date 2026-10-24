@@ -12,6 +12,7 @@ const FACE_LABELS: Record<string, string> = {
   item: 'Item',
   front: 'Frente',
   front_on: 'Frente acesa (animação)',
+  inverted_top: 'Topo invertido',
 }
 
 function faceLabel(face: string): string {

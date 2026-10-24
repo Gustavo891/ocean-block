@@ -8,16 +8,6 @@ gerador_energia:
     bottom: assets/oneblock/textures/block/maquinas/gerador_energia_bottom.png
     side: assets/oneblock/textures/block/maquinas/gerador_energia_side.png
   model: assets/oneblock/models/block/gerador_energia.json
-painel_solar:
-  type: CUSTOM
-  name: "Painel solar"
-  item_material: note_block
-  block_default_drop: false
-  textures:
-    top: assets/oneblock/textures/block/maquinas/painel_solar_top.png
-    bottom: assets/oneblock/textures/block/maquinas/painel_solar_bottom.png
-    side: assets/oneblock/textures/block/maquinas/painel_solar_side.png
-  model: assets/oneblock/models/block/painel_solar.json
 minerador:
   type: CUSTOM
   name: "Minerador"
