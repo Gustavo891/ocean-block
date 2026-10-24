@@ -79,12 +79,4 @@ enum class IslandUpgrade(
         }
     }
 
-    companion object {
-        fun getPage(page: Int): List<IslandUpgrade> {
-            val index = page * 3
-            return entries.drop(index).take(3)
-        }
-    }
-
-
 }

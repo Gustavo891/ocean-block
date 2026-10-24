@@ -33,7 +33,7 @@ class IslandView : View() {
 
     override fun onOpen(open: OpenContext) {
         val island = islandState.get(open)
-        open.modifyConfig().title(menuTitle("ilha_menu", "Ilha de ${island.ownerName.take(MAX_NAME)}"))
+        open.modifyConfig().title(menuTitle("Ilha de ${island.ownerName.take(MAX_NAME)}"))
     }
 
     override fun onFirstRender(render: RenderContext) {

@@ -6,26 +6,21 @@ import ocean_block.libs.item_builder.meta
 import ocean_block.libs.item_builder.name
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 
-private val BLANK = NamespacedKey("oneblock", "blank")
+internal fun backItem() = navItem("<red>Voltar")
 
-internal fun backItem() = blankItem("<red>Voltar")
-
-internal fun blankItem(label: String) = itemStack(Material.PAPER) {
+internal fun navItem(label: String) = itemStack(Material.ARROW) {
     meta<ItemMeta> {
-        itemModel = BLANK
         name(label)
     }
 }
 
-internal fun menuTitle(glyph: String, title: String) =
-    Mini.mm.deserialize("<white><shift:-8><glyph:$glyph><font:oneblock:gui><shift:-170><dark_gray>$title")
+internal fun menuTitle(title: String) = Mini.mm.deserialize("<dark_gray>$title")
 
 internal fun headOf(player: Player, build: ItemMeta.() -> Unit): ItemStack = itemStack(Material.PLAYER_HEAD) {
     meta<SkullMeta> {

@@ -42,15 +42,15 @@ class PlayerPickerView : View() {
     }
 
     override fun onOpen(open: OpenContext) {
-        open.modifyConfig().title(menuTitle("ilha_jogadores", pickState.get(open).mode.title))
+        open.modifyConfig().title(menuTitle(pickState.get(open).mode.title))
     }
 
     override fun onFirstRender(render: RenderContext) {
         render.layoutSlot('<')
-            .renderWith { blankItem("<yellow>Página anterior") }
+            .renderWith { navItem("<yellow>Página anterior") }
             .onClick { click -> pagination.get(click).back() }
         render.layoutSlot('>')
-            .renderWith { blankItem("<yellow>Próxima página") }
+            .renderWith { navItem("<yellow>Próxima página") }
             .onClick { click -> pagination.get(click).advance() }
         render.layoutSlot('v')
             .renderWith { backItem() }

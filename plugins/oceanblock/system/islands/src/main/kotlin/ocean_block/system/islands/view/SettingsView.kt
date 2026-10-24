@@ -25,7 +25,7 @@ class SettingsView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title(menuTitle("ilha_config", "Configurações"))
+        config.title(menuTitle("Configurações"))
         config.layout(
             "         ",
             "         ",

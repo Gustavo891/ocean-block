@@ -28,7 +28,7 @@ class VisitsView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title(menuTitle("ilha_visitas", "Visitas"))
+        config.title(menuTitle("Visitas"))
         config.layout(
             "  p   b  ",
             " OOOOOOO ",
@@ -55,10 +55,10 @@ class VisitsView : View() {
                 click.openForPlayer(PlayerPickerView::class.java, PlayerPick(island, PlayerPick.Mode.Block))
             }
         render.layoutSlot('<')
-            .renderWith { blankItem("<yellow>Página anterior") }
+            .renderWith { navItem("<yellow>Página anterior") }
             .onClick { click -> pagination.get(click).back() }
         render.layoutSlot('>')
-            .renderWith { blankItem("<yellow>Próxima página") }
+            .renderWith { navItem("<yellow>Próxima página") }
             .onClick { click -> pagination.get(click).advance() }
         render.layoutSlot('v')
             .renderWith { backItem() }

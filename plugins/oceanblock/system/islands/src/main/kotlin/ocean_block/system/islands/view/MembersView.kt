@@ -29,7 +29,7 @@ class MembersView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title(menuTitle("ilha_membros", "Membros"))
+        config.title(menuTitle("Membros"))
         config.layout(
             " OOOOOOO ",
             "         ",
