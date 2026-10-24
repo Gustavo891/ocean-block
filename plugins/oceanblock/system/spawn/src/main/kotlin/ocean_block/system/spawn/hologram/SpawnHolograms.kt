@@ -39,7 +39,7 @@ object SpawnHolograms {
         return listOf(
             Definition(
                 location = SimpleLocation(world = world, x = 0.5, y = 62.0, z = -6.5),
-                lines = listOf("<dark_gray>(/ilha)", "<gradient:#ff6600:#ffc66b><b>TELEPORTE PARA", "<gradient:#ff6600:#ffc66b><b>SUA ILHA"),
+                lines = listOf("<dark_gray>(/ilha ir)", "<gradient:#ff6600:#ffc66b><b>TELEPORTE PARA", "<gradient:#ff6600:#ffc66b><b>SUA ILHA"),
                 scale = 2.5f,
             ),
         )

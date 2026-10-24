@@ -3,7 +3,6 @@ package ocean_block.system.islands.view
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.RenderContext
-import ocean_block.libs.formatter.Mini
 import ocean_block.libs.item_builder.itemStack
 import ocean_block.libs.item_builder.meta
 import ocean_block.libs.item_builder.name
@@ -17,7 +16,7 @@ class SettingsView : View() {
     companion object {
         private const val COLUMNS = 7
 
-        private const val FIRST_ROW = 2
+        private const val FIRST_ROW = 1
 
         private const val FIRST_COLUMN = 2
     }
@@ -26,10 +25,8 @@ class SettingsView : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title(Mini.mm.deserialize("<gray>Ilha > <dark_gray>Configurações"))
+        config.title(menuTitle("ilha_config", "Configurações"))
         config.layout(
-            "         ",
-            "         ",
             "         ",
             "         ",
             "    v    "
@@ -42,7 +39,7 @@ class SettingsView : View() {
 
         render.layoutSlot('v')
             .renderWith { backItem() }
-            .onClick { _ -> render.openForPlayer(IslandView::class.java) }
+            .onClick { click -> click.openForPlayer(IslandView::class.java, island) }
 
         IslandSetting.entries.forEachIndexed { index, setting ->
             render.slot(FIRST_ROW + index / COLUMNS, FIRST_COLUMN + index % COLUMNS)

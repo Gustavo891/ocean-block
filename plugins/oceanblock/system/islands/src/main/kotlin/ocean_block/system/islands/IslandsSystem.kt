@@ -8,6 +8,7 @@ import ocean_block.system.islands.expansion.IslandExpansion
 import ocean_block.system.islands.generator.GeneratorFile
 import ocean_block.system.islands.generator.GeneratorListener
 import ocean_block.system.islands.island.IslandManager
+import ocean_block.system.islands.member.InviteQuitListener
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.view.*
 import one_block.textura.api.TitleApi
@@ -44,10 +45,13 @@ object IslandsSystem {
             IslandView(),
             MembersView(),
             UpgradeView(),
-            SettingsView()
+            SettingsView(),
+            VisitsView(),
+            PlayerPickerView()
         )
 
         plugin.server.pluginManager.registerEvents(GeneratorListener(GeneratorFile.load(plugin)), plugin)
+        plugin.server.pluginManager.registerEvents(InviteQuitListener(), plugin)
 
         IslandExpansion().register()
     }

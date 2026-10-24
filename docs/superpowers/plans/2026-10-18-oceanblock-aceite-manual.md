@@ -22,7 +22,7 @@ Verificações que precisam de jogador no jogo; os agentes não conseguiram roda
 
 ## 4. Construção e membros
 - [ ] Construir para fora a partir da borda da ilha com terra, pedregulho e tábua; fora da borda é bloqueado.
-- [ ] `/ilha member <outro>`: o outro constrói; sem membro/trust, não.
+- [ ] `/ilha convidar <outro>` (ou `/ilha member`) e o outro clica `[ACEITAR]`: o outro constrói; sem membro/trust, não.
 - [ ] `/ilha sethome` fora da própria ilha é recusado; dentro funciona e sobrevive a reinício.
 
 ## 5. Reset
@@ -156,3 +156,28 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Visitante numa ilha alheia: `/pesquisa` abre a pesquisa da própria ilha, nunca a da ilha visitada.
 
 - [ ] Sem erros `[gerador]` ou `[pesquisa]` no log durante toda a sessão.
+
+## 11. Menu da ilha
+
+### Hub (`/ilha`)
+- [ ] Com ilha, `/ilha` abre o menu `Ilha de <dono>` (fundo `ilha_menu`, sem vidro): cabeça do dono no topo com membros `n/max`, borda, nível do gerador e visitas; embaixo Ir para a ilha, Membros, Melhorias, Configurações, Visitas, Receitas e Pesquisa. Não existe mais botão de Fases.
+- [ ] `/ilha ir` (ou `/ilha home`) e o botão Ir para a ilha teleportam para o spawn da ilha. O holograma do spawn mostra `(/ilha ir)`.
+- [ ] Receitas e Pesquisa fecham o menu e abrem `/receitas` e `/pesquisa`.
+- [ ] Membro parado na ilha do amigo: `/ilha` abre o menu da ilha do amigo (sem poder remover, convidar nem mudar nada). Visitante numa ilha alheia: `/ilha` abre o menu da própria ilha.
+- [ ] `/ilha <dono>` leva à ilha de quem te adicionou; numa ilha em que você não é membro, a mensagem sugere `/ilha visitar`.
+
+### Membros e convite
+- [ ] Membros lista o dono (nome dourado) e os membros; o dono clica num membro para removê-lo (o removido recebe aviso se estiver online). O corante verde mostra `Vagas: n/3` (6 com o upgrade Membros).
+- [ ] Convidar membro abre a lista de cabeças de jogadores online (sem você, o dono, membros e bloqueados), com páginas `<` `>` e voltar.
+- [ ] Clicar num jogador: o convidado recebe no chat o convite com `[ACEITAR]`; clicar aceita e ele vira membro, o dono e os membros online são avisados. Esperar mais de 60 s antes de aceitar: `Você não tem convite válido`.
+- [ ] Convite com a ilha cheia, para quem já é membro ou para um bloqueado: mensagem em vermelho e nada é enviado. Aceitar com a ilha já cheia também é recusado.
+- [ ] Sair do servidor com convite pendente: ao voltar, o convite não vale mais.
+
+### Visitas
+- [ ] Visitas mostra Ilha pública/privada (corante verde/cinza), Bloquear jogador (barreira) e as cabeças dos bloqueados. O dono alterna pública/privada pelo clique; `/ilha visitar <dono>` só entra se pública.
+- [ ] Bloquear jogador abre a lista de jogadores online; o escolhido é bloqueado e, se estiver na ilha, volta para a ilha dele. Clicar na cabeça de um bloqueado desbloqueia.
+- [ ] `/ilha publica true|false` só funciona para o dono.
+
+### Configurações e melhorias
+- [ ] Configurações (fundo `ilha_config`) mostra as 7 opções numa linha e voltar leva ao hub.
+- [ ] Melhorias: a lore mostra `Nível: a ➡ b` de cada upgrade (no máximo, `Máx` e sem preço). Comprar atualiza o menu na hora; Membros evoluído mostra `(3 -> 6 membros)`.

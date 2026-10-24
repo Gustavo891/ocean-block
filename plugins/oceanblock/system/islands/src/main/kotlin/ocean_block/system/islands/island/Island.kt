@@ -29,6 +29,8 @@ data class Island(
 
     companion object {
         val BORDER_SIZE = listOf(30, 50, 70, 100)
+
+        const val MEMBERS_PER_LEVEL = 3
     }
 
     val invites = mutableSetOf<String>()
@@ -74,7 +76,9 @@ data class Island(
         return trustedNames.add(playerName.lowercase())
     }
 
-    fun getMaxMembers(upgradeLevel: Int): Int = upgradeLevel * 3
+    fun maxMembers(): Int = (getUpgradeLevel(IslandUpgrade.Members) + 1) * MEMBERS_PER_LEVEL
+
+    fun isBlocked(playerName: String): Boolean = playerName.lowercase() in blackListNames()
 
     fun isMember(playerName: String): Boolean {
         return playerName.lowercase() in members.keys
@@ -138,7 +142,7 @@ data class Island(
     fun teleportTo(player: Player) {
         val spawn = spawn.toBukkit()
 
-        if (blackListNames().contains(player.name)) {
+        if (isBlocked(player.name)) {
             player.sendRichMessage("<red>Você está bloqueado de acessar essa ilha.")
             return
         }

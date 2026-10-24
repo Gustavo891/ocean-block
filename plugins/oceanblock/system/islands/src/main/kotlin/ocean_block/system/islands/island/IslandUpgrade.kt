@@ -17,7 +17,7 @@ enum class IslandUpgrade(
             val size = island.getUpgradeLevel(this)
             island.setUpgradeLevel(this, size + 1)
 
-            player.sendRichMessage("<green>Membros evoluído com sucesso! <dark_gray>(${Island.BORDER_SIZE[size]} -> ${Island.BORDER_SIZE[size + 1]})")
+            player.sendRichMessage("<green>Membros evoluído com sucesso! <dark_gray>(${(size + 1) * Island.MEMBERS_PER_LEVEL} -> ${(size + 2) * Island.MEMBERS_PER_LEVEL} membros)")
         }
     },
     Size("Borda",

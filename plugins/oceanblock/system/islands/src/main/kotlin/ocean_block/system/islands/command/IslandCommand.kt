@@ -11,8 +11,7 @@ import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.libs.coordinate.SimpleLocation
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
-import ocean_block.system.islands.island.IslandMember
-import ocean_block.system.islands.island.IslandUpgrade
+import ocean_block.system.islands.member.IslandMembership
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.reset.IslandResetService
 import ocean_block.system.islands.view.IslandView
@@ -58,98 +57,84 @@ class IslandCommand(
     @Default
     fun onDefault(sender: Player, @Optional targetName: String?) {
         if (targetName != null) {
-            val playerIsland = IslandManager.getIslandByOwnerName(targetName.lowercase())
-            if (playerIsland == null) {
-                sender.sendRichMessage("<red>Esse jogador não tem uma ilha!")
-                return
-            }
-            if (playerIsland.isMember(sender.name) || playerIsland.isTrustedMember(sender.name)) {
-                playerIsland.teleportTo(sender)
-                return
-            }
+            goToOther(sender, targetName)
+            return
         }
 
+        if (IslandManager.getIslandByOwnerUUID(sender.uniqueId) == null) {
+            createAndEnter(sender)
+            return
+        }
+        openMenu(sender)
+    }
+
+    private fun goToOther(sender: Player, targetName: String) {
+        val playerIsland = IslandManager.getIslandByOwnerName(targetName.lowercase())
+        if (playerIsland == null) {
+            sender.sendRichMessage("<red>Esse jogador não tem uma ilha!")
+            return
+        }
+        if (playerIsland.ownerUuid == sender.uniqueId || playerIsland.isMember(sender.name) || playerIsland.isTrustedMember(sender.name)) {
+            playerIsland.teleportTo(sender)
+            return
+        }
+        sender.sendRichMessage("<red>Você não é membro dessa ilha. Se ela for pública, use <white>/ilha visitar $targetName</white>.")
+    }
+
+    private fun createAndEnter(sender: Player) {
+        sender.sendRichMessage("<green>Criando sua ilha...")
+        val created = IslandManager.createIsland(sender) { ready -> enterNewIsland(sender, ready) }
+
+        if (created == null) {
+            sender.sendRichMessage("<red>As ilhas não foram carregadas. Avise a staff antes de continuar.")
+        }
+    }
+
+    private fun openMenu(sender: Player) {
+        val island = IslandMembership.menuIsland(sender)
+        if (island == null) {
+            sender.sendRichMessage("<red>Você não tem ilha! Use <white>/ilha</white> para criar a sua.")
+            return
+        }
+        viewFrame.open(IslandView::class.java, sender, island)
+    }
+
+    @Subcommand("ir|home")
+    fun onGo(sender: Player) {
         val island = IslandManager.getIslandByOwnerUUID(sender.uniqueId)
         if (island == null) {
-            sender.sendRichMessage("<green>Criando sua ilha...")
-            val created = IslandManager.createIsland(sender) { ready -> enterNewIsland(sender, ready) }
-
-            if (created == null) {
-                sender.sendRichMessage("<red>As ilhas não foram carregadas. Avise a staff antes de continuar.")
-            }
+            createAndEnter(sender)
             return
         }
         island.teleportTo(sender)
-
     }
 
     @Subcommand("menu")
     fun onMenu(sender: Player) {
-        val islandAt = IslandManager.getIslandByPlayer(sender.uniqueId)
-        if (islandAt == null) {
-            sender.sendRichMessage("<red>Você não está em nenhuma ilha.")
-            return
-        }
-        viewFrame.open(IslandView::class.java, sender)
+        openMenu(sender)
     }
 
-    @Subcommand("remove")
+    @Subcommand("aceitar")
+    fun onAccept(sender: Player, @Optional ownerName: String?) {
+        IslandMembership.accept(sender, ownerName)
+    }
+
+    @Subcommand("remove|remover")
     fun onRemove(sender: Player, targetName: String) {
         val island = ownedIslandOf(sender) ?: return
-
-        if (!island.members.contains(targetName.lowercase())) {
-            sender.sendRichMessage("<red>Esse jogador não faz parte de sua ilha.")
-            return
-        }
-
-        island.members.remove(targetName.lowercase())
-        island.markDirty()
-        sender.sendRichMessage("<green>O jogador <white>${targetName} <green>foi removido da sua ilha.")
+        IslandMembership.remove(sender, island, targetName)
     }
 
-    @Subcommand("undeny")
+    @Subcommand("undeny|desbloquear")
     fun unBlacklist(sender: Player, target: String) {
-
         val island = ownedIslandOf(sender) ?: return
-
-        if (target.equals(island.ownerName, true)) {
-            sender.sendRichMessage("<red>Você não pode desbloquear você mesmo.")
-            return
-        }
-
-        if (!island.blackListNames().contains(target)) {
-            sender.sendRichMessage("<red>Esse jogador não está bloqueado de acessar sua ilha.")
-            return
-        }
-
-        island.removeBlacklist(target)
-        island.markDirty()
-        sender.sendRichMessage("<green>O jogador <white>${target} <green>foi liberado de acessar sua ilha.")
+        IslandMembership.unblock(sender, island, target)
     }
 
-    @Subcommand("deny")
+    @Subcommand("deny|bloquear")
     fun blackList(sender: Player, target: OnlinePlayer) {
         val island = ownedIslandOf(sender) ?: return
-
-        if (island.ownerUuid == target.player.uniqueId) {
-            sender.sendRichMessage("<red>Você não pode bloquear você mesmo.")
-            return
-        }
-
-        if (island.members.contains(target.player.name) || island.trustedNames.contains(target.player.name)) {
-            sender.sendRichMessage("<red>Você não pode bloquear um membro/confiável de sua ilha. Remova-o primeiro!")
-            return
-        }
-
-        if (island.blackListNames().contains(target.player.name)) {
-            sender.sendRichMessage("<red>Esse jogador já está bloqueado de acessar sua ilha.")
-            return
-        }
-
-        island.addBlacklist(target.player)
-        island.markDirty()
-        sender.sendRichMessage("<green>O jogador <white>${target.player.name} <green>foi bloqueado de acessar sua ilha.")
-
+        IslandMembership.block(sender, island, target.player)
     }
 
     @Subcommand("visitar|v")
@@ -160,7 +145,7 @@ class IslandCommand(
             return
         }
 
-        if (island.blackListNames().contains(sender.name)) {
+        if (island.isBlocked(sender.name)) {
             sender.sendRichMessage("<red>Você está proibido de acessar esta ilha.")
             return
         }
@@ -186,11 +171,11 @@ class IslandCommand(
 
     @Subcommand("publica|pub")
     fun onPublic(sender: Player, isPublic: Boolean) {
-        val island = IslandManager.getIslandByPlayer(sender.uniqueId) ?: return
+        val island = ownedIslandOf(sender) ?: return
         island.isPublic = isPublic
-        IslandManager.markDirty(island.uuid)
+        island.markDirty()
 
-        sender.sendRichMessage("<green>Alterado para ${isPublic}.")
+        sender.sendRichMessage(if (isPublic) "<green>Sua ilha agora é pública." else "<green>Sua ilha agora é privada.")
     }
 
     @Subcommand("sethome")
@@ -279,6 +264,7 @@ class IslandCommand(
             return
         }
 
+        island.markDirty()
         sender.sendRichMessage("<green>Adicionado com sucesso!")
     }
 
@@ -302,27 +288,9 @@ class IslandCommand(
         sender.sendRichMessage("<green>Removido com sucesso!")
     }
 
-    @Subcommand("member")
+    @Subcommand("convidar|member")
     fun onMember(sender: Player, targetOnline: OnlinePlayer) {
-        val target = targetOnline.player
-
         val island = ownedIslandOf(sender) ?: return
-
-        if (sender.name.equals(target.name, true)) {
-            sender.sendRichMessage("<red>Você quer se adicionar? Não entendi.")
-            return
-        }
-
-        if (island.members.size >= ((island.getUpgradeLevel(IslandUpgrade.Members) + 1) * 3)) {
-            sender.sendRichMessage("<red>Sua ilha está lotada de membros.")
-            return
-        }
-
-        if (!island.addMember(target.name, IslandMember(target.name, mutableSetOf()))) {
-            sender.sendRichMessage("<green>Este jogador já está adicionado")
-            return
-        }
-
-        sender.sendRichMessage("<green>${target.name} foi adicionado como membro!")
+        IslandMembership.invite(sender, island, targetOnline.player)
     }
 }

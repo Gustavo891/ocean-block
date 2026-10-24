@@ -58,7 +58,7 @@ class UpgradeView : View() {
         val currentUpgrades = IslandUpgrade.getPage(pagination.currentPageIndex())
 
         render.createEmptyRender('v') {
-            render.openForPlayer(IslandView::class.java)
+            openForPlayer(IslandView::class.java, islandState.get(render))
         }
 
         currentUpgrades.forEachIndexed { index, upgrade ->
@@ -115,8 +115,8 @@ class UpgradeView : View() {
             addLore {
                 value.lore.forEach { + "<color:#b4b4b8>$it" }
                 +""
-                +" <dark_gray>▪ <white>Nível: ${if(isMaxLevel) "<red>Máx" else "<green>${island.getMaxMembers(size)} <dark_gray>➡ <green>${island.getMaxMembers(size + 1)}"}"
-                +" <dark_gray>▪ <white>Preço: <dark_green>$<white>${NumberFormatter.format(value.getPrice(size))}"
+                +" <dark_gray>▪ <white>Nível: ${if (isMaxLevel) "<red>Máx" else "<green>$size <dark_gray>➡ <green>${size + 1}"}"
+                if (!isMaxLevel) +" <dark_gray>▪ <white>Preço: <dark_green>$<white>${NumberFormatter.format(value.getPrice(size))}"
                 +""
             }
             playerProfile = Bukkit.createProfile(UUID.randomUUID(), "1").apply {
@@ -151,6 +151,6 @@ class UpgradeView : View() {
         value.execute(player, island)
 
         IslandManager.markDirty(island.uuid)
-        pagination.get(ctx).forceUpdate()
+        ctx.update()
     }
 }

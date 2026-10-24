@@ -1,120 +1,92 @@
 package ocean_block.system.islands.view
 
-import de.rapha149.signgui.SignGUI
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.Context
 import me.devnatan.inventoryframework.context.RenderContext
-import ocean_block.libs.formatter.Mini
-import ocean_block.libs.item_builder.*
+import me.devnatan.inventoryframework.context.SlotClickContext
+import ocean_block.libs.item_builder.itemStack
+import ocean_block.libs.item_builder.meta
+import ocean_block.libs.item_builder.name
+import ocean_block.libs.item_builder.setLore
 import ocean_block.system.islands.island.Island
-import ocean_block.system.islands.island.IslandMember
-import ocean_block.system.islands.island.IslandUpgrade
-import org.bukkit.Bukkit
+import ocean_block.system.islands.member.IslandMembership
 import org.bukkit.Material
-import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.inventory.ItemStack
 
 class MembersView : View() {
 
+    private data class Entry(val name: String, val owner: Boolean)
+
     private val islandState = initialState<Island>()
 
-    private val pagination = lazyPaginationState(
-        { ctx ->
-            val island = islandState.get(ctx)
-            island?.members?.values?.toMutableList()
-        }
-    ) { context, builder, index, value ->
-        builder.renderWith { createMemberItem(value) }
+    private val pagination = computedPaginationState(
+        { ctx -> entries(islandState.get(ctx)).toMutableList() }
+    ) { ctx, builder, _, entry ->
+        builder.renderWith { memberItem(islandState.get(ctx), entry, isOwner(ctx)) }
+            .onClick { click -> remove(click, entry) }
     }
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
+        config.title(menuTitle("ilha_membros", "Membros"))
         config.layout(
-            "  OOOOO  ",
-            "  OOOOO  ",
-            "  OOOOO  ",
-            "    v+   "
+            " OOOOOOO ",
+            "         ",
+            "   v a   ",
         )
-        config.title(Mini.mm.deserialize("<gray>Ilha > <dark_gray>Membros"))
     }
 
     override fun onFirstRender(render: RenderContext) {
-
         val island = islandState.get(render)
 
         render.layoutSlot('v')
             .renderWith { backItem() }
-            .onClick { _ -> render.openForPlayer(IslandView::class.java) }
-
-        render.layoutSlot('+')
-            .renderWith { itemStack(Material.PLAYER_HEAD) {
-                meta {
-                    name("<green>Adicionar Membro")
-                    addLore {
-                        +"<white>Limite: <gray>${island.members.count()}/${((island.getUpgradeLevel(IslandUpgrade.Members) + 1) * 3)}"
-                    }
-                }
-            } }
+            .onClick { click -> click.openForPlayer(IslandView::class.java, island) }
+        render.layoutSlot('a')
+            .renderWith { inviteItem(island, isOwner(render)) }
             .onClick { click ->
-                click.closeForPlayer()
-                addMember(click, island)
+                if (!isOwner(click)) {
+                    click.player.sendRichMessage("<red>Apenas o dono da ilha pode convidar membros.")
+                    return@onClick
+                }
+                click.openForPlayer(PlayerPickerView::class.java, PlayerPick(island, PlayerPick.Mode.Invite))
             }
-
     }
 
-    fun createMemberItem(member: IslandMember) = itemStack(Material.PLAYER_HEAD) {
-        meta<ItemMeta> {
-            name("<yellow>${member.name}")
-            addLore {
-                + "<white>Permissão: <gray> -/-"
+    private fun remove(click: SlotClickContext, entry: Entry) {
+        if (entry.owner || !isOwner(click)) return
+        if (IslandMembership.remove(click.player, islandState.get(click), entry.name)) {
+            pagination.get(click).forceUpdate()
+            click.update()
+        }
+    }
+
+    private fun entries(island: Island): List<Entry> =
+        listOf(Entry(island.ownerName, owner = true)) +
+            island.members.values.map { Entry(it.name, owner = false) }.sortedBy { it.name.lowercase() }
+
+    private fun isOwner(context: Context) = islandState.get(context).ownerUuid == context.player.uniqueId
+
+    private fun memberItem(island: Island, entry: Entry, viewerIsOwner: Boolean): ItemStack = headOf(entry.name) {
+        name(if (entry.owner) "<gold>${entry.name}" else "<white>${entry.name}")
+        setLore {
+            +(if (entry.owner) "<gray>Dono da ilha" else "<gray>Membro")
+            if (!entry.owner && viewerIsOwner) {
+                +""
+                +"<red>Clique para remover da ilha."
             }
         }
-
     }
 
-    fun addMember(ctx: Context, island: Island) {
-        SignGUI.builder()
-            .setLines(
-                "",
-                "^^^^^^^^^^",
-                "Digite o nome",
-                "do jogador"
-            )
-            .setHandler { player, result ->
-                val playerName = result.getLine(2) ?: return@setHandler emptyList()
-
-                val target = Bukkit.getPlayer(playerName)
-                if (target == null || !target.isOnline) {
-                    player.sendRichMessage("<red>Jogador não encontrado ou offline.")
-                    return@setHandler emptyList()
-                }
-
-                if (island.ownerUuid != target.uniqueId) {
-                    player.sendRichMessage("<red>Você não é o dono desta ilha!")
-                    return@setHandler emptyList()
-                }
-
-                if (player.name.equals(target.name, true)) {
-                    player.sendRichMessage("<red>Você quer se adicionar? Não entendi.")
-                    return@setHandler emptyList()
-                }
-
-                if (island.members.size >= (island.getUpgradeLevel(IslandUpgrade.Members, 1) * 3)) {
-                    player.sendRichMessage("<red>Sua ilha está lotada de membros.")
-                    return@setHandler emptyList()
-                }
-
-                if (!island.addMember(target.name, IslandMember(target.name, mutableSetOf()))) {
-                    player.sendRichMessage("<green>Este jogador já está adicionado")
-                    return@setHandler emptyList()
-                }
-
-                player.sendRichMessage("<green>${target.name} foi adicionado como membro!")
-
-                emptyList()
+    private fun inviteItem(island: Island, viewerIsOwner: Boolean): ItemStack = itemStack(Material.LIME_DYE) {
+        meta {
+            name("<green>Convidar membro")
+            setLore {
+                +"<gray>Vagas: <white>${island.members.size}/${island.maxMembers()}"
+                +""
+                +(if (viewerIsOwner) "<yellow>Clique para escolher um jogador online!" else "<dark_gray>Apenas o dono pode convidar.")
             }
-            .build()
-            .open(ctx.player)
+        }
     }
-
 }
