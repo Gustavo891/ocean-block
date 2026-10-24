@@ -14,6 +14,7 @@ import ocean_block.libs.item_builder.name
 import ocean_block.system.currencies.Currencies
 import ocean_block.system.sell.listener.SellEvent
 import ocean_block.system.sell.manager.SellManager
+import ocean_block.system.sell.notify.SaleNotifier
 import ocean_block.system.sell.rules.SaleLine
 import ocean_block.system.sell.rules.SaleQuote
 import ocean_block.system.sell.rules.SaleRules
@@ -95,11 +96,7 @@ class SellView : View() {
 
         if (quote.total > 0.0) {
             Currencies.deposit(player.uniqueId, "coins", quote.total)
-            val amount = quote.sold.sumOf { it.amount }
-            player.sendRichMessage(
-                "<green>Você vendeu <white>$amount</white> ${if (amount == 1) "item" else "itens"} por " +
-                    "<dark_green>$<white>${NumberFormatter.format(quote.total)}</white><green>!"
-            )
+            SaleNotifier.notify(player, quote.total, quote.sold.sumOf { it.amount })
             player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f)
             return
         }

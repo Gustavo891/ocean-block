@@ -10,6 +10,7 @@ dependencies {
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.itemBuilder)
+    compileOnly(projects.plugins.textura)
 
     compileOnly(projects.plugins.oceanblock.system.currencies)
     compileOnly(projects.plugins.oceanblock.system.islands)

@@ -57,9 +57,10 @@ object Sell {
         return total
     }
 
-    fun sellInventory(player: Player): Double {
+    fun sellInventory(player: Player): SaleSummary {
         val inventory = player.inventory
         var totalMoney = 0.0
+        var amount = 0
 
         inventory.storageContents.forEachIndexed { slot, itemStack ->
             if (itemStack == null || itemStack.type == Material.AIR) return@forEachIndexed
@@ -72,6 +73,7 @@ object Sell {
             SellSystem.plugin.server.pluginManager.callEvent(sellEvent)
 
             totalMoney += sellPrice
+            amount += itemStack.amount
             inventory.setItem(slot, null)
         }
 
@@ -79,15 +81,16 @@ object Sell {
             Currencies.deposit(player.uniqueId, "coins", totalMoney)
         }
 
-        return totalMoney
+        return SaleSummary(totalMoney, amount)
     }
 
-    fun sellContainer(player: Player, block: Block): Double {
+    fun sellContainer(player: Player, block: Block): SaleSummary {
         val state = block.state
-        if (state !is Chest) return 0.0
+        if (state !is Chest) return SaleSummary(0.0, 0)
 
         val inventory = state.inventory
         var totalMoney = 0.0
+        var amount = 0
 
         inventory.contents.filterNotNull().forEach {
             val sellPrice = sellItem(player, it)
@@ -97,6 +100,7 @@ object Sell {
             SellSystem.plugin.server.pluginManager.callEvent(sellEvent)
 
             totalMoney += sellPrice
+            amount += it.amount
             it.amount = 0
         }
 
@@ -104,7 +108,7 @@ object Sell {
             Currencies.deposit(player.uniqueId, "coins", totalMoney)
         }
 
-        return totalMoney
+        return SaleSummary(totalMoney, amount)
     }
 
     fun c(itemStack: ItemStack, uses: Int) {

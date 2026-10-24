@@ -7,7 +7,7 @@ import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import me.devnatan.inventoryframework.ViewFrame
-import ocean_block.libs.formatter.NumberFormatter
+import ocean_block.system.sell.notify.SaleNotifier
 import ocean_block.system.sell.Sell
 import ocean_block.system.sell.manager.SellCooldown
 import ocean_block.system.sell.manager.SellManager
@@ -39,14 +39,14 @@ class SellCommand(
             return
         }
 
-        val totalMoney = Sell.sellInventory(sender)
-        if (totalMoney <= 0.0) {
+        val sale = Sell.sellInventory(sender)
+        if (sale.total <= 0.0) {
             sender.sendRichMessage("<color:#b00f00>Nenhum item vendável encontrado no seu inventário.")
             return
         }
 
         SellCooldown.stamp(sender.uniqueId, INVENTORY_COOLDOWN_MILLIS)
-        sender.sendRichMessage("<green>Você recebeu <dark_green>$<white>${NumberFormatter.format(totalMoney)}</white> <green>com suas vendas!")
+        SaleNotifier.notify(sender, sale.total, sale.amount)
         sender.playSound(sender, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f)
     }
 
