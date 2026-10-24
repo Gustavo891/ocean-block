@@ -80,6 +80,10 @@ Regras que quebram o pack se ignoradas:
   disparam reordenação BiDi no cliente.
 - **`size` manda quando declarado.** Sem ele o plugin mede a largura do PNG. Um
   `size` errado desalinha toda centralização de texto que usa o glyph.
+- **PNG de glyph com no máximo 256 px de largura e de altura.** O cliente monta
+  as fontes em páginas de 256×256; um PNG maior é descartado sem erro no log e o
+  glyph aparece como um quadradinho. Para um glyph largo (ex.: `scoreboard_logo`),
+  reduza a resolução do PNG e mantenha o `height` desejado no yml.
 - **Conflito de unicode é resolvido reescrevendo o yml.** O primeiro a declarar
   fica com o código; o segundo é trocado por um livre e o arquivo é salvo. Se um
   unicode "mudou sozinho", foi isso.
