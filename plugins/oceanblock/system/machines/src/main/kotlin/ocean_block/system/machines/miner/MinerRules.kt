@@ -26,8 +26,11 @@ object MinerRules {
 
     const val SPIN_STEP_DEGREES = 90f
 
-    fun isWorking(canMine: Boolean, full: Boolean, available: Long): Boolean =
-        canMine && !full && available >= ENERGY_PER_BLOCK
+    const val ON_KEY = "minerador_ligado"
+
+    fun cycleEnergy(ticks: Int): Long = ENERGY_PER_BLOCK * ticks / INTERVAL
+
+    fun isOn(counter: Long?): Boolean = counter != 0L
 
     fun nextSpin(angle: Float): Float = (angle + SPIN_STEP_DEGREES) % 360f
 

@@ -9,6 +9,7 @@ import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.machines.MachineMenus
 import ocean_block.system.machines.energy.EnergyNetwork
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.inventory.ItemStack
 
 class MinerMenu : View() {
@@ -30,11 +31,20 @@ class MinerMenu : View() {
             "OOOOOOOOO",
             "OOOOOOOOO",
             "OOOOOOOOO",
-            "   C I   ",
+            "  L C I  ",
         )
     }
 
     override fun onFirstRender(render: RenderContext) {
+        render.layoutSlot('L')
+            .renderWith { powerItem(MinerBlock.isOn(blockState.get(render))) }
+            .onClick { click ->
+                val placed = blockState.get(click)
+                if (!MachineMenus.requireAccess(click, placed)) return@onClick
+                val on = MinerBlock.toggle(placed)
+                click.player.playSound(click.player, Sound.BLOCK_LEVER_CLICK, 0.8f, if (on) 1.2f else 0.8f)
+                click.update()
+            }
         render.layoutSlot('C')
             .renderWith { MachineMenus.icon(Material.HOPPER, "<green>Coletar tudo", listOf("<gray>Move todos os itens guardados", "<gray>para o seu inventário.")) }
             .onClick { click -> collectAll(click) }
@@ -83,8 +93,20 @@ class MinerMenu : View() {
         click.update()
     }
 
+    private fun powerItem(on: Boolean): ItemStack = MachineMenus.icon(
+        if (on) Material.REDSTONE_TORCH else Material.LEVER,
+        if (on) "<green>Ligado" else "<red>Desligado",
+        listOf(
+            "<gray>Ligado, a broca gira sem parar e",
+            "<gray>puxa <yellow>20 E/s <gray>o tempo todo.",
+            "",
+            if (on) "<yellow>Clique para desligar." else "<yellow>Clique para ligar.",
+        ),
+    )
+
     private fun statusItem(placed: PlacedBlock): ItemStack {
         val status = when {
+            !MinerBlock.isOn(placed) -> "<gray>Desligado"
             placed.counters[MinerBlock.FULL_KEY] == 1L -> "<red>Armazenamento cheio"
             EnergyNetwork.hasNoPower(placed) -> "<red>Sem energia"
             else -> MinerBlock.belowLabel(placed)

@@ -51,11 +51,15 @@ class MinerRulesTest : StringSpec({
         MinerRules.HITS_TO_BREAK shouldBe 3
     }
 
-    "broca gira so trabalhando: alvo, espaco e energia para um bloco" {
-        MinerRules.isWorking(canMine = true, full = false, available = 40) shouldBe true
-        MinerRules.isWorking(canMine = false, full = false, available = 400) shouldBe false
-        MinerRules.isWorking(canMine = true, full = true, available = 400) shouldBe false
-        MinerRules.isWorking(canMine = true, full = false, available = 39) shouldBe false
+    "ligado gasta a energia de um bloco a cada 2 segundos, espalhada pelos ciclos" {
+        MinerRules.cycleEnergy(10) shouldBe 10L
+        MinerRules.cycleEnergy(40) shouldBe MinerRules.ENERGY_PER_BLOCK
+    }
+
+    "sem counter o minerador vem ligado" {
+        MinerRules.isOn(null) shouldBe true
+        MinerRules.isOn(1) shouldBe true
+        MinerRules.isOn(0) shouldBe false
     }
 
     "giro anda 90 graus por ciclo e da a volta" {

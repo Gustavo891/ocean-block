@@ -60,22 +60,20 @@ object MinerBlock : MachineBlock() {
     override fun work(placed: PlacedBlock) {
         val block = placed.location.toBukkit()?.block ?: return
         MinerDisplay.ensure(placed, block)
+        pushStorage(placed, block)
+        if (!isOn(placed)) return EnergyNetwork.setNoPower(placed, false)
+        if (!EnergyNetwork.draw(placed, MinerRules.cycleEnergy(TICKS))) return
+        MinerDisplay.spin(placed, TICKS)
         val progress = MinerRules.advance(placed.counters[MinerRules.PROGRESS_KEY]?.toInt() ?: 0, TICKS)
         setCounter(placed, MinerRules.PROGRESS_KEY, progress.toLong())
-        pushStorage(placed, block)
-        val below = block.getRelative(BlockFace.DOWN)
-        val canMine = canBreak(placed, block, below)
-        if (MinerRules.isWorking(canMine, placed.counters[FULL_KEY] == 1L, EnergyNetwork.available(placed))) {
-            MinerDisplay.spin(placed, TICKS)
-        }
         if (!MinerRules.isDue(progress)) return
-        if (!canMine) return
+        val below = block.getRelative(BlockFace.DOWN)
+        if (!canBreak(placed, block, below)) return
         val drops = below.getDrops(TOOL).toList()
         val storage = placed.buildStorageInventory(MinerRules.STORAGE)
         val full = !fits(storage, drops)
         setCounter(placed, FULL_KEY, if (full) 1 else 0)
         if (full) return
-        if (!EnergyNetwork.draw(placed, MinerRules.ENERGY_PER_BLOCK)) return
 
         breakBlock(below)
         val leftovers = drops.flatMap { drop -> outputContainer(block)?.addItem(drop)?.values ?: listOf(drop) }
@@ -83,6 +81,16 @@ object MinerBlock : MachineBlock() {
         placed.setStorage(storage)
         setCounter(placed, MinerRules.PROGRESS_KEY, 0)
         PlacedBlockManager.markDirty(placed)
+    }
+
+    fun isOn(placed: PlacedBlock): Boolean = MinerRules.isOn(placed.counters[MinerRules.ON_KEY])
+
+    fun toggle(placed: PlacedBlock): Boolean {
+        val on = !isOn(placed)
+        placed.counters[MinerRules.ON_KEY] = if (on) 1 else 0
+        if (!on) EnergyNetwork.setNoPower(placed, false)
+        PlacedBlockManager.saveNow(placed)
+        return on
     }
 
     fun belowLabel(placed: PlacedBlock): String {
