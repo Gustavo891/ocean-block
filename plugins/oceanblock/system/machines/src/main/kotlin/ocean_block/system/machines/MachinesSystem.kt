@@ -28,7 +28,9 @@ object MachinesSystem {
     private const val REBUILD_TICKS = 100L
 
     fun init(plugin: JavaPlugin, viewFrame: ViewFrame) {
-        listOf(GeneratorBlock, SolarBlock, FurnaceBlock, MinerBlock).forEach(CustomBlockRegistry::register)
+        val machines = listOf(GeneratorBlock, SolarBlock, FurnaceBlock, MinerBlock)
+        machines.forEach(CustomBlockRegistry::register)
+        plugin.server.pluginManager.registerEvents(MachineInteractListener(viewFrame, machines.associateBy { it.id }), plugin)
         CustomItemRegistry.register(SmelterPickaxeItem)
         MachineRecipes.register()
         viewFrame.with(GeneratorMenu(), FurnaceMenu(), MinerMenu())

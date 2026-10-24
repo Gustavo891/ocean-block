@@ -40,9 +40,7 @@ class FurnaceMenu : View() {
     override fun onClick(click: SlotClickContext) {
         val placed = blockState.get(click)
         MachineMenus.depositFromInventory(click, placed) { stack ->
-            val (next, taken) = FurnaceRules.insert(FurnaceState.fromCounters(placed.counters), stack.type.name, stack.amount, FurnaceRecipes.results)
-            if (taken > 0) FurnaceBlock.save(placed, next)
-            taken
+            FurnaceBlock.insert(placed, stack.type.name, stack.amount)
         }
     }
 

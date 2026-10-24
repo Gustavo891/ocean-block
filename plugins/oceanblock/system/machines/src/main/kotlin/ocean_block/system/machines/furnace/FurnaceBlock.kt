@@ -6,7 +6,9 @@ import ocean_block.system.custom_items.block.context.BlockClickContext
 import ocean_block.system.machines.MachineBlock
 import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.energy.EnergyNetwork
+import ocean_block.system.machines.MachineItems
 import org.bukkit.Particle
+import org.bukkit.Sound
 
 object FurnaceBlock : MachineBlock() {
 
@@ -21,7 +23,22 @@ object FurnaceBlock : MachineBlock() {
     override val limitPerIsland: Int = 4
 
     override fun onRightClick(ctx: BlockClickContext) {
+        val hand = ctx.player.inventory.itemInMainHand
+        if (MachineItems.isVanilla(hand)) {
+            val taken = insert(ctx.placed, hand.type.name, hand.amount)
+            if (taken > 0) {
+                MachineItems.takeFromHand(ctx.player, taken)
+                ctx.player.playSound(ctx.player.location, Sound.BLOCK_BEACON_POWER_SELECT, 0.5f, 1.6f)
+                return
+            }
+        }
         ctx.viewFrame.open(FurnaceMenu::class.java, ctx.player, ctx.placed)
+    }
+
+    fun insert(placed: PlacedBlock, material: String, amount: Int): Int {
+        val (next, taken) = FurnaceRules.insert(FurnaceState.fromCounters(placed.counters), material, amount, FurnaceRecipes.results)
+        if (taken > 0) save(placed, next)
+        return taken
     }
 
     override fun tick(placed: PlacedBlock) {
