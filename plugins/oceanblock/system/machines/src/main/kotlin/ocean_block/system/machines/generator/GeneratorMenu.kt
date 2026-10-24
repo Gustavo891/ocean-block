@@ -8,7 +8,9 @@ import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.machines.MachineItems
 import ocean_block.system.machines.MachineMenus
+import ocean_block.system.machines.energy.EnergyEffects
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.inventory.ItemStack
 
 class GeneratorMenu : View() {
@@ -21,7 +23,7 @@ class GeneratorMenu : View() {
         config.scheduleUpdate(MachineMenus.UPDATE_TICKS)
         config.layout(
             "         ",
-            "  F   S  ",
+            "  F R S  ",
             "         ",
         )
     }
@@ -32,7 +34,26 @@ class GeneratorMenu : View() {
             .onClick { click -> takeFuel(click) }
         render.layoutSlot('S')
             .renderWith { statusItem(GeneratorState.fromCounters(blockState.get(render).counters)) }
+        render.layoutSlot('R')
+            .renderWith { radiusItem(EnergyEffects.isShowingRadius(render.player, blockState.get(render))) }
+            .onClick { click ->
+                val showing = EnergyEffects.toggleRadius(click.player, blockState.get(click))
+                click.player.playSound(click.player, Sound.UI_BUTTON_CLICK, 0.6f, if (showing) 1.4f else 0.9f)
+                click.update()
+            }
     }
+
+    private fun radiusItem(showing: Boolean): ItemStack = MachineMenus.icon(
+        if (showing) Material.ENDER_EYE else Material.ENDER_PEARL,
+        if (showing) "<aqua>Escondendo raio" else "<aqua>Mostrar raio",
+        listOf(
+            "<gray>Mostra um círculo de <white>8 blocos<gray>:",
+            "<gray>máquinas dentro dele puxam energia.",
+            "<gray>Só você vê o círculo.",
+            "",
+            if (showing) "<yellow>Clique para esconder." else "<yellow>Clique para mostrar.",
+        ),
+    )
 
     override fun onClick(click: SlotClickContext) {
         val placed = blockState.get(click)

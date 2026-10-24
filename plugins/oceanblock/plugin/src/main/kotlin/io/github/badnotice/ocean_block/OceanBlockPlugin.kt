@@ -19,6 +19,7 @@ import ocean_block.system.craft.CraftSystem
 import ocean_block.system.drift.DriftSystem
 import ocean_block.system.stations.StationsSystem
 import ocean_block.system.machines.MachinesSystem
+import ocean_block.system.preferences.PreferencesSystem
 import ocean_block.system.research.ResearchSystem
 import ocean_block.system.currencies.CurrenciesSystem
 import ocean_block.system.currencies.currency.CurrencyManager
@@ -90,6 +91,7 @@ class OceanBlockPlugin : JavaPlugin() {
             { IslandsSystem.init(this, viewFrame) },
             { DriftSystem.init(this, viewFrame) },
             { StationsSystem.init(this) },
+            { PreferencesSystem.init(viewFrame, paperCommandManager) },
             { MachinesSystem.init(this, viewFrame) },
             { ResearchSystem.init(this, viewFrame, paperCommandManager) },
             { BattlePassSystem.init(viewFrame, paperCommandManager) },

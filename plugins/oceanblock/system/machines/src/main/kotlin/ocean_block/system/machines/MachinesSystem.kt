@@ -2,7 +2,9 @@ package ocean_block.system.machines
 
 import ocean_block.system.custom_items.block.CustomBlockRegistry
 import ocean_block.system.custom_items.item.CustomItemRegistry
+import ocean_block.system.machines.energy.EnergyEffects
 import ocean_block.system.machines.energy.EnergyIndex
+import org.bukkit.event.player.PlayerQuitEvent
 import ocean_block.system.machines.furnace.FurnaceBlock
 import ocean_block.system.machines.furnace.FurnaceMenu
 import ocean_block.system.machines.furnace.FurnaceRecipes
@@ -26,6 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin
 object MachinesSystem {
 
     private const val REBUILD_TICKS = 100L
+    private const val RADIUS_TICKS = 10L
 
     fun init(plugin: JavaPlugin, viewFrame: ViewFrame) {
         val machines = listOf(GeneratorBlock, SolarBlock, FurnaceBlock, MinerBlock)
@@ -37,6 +40,7 @@ object MachinesSystem {
         FurnaceRecipes.load()
         plugin.server.pluginManager.registerEvents(IndexListener(plugin), plugin)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyIndex.rebuild() }, 20L, REBUILD_TICKS)
+        plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyEffects.drawRadii() }, 20L, RADIUS_TICKS)
     }
 
     private class IndexListener(private val plugin: JavaPlugin) : Listener {
@@ -50,6 +54,9 @@ object MachinesSystem {
         fun onBreak(event: BlockBreakEvent) {
             if (event.block.type == Material.NOTE_BLOCK) scheduleRebuild()
         }
+
+        @EventHandler
+        fun onQuit(event: PlayerQuitEvent) = EnergyEffects.forget(event.player)
 
         private fun scheduleRebuild() {
             plugin.server.scheduler.runTask(plugin, Runnable { EnergyIndex.rebuild() })

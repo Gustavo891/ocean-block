@@ -6,6 +6,7 @@ import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.custom_items.block.context.BlockClickContext
 import ocean_block.system.machines.MachineBlock
 import ocean_block.system.machines.MachineIds
+import ocean_block.system.machines.energy.EnergyEffects
 import ocean_block.system.machines.energy.EnergyNetwork
 import ocean_block.system.machines.energy.EnergyRules
 import org.bukkit.block.Block
@@ -28,6 +29,8 @@ object SolarBlock : MachineBlock() {
         val stored = NumberFormatter.format(EnergyNetwork.stored(ctx.placed).toDouble())
         val state = if (isActive(ctx.block)) "<green>gerando 6 E/s" else "<red>parado (noite ou sem céu aberto)"
         ctx.player.sendRichMessage("<yellow>Painel solar: <white>$stored<gray>/1.000 E, $state")
+        val showing = EnergyEffects.toggleRadius(ctx.player, ctx.placed)
+        ctx.player.sendRichMessage(if (showing) "<aqua>Mostrando o raio de 8 blocos. <gray>Clique de novo para esconder." else "<gray>Raio escondido.")
     }
 
     override fun work(placed: PlacedBlock) {
