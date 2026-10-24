@@ -19,7 +19,7 @@ import java.util.logging.Logger
 import javax.imageio.ImageIO
 
 /** Servidor HTTP local (só 127.0.0.1): API do painel + arquivos do frontend. */
-class StudioServer(private val studio: Studio, private val web: File?, private val port: Int) {
+class StudioServer(private val studio: Studio, private val web: File?, private val port: Int, private val bind: String) {
 
     private val gson: Gson = GsonBuilder().disableHtmlEscaping().serializeNulls().create()
     private val logger = Logger.getLogger("TexturaStudio")
@@ -27,7 +27,7 @@ class StudioServer(private val studio: Studio, private val web: File?, private v
     private val pack = PackRoutes(studio)
 
     fun start(): HttpServer {
-        val server = HttpServer.create(InetSocketAddress("127.0.0.1", port), 0)
+        val server = HttpServer.create(InetSocketAddress(bind, port), 0)
         server.executor = Executors.newFixedThreadPool(THREADS)
         server.createContext("/") { exchange ->
             try {

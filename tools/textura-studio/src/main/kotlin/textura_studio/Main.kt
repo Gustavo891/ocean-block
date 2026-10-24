@@ -5,6 +5,7 @@ import java.net.BindException
 import kotlin.system.exitProcess
 
 private const val DEFAULT_PORT = 7070
+private const val DEFAULT_BIND = "127.0.0.1"
 
 fun main() {
     System.setProperty("java.awt.headless", "true")
@@ -15,10 +16,11 @@ fun main() {
     }
     val web = System.getProperty("studio.web")?.let(::File)
     val port = System.getProperty("studio.port")?.toIntOrNull() ?: DEFAULT_PORT
+    val bind = System.getProperty("studio.bind") ?: System.getenv("STUDIO_BIND") ?: DEFAULT_BIND
 
     val studio = Studio(data)
     try {
-        StudioServer(studio, web, port).start()
+        StudioServer(studio, web, port, bind).start()
     } catch (error: BindException) {
         System.err.println("A porta $port já está em uso. Feche o outro Studio ou rode com -Dstudio.port=<porta>.")
         exitProcess(1)

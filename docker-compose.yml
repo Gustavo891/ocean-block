@@ -1,0 +1,59 @@
+name: oceanblock
+
+services:
+  servidor:
+    image: eclipse-temurin:25-jre
+    container_name: oceanblock-servidor
+    working_dir: /server
+    command:
+      - java
+      - -Xms3064M
+      - -Xmx3064M
+      - -XX:+AlwaysPreTouch
+      - -XX:+DisableExplicitGC
+      - -XX:+ParallelRefProcEnabled
+      - -XX:+PerfDisableSharedMem
+      - -XX:+UnlockExperimentalVMOptions
+      - -XX:+UseG1GC
+      - -XX:G1HeapRegionSize=8M
+      - -XX:G1HeapWastePercent=5
+      - -XX:G1MaxNewSizePercent=40
+      - -XX:G1MixedGCCountTarget=4
+      - -XX:G1MixedGCLiveThresholdPercent=90
+      - -XX:G1NewSizePercent=30
+      - -XX:G1RSetUpdatingPauseTimePercent=5
+      - -XX:G1ReservePercent=20
+      - -XX:InitiatingHeapOccupancyPercent=15
+      - -XX:MaxGCPauseMillis=200
+      - -XX:MaxTenuringThreshold=1
+      - -XX:SurvivorRatio=32
+      - -Dusing.aikars.flags=https://mcflags.emc.gs
+      - -Daikars.new.flags=true
+      - -jar
+      - paper.jar
+      - --nogui
+    volumes:
+      - ./server:/server
+    ports:
+      - "25566:25566"
+    environment:
+      OCEANBLOCK_MONGO_URI: mongodb://host.docker.internal:27017/
+      TZ: America/Sao_Paulo
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    stdin_open: true
+    tty: true
+    restart: on-failure
+    stop_grace_period: 90s
+
+  studio:
+    build: ./tools/textura-studio
+    image: oceanblock-studio
+    container_name: oceanblock-studio
+    environment:
+      TZ: America/Sao_Paulo
+    volumes:
+      - ./server/plugins/Textura:/data
+    ports:
+      - "127.0.0.1:7070:7070"
+    restart: unless-stopped

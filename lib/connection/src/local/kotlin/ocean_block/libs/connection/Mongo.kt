@@ -12,7 +12,7 @@ import org.bson.codecs.pojo.PojoCodecProvider
 val Mongo by lazy { createMongoDatabase() }
 
 fun createMongoDatabase(): MongoDatabase {
-    val connectionString = "mongodb://localhost:27017/"
+    val connectionString = System.getenv("OCEANBLOCK_MONGO_URI")?.takeIf { it.isNotBlank() } ?: "mongodb://localhost:27017/"
 
     val pojoCodecProvider = PojoCodecProvider.builder()
         .automatic(true)
