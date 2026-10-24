@@ -1,6 +1,7 @@
 package ocean_block.system.machines.energy
 
 import ocean_block.system.custom_items.block.PlacedBlock
+import ocean_block.system.machines.MachineIds
 import ocean_block.system.preferences.Preference
 import ocean_block.system.preferences.Preferences
 import org.bukkit.Bukkit
@@ -19,15 +20,15 @@ object EnergyBeams {
     private const val VIEW_DISTANCE = 32.0
     private const val LIFT = 0.08
 
-    private val COLOR = Particle.DustOptions(Color.fromRGB(80, 210, 255), 0.6f)
+    private val COLOR = Particle.DustOptions(Color.fromRGB(255, 240, 150), 0.6f)
 
     private class Beam(val origin: Location, val target: BeamPoint, var expires: Int)
 
     private val beams = mutableMapOf<Pair<UUID, UUID>, Beam>()
 
     fun pulse(source: PlacedBlock, consumer: PlacedBlock) {
-        val origin = topOf(source) ?: return
-        val end = topOf(consumer) ?: return
+        val origin = anchorOf(source) ?: return
+        val end = anchorOf(consumer) ?: return
         if (origin.world != end.world) return
         val target = BeamPoint(end.x - origin.x, end.y - origin.y, end.z - origin.z)
         beams[source.uuid to consumer.uuid] = Beam(origin, target, Bukkit.getCurrentTick() + LIFE_TICKS)
@@ -52,10 +53,11 @@ object EnergyBeams {
         }
     }
 
-    private fun topOf(placed: PlacedBlock): Location? {
+    private fun anchorOf(placed: PlacedBlock): Location? {
         val block = placed.location.toBukkit()?.block ?: return null
-        val top = block.boundingBox.takeIf { it.volume > 0 }?.maxY ?: (block.y + 1.0)
-        return Location(block.world, block.x + 0.5, top + LIFT, block.z + 0.5)
+        val box = block.boundingBox.takeIf { it.volume > 0 }
+        val y = if (placed.blockId == MachineIds.SOLAR) (box?.minY ?: block.y.toDouble()) - LIFT else (box?.maxY ?: (block.y + 1.0)) + LIFT
+        return Location(block.world, block.x + 0.5, y, block.z + 0.5)
     }
 
     private fun viewersOf(beam: Beam): List<Player> {
