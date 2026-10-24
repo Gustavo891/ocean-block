@@ -35,4 +35,5 @@ minerador:
     bottom: assets/oneblock/textures/block/maquinas/minerador_bottom.png
     side: assets/oneblock/textures/block/maquinas/minerador_side.png
     broca: assets/oneblock/textures/block/maquinas/minerador_broca.png
+    colar: assets/oneblock/textures/block/maquinas/minerador_colar.png
   model: assets/oneblock/models/block/minerador.json

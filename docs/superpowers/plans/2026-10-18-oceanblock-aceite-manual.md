@@ -224,7 +224,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Sem erros `[custom-items]` de bloco de máquina no log durante toda a sessão.
 
 ### Visual estilo Create, rastro e raio
-- [ ] As quatro máquinas aparecem com carcaça de andesito e moldura metálica (Gerador com moldura de latão, bobina de cobre e engrenagem de madeira em cima; Fornalha com grade ciano; Painel com células azuis em cima). O Minerador tem laterais de madeira e uma broca cônica saindo por baixo: escondida dentro do bloco a minerar e visível quando ele quebra. Na mão, o item do Minerador mostra a broca em 3D.
+- [ ] As quatro máquinas aparecem com carcaça de andesito e moldura metálica (Gerador com moldura de latão, bobina de cobre e engrenagem de madeira em cima; Fornalha com grade ciano; Painel com células azuis em cima). O Minerador tem a carcaça escura menor (granulada, com rebites) no alto do bloco, um colar e uma broca cônica que termina na face de baixo, sem entrar no bloco minerado. Na mão, o item do Minerador mostra a broca em 3D.
 - [ ] Com uma Fornalha ou Minerador puxando energia, sai um rastro de pontos amarelos andando do Gerador/Painel até a máquina, só para quem está a até 24 blocos.
 - [ ] `/pref` (ou `/preferencias`) abre `Preferências` com `Rastro de energia` ligado; clicar desliga (o rastro some só para você) e a escolha continua depois de sair e entrar.
 - [ ] No menu do Gerador, `Mostrar raio` desenha um círculo ciano de 8 blocos em volta dele, só para você; clicar de novo esconde. Clique direito no Painel solar faz o mesmo. Afastar mais de 48 blocos, sair do servidor ou quebrar a fonte apaga o círculo.

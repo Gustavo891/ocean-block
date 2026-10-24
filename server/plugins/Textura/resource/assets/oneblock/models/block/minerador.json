@@ -1,66 +1,67 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "oneblock:block/maquinas/minerador_side",
+    "particle": "oneblock:block/maquinas/minerador_top",
     "side": "oneblock:block/maquinas/minerador_side",
     "top": "oneblock:block/maquinas/minerador_top",
     "bottom": "oneblock:block/maquinas/minerador_bottom",
+    "collar": "oneblock:block/maquinas/minerador_colar",
     "drill": "oneblock:block/maquinas/minerador_broca"
   },
   "elements": [
     {
-      "from": [0, 0, 0],
-      "to": [16, 16, 16],
+      "from": [1, 7, 1],
+      "to": [15, 16, 15],
       "faces": {
-        "north": {"uv": [0, 0, 16, 16], "texture": "#side"},
-        "south": {"uv": [0, 0, 16, 16], "texture": "#side"},
-        "east": {"uv": [0, 0, 16, 16], "texture": "#side"},
-        "west": {"uv": [0, 0, 16, 16], "texture": "#side"},
-        "up": {"uv": [0, 0, 16, 16], "texture": "#top"},
-        "down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+        "north": {"uv": [0, 0, 14, 9], "texture": "#side"},
+        "south": {"uv": [0, 0, 14, 9], "texture": "#side"},
+        "east": {"uv": [0, 0, 14, 9], "texture": "#side"},
+        "west": {"uv": [0, 0, 14, 9], "texture": "#side"},
+        "up": {"uv": [0, 0, 14, 14], "texture": "#top"},
+        "down": {"uv": [0, 0, 14, 14], "texture": "#bottom"}
       }
     },
     {
-      "from": [4, -2, 4],
-      "to": [12, 0, 12],
+      "from": [4, 5, 4],
+      "to": [12, 7, 12],
       "faces": {
-        "north": {"uv": [0, 0, 8, 2], "texture": "#drill"},
-        "south": {"uv": [2, 2, 10, 4], "texture": "#drill"},
-        "east": {"uv": [4, 4, 12, 6], "texture": "#drill"},
-        "west": {"uv": [6, 6, 14, 8], "texture": "#drill"},
-        "down": {"uv": [4, 4, 12, 12], "texture": "#drill"}
+        "north": {"uv": [0, 0, 8, 2], "texture": "#collar"},
+        "south": {"uv": [0, 0, 8, 2], "texture": "#collar"},
+        "east": {"uv": [0, 0, 8, 2], "texture": "#collar"},
+        "west": {"uv": [0, 0, 8, 2], "texture": "#collar"},
+        "down": {"uv": [0, 2, 8, 10], "texture": "#collar"}
       }
     },
     {
-      "from": [5, -4, 5],
-      "to": [11, -2, 11],
+      "from": [5, 3, 5],
+      "to": [11, 5, 11],
       "faces": {
-        "north": {"uv": [1, 2, 7, 4], "texture": "#drill"},
-        "south": {"uv": [3, 4, 9, 6], "texture": "#drill"},
-        "east": {"uv": [5, 6, 11, 8], "texture": "#drill"},
-        "west": {"uv": [7, 8, 13, 10], "texture": "#drill"},
+        "north": {"uv": [0, 0, 6, 2], "texture": "#drill"},
+        "south": {"uv": [2, 0, 8, 2], "texture": "#drill"},
+        "east": {"uv": [4, 0, 10, 2], "texture": "#drill"},
+        "west": {"uv": [6, 0, 12, 2], "texture": "#drill"},
         "down": {"uv": [5, 5, 11, 11], "texture": "#drill"}
       }
     },
     {
-      "from": [6, -6, 6],
-      "to": [10, -4, 10],
+      "from": [6, 1.5, 6],
+      "to": [10, 3, 10],
       "faces": {
-        "north": {"uv": [2, 4, 6, 6], "texture": "#drill"},
-        "south": {"uv": [4, 6, 8, 8], "texture": "#drill"},
-        "east": {"uv": [6, 8, 10, 10], "texture": "#drill"},
-        "west": {"uv": [8, 10, 12, 12], "texture": "#drill"},
+        "north": {"uv": [1, 2, 5, 3.5], "texture": "#drill"},
+        "south": {"uv": [3, 2, 7, 3.5], "texture": "#drill"},
+        "east": {"uv": [5, 2, 9, 3.5], "texture": "#drill"},
+        "west": {"uv": [7, 2, 11, 3.5], "texture": "#drill"},
         "down": {"uv": [6, 6, 10, 10], "texture": "#drill"}
       }
     },
     {
-      "from": [7, -8, 7],
-      "to": [9, -6, 9],
+      "from": [7, 0, 7],
+      "to": [9, 1.5, 9],
       "faces": {
-        "north": {"uv": [3, 6, 5, 8], "texture": "#drill"},
-        "south": {"uv": [5, 8, 7, 10], "texture": "#drill"},
-        "east": {"uv": [7, 10, 9, 12], "texture": "#drill"},
-        "west": {"uv": [9, 12, 11, 14], "texture": "#drill"},
+        "north": {"uv": [2, 4, 4, 5.5], "texture": "#drill"},
+        "south": {"uv": [4, 4, 6, 5.5], "texture": "#drill"},
+        "east": {"uv": [6, 4, 8, 5.5], "texture": "#drill"},
+        "west": {"uv": [8, 4, 10, 5.5], "texture": "#drill"},
         "down": {"uv": [7, 7, 9, 9], "texture": "#drill"}
       }
     }
