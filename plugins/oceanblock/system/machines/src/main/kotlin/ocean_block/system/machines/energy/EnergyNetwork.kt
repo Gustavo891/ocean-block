@@ -55,7 +55,7 @@ object EnergyNetwork {
 
     fun hasNoPower(consumer: PlacedBlock): Boolean = consumer.counters[MachineIds.NO_POWER_KEY] == 1L
 
-    private fun setNoPower(consumer: PlacedBlock, noPower: Boolean) {
+    fun setNoPower(consumer: PlacedBlock, noPower: Boolean) {
         val value = if (noPower) 1L else 0L
         if ((consumer.counters[MachineIds.NO_POWER_KEY] ?: 0L) == value) return
         consumer.counters[MachineIds.NO_POWER_KEY] = value
