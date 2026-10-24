@@ -11,6 +11,7 @@ import ocean_block.system.machines.furnace.FurnaceHopperGuard
 import ocean_block.system.machines.furnace.FurnaceMenu
 import ocean_block.system.machines.furnace.FurnaceRecipes
 import ocean_block.system.machines.generator.GeneratorBlock
+import ocean_block.system.machines.generator.GeneratorDialog
 import ocean_block.system.machines.generator.GeneratorMenu
 import ocean_block.system.machines.miner.MinerBlock
 import ocean_block.system.machines.miner.MinerBreakListener
@@ -43,6 +44,7 @@ object MachinesSystem {
         CustomItemRegistry.register(SmelterPickaxeItem)
         MachineRecipes.register()
         viewFrame.with(GeneratorMenu(), FurnaceMenu(), MinerMenu())
+        GeneratorDialog.registerIcons()
         FurnaceRecipes.load()
         plugin.server.pluginManager.registerEvents(IndexListener(plugin), plugin)
         plugin.server.pluginManager.registerEvents(MinerBreakListener(), plugin)

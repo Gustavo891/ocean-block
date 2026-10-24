@@ -1,0 +1,105 @@
+{
+  "title": "Gerador de energia",
+  "close": "Fechar",
+  "theme": "stone",
+  "column": [
+    {
+      "column": [
+        {
+          "row": [
+            { "space": 3 },
+            { "text": "Gerador", "style": "heading", "align": "left", "icon": "item:coal", "w": "grow" },
+            { "space": 2 }
+          ],
+          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
+        },
+        {
+          "column": [
+            {
+              "row": [
+                { "icon": "item:blast_furnace", "size": 24 },
+                {
+                  "column": [
+                    { "text": "Gerador de energia", "style": "heading", "align": "left", "w": "fit" },
+                    { "text": "{status}", "style": "muted", "align": "left", "w": 150 }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
+                },
+                { "chip": "{estado}" }
+              ],
+              "w": "grow", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "center", "name": "Topo"
+            },
+            {
+              "column": [
+                {
+                  "row": [
+                    { "text": "Energia guardada", "style": "body", "align": "left", "w": "grow" },
+                    { "text": "{energia}", "style": "accent", "align": "right", "w": 100 }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
+                },
+                {
+                  "row": [
+                    { "text": "{barra_cheia}", "style": "good", "align": "left", "w": "fit" },
+                    { "text": "{barra_vazia}", "style": "muted", "align": "left", "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "center"
+                }
+              ],
+              "w": "grow", "h": "fit", "gap": 2, "pad": 0, "align": "start", "cross": "start", "name": "Energia"
+            },
+            { "pair": ["Gerando / gasto", "{gerando} / {gasto}"], "style": "body", "w": "grow" },
+            { "pair": ["Máquinas no raio", "{maquinas}"], "style": "body", "w": "grow" },
+            { "button": "{raio_botao}", "bind": "raio", "icon": "item:ender_eye", "look": "light", "w": "grow", "tooltip": "Raio de 8 blocos\n∙ Só você vê o círculo.\n\nClique para alternar." }
+          ],
+          "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
+        }
+      ],
+      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Informacoes"
+    },
+    {
+      "column": [
+        {
+          "row": [
+            { "space": 3 },
+            { "text": "Combustível", "style": "heading", "align": "left", "icon": "item:oak_log", "w": "grow" },
+            { "space": 2 }
+          ],
+          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
+        },
+        {
+          "column": [
+            {
+              "row": [
+                { "slots": [1, 1], "items": [{ "at": 0, "item": "{comb_item}", "count": "{comb_qtd}" }] },
+                {
+                  "column": [
+                    { "text": "{comb_nome}", "style": "body", "align": "left", "w": 130 },
+                    { "text": "{comb_info}", "style": "muted", "align": "left", "w": 130 }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
+                },
+                { "button": "Retirar", "bind": "retirar", "look": "light", "disabled": "{sem_comb}", "tooltip": "Retirar combustível\n\nVolta para o seu inventário." }
+              ],
+              "w": "grow", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "center", "name": "Guardado"
+            },
+            { "text": "Clique num combustível seu para colocar:", "style": "muted", "align": "left", "w": "fit" },
+            {
+              "grid": [
+                {
+                  "repeat": "inventario", "perPage": 6,
+                  "button": "{qtd}x", "icon": "item:{material}", "bind": "colocar", "look": "light", "w": "grow",
+                  "tooltip": "{nome}\n∙ Você tem {qtd}.\n\nClique para colocar no gerador."
+                }
+              ],
+              "columns": 3, "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "start", "name": "Inventario"
+            }
+          ],
+          "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
+        }
+      ],
+      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Combustivel"
+    }
+  ],
+  "w": "fit", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "start"
+}

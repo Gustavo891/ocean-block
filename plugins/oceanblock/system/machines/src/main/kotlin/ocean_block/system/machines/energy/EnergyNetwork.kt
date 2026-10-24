@@ -4,6 +4,7 @@ import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.machines.MachineIds
+import org.bukkit.Bukkit
 import java.util.UUID
 
 object EnergyIndex {
@@ -36,6 +37,8 @@ object EnergyIndex {
 
 object EnergyNetwork {
 
+    private val meter = EnergyMeter()
+
     fun stored(placed: PlacedBlock): Long = placed.counters[EnergyRules.KEY] ?: 0
 
     fun available(consumer: PlacedBlock): Long =
@@ -48,11 +51,14 @@ object EnergyNetwork {
             val source = PlacedBlockManager.get(id) ?: return@forEach
             source.counters[EnergyRules.KEY] = stored(source) - take
             PlacedBlockManager.markDirty(source)
+            meter.record(source.uuid, take, Bukkit.getCurrentTick())
             EnergyBeams.pulse(source, consumer)
         }
         setNoPower(consumer, plan == null)
         return plan != null
     }
+
+    fun spentPerSecond(source: PlacedBlock): Long = meter.perSecond(source.uuid, Bukkit.getCurrentTick())
 
     fun hasNoPower(consumer: PlacedBlock): Boolean = consumer.counters[MachineIds.NO_POWER_KEY] == 1L
 

@@ -36,7 +36,7 @@ object GeneratorBlock : MachineBlock() {
                 return
             }
         }
-        ctx.viewFrame.open(GeneratorMenu::class.java, ctx.player, ctx.placed)
+        if (!GeneratorDialog.open(ctx.player, ctx.placed)) ctx.viewFrame.open(GeneratorMenu::class.java, ctx.player, ctx.placed)
     }
 
     override fun appearanceId(placed: PlacedBlock): String =
