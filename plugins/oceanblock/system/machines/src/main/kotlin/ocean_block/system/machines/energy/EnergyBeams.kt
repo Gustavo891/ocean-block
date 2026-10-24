@@ -9,20 +9,17 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 import java.util.UUID
-import kotlin.random.Random
 
 object EnergyBeams {
 
     const val REFRESH_TICKS = 2L
 
-    private const val JITTER = 0.35
-    private const val SPACING = 0.12
+    private const val SPACING = 0.15
     private const val LIFE_TICKS = 25
     private const val VIEW_DISTANCE = 32.0
     private const val LIFT = 0.08
 
-    private val CORE = Particle.DustOptions(Color.fromRGB(225, 250, 255), 0.45f)
-    private val GLOW = Particle.DustOptions(Color.fromRGB(70, 200, 255), 0.8f)
+    private val COLOR = Particle.DustOptions(Color.fromRGB(80, 210, 255), 0.6f)
 
     private class Beam(val origin: Location, val target: BeamPoint, var expires: Int)
 
@@ -47,17 +44,10 @@ object EnergyBeams {
     private fun draw(beam: Beam) {
         val viewers = viewersOf(beam)
         if (viewers.isEmpty()) return
-        val start = BeamPoint(0.0, 0.0, 0.0)
-        val nodes = BeamPath.points(start, beam.target, BeamPath.segmentsFor(start.distanceTo(beam.target)), JITTER, Random.Default)
-        val samples = BeamPath.sample(nodes, SPACING)
+        val points = BeamPath.line(BeamPoint(0.0, 0.0, 0.0), beam.target, SPACING)
         viewers.forEach { player ->
-            samples.forEachIndexed { index, point ->
-                val at = beam.origin.clone().add(point.x, point.y, point.z)
-                player.spawnParticle(Particle.DUST, at, 1, 0.0, 0.0, 0.0, 0.0, CORE)
-                if (index % 2 == 0) player.spawnParticle(Particle.DUST, at, 1, 0.02, 0.02, 0.02, 0.0, GLOW)
-            }
-            nodes.drop(1).dropLast(1).forEach { node ->
-                if (Random.nextInt(3) == 0) player.spawnParticle(Particle.ELECTRIC_SPARK, beam.origin.clone().add(node.x, node.y, node.z), 1, 0.0, 0.0, 0.0, 0.0)
+            points.forEach { point ->
+                player.spawnParticle(Particle.DUST, beam.origin.clone().add(point.x, point.y, point.z), 0, 0.0, 0.0, 0.0, 0.0, COLOR)
             }
         }
     }
