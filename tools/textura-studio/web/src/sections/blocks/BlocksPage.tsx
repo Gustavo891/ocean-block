@@ -135,10 +135,33 @@ export function BlocksPage() {
       </aside>
 
       <section className="stage">
+        {current && face ? (
+          <div className="blocks-editor">
+            <div className="blocks-editor-head">
+              <span className="eyebrow">{current.kind === 'item' ? 'Item' : 'Bloco'}</span>
+              <h3>
+                {current.name} · {faceLabel(face.face)}
+              </h3>
+              <code>{face.path}</code>
+            </div>
+            <PixelEditor key={face.path} src={filesApi.rawUrl(face.path, version)} onSave={save} onUpload={save} />
+            <p className="hint-text">
+              PNG de 16×16 ou do tamanho atual da textura (até 256). Depois de salvar, rode <code>/textura gerar</code> ou reinicie o servidor.
+            </p>
+            {notice && <div className={`notice${notice.bad ? ' bad' : ''}`}>{notice.text}</div>}
+          </div>
+        ) : (
+          <div className="stage-empty">Escolha um bloco ou item na lista.</div>
+        )}
+      </section>
+
+      <aside className="inspector">
         {current ? (
-          <div className="blocks-stage">
+          <div className="section">
+            <span className="eyebrow">Preview</span>
             <CubePreview entry={current} version={version} />
-            <div className="glyph-grid">
+            <span className="eyebrow">Faces</span>
+            <div className="glyph-grid blocks-faces">
               {current.faces.map((item) => (
                 <button key={item.path} className={`glyph-card${item.path === face?.path ? ' on' : ''}`} onClick={() => setFacePath(item.path)}>
                   <span className="glyph-thumb">
@@ -151,42 +174,11 @@ export function BlocksPage() {
             </div>
           </div>
         ) : (
-          <div className="stage-empty">Escolha um bloco ou item na lista.</div>
-        )}
-      </section>
-
-      <aside className="inspector">
-        <div className="section">
-          {current && face ? (
-            <>
-              <span className="eyebrow">{current.kind === 'item' ? 'Item' : 'Bloco'}</span>
-              <h3>
-                {current.name} · {faceLabel(face.face)}
-              </h3>
-              <p className="hint-text">
-                <code>{face.path}</code>
-              </p>
-              <PixelEditor
-                key={`${face.path}:${version}`}
-                src={filesApi.rawUrl(face.path, version)}
-                onSave={save}
-                onUpload={save}
-              />
-              <p className="hint-text">
-                PNG de 16×16 ou do tamanho atual da textura (até 256). Depois de salvar, rode <code>/textura gerar</code> ou reinicie o servidor.
-              </p>
-            </>
-          ) : (
-            <>
-              <span className="eyebrow">Blocos e itens</span>
-              <h3>Edite as texturas</h3>
-              <p className="hint-text">Escolha uma máquina, bloco ou item e depois a face. Dá para pintar pixel a pixel ou enviar um PNG.</p>
-            </>
-          )}
-        </div>
-        {notice && (
           <div className="section">
-            <div className={`notice${notice.bad ? ' bad' : ''}`}>{notice.text}</div>
+            <span className="eyebrow">Blocos e itens</span>
+            <h3>Edite as texturas</h3>
+            <p className="hint-text">Escolha uma máquina, bloco ou item e depois a face. Dá para pintar pixel a pixel, usar uma imagem de referência ou enviar um PNG.</p>
+            {notice && <div className={`notice${notice.bad ? ' bad' : ''}`}>{notice.text}</div>}
           </div>
         )}
       </aside>

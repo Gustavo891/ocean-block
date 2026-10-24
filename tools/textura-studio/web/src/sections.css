@@ -432,8 +432,84 @@ details.group[open] > summary::before {
   touch-action: none;
 }
 
-.blocks-stage .glyph-grid {
+
+.blocks-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px;
+  overflow: auto;
   width: 100%;
-  max-width: 640px;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+.blocks-editor-head h3 {
+  margin: 4px 0;
+}
+
+.blocks-editor-head code {
+  font-size: 11px;
+  color: var(--dim);
+  word-break: break-all;
+}
+
+.inspector .cube-scene {
+  width: 100%;
+  height: 200px;
+}
+
+.blocks-faces {
+  margin-top: 8px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.pixel-tools {
+  flex-wrap: wrap;
+}
+
+.tool-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--line);
+  margin: 0 4px;
+}
+
+.pixel-boards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.pixel-board {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+}
+
+.pixel-ref-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.grid-canvas {
+  position: relative;
+}
+
+.grid-canvas .pixel-canvas {
+  display: block;
+}
+
+.pixel-selection,
+.pixel-ghost {
+  position: absolute;
+  pointer-events: none;
+  outline: 1px dashed #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+}
+
+.pixel-ghost {
+  outline-color: var(--aqua);
+  background: rgba(80, 220, 240, 0.15);
 }
