@@ -40,8 +40,8 @@ object GeneratorDialog {
         binds.text("energia") {
             "${NumberFormatter.format(state(placed).energy.toDouble())} / ${NumberFormatter.format(GeneratorRules.CAPACITY.toDouble())} E"
         }
-        binds.text("energia_valor") { state(placed).energy.toString() }
-        binds.text("energia_max") { GeneratorRules.CAPACITY.toString() }
+        binds.text("bateria_nivel") { GeneratorView.batteryLevel(state(placed).energy, GeneratorRules.CAPACITY).toString() }
+        binds.text("energia_pct") { GeneratorView.percent(state(placed).energy, GeneratorRules.CAPACITY).toString() }
         binds.text("gerando") { "${generating(state(placed))} E/s" }
         binds.text("gasto") { "${EnergyNetwork.spentPerSecond(placed)} E/s" }
         binds.text("maquinas_info") { machinesInfo(EnergyNetwork.consumersOf(placed).size) }

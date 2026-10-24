@@ -106,3 +106,14 @@ stone:
     minerador: ui:stone/icons/minerador
     painel_solar: ui:stone/icons/painel_solar
     gerador_item: ui:stone/icons/gerador_item
+    bateria_0: ui:stone/icons/bateria_0
+    bateria_1: ui:stone/icons/bateria_1
+    bateria_2: ui:stone/icons/bateria_2
+    bateria_3: ui:stone/icons/bateria_3
+    bateria_4: ui:stone/icons/bateria_4
+    bateria_5: ui:stone/icons/bateria_5
+    bateria_6: ui:stone/icons/bateria_6
+    bateria_7: ui:stone/icons/bateria_7
+    bateria_8: ui:stone/icons/bateria_8
+    bateria_9: ui:stone/icons/bateria_9
+    bateria_10: ui:stone/icons/bateria_10

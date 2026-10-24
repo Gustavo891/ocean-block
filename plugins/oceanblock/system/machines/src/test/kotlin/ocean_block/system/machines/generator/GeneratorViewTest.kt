@@ -14,6 +14,20 @@ class GeneratorViewTest : StringSpec({
         GeneratorView.burnSeconds(state, fuel) shouldBe (400 + 2 * 1600 + 4 * 300) / 20
     }
 
+    "bateria acende um gomo a cada 10 por cento e qualquer energia mostra o primeiro" {
+        GeneratorView.batteryLevel(0, 10_000) shouldBe 0
+        GeneratorView.batteryLevel(1, 10_000) shouldBe 1
+        GeneratorView.batteryLevel(1_000, 10_000) shouldBe 1
+        GeneratorView.batteryLevel(6_300, 10_000) shouldBe 7
+        GeneratorView.batteryLevel(10_000, 10_000) shouldBe 10
+        GeneratorView.batteryLevel(20_000, 10_000) shouldBe 10
+    }
+
+    "porcentagem da bateria arredonda para baixo" {
+        GeneratorView.percent(6_399, 10_000) shouldBe 63
+        GeneratorView.percent(10_000, 10_000) shouldBe 100
+    }
+
     "medidor soma o gasto e fecha a media a cada segundo" {
         val meter = EnergyMeter()
         val id = UUID(0, 1)
