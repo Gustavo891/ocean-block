@@ -38,6 +38,7 @@ object MachinesSystem {
         val machines = listOf(GeneratorBlock, SolarBlock, FurnaceBlock, MinerBlock)
         machines.forEach(CustomBlockRegistry::register)
         plugin.server.pluginManager.registerEvents(MachineInteractListener(viewFrame, machines.associateBy { it.id }), plugin)
+        plugin.server.pluginManager.registerEvents(LegacyItemListener(machines.associateBy { it.id }), plugin)
         CustomItemRegistry.register(SmelterPickaxeItem)
         MachineRecipes.register()
         viewFrame.with(GeneratorMenu(), FurnaceMenu(), MinerMenu())
