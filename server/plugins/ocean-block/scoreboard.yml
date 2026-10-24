@@ -18,13 +18,14 @@ boards:
   spawn:
     titles: '<glyph:scoreboard_logo>'
     scores:
-      14: ''
-      13: ' <white>Localização: <gray>Spawn'
-      11: ''
-      10: '<white> Coins: <dark_green>$<white>%walletcoins%'
-      9: '<white> Tempo online: <aqua>%playtime%'
-      7: ''
-      0: '<gray> redescreen.com '
+      15: ''
+      14: ' <color:#3fa9e0>▪</color> <white>Coins: <green>$<white>%walletcoins_balance%'
+      13: ' <color:#3fa9e0>▪</color> <white>Tempo: <color:#9fe7ff>%playtime_total%'
+      12: ' '
+      11: ' <color:#3fa9e0>▪</color> <white>Local: <color:#9fe7ff>Spawn'
+      10: ' <color:#3fa9e0>▪</color> <white>Online: <color:#9fe7ff>%online%'
+      9: '  '
+      0: ' <color:#5b7a8c>redescreen.com'
     defaultHideNumber: true
     defaultRenderEvery: 20
     conditions:
@@ -33,15 +34,13 @@ boards:
   default:
     titles: '<glyph:scoreboard_logo>'
     scores:
-      16: ''
-      15: '<white> Coins: <dark_green>$<white>%walletcoins%'
-      14: ''
-      13: '<white> <glyph:floating_islands> <color:#FFD54F>Sua ilha:'
-      12: '<white> Fase: <gray>%island_phasename%'
-      10: ''
-      9: '<white> Tempo online: <aqua>%playtime%'
-      7: ''
-      0: '<gray> redescreen.com '
+      15: ''
+      14: ' <color:#3fa9e0>▪</color> <white>Coins: <green>$<white>%walletcoins_balance%'
+      13: ' <color:#3fa9e0>▪</color> <white>Tempo: <color:#9fe7ff>%playtime_total%'
+      12: ' '
+      11: ' <color:#3fa9e0>▪</color> <white>Online: <color:#9fe7ff>%online%'
+      10: '  '
+      0: ' <color:#5b7a8c>redescreen.com'
     defaultHideNumber: true
     defaultRenderEvery: 20
     conditions: []
