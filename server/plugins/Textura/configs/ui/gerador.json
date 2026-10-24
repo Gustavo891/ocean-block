@@ -38,17 +38,18 @@
                   ],
                   "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
                 },
-                {
-                  "row": [
-                    { "text": "{barra_cheia}", "style": "good", "align": "left", "w": "fit" },
-                    { "text": "{barra_vazia}", "style": "muted", "align": "left", "w": "fit" }
-                  ],
-                  "w": "grow", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "center"
-                }
+                { "progress": "{energia_valor}", "max": "{energia_max}", "track": "ui:stone/progress_track", "fill": "ui:stone/progress_fill", "w": 250, "name": "Barra" }
               ],
               "w": "grow", "h": "fit", "gap": 2, "pad": 0, "align": "start", "cross": "start", "name": "Energia"
             },
-            { "pair": ["Gerando / gasto", "{gerando} / {gasto}"], "style": "body", "w": "grow" },
+            {
+              "row": [
+                { "text": "Por segundo", "style": "body", "align": "left", "w": "grow" },
+                { "text": "-{gasto}", "style": "bad", "align": "right", "w": "fit" },
+                { "text": "+{gerando}", "style": "good", "align": "right", "w": "fit" }
+              ],
+              "w": "grow", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "center", "name": "Fluxo"
+            },
             { "pair": ["Máquinas no raio", "{maquinas}"], "style": "body", "w": "grow" },
             { "button": "{raio_botao}", "bind": "raio", "icon": "item:ender_eye", "look": "light", "w": "grow", "tooltip": "Raio de 8 blocos\n∙ Só você vê o círculo.\n\nClique para alternar." }
           ],

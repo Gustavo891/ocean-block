@@ -8,6 +8,7 @@ import one_block.textura.dialog.json.DefContainer
 import one_block.textura.dialog.json.DefIcon
 import one_block.textura.dialog.json.DefNav
 import one_block.textura.dialog.json.DefNode
+import one_block.textura.dialog.json.DefProgress
 import one_block.textura.dialog.json.DefRepeat
 import one_block.textura.dialog.json.DefScoped
 import one_block.textura.dialog.json.DefSlots
@@ -42,6 +43,7 @@ data class UiUsage(val images: Set<String>, val icons: Set<IconSize>, val surfac
                     return@forEach
                 }
                 images += theme.controlArt()
+                definition.containers().forEach { container -> collectProgress(container) { images += listOf(it.track, it.fill) } }
 
                 val screenWarn: (String) -> Unit = { warn("Tela '${definition.id}': $it") }
                 val compiler = ScreenCompiler(kit, screenWarn)
@@ -123,6 +125,16 @@ data class UiUsage(val images: Set<String>, val icons: Set<IconSize>, val surfac
             is DefScoped -> hasDynamicSlot(node.node)
             is DefSlots -> node.items.any(SlotContent::dynamic)
             else -> false
+        }
+
+        private fun collectProgress(node: DefNode, sink: (DefProgress) -> Unit) {
+            when (node) {
+                is DefContainer -> node.children.forEach { collectProgress(it, sink) }
+                is DefRepeat -> collectProgress(node.node, sink)
+                is DefScoped -> collectProgress(node.node, sink)
+                is DefProgress -> sink(node)
+                else -> Unit
+            }
         }
 
         private fun collectStates(node: DefNode, sink: (DefIcon) -> Unit) {

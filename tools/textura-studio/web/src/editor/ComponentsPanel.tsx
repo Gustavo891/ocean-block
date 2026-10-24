@@ -38,6 +38,7 @@ export const ICONS: Record<NodeKind, LucideIcon> = {
   nav: PanelLeft,
   dropdown: ChevronDown,
   slider: SlidersHorizontal,
+  progress: SlidersHorizontal,
   segmented: ListChecks,
   switch: ToggleLeft,
   chip: Tag,

@@ -131,6 +131,15 @@ data class DefSlider(
     override val path: String,
 ) : DefNode
 
+data class DefProgress(
+    val value: String,
+    val max: String,
+    val track: String,
+    val fill: String,
+    val w: UiSize,
+    override val path: String,
+) : DefNode
+
 data class DefRepeat(val list: String, val perPage: Int?, val node: DefNode, override val path: String) : DefNode
 
 data class DefScoped(

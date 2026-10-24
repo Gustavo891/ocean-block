@@ -291,6 +291,7 @@ tira o botão de fechar.
 | `{"slots": [7, 1], "items": [{"at": 0, "item": "diamond_sword", "count": 1}]}` | grade de slots (arte `slots.art` do tema) com ícone do item, quantidade e nome traduzido no tooltip; `align` posiciona a grade. Por item, `item` e `count` aceitam `{chave}`; `name` (MiniMessage) e `lore` (lista de linhas MiniMessage) trocam o tooltip do item por um texto sem itálico. Item vazio ou sem valor deixa o slot vazio. `missing` (`true`, `false` ou `"{chave}"`) por item troca a moldura pela arte `slots.missing-art` do tema (no `stone`, o slot vermelho). `"hideEmpty": true` não desenha os slots vazios (a linha mantém a altura) |
 | `{"dropdown": "Inicial"}` | `options`, `bind`, `w`, `tooltip`. Cada clique avança para a próxima opção |
 | `{"slider": 40}` | `min`, `max`, `step`, `unit`, `bind`, `w`, `tooltip`. Metade esquerda −step, direita +step |
+| `{"progress": "{valor}"}` | `max` (padrão 100; aceita `{campo}`), `track`, `fill` (ids `ui:` com `.png.slice`, assados no gerar), `w` em px (padrão 100). Barra só de leitura: o preenchimento tem `w * valor / max` px |
 | `{"icon": "ui:x", "bind": "k", "states": {"a": "ui:y"}}` | troca o ícone pelo valor de `k` |
 | `{"button": "Rótulo", "onClick": {...}}` | executa ações; com `bind` também chama o código antes. `selected` e `disabled` aceitam `true`, `false` ou `"{chave}"` (só o texto `true` liga) |
 | `{"space": "grow"}` | ocupa o espaço que sobra na linha |

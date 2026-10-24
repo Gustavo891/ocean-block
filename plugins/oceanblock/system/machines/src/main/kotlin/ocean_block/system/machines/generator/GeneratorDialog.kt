@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack
 object GeneratorDialog {
 
     private const val SCREEN = "gerador"
-    private const val BAR_WIDTH = 60
     private const val PER_SECOND = 20
 
     private val CONSUMERS = setOf(MachineIds.FURNACE, MachineIds.MINER)
@@ -43,8 +42,8 @@ object GeneratorDialog {
         binds.text("energia") {
             "${NumberFormatter.format(state(placed).energy.toDouble())} / ${NumberFormatter.format(GeneratorRules.CAPACITY.toDouble())} E"
         }
-        binds.text("barra_cheia") { GeneratorView.bar(state(placed).energy, GeneratorRules.CAPACITY, BAR_WIDTH).first }
-        binds.text("barra_vazia") { GeneratorView.bar(state(placed).energy, GeneratorRules.CAPACITY, BAR_WIDTH).second }
+        binds.text("energia_valor") { state(placed).energy.toString() }
+        binds.text("energia_max") { GeneratorRules.CAPACITY.toString() }
         binds.text("gerando") { "${generating(state(placed))} E/s" }
         binds.text("gasto") { "${EnergyNetwork.spentPerSecond(placed)} E/s" }
         binds.text("maquinas") { consumersNear(placed).toString() }
@@ -94,7 +93,7 @@ object GeneratorDialog {
     private fun fuelInfo(state: GeneratorState): String {
         val fuel = state.fuel ?: return "Até ${GeneratorRules.MAX_FUEL} de um tipo"
         val ticks = Fuel.ticks(fuel) ?: return ""
-        return "${state.fuelCount}/${GeneratorRules.MAX_FUEL} · ${ticks * GeneratorRules.RATE} E cada"
+        return "${state.fuelCount}/${GeneratorRules.MAX_FUEL} - ${ticks * GeneratorRules.RATE} E cada"
     }
 
     private fun duration(seconds: Int): String =

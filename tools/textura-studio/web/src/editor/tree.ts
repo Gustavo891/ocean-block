@@ -11,6 +11,7 @@ export type NodeKind =
   | 'nav'
   | 'dropdown'
   | 'slider'
+  | 'progress'
   | 'segmented'
   | 'switch'
   | 'chip'
@@ -37,7 +38,7 @@ export interface TreeNode {
 export type Json = Record<string, unknown>
 
 export const CONTAINERS: NodeKind[] = ['column', 'row', 'box', 'grid']
-const LEAVES: NodeKind[] = ['text', 'button', 'nav', 'dropdown', 'slider', 'segmented', 'switch', 'chip', 'pair', 'slots', 'image', 'icon', 'space']
+const LEAVES: NodeKind[] = ['text', 'button', 'nav', 'dropdown', 'slider', 'progress', 'segmented', 'switch', 'chip', 'pair', 'slots', 'image', 'icon', 'space']
 
 export const KIND_LABEL: Record<NodeKind, string> = {
   screen: 'Screen',
@@ -50,6 +51,7 @@ export const KIND_LABEL: Record<NodeKind, string> = {
   nav: 'Sidebar button',
   dropdown: 'Dropdown',
   slider: 'Slider',
+  progress: 'Progress bar',
   segmented: 'Segmented',
   switch: 'Switch',
   chip: 'Chip',

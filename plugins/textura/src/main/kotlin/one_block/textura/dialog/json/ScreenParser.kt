@@ -217,6 +217,10 @@ class ScreenParser(private val logger: Logger) {
                     placeholders(node.label)
                     placeholders(node.value)
                 }
+                is DefProgress -> {
+                    placeholders(node.value)
+                    placeholders(node.max)
+                }
                 is DefSpace, is DefImage -> Unit
             }
         }
@@ -287,6 +291,7 @@ class ScreenParser(private val logger: Logger) {
                 "pair" -> pair(obj, path)
                 "dropdown" -> dropdown(obj, path)
                 "slider" -> slider(obj, path)
+                "progress" -> progress(obj, path)
                 else -> container(obj, CONTAINERS.getValue(shape), shape, path)
             }
 
@@ -411,6 +416,13 @@ class ScreenParser(private val logger: Logger) {
                 obj.int("slider", min, path), min, max, step, obj.string("unit").orEmpty(),
                 obj.string("bind"), size(obj, "w", path), obj.string("tooltip"), path,
             )
+        }
+
+        private fun progress(obj: JsonObject, path: String): DefProgress {
+            val track = obj.string("track").orEmpty()
+            val fill = obj.string("fill").orEmpty()
+            if (track.isBlank() || fill.isBlank()) warn(path, "progress sem 'track' ou 'fill'")
+            return DefProgress(obj.string("progress").orEmpty(), obj.string("max") ?: "100", track, fill, size(obj, "w", path), path)
         }
 
         private fun pair(obj: JsonObject, path: String): DefPair {
@@ -607,7 +619,7 @@ class ScreenParser(private val logger: Logger) {
             "box" to ContainerKind.Box,
             "grid" to ContainerKind.Grid,
         )
-        private val LEAVES = listOf("text", "button", "nav", "dropdown", "slider", "segmented", "switch", "chip", "pair", "slots", "image", "icon", "space")
+        private val LEAVES = listOf("text", "button", "nav", "dropdown", "slider", "progress", "segmented", "switch", "chip", "pair", "slots", "image", "icon", "space")
         private val COMMON = setOf("name", REPEAT)
         private val ROOT = setOf("theme", "title", "close")
         private val WRAPPER = setOf("title", "theme", "document", "pages", "hideFooter", "canCloseWithEscape", "pause", "close")
@@ -631,6 +643,7 @@ class ScreenParser(private val logger: Logger) {
             "slots" to setOf("slots", "items", "align", "hideEmpty"),
             "dropdown" to setOf("dropdown", "options", "bind", "w", "tooltip"),
             "slider" to setOf("slider", "min", "max", "step", "unit", "bind", "w", "tooltip"),
+            "progress" to setOf("progress", "max", "track", "fill", "w"),
         )
     }
 }

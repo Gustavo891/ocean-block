@@ -93,6 +93,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             is DefNav -> nav(def)
             is DefDropdown -> dropdown(def)
             is DefSlider -> slider(def)
+            is DefProgress -> progress(def)
             is DefSlots -> slots(def)
             is DefChip -> chip(def)
             is DefPair -> pair(def)
@@ -290,6 +291,20 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                     w = UiSize.Grow,
                     h = UiSize.Grow,
                 ),
+            )
+            return ContainerNode(ContainerKind.Box, children, cross = UiAlign.Center, w = UiSize.Px(width))
+        }
+
+        private fun progress(def: DefProgress): UiNode {
+            val width = (def.w as? UiSize.Px)?.value ?: DEFAULT_PROGRESS_WIDTH
+            val value = placeholders.plain(def.value).trim().toDoubleOrNull() ?: 0.0
+            val max = placeholders.plain(def.max).trim().toDoubleOrNull() ?: 0.0
+            val fraction = if (max > 0) (value / max).coerceIn(0.0, 1.0) else 0.0
+            val minimumFill = kit.image(def.fill)?.slice?.let { it.left + it.right + 1 } ?: 1
+            val fillWidth = Math.round(width * fraction).toInt().let { if (fraction > 0) it.coerceIn(minimumFill, width) else 0 }
+            val children = listOfNotNull(
+                ImageNode(def.track, w = UiSize.Grow),
+                if (fillWidth > 0) ImageNode(def.fill, w = UiSize.Px(fillWidth)) else null,
             )
             return ContainerNode(ContainerKind.Box, children, cross = UiAlign.Center, w = UiSize.Px(width))
         }
@@ -539,6 +554,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
     companion object {
         const val MAX_WIDTH = 399
         const val DEFAULT_SLIDER_WIDTH = 80
+        const val DEFAULT_PROGRESS_WIDTH = 100
         const val DEFAULT_SLOT_SIZE = 18
         const val STUDIO_WIDTH = 388
         private const val SLOT_BORDER = 2
