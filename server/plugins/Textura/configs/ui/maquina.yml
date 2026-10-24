@@ -81,5 +81,3 @@ maquina:
     bateria_8: ui:stone/icons/bateria_8
     bateria_9: ui:stone/icons/bateria_9
     bateria_10: ui:stone/icons/bateria_10
-    fornalha_item: ui:stone/icons/fornalha_item
-    bloqueado: ui:stone/icons/lock

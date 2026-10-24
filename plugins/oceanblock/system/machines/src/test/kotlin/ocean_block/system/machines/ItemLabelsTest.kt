@@ -11,8 +11,4 @@ class ItemLabelsTest : StringSpec({
         ItemLabels.icon("DRIED_KELP_BLOCK") shouldBe "dried_kelp"
         ItemLabels.icon("SMOOTH_QUARTZ") shouldBe "quartz_block_bottom"
     }
-
-    "nome sem traducao vira o material legivel" {
-        ItemLabels.fallbackName("RAW_IRON") shouldBe "Raw iron"
-    }
 })

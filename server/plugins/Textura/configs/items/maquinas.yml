@@ -3,3 +3,33 @@ picareta_fundidora:
   item_model: oneblock:picareta_fundidora
   type: flat
   texture: assets/oneblock/textures/item/maquinas/picareta_fundidora.png
+
+barra_0:
+  material: PAPER
+  item_model: oneblock:barra_0
+  type: flat
+  texture: assets/oneblock/textures/item/maquinas/barra_0.png
+
+barra_25:
+  material: PAPER
+  item_model: oneblock:barra_25
+  type: flat
+  texture: assets/oneblock/textures/item/maquinas/barra_25.png
+
+barra_50:
+  material: PAPER
+  item_model: oneblock:barra_50
+  type: flat
+  texture: assets/oneblock/textures/item/maquinas/barra_50.png
+
+barra_75:
+  material: PAPER
+  item_model: oneblock:barra_75
+  type: flat
+  texture: assets/oneblock/textures/item/maquinas/barra_75.png
+
+barra_100:
+  material: PAPER
+  item_model: oneblock:barra_100
+  type: flat
+  texture: assets/oneblock/textures/item/maquinas/barra_100.png

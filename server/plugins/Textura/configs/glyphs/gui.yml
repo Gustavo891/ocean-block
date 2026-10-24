@@ -108,3 +108,13 @@ pesquisa_menu:
   show_in_gui: true
   size: 256
   unicode: \uE031
+
+fornalha_menu:
+  id: fornalha_menu
+  caminho: assets/oneblock/textures/gui/fornalha_menu.png
+  ascent: 13
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE032
