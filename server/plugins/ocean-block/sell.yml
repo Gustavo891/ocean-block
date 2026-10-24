@@ -1,4 +1,38 @@
 items:
+  # ===== oceano / deriva =====
+  oak_planks: 0.5
+  oak_log: 2.0
+  oak_leaves: 0.1
+  oak_sapling: 0.5
+  stick: 0.2
+  kelp: 0.3
+  dried_kelp: 0.5
+  dried_kelp_block: 5.0
+  cod: 2.0
+  cooked_cod: 3.0
+  salmon: 2.5
+  cooked_salmon: 3.5
+  tropical_fish: 5.0
+  pufferfish: 4.0
+  bread: 1.5
+  iron_nugget: 1.5
+  name_tag: 25.0
+  prismarine_shard: 4.0
+  prismarine_crystals: 6.0
+  nautilus_shell: 30.0
+  heart_of_the_sea: 500.0
+  sponge: 50.0
+
+  # ===== minerios do gerador (bloco) =====
+  coal_ore: 3.0
+  copper_ore: 5.0
+  iron_ore: 8.0
+  gold_ore: 12.0
+  redstone_ore: 6.0
+  lapis_ore: 10.0
+  emerald_ore: 50.0
+  diamond_ore: 40.0
+
   # ===== blocos basicos =====
   dirt: 0.1
   grass_block: 0.2

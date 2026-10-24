@@ -13,4 +13,11 @@ dependencies {
 
     compileOnly(projects.plugins.oceanblock.system.currencies)
     compileOnly(projects.plugins.oceanblock.system.islands)
+
+    testImplementation(libs.kotest.runner)
+    testImplementation(libs.kotest.assertions)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

@@ -1,2 +1,115 @@
 items:
-  diamond: 100.0
+  # ===== oceano / deriva =====
+  oak_planks: 0.5
+  oak_log: 2.0
+  oak_leaves: 0.1
+  oak_sapling: 0.5
+  stick: 0.2
+  kelp: 0.3
+  dried_kelp: 0.5
+  dried_kelp_block: 5.0
+  cod: 2.0
+  cooked_cod: 3.0
+  salmon: 2.5
+  cooked_salmon: 3.5
+  tropical_fish: 5.0
+  pufferfish: 4.0
+  bread: 1.5
+  iron_nugget: 1.5
+  name_tag: 25.0
+  prismarine_shard: 4.0
+  prismarine_crystals: 6.0
+  nautilus_shell: 30.0
+  heart_of_the_sea: 500.0
+  sponge: 50.0
+
+  # ===== minerios do gerador (bloco) =====
+  coal_ore: 3.0
+  copper_ore: 5.0
+  iron_ore: 8.0
+  gold_ore: 12.0
+  redstone_ore: 6.0
+  lapis_ore: 10.0
+  emerald_ore: 50.0
+  diamond_ore: 40.0
+
+  # ===== blocos basicos =====
+  dirt: 0.1
+  grass_block: 0.2
+  stone: 0.5
+  cobblestone: 0.3
+  gravel: 0.3
+  sand: 0.5
+
+  # ===== fazenda =====
+  wheat_seeds: 0.5
+  pumpkin_seeds: 0.3
+  melon_seeds: 0.5
+  beetroot_seeds: 0.5
+  cocoa_beans: 2.0
+  wheat: 3.0
+  carrot: 3.0
+  potato: 3.0
+  beetroot: 3.0
+  pumpkin: 4.0
+  melon: 4.0
+  melon_slice: 0.5
+  sugar_cane: 3.0
+  nether_wart: 4.0
+  cactus: 2.0
+  sweet_berries: 2.0
+  bamboo: 0.5
+
+  # ===== minerios (raw / ingot / gema) =====
+  coal: 3.0
+  raw_iron: 8.0
+  iron_ingot: 14.0
+  raw_gold: 12.0
+  gold_ingot: 18.0
+  raw_copper: 5.0
+  copper_ingot: 7.0
+  redstone: 6.0
+  lapis_lazuli: 10.0
+  emerald: 50.0
+  diamond: 40.0
+  amethyst_shard: 20.0
+  quartz: 5.0
+  netherite_scrap: 400.0
+
+  # ===== blocos de minerio (9x a unidade) =====
+  coal_block: 27.0
+  iron_block: 126.0
+  gold_block: 162.0
+  copper_block: 63.0
+  redstone_block: 54.0
+  lapis_block: 90.0
+  emerald_block: 450.0
+  diamond_block: 360.0
+  netherite_block: 3600.0
+
+  # ===== loot de mob =====
+  rotten_flesh: 0.5
+  bone: 2.0
+  string: 1.5
+  spider_eye: 1.5
+  gunpowder: 4.0
+  feather: 1.0
+  leather: 3.0
+  porkchop: 2.0
+  beef: 2.0
+  chicken: 2.0
+  mutton: 2.0
+  rabbit_hide: 1.0
+  rabbit_foot: 8.0
+  ender_pearl: 15.0
+  blaze_rod: 20.0
+  ghast_tear: 30.0
+  magma_cream: 6.0
+  slime_ball: 3.0
+  phantom_membrane: 8.0
+  ink_sac: 1.0
+  glow_ink_sac: 3.0
+  wither_skeleton_skull: 100.0
+  shulker_shell: 40.0
+  echo_shard: 25.0
+  nether_star: 2000.0
