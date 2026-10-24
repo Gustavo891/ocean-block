@@ -19,7 +19,7 @@ class SectionsTest : FunSpec({
     val data = File(checkNotNull(System.getProperty("studio.data")))
     val studio = Studio(data)
 
-    test("notificações: região à direita termina na margem e as linhas descem 11 + espaçamento") {
+    test("notificações: região à direita termina na margem e as linhas descem 13 + espaçamento") {
         val yaml = """
             coleta:
               ancora: MEIO_DIREITA
@@ -35,8 +35,8 @@ class SectionsTest : FunSpec({
 
         result.scale shouldBe 4
         (box.x + box.w) shouldBe result.guiWidth - 2
-        box.y shouldBe result.guiHeight / 2 + 70 - 2
-        box.h shouldBe 5 * 12 + 11
+        box.y shouldBe result.guiHeight / 2 + 70 - 3
+        box.h shouldBe 5 * 14 + 13
         ImageIO.write(result.image, "png", File(System.getProperty("user.dir"), "build/previews/hud.png").also { it.parentFile.mkdirs() })
     }
 

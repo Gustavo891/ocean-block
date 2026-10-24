@@ -11,13 +11,13 @@ internal data class LineSpan(val boxLeft: Int, val boxWidth: Int, val contentLef
 internal object LineGeometry {
 
     const val BASE_ASCENT = 7
-    const val LINE_HEIGHT = 11
-    const val TEXT_TOP_PADDING = 2
+    const val LINE_HEIGHT = 13
+    const val TEXT_TOP_PADDING = 3
     const val LIFT_STEP = 12
     const val ICON_SIZE = 8
     const val ICON_GAP = 2
     const val ICON_BOX = ICON_SIZE + ICON_GAP
-    const val PADDING_X = 3
+    const val PADDING_X = 5
 
     fun pitch(region: NotificationRegion): Int = LINE_HEIGHT + region.spacing
 

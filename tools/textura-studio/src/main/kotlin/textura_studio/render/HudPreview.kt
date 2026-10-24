@@ -276,14 +276,14 @@ class HudPreview(private val assets: StudioAssets, private val plaqueFile: File)
     }
 
     companion object {
-        const val LINE_HEIGHT = 11
+        const val LINE_HEIGHT = 13
         const val TEXT_LINE = 9
-        const val TEXT_TOP_PADDING = 2
+        const val TEXT_TOP_PADDING = 3
         const val LIFT_STEP = 12
         const val MAX_LIFT = 15
         const val ICON_SIZE = 8
         const val ICON_BOX = 10
-        const val PADDING_X = 3
+        const val PADDING_X = 5
         const val MARGIN_X = 2
         const val MARGIN_BOTTOM = 2
         const val BAR_TEXT_TOP = 3

@@ -427,7 +427,7 @@ coleta:
 | `ancora` | `TOPO_ESQUERDA`, `TOPO_DIREITA`, `MEIO_ESQUERDA`, `MEIO_DIREITA`, `BASE_ESQUERDA`, `BASE_DIREITA` | obrigatório |
 | `x`, `y` | deslocamento em px de GUI (x para a direita, y para baixo) a partir da âncora | 0 |
 | `linhas` | máximo de linhas visíveis (1..15). Cheia, a mais antiga sai | 3 |
-| `espacamento` | px entre uma linha e a próxima (0..32). O passo é 11 + espaçamento | 1 |
+| `espacamento` | px entre uma linha e a próxima (0..32). O passo é 13 + espaçamento | 1 |
 | `fundo` | placa escura semitransparente na largura do conteúdo | true |
 | `direcao` | `baixo` ou `cima` | `cima` nas âncoras `BASE_*`, `baixo` nas outras |
 

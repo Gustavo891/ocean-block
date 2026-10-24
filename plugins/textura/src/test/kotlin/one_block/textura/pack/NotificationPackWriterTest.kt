@@ -35,7 +35,7 @@ class NotificationPackWriterTest : StringSpec({
             Logger.getLogger("NotificationPackWriterTest"),
         ).write(builder)
 
-        kit.textTops.toList() shouldBe listOf(4, 16, 28, 70, 82, 94, 106, 118, 130)
+        kit.textTops.toList() shouldBe listOf(4, 18, 32, 70, 84, 98, 112, 126, 140)
         kit.icons.keys shouldBe setOf("item:oak_planks")
         kit.icons.getValue("item:oak_planks").advance shouldBe 7
         kit.plaque shouldNotBe null
@@ -49,7 +49,7 @@ class NotificationPackWriterTest : StringSpec({
             val providers = json.getAsJsonArray("providers").map { it.asJsonObject }
             val bitmaps = providers.filter { it.get("type").asString == "bitmap" }
             bitmaps.first { Key.key(it.get("file").asString) == Key.key("minecraft", "font/ascii_custom.png") }.get("ascent").asInt shouldBe 7 - 70
-            bitmaps.filter { it.get("file").asString.startsWith("textura:notify/plaque") }.map { it.get("ascent").asInt }.toSet() shouldBe setOf(9 - 70)
+            bitmaps.filter { it.get("file").asString.startsWith("textura:notify/plaque") }.map { it.get("ascent").asInt }.toSet() shouldBe setOf(10 - 70)
             bitmaps.single { it.get("file").asString == "textura:notify/item/oak_planks.png" }.get("ascent").asInt shouldBe 7 - 70
             providers.map { it.get("type").asString }.toSet() shouldContainAll listOf("space", "bitmap")
             file.getEntry("assets/textura/textures/notify/item/oak_planks.png") shouldNotBe null

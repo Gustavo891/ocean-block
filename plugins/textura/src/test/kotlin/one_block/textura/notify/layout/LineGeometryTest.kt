@@ -21,24 +21,24 @@ class LineGeometryTest : StringSpec({
     "para baixo cada linha desce a altura da linha mais o espaçamento" {
         val coleta = region(ScreenAnchor.MIDDLE_RIGHT, 0, 70, StackDirection.DOWN)
         (0 until 3).map { LineGeometry.slot(coleta, it) }
-            .shouldContainExactly(LineSlot(70, 0), LineSlot(82, 0), LineSlot(94, 0))
+            .shouldContainExactly(LineSlot(70, 0), LineSlot(84, 0), LineSlot(98, 0))
     }
 
     "espaçamento muda o passo" {
         val wide = region(ScreenAnchor.TOP_LEFT, 0, 0, StackDirection.DOWN, spacing = 4)
-        LineGeometry.slot(wide, 2) shouldBe LineSlot(30, 0)
+        LineGeometry.slot(wide, 2) shouldBe LineSlot(34, 0)
     }
 
-    "para cima com passo 12 o lift é o índice da linha" {
+    "para cima o lift sobe em passos de 12 e a fonte desce o resto" {
         val base = region(ScreenAnchor.BOTTOM_LEFT, 0, 0, StackDirection.UP)
         (0 until 4).map { LineGeometry.slot(base, it) }
-            .shouldContainExactly(LineSlot(0, 0), LineSlot(0, 1), LineSlot(0, 2), LineSlot(0, 3))
+            .shouldContainExactly(LineSlot(0, 0), LineSlot(10, 2), LineSlot(8, 3), LineSlot(6, 4))
     }
 
     "deslocamento para cima que não fecha no passo vira lift mais descida pela fonte" {
         val base = region(ScreenAnchor.BOTTOM_RIGHT, 0, -5, StackDirection.UP, spacing = 3)
         LineGeometry.slot(base, 0) shouldBe LineSlot(7, 1)
-        LineGeometry.slot(base, 1) shouldBe LineSlot(5, 2)
+        LineGeometry.slot(base, 1) shouldBe LineSlot(3, 2)
     }
 
     "linhas além do alcance do lift não cabem" {
@@ -50,7 +50,7 @@ class LineGeometryTest : StringSpec({
     "fontes de linha cobrem todas as regiões sem repetir" {
         val a = region(ScreenAnchor.TOP_LEFT, 4, 4, StackDirection.DOWN, lines = 3)
         val b = region(ScreenAnchor.BOTTOM_LEFT, 0, 0, StackDirection.UP, lines = 3)
-        LineGeometry.textTops(listOf(a, b)).toList().shouldContainExactly(0, 4, 16, 28)
+        LineGeometry.textTops(listOf(a, b)).toList().shouldContainExactly(0, 4, 8, 10, 18, 32)
     }
 
     "largura do conteúdo soma a caixa do ícone" {
@@ -58,9 +58,9 @@ class LineGeometryTest : StringSpec({
         LineGeometry.contentWidth(30, true) shouldBe 30 + LineGeometry.ICON_BOX
     }
 
-    "âncora à esquerda começa no x e o fundo soma o padding dos dois lados" {
+    "âncora à esquerda começa no x e o fundo soma 5 px de padding dos dois lados" {
         val left = region(ScreenAnchor.TOP_LEFT, 4, 0, StackDirection.DOWN)
-        LineGeometry.span(left, 40) shouldBe LineSpan(4, 40 + 2 * LineGeometry.PADDING_X, 4 + LineGeometry.PADDING_X)
+        LineGeometry.span(left, 40) shouldBe LineSpan(4, 50, 9)
     }
 
     "âncora à direita termina no x" {
@@ -78,7 +78,7 @@ class LineGeometryTest : StringSpec({
     "ascents da linha: texto, ícone e placa descem juntos" {
         LineGeometry.textAscent(7, 10) shouldBe -3
         LineGeometry.iconAscent(10) shouldBe -3
-        LineGeometry.plaqueAscent(10) shouldBe -1
+        LineGeometry.plaqueAscent(10) shouldBe 0
     }
 
     "placa é decomposta em potências de dois entre as tampas" {

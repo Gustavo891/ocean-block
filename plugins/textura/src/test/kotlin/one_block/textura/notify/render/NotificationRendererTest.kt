@@ -118,7 +118,7 @@ class NotificationRendererTest : StringSpec({
         val component = render(base, NotificationLine("<green>a</green>", 60), NotificationLine("<red>b</red>", 60))
         val (items, _) = draws(component)
         items.single { it.text == "a" }.color shouldBe AnchorMarker.glyph(ScreenAnchor.BOTTOM_LEFT, AnchorPalette.GREEN, 0)
-        items.single { it.text == "b" }.color shouldBe AnchorMarker.glyph(ScreenAnchor.BOTTOM_LEFT, AnchorPalette.RED, 1)
+        items.single { it.text == "b" }.color shouldBe AnchorMarker.glyph(ScreenAnchor.BOTTOM_LEFT, AnchorPalette.RED, 2)
 
         fun shadows(c: Component): List<Int> = listOfNotNull(c.shadowColor()?.value()) + c.children().flatMap(::shadows)
         shadows(component).filter { it ushr 24 != 0 }.map { (it shr 16) and 0xFF }.toSet() shouldBe setOf(AnchorMarker.SHADOW_RED)
@@ -135,7 +135,7 @@ class NotificationRendererTest : StringSpec({
         val left = region(ScreenAnchor.TOP_LEFT, 4, 4, StackDirection.DOWN, false)
         fun fonts(c: Component): List<Key> = listOfNotNull(c.font()) + c.children().flatMap(::fonts)
         fonts(render(left, NotificationLine("a", 60), NotificationLine("b", 60))).filter { it != SpacingFont.KEY }.toSet() shouldBe
-            setOf(NotificationFonts.key(4), NotificationFonts.key(16))
+            setOf(NotificationFonts.key(4), NotificationFonts.key(18))
     }
 
     "regiões aparecem na ordem da configuração e respeitam o limite" {
