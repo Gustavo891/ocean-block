@@ -3,10 +3,8 @@ package ocean_block.system.sell.view
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.CloseContext
-import me.devnatan.inventoryframework.context.Context
 import me.devnatan.inventoryframework.context.RenderContext
 import me.devnatan.inventoryframework.context.SlotClickContext
-import net.kyori.adventure.text.Component
 import ocean_block.libs.formatter.Mini
 import ocean_block.libs.formatter.NumberFormatter
 import ocean_block.libs.item_builder.addLore
@@ -34,12 +32,11 @@ class SellView : View() {
         val SELL_SLOTS = listOf(1..7, 10..16, 19..25).flatMap { it.toList() }
         private val FRAME_MATERIAL = Material.STRUCTURE_VOID
         private val BLANK_MODEL = NamespacedKey("oneblock", "blank")
+        private const val TITLE = "<white><shift:-8><glyph:sell_menu><font:oneblock:gui><shift:-170><dark_gray>Venda"
     }
 
-    private val shownTotal = mutableState(0.0)
-
     override fun onInit(config: ViewConfigBuilder) {
-        config.title(title(0.0))
+        config.title(Mini.mm.deserialize(TITLE))
             .layout(
                 "V       V",
                 "V       V",
@@ -59,15 +56,6 @@ class SellView : View() {
                 sell(render.inventory, click.player, returnUnsellable = false)
                 render.update()
             }
-    }
-
-    override fun onUpdate(update: Context) {
-        val render = update as? RenderContext ?: return
-        val total = quote(render.inventory).total
-        if (total == shownTotal.get(render)) return
-
-        shownTotal.set(total, render)
-        render.updateTitleForEveryone(title(total))
     }
 
     override fun onClick(click: SlotClickContext) {
@@ -126,13 +114,6 @@ class SellView : View() {
         player.inventory.addItem(item).values.forEach { leftover ->
             player.world.dropItemNaturally(player.location, leftover)
         }
-    }
-
-    private fun title(total: Double): Component {
-        val suffix = if (total > 0.0) " <dark_gray>» <dark_green>$<dark_gray>${NumberFormatter.format(total)}" else ""
-        return Mini.mm.deserialize(
-            "<white><shift:-8><glyph:sell_menu><font:oneblock:gui><shift:-170><dark_gray>Venda$suffix"
-        )
     }
 
     private fun frameItem() = itemStack(FRAME_MATERIAL) {
