@@ -24,10 +24,10 @@ boards:
       13: ' %nivel_barra% <gray>%nivel_progresso%'
       12: ' '
       11: ' <white>Coins: <green>$<white>%walletcoins_balance%'
-      10: ' <white>Pérolas: <color:#e9dcff>%walletperolas_balance%'
+      10: ' <white>Pérolas: <glyph:perola><color:#e9dcff>%walletperolas_balance%'
       9: ' <white>Tempo: <color:#9fe7ff>%playtime_total%'
       8: '  '
-      0: ' <color:#5b7a8c>redescreen.com'
+      0: ' <color:#b8d4e3>redescreen.com'
     defaultHideNumber: true
     defaultRenderEvery: 20
     conditions:
@@ -41,10 +41,10 @@ boards:
       13: ' %nivel_barra% <gray>%nivel_progresso%'
       12: ' '
       11: ' <white>Coins: <green>$<white>%walletcoins_balance%'
-      10: ' <white>Pérolas: <color:#e9dcff>%walletperolas_balance%'
+      10: ' <white>Pérolas: <glyph:perola><color:#e9dcff>%walletperolas_balance%'
       9: ' <white>Tempo: <color:#9fe7ff>%playtime_total%'
       8: '  '
-      0: ' <color:#5b7a8c>redescreen.com'
+      0: ' <color:#b8d4e3>redescreen.com'
     defaultHideNumber: true
     defaultRenderEvery: 20
     conditions: []

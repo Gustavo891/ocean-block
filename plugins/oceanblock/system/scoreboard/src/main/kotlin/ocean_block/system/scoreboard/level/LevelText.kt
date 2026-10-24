@@ -5,7 +5,7 @@ import kotlin.math.floor
 
 object LevelText {
 
-    const val BAR_SEGMENTS = 15
+    const val BAR_SEGMENTS = 10
     const val MAX_LEVEL = 9999
 
     private const val DIGIT_WIDTH = 6

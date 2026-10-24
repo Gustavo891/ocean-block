@@ -16,16 +16,16 @@ class LevelTextTest : StringSpec({
         LevelText.badge(123456) shouldBe "<glyph:nivel_badge_4><shift:-26><white>9999<shift:2>"
     }
 
-    "a barra enche um segmento a cada quinze avos do progresso" {
+    "a barra enche um segmento a cada décimo do progresso" {
         LevelText.bar(0.0) shouldBe "<glyph:nivel_barra_0>"
-        LevelText.bar(0.3341) shouldBe "<glyph:nivel_barra_5>"
-        LevelText.bar(0.999) shouldBe "<glyph:nivel_barra_14>"
-        LevelText.bar(1.0) shouldBe "<glyph:nivel_barra_15>"
+        LevelText.bar(0.3341) shouldBe "<glyph:nivel_barra_3>"
+        LevelText.bar(0.999) shouldBe "<glyph:nivel_barra_9>"
+        LevelText.bar(1.0) shouldBe "<glyph:nivel_barra_10>"
     }
 
     "a barra ignora progresso fora de 0 a 1" {
         LevelText.bar(-0.5) shouldBe "<glyph:nivel_barra_0>"
-        LevelText.bar(2.0) shouldBe "<glyph:nivel_barra_15>"
+        LevelText.bar(2.0) shouldBe "<glyph:nivel_barra_10>"
     }
 
     "o percentual usa vírgula e duas casas" {
