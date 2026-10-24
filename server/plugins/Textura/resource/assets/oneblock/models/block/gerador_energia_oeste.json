@@ -1,5 +1,5 @@
 {
-  "parent": "oneblock:block/maquina_frente_oeste",
+  "parent": "oneblock:block/maquina_frente_lisa_oeste",
   "textures": {
     "particle": "oneblock:block/maquinas/gerador_energia_side",
     "side": "oneblock:block/maquinas/gerador_energia_side",
