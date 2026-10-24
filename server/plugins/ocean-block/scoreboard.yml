@@ -16,7 +16,7 @@ enabled: true
 
 boards:
   spawn:
-    titles: '<gradient:#ff6600:#ffc66b><b>OCEAN BLOCK</b></gradient>'
+    titles: '<glyph:scoreboard_logo>'
     scores:
       14: ''
       13: ' <white>Localização: <gray>Spawn'
@@ -31,7 +31,7 @@ boards:
     - spawn
 
   default:
-    titles: '<gradient:#ff6600:#ffc66b><b>OCEAN BLOCK</b></gradient>'
+    titles: '<glyph:scoreboard_logo>'
     scores:
       16: ''
       15: '<white> Coins: <dark_green>$<white>%walletcoins%'

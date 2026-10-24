@@ -149,5 +149,5 @@ object ScoreboardConfig {
         defaults.save(file)
     }
 
-    private const val TITLE = "<gradient:#ff6600:#ffc66b><b>OCEAN BLOCK</b></gradient>"
+    private const val TITLE = "<glyph:scoreboard_logo>"
 }

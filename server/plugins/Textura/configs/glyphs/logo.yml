@@ -1,0 +1,9 @@
+scoreboard_logo:
+  id: scoreboard_logo
+  caminho: assets/oneblock/textures/hud/scoreboard_logo.png
+  unicode: 
+  ascent: 13
+  height: 20
+  size: 106
+  default: true
+  show_in_gui: true
