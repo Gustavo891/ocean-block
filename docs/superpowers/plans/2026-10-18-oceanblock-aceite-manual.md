@@ -228,3 +228,10 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Com uma Fornalha ou Minerador puxando energia, sai um rastro de pontos amarelos andando do Gerador/Painel até a máquina, só para quem está a até 24 blocos.
 - [ ] `/pref` (ou `/preferencias`) abre `Preferências` com `Rastro de energia` ligado; clicar desliga (o rastro some só para você) e a escolha continua depois de sair e entrar.
 - [ ] No menu do Gerador, `Mostrar raio` desenha um círculo ciano de 8 blocos em volta dele, só para você; clicar de novo esconde. Clique direito no Painel solar faz o mesmo. Afastar mais de 48 blocos, sair do servidor ou quebrar a fonte apaga o círculo.
+
+### Minerador estilo drill (barrier + display)
+- [ ] O Minerador aparece como a drill do Create: meia carcaça de andesito e madeira em cima e a broca cônica embaixo, sem buraco para o mundo (o bloco de baixo e os vizinhos aparecem inteiros). Na mão, o item mostra a drill.
+- [ ] Mineradores colocados antes desta versão viram drill sozinhos quando o chunk carrega, com energia, itens guardados e progresso intactos.
+- [ ] Colocar, sair e voltar (ou afastar até descarregar o chunk e voltar): a drill reaparece uma vez só, sem duplicar.
+- [ ] Clique direito abre o menu `Minerador`. Em survival, 3 cliques esquerdos rápidos quebram (som de metal, partículas) e dropam o item com o estado; visitante não quebra nem abre. Em criativo quebra com um clique.
+- [ ] Explosão, pistão e água não mexem no Minerador.

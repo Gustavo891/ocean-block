@@ -3,6 +3,8 @@ package ocean_block.system.machines.miner
 import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.custom_items.block.context.BlockClickContext
+import ocean_block.system.custom_items.block.context.BreakContext
+import ocean_block.system.custom_items.block.context.PlaceContext
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.machines.MachineBlock
 import ocean_block.system.machines.MachineIds
@@ -32,6 +34,8 @@ object MinerBlock : MachineBlock() {
         "<gray>Precisa de energia a até <white>8 blocos<gray>.",
     )
     override val limitPerIsland: Int = 4
+    override val material: Material = Material.BARRIER
+    override val texturaBlock: Boolean = false
 
     override fun storageCapacity(placed: PlacedBlock): Int = MinerRules.STORAGE
 
@@ -39,8 +43,23 @@ object MinerBlock : MachineBlock() {
         ctx.viewFrame.open(MinerMenu::class.java, ctx.player, ctx.placed)
     }
 
+    override fun onPlace(ctx: PlaceContext) {
+        MinerDisplay.ensure(ctx.placed, ctx.block)
+    }
+
+    override fun onBreak(ctx: BreakContext) {
+        MinerDisplay.remove(ctx.placed.uuid)
+    }
+
+    override fun adopt(placed: PlacedBlock, block: Block): Boolean {
+        if (!MinerRules.adopts(block.type.name)) return false
+        block.setType(Material.BARRIER, false)
+        return true
+    }
+
     override fun work(placed: PlacedBlock) {
         val block = placed.location.toBukkit()?.block ?: return
+        MinerDisplay.ensure(placed, block)
         val progress = MinerRules.advance(placed.counters[MinerRules.PROGRESS_KEY]?.toInt() ?: 0, TICKS)
         setCounter(placed, MinerRules.PROGRESS_KEY, progress.toLong())
         pushStorage(placed, block)

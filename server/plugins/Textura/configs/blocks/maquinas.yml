@@ -37,4 +37,5 @@ minerador:
     top: assets/oneblock/textures/block/maquinas/minerador_top.png
     bottom: assets/oneblock/textures/block/maquinas/minerador_bottom.png
     side: assets/oneblock/textures/block/maquinas/minerador_side.png
+    broca: assets/oneblock/textures/block/maquinas/minerador_broca.png
   model: assets/oneblock/models/block/minerador.json

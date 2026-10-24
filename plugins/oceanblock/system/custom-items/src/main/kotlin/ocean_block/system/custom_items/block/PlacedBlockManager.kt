@@ -172,7 +172,7 @@ object PlacedBlockManager {
         if (placed.uuid in validated) return true
 
         val bukkit = placed.location.toBukkit() ?: return false
-        if (bukkit.block.type != custom.material) {
+        if (bukkit.block.type != custom.material && !custom.adopt(placed, bukkit.block)) {
             Instance.logger.warning(
                 "[custom-items] bloco '${placed.blockId}' sumiu em ${placed.location}; registro removido."
             )

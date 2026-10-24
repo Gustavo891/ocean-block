@@ -18,4 +18,14 @@ object MinerRules {
     fun advance(progress: Int, ticks: Int): Int = minOf(progress + ticks, INTERVAL)
 
     fun isDue(progress: Int): Boolean = progress >= INTERVAL
+
+    const val HITS_TO_BREAK = 3
+    const val HIT_WINDOW_TICKS = 30
+
+    fun adopts(material: String): Boolean = material == "NOTE_BLOCK"
+
+    fun hits(previous: MinerHits?, now: Int): Int =
+        if (previous != null && now - previous.lastTick <= HIT_WINDOW_TICKS) previous.count + 1 else 1
 }
+
+data class MinerHits(val count: Int, val lastTick: Int)

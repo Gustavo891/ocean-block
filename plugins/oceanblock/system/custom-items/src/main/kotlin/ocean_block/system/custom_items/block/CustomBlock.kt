@@ -10,6 +10,7 @@ import ocean_block.system.custom_items.block.context.BreakContext
 import ocean_block.system.custom_items.block.context.PlaceContext
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.block.Block
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 
@@ -64,4 +65,6 @@ abstract class CustomBlock {
     open fun onRightClick(ctx: BlockClickContext) {}
 
     open fun tick(placed: PlacedBlock) {}
+
+    open fun adopt(placed: PlacedBlock, block: Block): Boolean = false
 }

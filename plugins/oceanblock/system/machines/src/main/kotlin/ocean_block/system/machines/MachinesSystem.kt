@@ -11,6 +11,8 @@ import ocean_block.system.machines.furnace.FurnaceRecipes
 import ocean_block.system.machines.generator.GeneratorBlock
 import ocean_block.system.machines.generator.GeneratorMenu
 import ocean_block.system.machines.miner.MinerBlock
+import ocean_block.system.machines.miner.MinerBreakListener
+import ocean_block.system.machines.miner.MinerDisplay
 import ocean_block.system.machines.miner.MinerMenu
 import ocean_block.system.machines.pickaxe.SmelterPickaxeItem
 import ocean_block.system.machines.recipe.MachineRecipes
@@ -39,8 +41,16 @@ object MachinesSystem {
         viewFrame.with(GeneratorMenu(), FurnaceMenu(), MinerMenu())
         FurnaceRecipes.load()
         plugin.server.pluginManager.registerEvents(IndexListener(plugin), plugin)
-        plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyIndex.rebuild() }, 20L, REBUILD_TICKS)
+        plugin.server.pluginManager.registerEvents(MinerBreakListener(), plugin)
+        plugin.server.scheduler.runTaskTimer(plugin, Runnable {
+            EnergyIndex.rebuild()
+            MinerDisplay.cleanup()
+        }, 20L, REBUILD_TICKS)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyEffects.drawRadii() }, 20L, RADIUS_TICKS)
+    }
+
+    fun onDisable() {
+        MinerDisplay.removeAll()
     }
 
     private class IndexListener(private val plugin: JavaPlugin) : Listener {

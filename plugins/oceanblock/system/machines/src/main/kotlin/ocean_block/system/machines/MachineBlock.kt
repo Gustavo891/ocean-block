@@ -17,8 +17,10 @@ abstract class MachineBlock : CustomBlock() {
 
     override fun tickInterval(placed: PlacedBlock): Long = TICKS.toLong()
 
+    open val texturaBlock: Boolean = true
+
     override fun buildItem(placed: PlacedBlock?, amount: Int): ItemStack =
-        super.buildItem(placed, amount).also { BlockApi.markItem(it, id) }
+        super.buildItem(placed, amount).also { if (texturaBlock) BlockApi.markItem(it, id) }
 
     final override fun tick(placed: PlacedBlock) {
         placed.location.toBukkit()?.block?.let(::restoreAppearance)

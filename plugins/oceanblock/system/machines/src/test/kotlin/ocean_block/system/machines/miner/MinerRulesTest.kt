@@ -38,6 +38,19 @@ class MinerRulesTest : StringSpec({
         AutoSmelt.smelt("DIAMOND") shouldBe null
     }
 
+    "minerador antigo em note block e adotado como barrier, o resto nao" {
+        MinerRules.adopts("NOTE_BLOCK") shouldBe true
+        MinerRules.adopts("AIR") shouldBe false
+        MinerRules.adopts("STONE") shouldBe false
+    }
+
+    "golpes para quebrar valem dentro da janela" {
+        MinerRules.hits(previous = null, now = 100) shouldBe 1
+        MinerRules.hits(previous = MinerHits(2, 90), now = 100) shouldBe 3
+        MinerRules.hits(previous = MinerHits(2, 50), now = 100) shouldBe 1
+        MinerRules.HITS_TO_BREAK shouldBe 3
+    }
+
     "ids das maquinas" {
         MachineIds.blocks shouldBe listOf("gerador_energia", "painel_solar", "fornalha_eletrica", "minerador")
         MachineIds.PICKAXE shouldBe "picareta_fundidora"
