@@ -1,0 +1,83 @@
+maquina:
+  icon-gap: 3
+  icon-size: 9
+  text:
+    heading: { color: "#ffffff", bold: true }
+    body: { color: "#e2e4e8" }
+    muted: { color: "#9aa1a9" }
+    selected: { color: "#2b1a04" }
+    button: { color: "#ffffff" }
+    count: { color: "#ffffff" }
+    segment: { color: "#e2e4e8" }
+    good: { color: "#7ee081" }
+    accent: { color: "#ffb347" }
+    bad: { color: "#ff7a6e" }
+    disabled: { color: "#6b7078" }
+    body-bare: { color: "#ffffff" }
+    heading-bare: { color: "#ffffff", bold: true }
+    muted-bare: { color: "#aaaaaa" }
+    tooltip: { color: "#a8a8b3" }
+  surfaces:
+    sheet: ui:maquina/sheet
+    head: ui:maquina/head
+    well: ui:maquina/well
+    frame: ui:maquina/well
+  switch:
+    on: ui:maquina/switch_on
+    off: ui:maquina/switch_off
+    labels: { on: "Ligado", off: "Desligado" }
+  segmented:
+    art: ui:stone/segment
+    selected-art: ui:stone/segment_selected
+    text-style: segment
+    selected-text-style: selected
+    pad: 8
+    frame: ui:stone/segment_frame
+  button:
+    art: ui:maquina/button
+    text-style: button
+    looks:
+      light:
+        art: ui:maquina/button_light
+        text-style: button
+        selected-art: ui:maquina/button_light_selected
+        selected-text-style: selected
+        disabled-art: ui:maquina/button_light_disabled
+        disabled-text-style: disabled
+  nav:
+    art: ui:stone/nav
+    active-art: ui:stone/nav_active
+    text-style: body
+    active-text-style: selected
+    pad: 7
+  dropdown:
+    art: ui:stone/dropdown
+    arrow: ui:stone/arrow_down
+    text-style: body
+  slider:
+    track: ui:stone/slider_track
+    fill: ui:stone/slider_fill
+    text-style: body
+  slots:
+    art: ui:maquina/slot
+    missing-art: ui:maquina/slot_missing
+    text-style: count
+  chip:
+    art: ui:maquina/chip
+    text-style: body-bare
+    height: 20
+  icons:
+    gerador_item: ui:stone/icons/gerador_item
+    fornalha_eletrica: ui:stone/icons/fornalha_eletrica
+    minerador: ui:stone/icons/minerador
+    bateria_0: ui:stone/icons/bateria_0
+    bateria_1: ui:stone/icons/bateria_1
+    bateria_2: ui:stone/icons/bateria_2
+    bateria_3: ui:stone/icons/bateria_3
+    bateria_4: ui:stone/icons/bateria_4
+    bateria_5: ui:stone/icons/bateria_5
+    bateria_6: ui:stone/icons/bateria_6
+    bateria_7: ui:stone/icons/bateria_7
+    bateria_8: ui:stone/icons/bateria_8
+    bateria_9: ui:stone/icons/bateria_9
+    bateria_10: ui:stone/icons/bateria_10

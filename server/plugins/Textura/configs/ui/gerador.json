@@ -1,366 +1,114 @@
 {
   "title": "Gerador de energia",
   "close": "Fechar",
-  "theme": "stone",
+  "theme": "maquina",
   "column": [
     {
       "column": [
         {
+          "row": [
+            { "space": 4 },
+            { "text": "Gerador de Energia", "style": "heading", "align": "left", "w": "grow" },
+            { "text": "{estado}", "style": "{estado_estilo}", "align": "right", "w": "fit" },
+            { "space": 4 }
+          ],
+          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
+        },
+        {
           "column": [
             {
               "row": [
-                {
-                  "icon": "ui:gerador_item",
-                  "size": 32,
-                  "frame": true
-                },
+                { "icon": "ui:gerador_item", "size": 32, "frame": true },
                 {
                   "column": [
-                    {
-                      "text": "Gerador de Energia",
-                      "align": "left",
-                      "w": "fit",
-                      "style": "heading-bare"
-                    },
-                    {
-                      "text": "{status}",
-                      "style": "muted",
-                      "align": "left",
-                      "w": 210
-                    }
+                    { "text": "{status}", "style": "body", "align": "left", "w": 200 },
+                    { "text": "{maquinas_info}", "style": "muted", "align": "left", "w": "fit" }
                   ],
-                  "w": "grow",
-                  "h": "fit",
-                  "gap": 3,
-                  "pad": 0,
-                  "align": "start",
-                  "cross": "start"
+                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "start"
                 }
               ],
-              "w": "grow",
-              "h": "fit",
-              "gap": 8,
-              "pad": 0,
-              "align": "start",
-              "cross": "center",
-              "name": "Topo"
+              "w": "grow", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "center", "name": "Topo"
             },
             {
               "row": [
+                { "icon": "ui:bateria_{bateria_nivel}", "size": 48, "name": "Bateria" },
                 {
-                  "icon": "ui:bateria_{bateria_nivel}",
-                  "size": 48,
-                  "name": "Bateria"
+                  "column": [
+                    { "text": "Bateria", "style": "muted", "align": "left", "w": "fit" },
+                    { "text": "{energia_pct}%", "style": "heading", "align": "left", "w": "fit" },
+                    { "text": "{energia}", "style": "accent", "align": "left", "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "start"
                 },
                 {
                   "column": [
-                    {
-                      "text": "Bateria:",
-                      "style": "body",
-                      "align": "left",
-                      "w": "fit"
-                    },
-                    {
-                      "text": "{energia_pct}%",
-                      "style": "heading",
-                      "align": "left",
-                      "w": "fit"
-                    },
-                    {
-                      "text": "{energia}",
-                      "style": "accent",
-                      "align": "left",
-                      "w": "fit"
-                    }
+                    { "text": "+{gerando}", "style": "good", "align": "right", "w": "fit" },
+                    { "text": "-{gasto}", "style": "bad", "align": "right", "w": "fit" },
+                    { "text": "por segundo", "style": "muted", "align": "right", "w": "fit" }
                   ],
-                  "w": "grow",
-                  "h": "fit",
-                  "gap": 4,
-                  "pad": 0,
-                  "align": "start",
-                  "cross": "start"
+                  "w": "fit", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "end"
                 }
               ],
-              "w": "grow",
-              "h": "fit",
-              "gap": 10,
-              "pad": 0,
-              "align": "start",
-              "cross": "center",
-              "name": "Energia"
-            },
-            {
-              "row": [
-                {
-                  "text": "-{gasto}",
-                  "style": "bad",
-                  "align": "right",
-                  "w": "fit"
-                },
-                {
-                  "text": "+{gerando}",
-                  "style": "good",
-                  "align": "right",
-                  "w": "fit"
-                }
-              ],
-              "w": "grow",
-              "h": "fit",
-              "gap": 6,
-              "pad": 0,
-              "align": "start",
-              "cross": "center",
-              "name": "Fluxo"
-            },
-            {
-              "text": "{maquinas_info}",
-              "style": "muted",
-              "align": "left",
-              "w": "fit"
+              "w": "grow", "h": "fit", "gap": 10, "pad": 6, "align": "start", "cross": "center", "surface": "well", "name": "Energia"
             },
             {
               "grid": [
                 {
-                  "repeat": "maquinas",
-                  "perPage": 9,
-                  "slots": [
-                    1,
-                    1
-                  ],
-                  "items": [
-                    {
-                      "at": 0,
-                      "item": "{icone}",
-                      "name": "{nome}",
-                      "lore": [
-                        "{coord}"
-                      ]
-                    }
-                  ]
+                  "repeat": "maquinas", "perPage": 9,
+                  "slots": [1, 1], "items": [{ "at": 0, "item": "{icone}", "name": "{nome}", "lore": ["{coord}"] }]
                 }
               ],
-              "columns": 9,
-              "w": "grow",
-              "h": "fit",
-              "gap": 0,
-              "pad": 0,
-              "align": "start",
-              "cross": "start",
-              "name": "Maquinas"
+              "columns": 9, "w": "grow", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Maquinas"
             },
             {
               "row": [
-                {
-                  "column": [
-                    {
-                      "space": 3
-                    },
-                    {
-                      "text": "Mostrar raio",
-                      "style": "body",
-                      "align": "left",
-                      "w": "fit"
-                    }
-                  ],
-                  "w": "grow",
-                  "h": "fit",
-                  "gap": 1,
-                  "pad": 0,
-                  "align": "start",
-                  "cross": "start",
-                  "name": "Textos"
-                },
-                {
-                  "switch": false,
-                  "bind": "raio",
-                  "tooltip": "Mostrar raio\n⏵ Agora: {value}\n\nClique para alternar."
-                }
+                { "text": "Mostrar raio", "style": "body", "align": "left", "w": "grow" },
+                { "switch": false, "bind": "raio", "tooltip": "Mostrar raio\n⏵ Agora: {value}\n\nClique para alternar." }
               ],
-              "w": "grow",
-              "h": "fit",
-              "gap": 5,
-              "pad": 0,
-              "align": "start",
-              "cross": "center",
-              "name": "Raio"
+              "w": "grow", "h": "fit", "gap": 5, "pad": 0, "align": "start", "cross": "center", "name": "Raio"
             }
           ],
-          "h": "fit",
-          "gap": 4,
-          "pad": 6,
-          "align": "start",
-          "cross": "start",
-          "name": "Corpo",
-          "w": "grow"
+          "w": "grow", "h": "fit", "gap": 5, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
         }
       ],
-      "w": 260,
-      "h": "fit",
-      "gap": 0,
-      "pad": 1,
-      "align": "start",
-      "cross": "start",
-      "surface": "sheet",
-      "name": "Informacoes"
+      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Informacoes"
     },
     {
       "column": [
         {
           "row": [
-            {
-              "space": 3
-            },
-            {
-              "text": "Combustível",
-              "style": "heading",
-              "align": "left",
-              "icon": "item:coal",
-              "w": "grow"
-            },
-            {
-              "space": 2
-            }
+            { "space": 4 },
+            { "text": "Combustível", "style": "heading", "align": "left", "icon": "item:coal", "w": "grow" },
+            { "text": "{autonomia}", "style": "muted", "align": "right", "w": "fit" },
+            { "space": 4 }
           ],
-          "w": "grow",
-          "h": 15,
-          "gap": 3,
-          "pad": 0,
-          "align": "start",
-          "cross": "center",
-          "surface": "head",
-          "name": "Cabecalho"
+          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
         },
         {
           "column": [
             {
-              "slots": [
-                9,
-                1
-              ],
+              "slots": [9, 1],
               "items": [
-                {
-                  "at": 0,
-                  "item": "{s0}",
-                  "count": "{s0_qtd}",
-                  "name": "{s0_nome}",
-                  "lore": [
-                    "{s0_info}"
-                  ]
-                },
-                {
-                  "at": 1,
-                  "item": "{s1}",
-                  "count": "{s1_qtd}",
-                  "name": "{s1_nome}",
-                  "lore": [
-                    "{s1_info}"
-                  ]
-                },
-                {
-                  "at": 2,
-                  "item": "{s2}",
-                  "count": "{s2_qtd}",
-                  "name": "{s2_nome}",
-                  "lore": [
-                    "{s2_info}"
-                  ]
-                },
-                {
-                  "at": 3,
-                  "item": "{s3}",
-                  "count": "{s3_qtd}",
-                  "name": "{s3_nome}",
-                  "lore": [
-                    "{s3_info}"
-                  ]
-                },
-                {
-                  "at": 4,
-                  "item": "{s4}",
-                  "count": "{s4_qtd}",
-                  "name": "{s4_nome}",
-                  "lore": [
-                    "{s4_info}"
-                  ]
-                },
-                {
-                  "at": 5,
-                  "item": "{s5}",
-                  "count": "{s5_qtd}",
-                  "name": "{s5_nome}",
-                  "lore": [
-                    "{s5_info}"
-                  ]
-                },
-                {
-                  "at": 6,
-                  "item": "{s6}",
-                  "count": "{s6_qtd}",
-                  "name": "{s6_nome}",
-                  "lore": [
-                    "{s6_info}"
-                  ]
-                },
-                {
-                  "at": 7,
-                  "item": "{s7}",
-                  "count": "{s7_qtd}",
-                  "name": "{s7_nome}",
-                  "lore": [
-                    "{s7_info}"
-                  ]
-                },
-                {
-                  "at": 8,
-                  "item": "{s8}",
-                  "count": "{s8_qtd}",
-                  "name": "{s8_nome}",
-                  "lore": [
-                    "{s8_info}"
-                  ]
-                }
+                { "at": 0, "item": "{s0}", "count": "{s0_qtd}", "name": "{s0_nome}", "lore": ["{s0_info}"] },
+                { "at": 1, "item": "{s1}", "count": "{s1_qtd}", "name": "{s1_nome}", "lore": ["{s1_info}"] },
+                { "at": 2, "item": "{s2}", "count": "{s2_qtd}", "name": "{s2_nome}", "lore": ["{s2_info}"] },
+                { "at": 3, "item": "{s3}", "count": "{s3_qtd}", "name": "{s3_nome}", "lore": ["{s3_info}"] },
+                { "at": 4, "item": "{s4}", "count": "{s4_qtd}", "name": "{s4_nome}", "lore": ["{s4_info}"] },
+                { "at": 5, "item": "{s5}", "count": "{s5_qtd}", "name": "{s5_nome}", "lore": ["{s5_info}"] },
+                { "at": 6, "item": "{s6}", "count": "{s6_qtd}", "name": "{s6_nome}", "lore": ["{s6_info}"] },
+                { "at": 7, "item": "{s7}", "count": "{s7_qtd}", "name": "{s7_nome}", "lore": ["{s7_info}"] },
+                { "at": 8, "item": "{s8}", "count": "{s8_qtd}", "name": "{s8_nome}", "lore": ["{s8_info}"] }
               ],
-              "align": "start",
-              "name": "Slots"
+              "align": "start", "name": "Slots"
             },
-            {
-              "text": "Clique na máquina com combustível na mão.",
-              "style": "muted",
-              "align": "left",
-              "w": "grow"
-            },
-            {
-              "button": "Retirar tudo",
-              "bind": "retirar",
-              "look": "light",
-              "w": "grow",
-              "disabled": "{sem_comb}",
-              "tooltip": "Retirar combustível\n\nVolta tudo para o seu inventário."
-            }
+            { "text": "Clique na máquina com combustível na mão.", "style": "muted", "align": "left", "w": "grow" },
+            { "button": "Retirar tudo", "bind": "retirar", "look": "light", "w": "grow", "disabled": "{sem_comb}", "tooltip": "Retirar combustível\n\nVolta tudo para o seu inventário." }
           ],
-          "w": "grow",
-          "h": "fit",
-          "gap": 4,
-          "pad": 4,
-          "align": "start",
-          "cross": "start",
-          "name": "Corpo"
+          "w": "grow", "h": "fit", "gap": 6, "pad": 6, "align": "start", "cross": "start", "name": "Corpo"
         }
       ],
-      "w": 260,
-      "h": "fit",
-      "gap": 0,
-      "pad": 1,
-      "align": "start",
-      "cross": "start",
-      "surface": "sheet",
-      "name": "Combustivel"
+      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Combustivel"
     }
   ],
-  "w": "fit",
-  "h": "fit",
-  "gap": 8,
-  "pad": 0,
-  "align": "start",
-  "cross": "start"
+  "w": "fit", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "start"
 }

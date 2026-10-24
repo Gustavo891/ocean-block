@@ -37,6 +37,9 @@ object GeneratorDialog {
 
     private fun bind(binds: DialogBinds, player: Player, placed: PlacedBlock) {
         binds.text("status") { status(placed) }
+        binds.text("estado") { stateLabel(state(placed)).first }
+        binds.text("estado_estilo") { stateLabel(state(placed)).second }
+        binds.text("autonomia") { autonomy(state(placed)) }
         binds.text("energia") {
             "${NumberFormatter.format(state(placed).energy.toDouble())} / ${NumberFormatter.format(GeneratorRules.CAPACITY.toDouble())} E"
         }
@@ -93,6 +96,17 @@ object GeneratorDialog {
             state.hasFuel -> "Pronto para queimar"
             else -> "Coloque combustível para gerar"
         }
+    }
+
+    private fun stateLabel(state: GeneratorState): Pair<String, String> = when {
+        state.energy >= GeneratorRules.CAPACITY -> "CHEIO" to "accent"
+        state.burnTicks > 0 -> "QUEIMANDO" to "good"
+        else -> "PARADO" to "muted"
+    }
+
+    private fun autonomy(state: GeneratorState): String {
+        val seconds = GeneratorView.burnSeconds(state, Fuel::ticks)
+        return if (seconds > 0) "Autonomia ${duration(seconds)}" else "Vazio"
     }
 
     private fun fuelInfo(stack: FuelStack): String {
