@@ -9,7 +9,7 @@
           "column": [
             {
               "row": [
-                { "icon": "ui:gerador", "size": 24 },
+                { "icon": "ui:gerador_item", "size": 32, "frame": true },
                 {
                   "column": [
                     { "text": "Gerador de energia", "style": "heading", "align": "left", "w": "fit" },

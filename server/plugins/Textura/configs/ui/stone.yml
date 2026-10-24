@@ -21,6 +21,7 @@ stone:
     sheet: ui:stone/sheet
     head: ui:stone/head
     well: ui:stone/well
+    frame: ui:stone/well
   switch:
     on: ui:stone/switch_on
     off: ui:stone/switch_off
@@ -104,3 +105,4 @@ stone:
     fornalha_eletrica: ui:stone/icons/fornalha_eletrica
     minerador: ui:stone/icons/minerador
     painel_solar: ui:stone/icons/painel_solar
+    gerador_item: ui:stone/icons/gerador_item

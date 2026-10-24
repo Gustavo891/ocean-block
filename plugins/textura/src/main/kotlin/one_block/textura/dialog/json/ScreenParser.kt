@@ -393,7 +393,7 @@ class ScreenParser(private val logger: Logger) {
             val states = obj.get("states")?.takeIf { it.isJsonObject }?.asJsonObject?.entrySet()
                 ?.mapNotNull { (state, icon) -> runCatching { icon.asString }.getOrNull()?.let { state to it } }
                 ?.toMap().orEmpty()
-            return DefIcon(obj.string("icon").orEmpty(), iconSize(obj, path), position(obj, path), path, obj.string("bind"), states)
+            return DefIcon(obj.string("icon").orEmpty(), iconSize(obj, path), position(obj, path), path, obj.string("bind"), states, obj.bool("frame", path))
         }
 
         private fun segmented(obj: JsonObject, path: String): DefSegmented {
@@ -632,7 +632,7 @@ class ScreenParser(private val logger: Logger) {
         private val KNOWN: Map<String, Set<String>> = CONTAINERS.keys.associateWith { CONTAINER_KEYS + it } + mapOf(
             "space" to setOf("space"),
             "text" to setOf("text", "style", "align", "w", "icon", "color", "bold", "scale", "tooltip", "x", "y"),
-            "icon" to setOf("icon", "size", "x", "y", "bind", "states"),
+            "icon" to setOf("icon", "size", "x", "y", "bind", "states", "frame"),
             "image" to setOf("image", "w", "x", "y"),
             "switch" to setOf("switch", "bind", "tooltip"),
             "segmented" to setOf("segmented", "selected", "bind", "w", "tooltip"),

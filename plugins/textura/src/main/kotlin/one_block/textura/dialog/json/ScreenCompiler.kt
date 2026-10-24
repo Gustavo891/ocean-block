@@ -119,7 +119,26 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             if (id.isEmpty() || PLACEHOLDER_MARK in id) {
                 return ContainerNode(ContainerKind.Box, emptyList(), w = UiSize.Px(def.size), h = UiSize.Px(def.size), position = def.position)
             }
-            return IconNode(icon(id), def.size, def.position)
+            val node = IconNode(icon(id), def.size, def.position)
+            return if (def.frame) framed(node, def) else node
+        }
+
+        private fun framed(node: IconNode, def: DefIcon): UiNode {
+            val art = theme.surfaces[FRAME_SURFACE] ?: run {
+                warn("${def.path}: tema '${theme.id}' sem surface '$FRAME_SURFACE' para o frame do ícone")
+                return node
+            }
+            val side = def.size + FRAME_PAD * 2
+            return ContainerNode(
+                ContainerKind.Box,
+                listOf(node.copy(position = null)),
+                align = UiAlign.Center,
+                cross = UiAlign.Center,
+                surface = art,
+                w = UiSize.Px(side),
+                h = UiSize.Px(side),
+                position = def.position,
+            )
         }
 
         private fun clickAction(click: DefClick, bind: String?): UiAction {
@@ -557,6 +576,8 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         const val MAX_WIDTH = 399
         const val DEFAULT_SLIDER_WIDTH = 80
         const val DEFAULT_PROGRESS_WIDTH = 100
+        const val FRAME_SURFACE = "frame"
+        const val FRAME_PAD = 4
         const val DEFAULT_SLOT_SIZE = 18
         const val STUDIO_WIDTH = 388
         private const val SLOT_BORDER = 2

@@ -49,6 +49,7 @@ data class DefIcon(
     override val path: String,
     val bind: String? = null,
     val states: Map<String, String> = emptyMap(),
+    val frame: Boolean = false,
 ) : DefNode
 
 data class DefImage(val id: String, val w: UiSize, val position: UiPosition?, override val path: String) : DefNode

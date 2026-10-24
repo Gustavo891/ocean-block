@@ -193,7 +193,7 @@ Folhas:
 |---|---|
 | `{"space": n}` | — |
 | `{"text": "…"}` | `style` (aceita `"{chave}"`, ex.: `good`/`bad` por entrada), `align` (`left`/`center`/`right`), `w`, `icon`, `color`, `bold`, `tooltip`; `scale` só aceita 1 |
-| `{"icon": "ui:x"}` | `size` (px, default 8) |
+| `{"icon": "ui:x"}` | `size` (px, default 8); `"frame": true` desenha a surface `frame` do tema (no `stone`, o `well`, fundo de slot do inventário) em volta, com 4 px de folga |
 | `{"image": "ui:x"}` | `w` (estica se a imagem tiver `.slice`) |
 | `{"switch": true}` | `bind`, `tooltip` |
 | `{"segmented": ["A","B"]}` | `selected`, `bind`, `w`, `tooltip` |
