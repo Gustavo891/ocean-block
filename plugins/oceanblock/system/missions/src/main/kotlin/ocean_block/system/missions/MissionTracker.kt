@@ -9,6 +9,7 @@ import ocean_block.system.missions.model.MissionSignal
 import ocean_block.system.missions.model.PlayerMissions
 import ocean_block.system.missions.notify.MissionNotifier
 import ocean_block.system.missions.rules.MissionRules
+import ocean_block.system.missions.text.MissionText
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import java.time.LocalDate
@@ -35,10 +36,9 @@ object MissionTracker {
             completed += more
         }
         MissionManager.set(uuid, state)
-        completed.forEach {
-            MissionNotifier.completed(player, it)
-            PlayerLevels.award(player, it.xp)
-        }
+        if (completed.isNotEmpty()) MissionNotifier.completed(player)
+        MissionHud.completed(player, completed.map { MissionText.completed(it.mission, it.xp) })
+        completed.forEach { PlayerLevels.award(player, it.xp) }
         MissionHud.show(player, MissionManager.get(uuid))
     }
 

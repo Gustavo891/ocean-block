@@ -1,6 +1,7 @@
 package ocean_block.system.missions.text
 
 import ocean_block.system.missions.catalog.DailyPool
+import ocean_block.system.missions.model.Mission
 import ocean_block.system.missions.model.MissionObjective
 import ocean_block.system.missions.rules.MissionRules
 import java.util.Locale
@@ -18,6 +19,9 @@ object MissionText {
         val tail = if (counter.isEmpty()) "" else " <gray>$counter"
         return "<aqua>$label</aqua> <white>${current.mission.text}</white>$tail"
     }
+
+    fun completed(mission: Mission, xp: Int): String =
+        "<green>Missão concluída:</green> <white>${mission.text}</white>" + if (xp > 0) " <gold>+$xp XP" else ""
 
     fun counter(objective: MissionObjective, progress: Long): String {
         val goal = objective.goal

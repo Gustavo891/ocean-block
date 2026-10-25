@@ -37,4 +37,11 @@ class MissionTextTest : StringSpec({
     "tudo feito pede para voltar amanha" {
         MissionText.hud(null, trailDone = true) shouldBe "<gray>Diárias concluídas. Volte amanhã!"
     }
+
+    "missao concluida mostra o texto e o xp" {
+        MissionText.completed(MissionTrail.all[0], 50) shouldBe
+            "<green>Missão concluída:</green> <white>Colete 10 detritos usando o gancho</white> <gold>+50 XP"
+        MissionText.completed(MissionTrail.all[0], 0) shouldBe
+            "<green>Missão concluída:</green> <white>Colete 10 detritos usando o gancho</white>"
+    }
 })
