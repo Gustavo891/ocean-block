@@ -9,6 +9,7 @@ object AnchorMarker {
     const val SHADOW_RED = 253
     const val STEP = 16
     const val MAX_LIFT = STEP - 1
+    const val RAISE_ID = 7
     private const val OPAQUE = 255
 
     fun glyph(anchor: ScreenAnchor, palette: AnchorPalette): TextColor = glyph(anchor, palette, 0)
@@ -20,6 +21,12 @@ object AnchorMarker {
 
     fun shadow(anchor: ScreenAnchor, palette: AnchorPalette, lift: Int): ShadowColor =
         ShadowColor.shadowColor(SHADOW_RED, green(anchor), blue(palette, lift), OPAQUE)
+
+    fun raisedGlyph(palette: AnchorPalette): TextColor =
+        TextColor.color(GLYPH_RED, RAISE_ID * STEP, blue(palette, 0))
+
+    fun raisedShadow(palette: AnchorPalette, alpha: Int): ShadowColor =
+        ShadowColor.shadowColor(SHADOW_RED, RAISE_ID * STEP, blue(palette, 0), alpha)
 
     private fun green(anchor: ScreenAnchor): Int = anchor.id * STEP
 

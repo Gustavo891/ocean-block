@@ -37,7 +37,7 @@ object HudRenderer {
     private data class Part(val component: Component, val width: Int, val cursor: Int)
 
     private fun part(text: String, glyphs: HudBackground.Glyphs): Part {
-        val textComp = miniMessage.deserialize("<font:minecraft:bossbar>$text</font>")
+        val textComp = HudRaise.mark(miniMessage.deserialize("<font:minecraft:bossbar>$text</font>"))
 
         val plain = plainText.serialize(miniMessage.deserialize(text))
         val textPixels = TextMetrics.calculateWidth(plain)

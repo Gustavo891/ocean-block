@@ -1,7 +1,8 @@
 package one_block.textura.hud
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.ShadowColor
+import one_block.textura.hud.anchor.AnchorMarker
+import one_block.textura.hud.anchor.AnchorPalette
 import org.bukkit.Bukkit
 import one_block.textura.api.GlyphApi
 import one_block.textura.text.TextMetrics
@@ -51,7 +52,7 @@ object HudBackground {
                 segments - 1 -> g.right
                 else -> g.body
             }
-            comp = comp.append(Component.text(ch).shadowColor(ShadowColor.shadowColor(42, 42, 42, 30)))
+            comp = comp.append(Component.text(ch, AnchorMarker.raisedGlyph(AnchorPalette.WHITE)).shadowColor(AnchorMarker.raisedShadow(AnchorPalette.GRAY, 30)))
             if (i < segments - 1) comp = comp.append(TextMetrics.getSpacingComponent(-1))
         }
         return comp

@@ -32,7 +32,7 @@ const int TEXTURA_HUD_GLYPH_RED = 254;
 const int TEXTURA_HUD_SHADOW_RED = 253;
 const int TEXTURA_HUD_QUARTER_RED = 63;
 const int TEXTURA_HUD_STEP = 16;
-const int TEXTURA_HUD_ANCHORS = 6;
+const int TEXTURA_HUD_ANCHORS = 7;
 const int TEXTURA_HUD_PALETTE_SIZE = 16;
 
 const float TEXTURA_HUD_BAR_TEXT_TOP = 3.0;
@@ -40,6 +40,7 @@ const float TEXTURA_HUD_LINE_HEIGHT = 9.0;
 const float TEXTURA_HUD_MARGIN_X = 2.0;
 const float TEXTURA_HUD_MARGIN_BOTTOM = 2.0;
 const float TEXTURA_HUD_LIFT_STEP = 12.0;
+const float TEXTURA_HUD_BAR_STEP = 19.0;
 
 const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(0.0, 0.0, 0.0),
@@ -92,6 +93,7 @@ int texturaHudDecode(vec4 color, out int palette, out int lift, out bool shadow)
 }
 
 vec2 texturaHudOffset(int anchor) {
+    if (anchor == 7) return vec2(0.0, -TEXTURA_HUD_BAR_STEP);
     float guiWidth = 2.0 / abs(ProjMat[0][0]);
     float guiHeight = 2.0 / abs(ProjMat[1][1]);
     float originX = floor(ceil(guiWidth - 0.01) * 0.5);
