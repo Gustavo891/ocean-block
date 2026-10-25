@@ -20,8 +20,6 @@ abismo:
     well: ui:abismo/well
     frame: ui:abismo/well
   switch:
-    on: ui:mare/switch_on
-    off: ui:mare/switch_off
     labels: { on: "Ligado", off: "Desligado" }
   segmented:
     art: ui:stone/segment
