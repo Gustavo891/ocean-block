@@ -20,6 +20,7 @@ internal object NetDelivery {
         placed.setStorage(inventory)
         PlacedBlockManager.markDirty(placed)
         NetIndex.refresh(placed)
+        NetDisplay.refresh(placed)
         NetFullNotifier.afterChange(placed)
         at.world?.spawnParticle(Particle.SPLASH, at, SPLASH_COUNT)
     }

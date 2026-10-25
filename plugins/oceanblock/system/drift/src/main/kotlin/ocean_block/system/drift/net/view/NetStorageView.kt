@@ -11,6 +11,7 @@ import ocean_block.libs.item_builder.setLore
 import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.drift.net.NetBlock
+import ocean_block.system.drift.net.NetDisplay
 import ocean_block.system.drift.net.NetFullNotifier
 import ocean_block.system.drift.net.NetIndex
 import org.bukkit.Material
@@ -89,6 +90,7 @@ class NetStorageView : View() {
         placed.setStorage(items)
         PlacedBlockManager.saveNow(placed)
         NetIndex.refresh(placed)
+        NetDisplay.refresh(placed)
         NetFullNotifier.afterChange(placed)
     }
 
