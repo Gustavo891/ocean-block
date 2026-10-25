@@ -82,7 +82,7 @@ object FurnaceDialog {
         val result = FurnaceRecipes.results[material]?.takeIf { MachineItems.isVanilla(stack) }
         return mapOf(
             "item" to (result?.let { ItemLabels.icon(material) } ?: LOCKED_ICON),
-            "qtd" to stack.amount.toString(),
+            "qtd" to (if (result == null) 1 else stack.amount).toString(),
             "nome" to ItemLabels.name(material),
             "dica" to (result?.let { "Vira ${ItemLabels.name(it)}. Clique para colocar." } ?: "Não derrete aqui."),
             "nao" to (result == null).toString(),
