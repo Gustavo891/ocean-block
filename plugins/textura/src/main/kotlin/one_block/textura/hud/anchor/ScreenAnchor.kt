@@ -7,4 +7,5 @@ enum class ScreenAnchor(val id: Int, val alignsRight: Boolean, val isBottom: Boo
     MIDDLE_RIGHT(4, true, false),
     BOTTOM_LEFT(5, false, true),
     BOTTOM_RIGHT(6, true, true),
+    CENTER(8, false, false),
 }

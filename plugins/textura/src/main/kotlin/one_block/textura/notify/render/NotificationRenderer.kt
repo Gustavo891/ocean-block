@@ -33,22 +33,34 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
         fun build(): Component = Component.empty().children(parts)
     }
 
-    fun render(regions: List<NotificationRegion>, lines: Map<String, List<NotificationLine>>, kit: NotificationKit, translate: (String) -> String?): Component {
+    fun render(regions: List<NotificationRegion>, lines: Map<String, List<NotificationLine>>, kit: NotificationKit, translate: (String) -> String?): Component =
+        render(regions, lines, kit, emptyMap(), translate)
+
+    fun render(
+        regions: List<NotificationRegion>,
+        lines: Map<String, List<NotificationLine>>,
+        kit: NotificationKit,
+        frames: Map<String, List<Int>>,
+        translate: (String) -> String?,
+    ): Component {
         val painter = TextPainter(kit.textFont, translate)
         val parts = regions.flatMap { region ->
-            lines[region.id].orEmpty().take(region.maxLines).mapIndexedNotNull { index, line -> line(region, index, line, kit, painter) }
+            lines[region.id].orEmpty().take(region.maxLines).mapIndexedNotNull { index, line ->
+                line(region, index, line, kit, painter, frames[region.id]?.getOrNull(index) ?: 0)
+            }
         }
         return Component.empty().children(parts)
     }
 
-    fun line(region: NotificationRegion, index: Int, line: NotificationLine, kit: NotificationKit, painter: TextPainter): Component? {
+    fun line(region: NotificationRegion, index: Int, line: NotificationLine, kit: NotificationKit, painter: TextPainter, frame: Int): Component? {
         val slot = LineGeometry.slot(region, index) ?: return null
+        val lift = if (region.animated) frame else slot.lift
         val font = NotificationFonts.key(slot.textTop)
-        val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, slot.lift, font)
+        val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, lift, font)
         val icon = kit.icon(line.icon)
         val span = LineGeometry.span(region, LineGeometry.contentWidth(text.width, icon != null))
         val cursor = Cursor()
-        val plain = AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)
+        val plain = AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, lift)
 
         val plaque = kit.plaque
         if (region.background && plaque != null && span.boxWidth >= 2 * PlaquePieces.CAP_WIDTH) {

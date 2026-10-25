@@ -23,6 +23,7 @@ internal object RegionConfigParser {
         "MEIO_DIREITA" to ScreenAnchor.MIDDLE_RIGHT,
         "BASE_ESQUERDA" to ScreenAnchor.BOTTOM_LEFT,
         "BASE_DIREITA" to ScreenAnchor.BOTTOM_RIGHT,
+        "CENTRO" to ScreenAnchor.CENTER,
     )
 
     private val DIRECTIONS = mapOf("baixo" to StackDirection.DOWN, "cima" to StackDirection.UP)
@@ -30,6 +31,7 @@ internal object RegionConfigParser {
     val DEFAULTS: List<NotificationRegion> = listOf(
         NotificationRegion("coleta", ScreenAnchor.MIDDLE_RIGHT, 0, 70, 6, DEFAULT_SPACING, true, StackDirection.DOWN),
         NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 4, 4, 3, DEFAULT_SPACING, true, StackDirection.DOWN),
+        NotificationRegion("xp", ScreenAnchor.CENTER, 8, 28, 1, DEFAULT_SPACING, false, StackDirection.DOWN, animated = true),
     )
 
     fun load(file: File, warn: Consumer<String>): List<NotificationRegion> {
@@ -77,8 +79,13 @@ internal object RegionConfigParser {
         val spacing = int(section, id, "espacamento", DEFAULT_SPACING, 0, MAX_SPACING, warn)
         val background = bool(section, id, "fundo", true, warn)
         val direction = direction(section, id, anchor, warn)
+        val animated = bool(section, id, "animacao", false, warn)
+        if (animated && y < 0) {
+            warn.accept("região '$id': região animada precisa de y >= 0; ignorada")
+            return null
+        }
 
-        val draft = NotificationRegion(id, anchor, x, y, lines, spacing, background, direction)
+        val draft = NotificationRegion(id, anchor, x, y, lines, spacing, background, direction, animated)
         val fitting = LineGeometry.fittingLines(draft)
         if (fitting < 1) {
             warn.accept("região '$id': y $y sobe mais que o shader alcança; ignorada")

@@ -17,3 +17,14 @@ avisos:
   espacamento: 1
   fundo: true
   direcao: baixo
+
+xp:
+  id: xp
+  ancora: CENTRO
+  x: 8
+  y: 28
+  linhas: 1
+  espacamento: 1
+  fundo: false
+  direcao: baixo
+  animacao: true

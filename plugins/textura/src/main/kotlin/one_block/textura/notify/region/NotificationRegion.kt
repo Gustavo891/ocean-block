@@ -13,4 +13,5 @@ internal data class NotificationRegion(
     val spacing: Int,
     val background: Boolean,
     val direction: StackDirection,
+    val animated: Boolean = false,
 )

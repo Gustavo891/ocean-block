@@ -425,12 +425,15 @@ coleta:
 | Campo | Valor | Padrão |
 |---|---|---|
 | `id` | nome usado no código (`NotificationApi.push(player, "coleta", ...)`) | a chave |
-| `ancora` | `TOPO_ESQUERDA`, `TOPO_DIREITA`, `MEIO_ESQUERDA`, `MEIO_DIREITA`, `BASE_ESQUERDA`, `BASE_DIREITA` | obrigatório |
+| `ancora` | `TOPO_ESQUERDA`, `TOPO_DIREITA`, `MEIO_ESQUERDA`, `MEIO_DIREITA`, `BASE_ESQUERDA`, `BASE_DIREITA`, `CENTRO` | obrigatório |
 | `x`, `y` | deslocamento em px de GUI (x para a direita, y para baixo) a partir da âncora | 0 |
 | `linhas` | máximo de linhas visíveis (1..15). Cheia, a mais antiga sai | 3 |
 | `espacamento` | px entre uma linha e a próxima (0..32). O passo é 13 + espaçamento | 1 |
 | `fundo` | placa escura semitransparente na largura do conteúdo | true |
 | `direcao` | `baixo` ou `cima` | `cima` nas âncoras `BASE_*`, `baixo` nas outras |
+| `animacao` | `true`: cada linha fica parada na primeira metade da duração e na segunda sobe 1 px por quadro e some aos poucos (15 quadros); precisa de `y >= 0` | false |
+
+`CENTRO` alinha pela esquerda a partir do centro da tela, e `y: 0` fica 32 px acima do centro (a região `xp`, com `x: 8` e `y: 28`, põe o texto logo à direita da mira). Numa região animada o lift do marcador vira o quadro da animação: o shader (âncora 8) sobe a linha 1 px por quadro e multiplica o alfa por `1 - quadro/16`, e o serviço redesenha a cada 2 ticks enquanto houver linha animada.
 
 `y: 0` põe a primeira linha onde o texto da bossbar ficaria. Âncoras à direita
 alinham pela direita: o fundo termina em `x`. Valor inválido gera um aviso

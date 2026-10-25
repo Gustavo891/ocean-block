@@ -19,7 +19,7 @@ object LevelNotifier : Listener {
     const val ICON_MATERIAL = "experience_bottle"
 
     private const val ICON = "item:$ICON_MATERIAL"
-    private const val XP_DURATION_TICKS = 60
+    private const val XP_DURATION_TICKS = 40
     private const val LEVEL_DURATION_TICKS = 100
 
     private val tallies = mutableMapOf<UUID, XpTally>()
@@ -28,7 +28,7 @@ object LevelNotifier : Listener {
         if (amount <= 0) return
         val tally = tallies.getOrPut(player.uniqueId) { XpTally(XP_DURATION_TICKS.toLong()) }
         val total = tally.add(amount, Bukkit.getCurrentTick().toLong())
-        NotificationApi.push(player, "coleta", NotificationLine("<green>+$total</green> <white>XP</white>", ICON, XP_DURATION_TICKS, "coleta:xp"))
+        NotificationApi.push(player, "xp", NotificationLine(XpText.gain(total), null, XP_DURATION_TICKS, "xp"))
     }
 
     fun levelUp(player: Player, level: Int, unlocked: List<OceanRecipe>) {

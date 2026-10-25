@@ -32,7 +32,7 @@ const int TEXTURA_HUD_GLYPH_RED = 254;
 const int TEXTURA_HUD_SHADOW_RED = 253;
 const int TEXTURA_HUD_QUARTER_RED = 63;
 const int TEXTURA_HUD_STEP = 16;
-const int TEXTURA_HUD_ANCHORS = 7;
+const int TEXTURA_HUD_ANCHORS = 8;
 const int TEXTURA_HUD_PALETTE_SIZE = 16;
 
 const float TEXTURA_HUD_BAR_TEXT_TOP = 3.0;
@@ -41,6 +41,8 @@ const float TEXTURA_HUD_MARGIN_X = 2.0;
 const float TEXTURA_HUD_MARGIN_BOTTOM = 2.0;
 const float TEXTURA_HUD_LIFT_STEP = 12.0;
 const float TEXTURA_HUD_BAR_STEP = 19.0;
+const float TEXTURA_HUD_CENTER_TOP = 32.0;
+const float TEXTURA_HUD_FADE_STEPS = 16.0;
 
 const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(0.0, 0.0, 0.0),
@@ -96,6 +98,7 @@ vec2 texturaHudOffset(int anchor) {
     if (anchor == 7) return vec2(0.0, -TEXTURA_HUD_BAR_STEP);
     float guiWidth = 2.0 / abs(ProjMat[0][0]);
     float guiHeight = 2.0 / abs(ProjMat[1][1]);
+    if (anchor == 8) return vec2(0.0, floor(guiHeight * 0.5) - TEXTURA_HUD_BAR_TEXT_TOP - TEXTURA_HUD_CENTER_TOP);
     float originX = floor(ceil(guiWidth - 0.01) * 0.5);
 
     int column = (anchor - 1) % 2;
@@ -132,13 +135,20 @@ void main() {
     bool hudShadow;
     int hudAnchor = texturaHudDecode(Color, hudPalette, hudLift, hudShadow);
     if (hudAnchor > 0) {
-        vec2 offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift) * TEXTURA_HUD_LIFT_STEP);
+        vec2 offset;
+        float fade = 1.0;
+        if (hudAnchor == 8) {
+            offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift));
+            fade = 1.0 - float(hudLift) / TEXTURA_HUD_FADE_STEPS;
+        } else {
+            offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift) * TEXTURA_HUD_LIFT_STEP);
+        }
         gl_Position.x += offset.x * ProjMat[0][0] * gl_Position.w;
         gl_Position.y += offset.y * ProjMat[1][1] * gl_Position.w;
 
         vec3 rgb = TEXTURA_HUD_PALETTE[hudPalette];
         if (hudShadow) rgb = floor(rgb * 0.25);
-        vertexColor = vec4(rgb / 255.0, Color.a);
+        vertexColor = vec4(rgb / 255.0, Color.a * fade);
     }
 #endif
 

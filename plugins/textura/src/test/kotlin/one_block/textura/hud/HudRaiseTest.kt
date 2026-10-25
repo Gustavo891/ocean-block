@@ -59,7 +59,7 @@ class HudRaiseTest : StringSpec({
             .resolve("server/plugins/Textura/resource/assets/minecraft/shaders/core/text.vsh")
             .readText()
 
-        shader shouldContain "const int TEXTURA_HUD_ANCHORS = 7;"
+        shader shouldContain "const int TEXTURA_HUD_ANCHORS = 8;"
         shader shouldContain "const float TEXTURA_HUD_BAR_STEP = 19.0;"
         shader shouldContain "if (anchor == 7) return vec2(0.0, -TEXTURA_HUD_BAR_STEP);"
     }

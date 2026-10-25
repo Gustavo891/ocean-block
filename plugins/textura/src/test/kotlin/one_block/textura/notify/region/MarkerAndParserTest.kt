@@ -94,7 +94,7 @@ class MarkerAndParserTest : StringSpec({
         val (regions, warnings) = parse(
             """
             a:
-              ancora: CENTRO
+              ancora: MEIO
             b:
               ancora: TOPO_DIREITA
             """.trimIndent(),

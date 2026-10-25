@@ -4,6 +4,7 @@ import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import one_block.textura.api.TexturaTags
 import one_block.textura.notify.NotificationLine
+import one_block.textura.notify.region.NotificationAnimation
 import one_block.textura.notify.region.NotificationRegion
 import one_block.textura.notify.region.RegionLines
 import one_block.textura.notify.render.NotificationKit
@@ -114,7 +115,8 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
                 return@forEach
             }
             val expired = viewer.regions.values.map { it.expire(now) }.any { it }
-            if (expired) refresh(viewer)
+            val animating = viewer.regions.any { (id, state) -> regions[id]?.animated == true && !state.isEmpty() }
+            if (expired || animating) refresh(viewer)
         }
     }
 
@@ -123,11 +125,15 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
     }
 
     private fun refresh(viewer: Viewer) {
+        val now = now()
         val lines = viewer.regions.mapValues { (_, state) -> state.lines().map { it.line } }
+        val frames = viewer.regions.mapValues { (id, state) ->
+            if (regions[id]?.animated == true) state.lines().map { NotificationAnimation.frame(now - it.startedAt, it.line.durationTicks) } else emptyList()
+        }
         val name = if (lines.values.all { it.isEmpty() }) {
             Component.empty()
         } else {
-            renderer.render(regions.values.toList(), lines, kit) { key -> translations[key] }
+            renderer.render(regions.values.toList(), lines, kit, frames) { key -> translations[key] }
         }
         if (name != viewer.lastName) {
             viewer.bar.name(name)
@@ -152,7 +158,7 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
     }
 
     private companion object {
-        const val EXPIRY_PERIOD = 5L
+        const val EXPIRY_PERIOD = 2L
     }
 }
 

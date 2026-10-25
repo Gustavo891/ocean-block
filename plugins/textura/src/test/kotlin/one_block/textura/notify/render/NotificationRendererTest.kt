@@ -182,4 +182,22 @@ class NotificationRendererTest : StringSpec({
         items.map { it.text }.shouldContainExactly("a")
         end shouldBe 0
     }
+
+    "regiao animada usa o quadro como lift e a ancora central" {
+        val center = NotificationRegion("xp", ScreenAnchor.CENTER, 8, 0, 1, 1, false, StackDirection.DOWN, animated = true)
+        val component = renderer.render(
+            listOf(center),
+            mapOf("xp" to listOf(NotificationLine("<green>+8</green> XP", 40))),
+            kit,
+            mapOf("xp" to listOf(5)),
+        ) { null }
+
+        val (items, end) = draws(component)
+        end shouldBe 0
+        items.first().x shouldBe 8
+        items.forEach { draw ->
+            draw.color?.green() shouldBe ScreenAnchor.CENTER.id * AnchorMarker.STEP
+            draw.color?.blue()?.rem(AnchorMarker.STEP) shouldBe 5
+        }
+    }
 })
