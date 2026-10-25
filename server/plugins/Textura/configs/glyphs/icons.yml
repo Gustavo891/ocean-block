@@ -35,7 +35,7 @@ hud_left:
   id: hud_left
   caminho: assets/oneblock/textures/hud/left.png
   unicode: \uE100
-  ascent: 13
+  ascent: 6
   size: 6
   height: 14
   default: true
@@ -45,7 +45,7 @@ hud_body:
   id: hud_body
   caminho: assets/oneblock/textures/hud/body.png
   unicode: \uE101
-  ascent: 13
+  ascent: 6
   size: 6
   height: 14
   default: true
@@ -55,7 +55,7 @@ hud_right:
   id: hud_right
   caminho: assets/oneblock/textures/hud/right.png
   unicode: \uE102
-  ascent: 13
+  ascent: 6
   size: 6
   height: 14
   default: true
