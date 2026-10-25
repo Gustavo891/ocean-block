@@ -1,0 +1,70 @@
+mare:
+  icon-gap: 3
+  icon-size: 9
+  text:
+    heading: { color: "#404040", bold: true, shadow: false }
+    body: { color: "#404040", shadow: false }
+    muted: { color: "#707070", shadow: false }
+    selected: { color: "#ffffa0" }
+    button: { color: "#ffffff" }
+    count: { color: "#ffffff" }
+    segment: { color: "#404040", shadow: false }
+    good: { color: "#2a7a14", shadow: false }
+    accent: { color: "#00797a", shadow: false }
+    bad: { color: "#b02e26", shadow: false }
+    disabled: { color: "#8b8b8b", shadow: false }
+    body-bare: { color: "#ffffff" }
+    heading-bare: { color: "#ffffff", bold: true }
+    muted-bare: { color: "#aaaaaa" }
+    tooltip: { color: "#a8a8b3" }
+  surfaces:
+    sheet: ui:mare/sheet
+    head: ui:mare/head
+    well: ui:mare/well
+    frame: ui:mare/well
+  switch:
+    on: ui:mare/switch_on
+    off: ui:mare/switch_off
+    labels: { on: "Ligado", off: "Desligado" }
+  segmented:
+    art: ui:stone/segment
+    selected-art: ui:stone/segment_selected
+    text-style: segment
+    selected-text-style: selected
+    pad: 8
+    frame: ui:stone/segment_frame
+  button:
+    art: ui:mare/button
+    text-style: button
+    looks:
+      light:
+        art: ui:mare/button_light
+        text-style: button
+        selected-art: ui:mare/button_light_selected
+        selected-text-style: selected
+        disabled-art: ui:mare/button_light_disabled
+        disabled-text-style: disabled
+  nav:
+    art: ui:stone/nav
+    active-art: ui:stone/nav_active
+    text-style: body
+    active-text-style: selected
+    pad: 7
+  dropdown:
+    art: ui:stone/dropdown
+    arrow: ui:stone/arrow_down
+    text-style: body
+  slider:
+    track: ui:stone/slider_track
+    fill: ui:stone/slider_fill
+    text-style: body
+  slots:
+    art: ui:mare/slot
+    missing-art: ui:mare/slot_missing
+    text-style: count
+  chip:
+    art: ui:mare/chip
+    text-style: body-bare
+    height: 20
+  icons:
+    bloqueado: ui:maquina/bloqueado
