@@ -21,7 +21,6 @@ import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import java.awt.image.BufferedImage
-import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 
 object IslandDialog {
@@ -31,26 +30,23 @@ object IslandDialog {
     private const val COINS = "coins"
 
     fun open(player: Player, island: Island, viewFrame: ViewFrame) {
-        val map = IslandMaps.render(island, player.location).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS)
-        val figure = PlayerSkins.figure(player).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS)
-        CompletableFuture.allOf(map, figure).whenComplete { _, error ->
+        PlayerSkins.figure(player).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS).whenComplete { figure, error ->
             Bukkit.getScheduler().runTask(Instance, Runnable {
                 if (!player.isOnline) return@Runnable
-                if (error != null) Instance.logger.warning("[ilha] menu da ilha sem mapa ou skin: ${error.message}")
-                show(player, island, viewFrame, map.getNow(null), figure.getNow(null))
+                if (error != null) Instance.logger.warning("[ilha] menu da ilha sem skin: ${error.message}")
+                show(player, island, viewFrame, figure)
             })
         }
     }
 
-    private fun show(player: Player, island: Island, viewFrame: ViewFrame, map: BufferedImage?, figure: BufferedImage?) {
-        val result = DialogApi.openResult(player, SCREEN) { binds -> bind(binds, player, island, viewFrame, map, figure) }
+    private fun show(player: Player, island: Island, viewFrame: ViewFrame, figure: BufferedImage?) {
+        val result = DialogApi.openResult(player, SCREEN) { binds -> bind(binds, player, island, viewFrame, figure) }
         if (result == DialogOpenResult.MissingScreen || result == DialogOpenResult.Failed) {
             viewFrame.open(IslandView::class.java, player, island)
         }
     }
 
-    private fun bind(binds: DialogBinds, player: Player, island: Island, viewFrame: ViewFrame, map: BufferedImage?, figure: BufferedImage?) {
-        map?.let { image -> binds.pixels("mapa") { image } }
+    private fun bind(binds: DialogBinds, player: Player, island: Island, viewFrame: ViewFrame, figure: BufferedImage?) {
         figure?.let { image -> binds.pixels("jogador") { image } }
         binds.text("nome") { "Ilha de ${island.ownerName}" }
         binds.text("dono") { island.ownerName }

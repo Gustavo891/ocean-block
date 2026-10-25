@@ -7,10 +7,9 @@
       "row": [
         {
           "column": [
-            { "text": "Mapa da ilha", "style": "muted" },
-            { "box": [ { "pixels": "mapa", "w": 128, "h": 128, "scale": 2 } ], "pad": 2, "surface": "well", "name": "Mapa" }
+            { "box": [ { "image": "ui:abismo/ilha_capa" } ], "pad": 2, "surface": "well", "name": "Capa" }
           ],
-          "gap": 3, "pad": 5, "surface": "sheet", "name": "PainelMapa"
+          "pad": 5, "surface": "sheet", "name": "PainelCapa"
         },
         {
           "column": [
