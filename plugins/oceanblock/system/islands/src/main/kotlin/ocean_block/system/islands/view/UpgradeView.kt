@@ -14,6 +14,7 @@ import ocean_block.system.currencies.Currencies
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
+import ocean_block.system.islands.island.IslandUpgradeEvent
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -95,6 +96,7 @@ class UpgradeView : View() {
         Currencies.withdraw(player.uniqueId, "coins", price)
         upgrade.execute(player, island)
         IslandManager.markDirty(island.uuid)
+        Bukkit.getPluginManager().callEvent(IslandUpgradeEvent(island, upgrade, island.getUpgradeLevel(upgrade)))
         player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
         click.update()
     }

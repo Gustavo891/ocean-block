@@ -1,6 +1,7 @@
 package ocean_block.system.drift.debris
 
 import ocean_block.system.drift.collect.CollectorRule
+import ocean_block.system.drift.collect.DebrisCollectedEvent
 import ocean_block.system.drift.collect.DebrisDelivery
 import ocean_block.system.drift.config.DriftSettings
 import ocean_block.system.drift.lane.DriftLane
@@ -55,12 +56,12 @@ internal object DebrisMotion {
     private fun pullToPlayer(debris: Debris, target: PullTarget.Player): Boolean {
         val player = Bukkit.getPlayer(target.uuid) ?: return false
         if (player.world != debris.entity.world) {
-            deliver(debris, player)
+            deliver(debris, player, true)
             return false
         }
 
         if (stepToward(debris, player.location)) return true
-        deliver(debris, player)
+        deliver(debris, player, true)
         return false
     }
 
@@ -152,11 +153,12 @@ internal object DebrisMotion {
             it.location.distanceSquared(location) <= radiusSquared && CollectorRule.canCollect(island, it)
         } ?: return false
 
-        deliver(debris, collector)
+        deliver(debris, collector, false)
         return true
     }
 
-    private fun deliver(debris: Debris, player: Player) {
+    private fun deliver(debris: Debris, player: Player, byHook: Boolean) {
         DebrisDelivery.deliver(player, DropRoller.roll(debris.type, Random))
+        Bukkit.getPluginManager().callEvent(DebrisCollectedEvent(player, debris.type.id, byHook))
     }
 }

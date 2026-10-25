@@ -5,6 +5,7 @@ import net.skinsrestorer.api.SkinsRestorerProvider
 import net.skinsrestorer.api.event.SkinApplyEvent
 import ocean_block.libs.instance.Instance
 import ocean_block.system.islands.expansion.IslandExpansion
+import ocean_block.system.islands.generator.GeneratorBreakListener
 import ocean_block.system.islands.generator.GeneratorFile
 import ocean_block.system.islands.generator.GeneratorListener
 import ocean_block.system.islands.island.IslandManager
@@ -51,6 +52,7 @@ object IslandsSystem {
         )
 
         plugin.server.pluginManager.registerEvents(GeneratorListener(GeneratorFile.load(plugin)), plugin)
+        plugin.server.pluginManager.registerEvents(GeneratorBreakListener(), plugin)
         plugin.server.pluginManager.registerEvents(InviteQuitListener(), plugin)
 
         IslandExpansion().register()

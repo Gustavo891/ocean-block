@@ -2,6 +2,7 @@ package ocean_block.system.islands.generator
 
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -18,6 +19,8 @@ class GeneratorListener(private val table: GeneratorTable) : Listener {
         val level = island.getUpgradeLevel(IslandUpgrade.Generator)
         val block = Material.matchMaterial(GeneratorRoller.roll(table, level, Random.Default)) ?: return
         event.newState.type = block
+        GeneratorBlocks.mark(BlockKey.of(event.block))
+        Bukkit.getPluginManager().callEvent(GeneratorFormedEvent(island))
     }
 
     private companion object {
