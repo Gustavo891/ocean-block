@@ -18,9 +18,10 @@ object NetDisplay {
 
     private val TAG = NamespacedKey("oceanblock", "rede_display")
     private val MODEL = NamespacedKey("oneblock", NetBlock.ID)
-    private const val ITEM_SCALE = 0.38f
+    private const val ITEM_SCALE = 0.52f
     private const val FLOOR_Y = 0.09
-    private val SPOTS = listOf(0.32 to 0.32, 0.68 to 0.34, 0.34 to 0.68, 0.66 to 0.66)
+    private const val LAYER_Y = 0.012
+    private val SPOTS = listOf(0.36 to 0.36, 0.64 to 0.37, 0.37 to 0.64, 0.63 to 0.63)
 
     private class Parts(val frame: ItemDisplay, val items: MutableList<ItemDisplay> = mutableListOf(), var shown: List<String> = emptyList()) {
         val isValid: Boolean get() = frame.isValid && items.all { it.isValid }
@@ -60,7 +61,7 @@ object NetDisplay {
         shown.forEachIndexed { index, material ->
             val stack = Material.matchMaterial(material)?.let(::ItemStack) ?: return@forEachIndexed
             val (x, z) = SPOTS[index]
-            parts.items += spawn(placed, block.location.add(x, FLOOR_Y, z), stack) { entity ->
+            parts.items += spawn(placed, block.location.add(x, FLOOR_Y + index * LAYER_Y, z), stack) { entity ->
                 entity.itemDisplayTransform = ItemDisplay.ItemDisplayTransform.FIXED
                 entity.transformation = Transformation(
                     Vector3f(),
