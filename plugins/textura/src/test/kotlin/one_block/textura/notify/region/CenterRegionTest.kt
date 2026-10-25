@@ -50,22 +50,23 @@ class CenterRegionTest : StringSpec({
             NotificationRegion("xp", ScreenAnchor.CENTER, 8, 28, 1, 1, false, StackDirection.DOWN, animated = true)
     }
 
-    "a linha guarda quando comecou e a troca pela mesma chave recomeca" {
+    "a linha guarda quando comecou e a fase, e a troca pela mesma chave recomeca" {
         val lines = RegionLines(1)
-        lines.push(NotificationLine("+1", null, 40, "xp"), 10)
+        lines.push(NotificationLine("+1", null, 70, "xp"), 10, 37)
         lines.lines().single().startedAt shouldBe 10L
+        lines.lines().single().phase shouldBe 37
 
-        lines.push(NotificationLine("+2", null, 40, "xp"), 25)
+        lines.push(NotificationLine("+2", null, 70, "xp"), 25, 52)
         lines.lines().single().startedAt shouldBe 25L
-        lines.lines().single().expiresAt shouldBe 65L
+        lines.lines().single().phase shouldBe 52
+        lines.lines().single().expiresAt shouldBe 95L
     }
 
-    "o quadro fica parado na primeira metade e chega a 15 no fim" {
-        NotificationAnimation.frame(0, 40) shouldBe 0
-        NotificationAnimation.frame(19, 40) shouldBe 0
-        NotificationAnimation.frame(20, 40) shouldBe 1
-        NotificationAnimation.frame(30, 40) shouldBe 8
-        NotificationAnimation.frame(39, 40) shouldBe 15
-        NotificationAnimation.frame(80, 40) shouldBe 15
+    "a fase e o tempo do mundo no ciclo de 200 ticks que divide o dia" {
+        NotificationAnimation.phase(0) shouldBe 0
+        NotificationAnimation.phase(250) shouldBe 50
+        NotificationAnimation.phase(23999) shouldBe 199
+        NotificationAnimation.phase(24000) shouldBe 0
+        NotificationAnimation.phase(24250) shouldBe 50
     }
 })

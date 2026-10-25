@@ -8,6 +8,7 @@
 
 #include <minecraft:dynamictransforms.glsl>
 #include <minecraft:projection.glsl>
+#include <minecraft:globals.glsl>
 
 layout(location = 0) in vec3 Position;
 layout(location = 1) in vec4 Color;
@@ -42,7 +43,10 @@ const float TEXTURA_HUD_MARGIN_BOTTOM = 2.0;
 const float TEXTURA_HUD_LIFT_STEP = 12.0;
 const float TEXTURA_HUD_BAR_STEP = 19.0;
 const float TEXTURA_HUD_CENTER_TOP = 32.0;
-const float TEXTURA_HUD_FADE_STEPS = 16.0;
+const float TEXTURA_HUD_ANIM_PERIOD = 200.0;
+const float TEXTURA_HUD_ANIM_HOLD = 40.0;
+const float TEXTURA_HUD_ANIM_RISE = 30.0;
+const float TEXTURA_HUD_ANIM_DISTANCE = 16.0;
 
 const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(0.0, 0.0, 0.0),
@@ -63,11 +67,12 @@ const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(255.0, 255.0, 255.0)
 );
 
-int texturaHudDecode(vec4 color, out int palette, out int lift, out bool shadow) {
+int texturaHudDecode(vec4 color, out int palette, out int lift, out bool shadow, out int phase) {
     ivec3 c = ivec3(round(color.rgb * 255.0));
     palette = 0;
     lift = 0;
     shadow = false;
+    phase = 0;
 
     int step = TEXTURA_HUD_STEP;
     if (c.r == TEXTURA_HUD_GLYPH_RED) {
@@ -83,14 +88,16 @@ int texturaHudDecode(vec4 color, out int palette, out int lift, out bool shadow)
         return 0;
     }
 
-    if (c.g % step != 0) return 0;
     int anchor = c.g / step;
+    int extra = c.g % step;
+    if (extra != 0 && (anchor != 8 || step != TEXTURA_HUD_STEP)) return 0;
     int blue = c.b * (TEXTURA_HUD_STEP / step);
     int index = blue / TEXTURA_HUD_STEP;
     if (anchor < 1 || anchor > TEXTURA_HUD_ANCHORS || index >= TEXTURA_HUD_PALETTE_SIZE) return 0;
 
     palette = index;
     lift = blue % TEXTURA_HUD_STEP;
+    phase = extra * TEXTURA_HUD_STEP + lift;
     return anchor;
 }
 
@@ -133,13 +140,16 @@ void main() {
     int hudPalette;
     int hudLift;
     bool hudShadow;
-    int hudAnchor = texturaHudDecode(Color, hudPalette, hudLift, hudShadow);
+    int hudPhase;
+    int hudAnchor = texturaHudDecode(Color, hudPalette, hudLift, hudShadow, hudPhase);
     if (hudAnchor > 0) {
         vec2 offset;
         float fade = 1.0;
         if (hudAnchor == 8) {
-            offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift));
-            fade = 1.0 - float(hudLift) / TEXTURA_HUD_FADE_STEPS;
+            float age = mod(GameTime * 24000.0 - float(hudPhase), TEXTURA_HUD_ANIM_PERIOD);
+            float k = smoothstep(0.0, 1.0, clamp((age - TEXTURA_HUD_ANIM_HOLD) / TEXTURA_HUD_ANIM_RISE, 0.0, 1.0));
+            offset = texturaHudOffset(hudAnchor) - vec2(0.0, k * TEXTURA_HUD_ANIM_DISTANCE);
+            fade = 1.0 - k;
         } else {
             offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift) * TEXTURA_HUD_LIFT_STEP);
         }

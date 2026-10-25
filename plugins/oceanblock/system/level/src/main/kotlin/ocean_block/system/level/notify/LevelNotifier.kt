@@ -19,7 +19,7 @@ object LevelNotifier : Listener {
     const val ICON_MATERIAL = "experience_bottle"
 
     private const val ICON = "item:$ICON_MATERIAL"
-    private const val XP_DURATION_TICKS = 40
+    private const val XP_DURATION_TICKS = 70
     private const val LEVEL_DURATION_TICKS = 100
 
     private val tallies = mutableMapOf<UUID, XpTally>()

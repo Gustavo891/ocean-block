@@ -40,27 +40,28 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
         regions: List<NotificationRegion>,
         lines: Map<String, List<NotificationLine>>,
         kit: NotificationKit,
-        frames: Map<String, List<Int>>,
+        phases: Map<String, List<Int>>,
         translate: (String) -> String?,
     ): Component {
         val painter = TextPainter(kit.textFont, translate)
         val parts = regions.flatMap { region ->
             lines[region.id].orEmpty().take(region.maxLines).mapIndexedNotNull { index, line ->
-                line(region, index, line, kit, painter, frames[region.id]?.getOrNull(index) ?: 0)
+                line(region, index, line, kit, painter, phases[region.id]?.getOrNull(index) ?: 0)
             }
         }
         return Component.empty().children(parts)
     }
 
-    fun line(region: NotificationRegion, index: Int, line: NotificationLine, kit: NotificationKit, painter: TextPainter, frame: Int): Component? {
+    fun line(region: NotificationRegion, index: Int, line: NotificationLine, kit: NotificationKit, painter: TextPainter, phase: Int): Component? {
         val slot = LineGeometry.slot(region, index) ?: return null
-        val lift = if (region.animated) frame else slot.lift
+        val animatedPhase = phase.takeIf { region.animated }
         val font = NotificationFonts.key(slot.textTop)
-        val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, lift, font)
+        val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, slot.lift, font, animatedPhase)
         val icon = kit.icon(line.icon)
         val span = LineGeometry.span(region, LineGeometry.contentWidth(text.width, icon != null))
         val cursor = Cursor()
-        val plain = AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, lift)
+        val plain = animatedPhase?.let { AnchorMarker.animatedGlyph(AnchorPalette.WHITE, it) }
+            ?: AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)
 
         val plaque = kit.plaque
         if (region.background && plaque != null && span.boxWidth >= 2 * PlaquePieces.CAP_WIDTH) {

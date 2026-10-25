@@ -28,6 +28,17 @@ object AnchorMarker {
     fun raisedShadow(palette: AnchorPalette, alpha: Int): ShadowColor =
         ShadowColor.shadowColor(SHADOW_RED, RAISE_ID * STEP, blue(palette, 0), alpha)
 
+    fun animatedGlyph(palette: AnchorPalette, phase: Int): TextColor =
+        TextColor.color(GLYPH_RED, animatedGreen(phase), blue(palette, phase and MAX_LIFT))
+
+    fun animatedShadow(palette: AnchorPalette, phase: Int): ShadowColor =
+        ShadowColor.shadowColor(SHADOW_RED, animatedGreen(phase), blue(palette, phase and MAX_LIFT), OPAQUE)
+
+    private fun animatedGreen(phase: Int): Int {
+        require(phase in 0 until STEP * STEP) { "fase $phase fora de 0..${STEP * STEP - 1}" }
+        return ScreenAnchor.CENTER.id * STEP + (phase shr 4)
+    }
+
     private fun green(anchor: ScreenAnchor): Int = anchor.id * STEP
 
     private fun blue(palette: AnchorPalette, lift: Int): Int {

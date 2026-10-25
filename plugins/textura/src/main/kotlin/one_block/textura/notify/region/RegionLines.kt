@@ -2,7 +2,7 @@ package one_block.textura.notify.region
 
 import one_block.textura.notify.NotificationLine
 
-internal data class ActiveLine(val line: NotificationLine, val expiresAt: Long, val startedAt: Long)
+internal data class ActiveLine(val line: NotificationLine, val expiresAt: Long, val startedAt: Long, val phase: Int = 0)
 
 internal class RegionLines(private val maxLines: Int) {
 
@@ -12,8 +12,10 @@ internal class RegionLines(private val maxLines: Int) {
 
     fun isEmpty(): Boolean = active.isEmpty()
 
-    fun push(line: NotificationLine, now: Long) {
-        val entry = ActiveLine(line, now + line.durationTicks, now)
+    fun push(line: NotificationLine, now: Long) = push(line, now, 0)
+
+    fun push(line: NotificationLine, now: Long, phase: Int) {
+        val entry = ActiveLine(line, now + line.durationTicks, now, phase)
         val index = line.key?.let { key -> active.indexOfFirst { it.line.key == key } } ?: -1
         if (index >= 0) {
             active[index] = entry

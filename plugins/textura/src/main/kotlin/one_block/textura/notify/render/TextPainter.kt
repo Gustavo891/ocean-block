@@ -26,12 +26,21 @@ internal class TextPainter(private val textFont: UiTextFont, private val transla
         val shadow: ShadowColor?,
     )
 
-    fun paint(component: Component, anchor: ScreenAnchor, lift: Int, font: Key): PaintedText {
+    fun paint(component: Component, anchor: ScreenAnchor, lift: Int, font: Key): PaintedText = paint(component, anchor, lift, font, null)
+
+    fun paint(component: Component, anchor: ScreenAnchor, lift: Int, font: Key, phase: Int?): PaintedText {
         val root = Context(null, false, font, null)
-        return visit(component, root, Marker(anchor, lift, font))
+        return visit(component, root, Marker(anchor, lift, font, phase))
     }
 
-    private data class Marker(val anchor: ScreenAnchor, val lift: Int, val font: Key)
+    private data class Marker(val anchor: ScreenAnchor, val lift: Int, val font: Key, val phase: Int?) {
+
+        fun glyph(palette: AnchorPalette) =
+            if (phase != null) AnchorMarker.animatedGlyph(palette, phase) else AnchorMarker.glyph(anchor, palette, lift)
+
+        fun shadow(palette: AnchorPalette) =
+            if (phase != null) AnchorMarker.animatedShadow(palette, phase) else AnchorMarker.shadow(anchor, palette, lift)
+    }
 
     private fun visit(component: Component, parent: Context, marker: Marker): PaintedText {
         val style = component.style()
@@ -56,11 +65,11 @@ internal class TextPainter(private val textFont: UiTextFont, private val transla
         val shadow = if (context.shadow != null && context.shadow.alpha() == 0) {
             ShadowColor.none()
         } else {
-            AnchorMarker.shadow(marker.anchor, palette, marker.lift)
+            marker.shadow(palette)
         }
 
         val painted = flat
-            .color(AnchorMarker.glyph(marker.anchor, palette, marker.lift))
+            .color(marker.glyph(palette))
             .shadowColor(shadow)
             .children(children.map { it.component })
         return PaintedText(painted, own + children.sumOf { it.width })

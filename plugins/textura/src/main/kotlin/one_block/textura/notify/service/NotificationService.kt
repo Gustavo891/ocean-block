@@ -89,7 +89,7 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
                 plugin.logger.warning("[notificacoes] Ícone '${line.icon}' não está no pack; registre com NotificationApi.registerItemIcons antes do build")
             }
             val viewer = viewer(player)
-            viewer.regions.getOrPut(region.id) { RegionLines(region.maxLines) }.push(line, now())
+            viewer.regions.getOrPut(region.id) { RegionLines(region.maxLines) }.push(line, now(), NotificationAnimation.phase(player.world.gameTime))
             refresh(viewer)
         }
     }
@@ -115,8 +115,7 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
                 return@forEach
             }
             val expired = viewer.regions.values.map { it.expire(now) }.any { it }
-            val animating = viewer.regions.any { (id, state) -> regions[id]?.animated == true && !state.isEmpty() }
-            if (expired || animating) refresh(viewer)
+            if (expired) refresh(viewer)
         }
     }
 
@@ -125,15 +124,12 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
     }
 
     private fun refresh(viewer: Viewer) {
-        val now = now()
         val lines = viewer.regions.mapValues { (_, state) -> state.lines().map { it.line } }
-        val frames = viewer.regions.mapValues { (id, state) ->
-            if (regions[id]?.animated == true) state.lines().map { NotificationAnimation.frame(now - it.startedAt, it.line.durationTicks) } else emptyList()
-        }
+        val phases = viewer.regions.mapValues { (_, state) -> state.lines().map { it.phase } }
         val name = if (lines.values.all { it.isEmpty() }) {
             Component.empty()
         } else {
-            renderer.render(regions.values.toList(), lines, kit, frames) { key -> translations[key] }
+            renderer.render(regions.values.toList(), lines, kit, phases) { key -> translations[key] }
         }
         if (name != viewer.lastName) {
             viewer.bar.name(name)
@@ -158,7 +154,7 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
     }
 
     private companion object {
-        const val EXPIRY_PERIOD = 2L
+        const val EXPIRY_PERIOD = 5L
     }
 }
 
