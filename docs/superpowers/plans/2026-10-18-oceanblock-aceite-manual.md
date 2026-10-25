@@ -96,7 +96,7 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 - [ ] Clicar no NPC "RECEITAS" do spawn abre o menu.
 - [ ] A coluna da esquerda mostra `Ferramentas` (picareta de ferro), `Coleta` (baú) e `Estações` (composteira); a aberta brilha e diz `Aberta agora.`. Clicar em outra troca as receitas e volta para a primeira página.
 - [ ] Fechar o menu em `Coleta` e abrir de novo: continua em `Coleta`. Sair do servidor e entrar de novo: volta para `Ferramentas`.
-- [ ] Cada receita é o item resultado; a lore mostra a descrição, um ingrediente por linha com `✔` verde ou `✖` vermelho e `(você tem N)`, e no fim `Clique para craftar!`, `Faltam itens.` ou `Pesquise em /pesquisa: X`.
+- [ ] Cada receita é o item resultado; a lore mostra a descrição, `Nível N`, um ingrediente por linha com `✔` verde ou `✖` vermelho e `(você tem N)`, e no fim `Clique para craftar!`, `Faltam itens.` ou `Requer nível N`.
 - [ ] Com mais de 28 receitas numa categoria, as setas `<` `>` trocam de página.
 
 ### Craftar
@@ -122,11 +122,11 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Com a barra do battle pass ativa, as notificações continuam no lugar certo e nenhuma barra fica pulando.
 - [ ] Textos normais (chat, títulos, nomes) não mudam de lugar nem de cor.
 
-## 10. Gerador, fundição e pesquisa
+## 10. Gerador, fundição, nível e missões
 
 ### Preparação
-- [ ] `server/plugins/ocean-block/drift.yml` sem os torrões e sem areia/cascalho no barril; `gerador.yml` copiado na primeira subida.
-- [ ] Depois de reiniciar, o pack sobe com o glyph `pesquisa_menu` e os itens do `/pesquisa` usam os blocos certos (tear, composteira, alto-forno, mesa de cartografia, funil).
+- [ ] `server/plugins/ocean-block/drift.yml` sem os torrões e sem areia/cascalho no barril; `gerador.yml` e `nivel.yml` copiados na primeira subida.
+- [ ] Depois de reiniciar e rodar `/textura gerar`, o pack sobe com as telas `nivel` e `missoes` e o tema `mare` sem aviso; a coleção `island_research` sumiu do Mongo.
 
 ### Gerador
 - [ ] Ilha nova (Gerador nível 0): um gerador de pedra (lava + água) forma pedregulho, pedra e às vezes minério de carvão.
@@ -143,26 +143,38 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Quebrar a fundição carregada (entrada, combustível e saída) e colocar de novo: o item quebrado guarda tudo e a fundição volta igual.
 - [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica: não entra nem sai nada (o inventário vanilla da fornalha fica intocado).
 
-### Pesquisa (`/pesquisa`)
-- [ ] Ilha nova: no `/receitas`, a lore da Rede de Detritos termina com `Pesquise em /pesquisa: Rede de Detritos` e o clique não crafta; o Gancho crafta normal.
-- [ ] `/pesquisa` (e `/pesquisas`) abre o menu `Pesquisa` (baú com o fundo `pesquisa_menu`) da sua ilha; dono e membros veem o mesmo progresso. Sem ilha: chat `Você precisa de uma ilha para pesquisar.`
-- [ ] Não existe mais receita de Mesa de Pesquisa no `/receitas`.
-- [ ] O menu mostra as categorias `Coleta` (baú), `Fundição` (fornalha) e `Raft` (jangada) na coluna da esquerda, o relógio `Vagas: 0/1` com a fila na lore e cada pesquisa como item com custo (`entregue/total`), duração e estado; o tempo restante atualiza sozinho a cada segundo. Clicar numa pesquisa disponível entrega os itens.
-- [ ] Dois membros entregam a Rede aos poucos (cada um uma parte das 10 Tábuas e 6 Linhas): só sai do inventário o que falta; ao completar, a pesquisa inicia (20 s).
-- [ ] Ao concluir, aparece na região `avisos` a notificação para os membros online; a Rede passa a craftar no `/receitas`.
-- [ ] Com 1 vaga, completar o custo de duas pesquisas: a segunda entra na fila e começa sozinha quando a primeira termina.
-- [ ] Concluir `Bancada auxiliar`: o relógio passa a mostrar 2 vagas e duas pesquisas rodam juntas.
-- [ ] Desligar o servidor no meio de uma pesquisa, esperar mais que o tempo restante, ligar e rodar `/pesquisa`: a pesquisa já está concluída (e a da fila, se cabia no tempo, também).
-- [ ] Visitante numa ilha alheia: `/pesquisa` abre a pesquisa da própria ilha, nunca a da ilha visitada.
+### Nível (`/nivel`)
+- [ ] `/pesquisa` não existe mais.
+- [ ] Jogador novo: a sidebar mostra nível 1 e 0%. No `/receitas`, cada receita mostra `Nível N` abaixo da descrição; a Rede de Detritos termina com `Requer nível 3` e o clique diz `Você precisa do nível 3 para craftar isso.`; Gancho e Fundição craftam.
+- [ ] Puxar um detrito com o Gancho e pegar outro pelo toque: cada um mostra `+N XP` na região de coleta (somando enquanto a linha vive) e a barra da sidebar anda.
+- [ ] Detrito que cai na Rede de Detritos não dá XP; blocos que o Minerador quebra não dão XP.
+- [ ] Quebrar à mão pedra/minério formado pelo gerador dá XP (minério raro vale mais); colocar um pedregulho no lugar e quebrar não dá XP.
+- [ ] Fabricar uma receita no `/receitas` dá XP (`10 + 3 × nível da receita`).
+- [ ] Ao subir de nível: título `NÍVEL N`, som de level-up e aviso `Nível N! Liberado: ...` na região `avisos` quando abriu receita.
+- [ ] `/nivel dar <você> 100000` (admin): um título só com o nível final e o aviso lista todas as receitas abertas no caminho. `/nivel definir <você> 50`: barra cheia, `/nivel` mostra `Nível máximo` e XP novo não soma mais.
+- [ ] Modo criativo não ganha XP de coleta nem de receita.
+- [ ] `/nivel` (e `/level`, `/niveis`) abre o diálogo no tema `mare`: card do nível com barra e `XP atual / próximo`, card "Como ganhar XP" com os valores do `nivel.yml`, e as receitas em ordem de nível com `Liberada`/`Bloqueada`, paginadas com `<` `>`.
+- [ ] Editar `nivel.yml` com um valor negativo e reiniciar: aviso `[nivel]` no console e o padrão vale.
+- [ ] Reiniciar o servidor: nível e XP continuam iguais.
 
-- [ ] Sem erros `[gerador]` ou `[pesquisa]` no log durante toda a sessão.
+### Missões (HUD e `/missoes`)
+- [ ] Jogador novo: o HUD do topo mostra `Missão: Colete 10 detritos usando o gancho 0/10` sobre a placa preta translúcida; pegar detrito pelo toque não conta, pelo Gancho conta.
+- [ ] Ao concluir: aviso `Missão concluída: ... +50 XP` com som, XP entra no nível e o HUD passa para `Faça um gerador de pedra`, que conclui quando o gerador forma bloco na ilha (ou quando você quebra um bloco do gerador).
+- [ ] Seguir a trilha até a missão 5 (`Chegue ao nível 3`): se já estiver no nível 3, ela conclui na hora e o HUD pula para a 6. Missão 8 soma vendas (`$350/$1.000`); missão 9 conclui ao comprar o upgrade do gerador 1 (ou na hora, se a ilha já tem); missão 10 só conta minério de ferro.
+- [ ] Sem ilha, as missões de gerador e upgrade ficam abertas sem erro.
+- [ ] `/missoes pular <você>` (admin) até o fim da trilha: aparecem 3 diárias, o HUD mostra `Diária 1/3: ...`; ao terminar as três, `Diárias concluídas. Volte amanhã!`.
+- [ ] Depois da meia-noite (Brasília), sem relogar: em até 1 minuto as diárias renovam.
+- [ ] `/missoes` (e `/missao`) abre o diálogo: card da trilha (`Missão N de 13`, barra, contador, XP) e as diárias com estado e `Renovam em HH:MM`; antes do fim da trilha o card diz `Termine a trilha para liberar as diárias.`
+- [ ] Sair e entrar: o HUD volta com a missão atual; reiniciar o servidor mantém o progresso. `/missoes resetar <você>` volta para a missão 1.
+
+- [ ] Sem erros `[gerador]`, `[nivel]` ou `[missao]` no log durante toda a sessão.
 
 ## 11. Menu da ilha
 
 ### Hub (`/ilha`)
-- [ ] Com ilha, `/ilha` abre o menu `Ilha de <dono>` (fundo `ilha_menu`, sem vidro): cabeça do dono no topo com membros `n/max`, borda, nível do gerador e visitas; embaixo Ir para a ilha, Membros, Melhorias, Configurações, Visitas, Receitas e Pesquisa. Não existe mais botão de Fases.
+- [ ] Com ilha, `/ilha` abre o menu `Ilha de <dono>` (fundo `ilha_menu`, sem vidro): cabeça do dono no topo com membros `n/max`, borda, nível do gerador e visitas; embaixo Ir para a ilha, Membros, Melhorias, Configurações, Visitas, Receitas, Nível e Missões. Não existe mais botão de Fases.
 - [ ] `/ilha ir` (ou `/ilha home`) e o botão Ir para a ilha teleportam para o spawn da ilha. O holograma do spawn mostra `(/ilha ir)`.
-- [ ] Receitas e Pesquisa fecham o menu e abrem `/receitas` e `/pesquisa`.
+- [ ] Receitas, Nível e Missões fecham o menu e abrem `/receitas`, `/nivel` e `/missoes`.
 - [ ] Membro parado na ilha do amigo: `/ilha` abre o menu da ilha do amigo (sem poder remover, convidar nem mudar nada). Visitante numa ilha alheia: `/ilha` abre o menu da própria ilha.
 - [ ] `/ilha <dono>` leva à ilha de quem te adicionou; numa ilha em que você não é membro, a mensagem sugere `/ilha visitar`.
 
@@ -186,8 +198,8 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 
 ### Preparação
 - [ ] Depois de reiniciar, `server/plugins/Textura/data/block-allocations.yml` ganha `gerador_energia`, `painel_solar`, `fornalha_eletrica` e `minerador`; o pack sobe sem aviso de textura faltando.
-- [ ] `/receitas` mostra 4 categorias na coluna da esquerda (a 4ª é `Máquinas`, observador) com moldura própria; `/pesquisa` mostra `Coleta`, `Fundição`, `Raft` e `Máquinas`, e o relógio `Vagas` fica na linha de baixo, à esquerda das setas.
-- [ ] Sem a pesquisa, cada máquina e a Picareta fundidora dizem `Pesquise em /pesquisa: <nome>` e não craftam. `Gerador de energia` e `Picareta fundidora` pedem `Fundição rápida` concluída; Painel, Fornalha elétrica e Minerador pedem `Gerador de energia`.
+- [ ] `/receitas` mostra 4 categorias na coluna da esquerda (a 4ª é `Máquinas`, observador) com moldura própria.
+- [ ] Abaixo do nível, cada máquina e a Picareta fundidora dizem `Requer nível N` e não craftam: Picareta 12, Gerador de energia 18, Painel solar 20, Fornalha elétrica 22, Minerador 25.
 
 ### Blocos
 - [ ] Cada máquina craftada aparece na mão com a textura própria; colocada, o bloco tem a textura (nunca o note block vanilla) e clicar não toca nota.
@@ -238,7 +250,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Explosão, pistão e água não mexem no Minerador.
 
 ### Brocas do Minerador
-- [ ] `/receitas` → `Máquinas` lista Broca de ouro, diamante, obsidiana e netherite sem pedir pesquisa; cada uma (menos a de ouro) pede a broca anterior. A de netherite pede 2 lingotes de netherite.
+- [ ] `/receitas` → `Máquinas` lista Broca de ouro, diamante, obsidiana e netherite com `Nível 28`, `32`, `36` e `40`; cada uma (menos a de ouro) pede a broca anterior. A de netherite pede 2 lingotes de netherite.
 - [ ] Na mão, cada broca aparece como a broca 3D na cor do material (dourada, ciano, roxo escuro, preta com friso dourado), centrada no slot.
 - [ ] Um Minerador novo (ou de antes desta versão) mostra no menu `Broca de ferro` (picareta de ferro) e quebra um bloco a cada 2 s puxando 20 E/s.
 - [ ] Com o menu aberto, clicar numa Broca de ouro do inventário encaixa uma só (a pilha perde 1), toca a bigorna e a broca que gira fica dourada; o Minerador quebra a cada 1,5 s e a alavanca diz 28 E/s.

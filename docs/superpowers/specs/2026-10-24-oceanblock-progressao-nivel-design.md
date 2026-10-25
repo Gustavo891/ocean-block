@@ -227,6 +227,8 @@ Fallback no chat como o `/nivel`. Admin (`oneblock.admin`): `/missoes pular <jog
 
 ### Tema "Maré" (Textura)
 
+Atualização de 2026-10-25: na sessão do tema o usuário trocou a direção para um visual minimalista no estilo das telas do Minecraft (painel cinza vanilla, cartões rebaixados, slots vanilla, barra verde como a de XP), mantendo o nome `mare`; o fundo do HUD virou uma placa preta translúcida. A paleta abaixo é a proposta original.
+
 Novo tema `configs/ui/mare.yml` com arte em `resource/assets/oneblock/textures/ui/mare/`, desenhada por script descartável no mesmo esquema do `maquina` (peças com `.png.slice`):
 
 - `sheet`: madeira de deriva clara (bege acinzentado `#b89a72`), veio horizontal de tábuas, borda mais escura `#7a5f3e`.
