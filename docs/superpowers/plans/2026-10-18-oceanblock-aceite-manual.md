@@ -164,7 +164,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Sem ilha, as missões de gerador e upgrade ficam abertas sem erro.
 - [ ] `/missoes pular <você>` (admin) até o fim da trilha: aparecem 3 diárias, o HUD mostra `Diária 1/3: ...`; ao terminar as três, `Diárias concluídas. Volte amanhã!`.
 - [ ] Depois da meia-noite (Brasília), sem relogar: em até 1 minuto as diárias renovam.
-- [ ] `/missoes` (e `/missao`) abre o diálogo: card da trilha (`Missão N de 13`, barra, contador, XP) e as diárias com estado e `Renovam em HH:MM`; antes do fim da trilha o card diz `Termine a trilha para liberar as diárias.`
+- [ ] `/missoes` (e `/missao`) abre o diálogo sem barra de rolagem: card da trilha com o ícone da missão numa moldura, o texto, `Requisitos` com o contador, a frase do requisito, a barra e `Recompensas: +N XP de nível`; cada diária com ícone, texto, `+N XP`, requisito com o contador (ou `Concluída` em verde) e a barra; `Renovam em HH:MM`, ou antes do fim da trilha `Termine a trilha para liberar as diárias.`
 - [ ] Sair e entrar: o HUD volta com a missão atual; reiniciar o servidor mantém o progresso. `/missoes resetar <você>` volta para a missão 1.
 
 - [ ] Sem erros `[gerador]`, `[nivel]` ou `[missao]` no log durante toda a sessão.

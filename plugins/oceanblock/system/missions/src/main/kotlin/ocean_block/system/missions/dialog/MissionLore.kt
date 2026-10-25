@@ -13,15 +13,21 @@ object MissionLore {
 
     const val LOCKED_DAILIES = "Termine a trilha para liberar as diárias."
 
-    fun trail(state: PlayerMissions): Map<String, String> {
+    fun trail(state: PlayerMissions, recipeName: (String) -> String = { it }): Map<String, String> {
         val mission = MissionTrail.at(state.trailIndex) ?: return mapOf(
             "titulo" to "Trilha concluída!",
             "texto" to "Você completou as ${MissionTrail.size} missões da trilha.",
             "contador" to "",
             "xp" to "",
             "barra" to "100",
+            "icone" to "item:nether_star",
+            "requisito" to "",
+            "recompensa" to "",
         )
         return mapOf(
+            "icone" to "item:${mission.icon}",
+            "requisito" to MissionText.requirement(mission.objective, recipeName),
+            "recompensa" to MissionText.reward(mission.xp),
             "titulo" to "Missão ${state.trailIndex + 1} de ${MissionTrail.size}",
             "texto" to mission.text,
             "contador" to MissionText.counter(mission.objective, state.trailProgress),
@@ -30,17 +36,22 @@ object MissionLore {
         )
     }
 
-    fun daily(daily: DailyMission): Map<String, String> {
+    fun daily(daily: DailyMission, recipeName: (String) -> String = { it }): Map<String, String> {
         val mission = DailyPool.byId(daily.id)
         val progress = if (daily.done) mission?.objective?.goal ?: 1 else daily.progress
         return mapOf(
             "texto" to (mission?.text ?: daily.id),
+            "icone" to "item:${mission?.icon ?: "map"}",
+            "requisito" to (mission?.let { MissionText.requirement(it.objective, recipeName) } ?: ""),
+            "recompensa" to MissionText.reward(daily.xp),
             "contador" to (mission?.let { MissionText.counter(it.objective, progress) } ?: ""),
             "xp" to "+${MissionText.number(daily.xp.toLong())} XP",
             "barra" to if (daily.done || mission == null) "100" else percent(mission.objective, progress),
             "feito" to daily.done.toString(),
             "estado" to if (daily.done) "Concluída" else "Em andamento",
             "estado_estilo" to if (daily.done) "good" else "muted",
+            "situacao" to if (daily.done) "Concluída" else (mission?.let { MissionText.counter(it.objective, progress) } ?: ""),
+            "situacao_estilo" to if (daily.done) "good" else "muted",
         )
     }
 

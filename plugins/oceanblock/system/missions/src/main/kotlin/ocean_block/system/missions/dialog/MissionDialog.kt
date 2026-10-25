@@ -1,8 +1,10 @@
 package ocean_block.system.missions.dialog
 
+import ocean_block.system.craft.recipe.Recipes
 import ocean_block.system.missions.MissionTracker
+import ocean_block.system.missions.catalog.DailyPool
+import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.data.MissionManager
-import ocean_block.system.missions.notify.MissionNotifier
 import ocean_block.system.missions.rules.MissionRules
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
@@ -13,10 +15,10 @@ import java.time.LocalDateTime
 object MissionDialog {
 
     private const val SCREEN = "missoes"
-    private val TRAIL_KEYS = listOf("titulo", "texto", "contador", "xp", "barra")
+    private val EXTRA_ICONS = listOf("nether_star", "experience_bottle", "map")
 
     fun registerIcons() {
-        DialogApi.registerItemIcons(listOf(MissionNotifier.ICON_MATERIAL))
+        DialogApi.registerItemIcons(((MissionTrail.all + DailyPool.all).map { it.icon } + EXTRA_ICONS).distinct())
     }
 
     fun open(player: Player): Boolean {
@@ -27,12 +29,15 @@ object MissionDialog {
 
     private fun bind(binds: DialogBinds, player: Player) {
         val state = { MissionManager.get(player.uniqueId) }
-        TRAIL_KEYS.forEach { key -> binds.text(key) { MissionLore.trail(state())[key].orEmpty() } }
-        binds.list("diarias") { state().dailies.map(MissionLore::daily) }
+        binds.list("trilha") { listOf(MissionLore.trail(state(), ::recipeName)) }
+        binds.listPage("trilha") { 0 }
+        binds.list("diarias") { state().dailies.map { MissionLore.daily(it, ::recipeName) } }
         binds.listPage("diarias") { 0 }
         binds.text("renova") {
             if (MissionRules.trailDone(state())) MissionLore.resetIn(LocalDateTime.now(MissionTracker.zone))
             else MissionLore.LOCKED_DAILIES
         }
     }
+
+    private fun recipeName(id: String): String = Recipes.get(id)?.name ?: id
 }

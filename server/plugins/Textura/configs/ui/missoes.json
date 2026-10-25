@@ -4,26 +4,46 @@
   "theme": "mare",
   "column": [
     {
+      "repeat": "trilha", "perPage": 1,
       "column": [
         {
           "row": [
             { "space": 4 },
             { "text": "{titulo}", "style": "heading", "align": "left", "icon": "item:map", "w": "grow" },
-            { "text": "{xp}", "style": "accent", "align": "right", "w": "fit" },
             { "space": 4 }
           ],
           "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
         },
         {
-          "column": [
-            { "text": "{texto}", "style": "body", "align": "left", "w": "grow" },
-            { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 248 },
-            { "text": "{contador}", "style": "muted", "align": "right", "w": "grow" }
+          "row": [
+            { "icon": "{icone}", "size": 32, "frame": true, "name": "Icone" },
+            {
+              "column": [
+                { "text": "{texto}", "style": "body", "align": "left", "w": "grow" },
+                {
+                  "row": [
+                    { "text": "Requisitos", "style": "muted", "align": "left", "w": "grow" },
+                    { "text": "{contador}", "style": "muted", "align": "right", "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
+                },
+                { "text": "{requisito}", "style": "body", "align": "left", "w": "grow" },
+                { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 204 }
+              ],
+              "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start", "name": "Detalhes"
+            }
           ],
-          "w": "grow", "h": "fit", "gap": 4, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
+          "w": "grow", "h": "fit", "gap": 6, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
+        },
+        {
+          "row": [
+            { "text": "Recompensas", "style": "muted", "align": "left", "w": "grow" },
+            { "text": "{recompensa}", "style": "good", "align": "right", "icon": "item:experience_bottle", "w": "fit" }
+          ],
+          "w": "grow", "h": "fit", "gap": 4, "pad": 5, "align": "start", "cross": "center", "surface": "well", "name": "Recompensas"
         }
       ],
-      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Trilha"
+      "w": 270, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Trilha"
     },
     {
       "column": [
@@ -39,31 +59,37 @@
           "column": [
             {
               "repeat": "diarias", "perPage": 3,
-              "column": [
+              "row": [
+                { "icon": "{icone}", "size": 16, "frame": true, "name": "Icone" },
                 {
-                  "row": [
-                    { "text": "{texto}", "style": "body", "align": "left", "w": "grow" },
-                    { "text": "{xp}", "style": "accent", "align": "right", "w": "fit" }
+                  "column": [
+                    {
+                      "row": [
+                        { "text": "{texto}", "style": "body", "align": "left", "w": "grow" },
+                        { "text": "{xp}", "style": "good", "align": "right", "w": "fit" }
+                      ],
+                      "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
+                    },
+                    {
+                      "row": [
+                        { "text": "{requisito}", "style": "muted", "align": "left", "w": "grow" },
+                        { "text": "{situacao}", "style": "{situacao_estilo}", "align": "right", "w": "fit" }
+                      ],
+                      "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
+                    },
+                    { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 220 }
                   ],
-                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
-                },
-                { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 240 },
-                {
-                  "row": [
-                    { "text": "{estado}", "style": "{estado_estilo}", "align": "left", "w": "grow" },
-                    { "text": "{contador}", "style": "muted", "align": "right", "w": "fit" }
-                  ],
-                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
+                  "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
                 }
               ],
-              "w": "grow", "h": "fit", "gap": 3, "pad": 4, "align": "start", "cross": "start", "surface": "well", "name": "Diaria"
+              "w": "grow", "h": "fit", "gap": 5, "pad": 4, "align": "start", "cross": "start", "surface": "well", "name": "Diaria"
             },
             { "text": "{renova}", "style": "muted", "align": "left", "w": "grow" }
           ],
           "w": "grow", "h": "fit", "gap": 4, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
         }
       ],
-      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Diarias"
+      "w": 270, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Diarias"
     }
   ],
   "w": "fit", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "start"

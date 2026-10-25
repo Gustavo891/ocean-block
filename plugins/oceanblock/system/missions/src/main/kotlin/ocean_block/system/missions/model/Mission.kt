@@ -5,4 +5,5 @@ data class Mission(
     val text: String,
     val objective: MissionObjective,
     val xp: Int,
+    val icon: String = "map",
 )
