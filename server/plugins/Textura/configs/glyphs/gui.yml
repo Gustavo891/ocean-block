@@ -118,3 +118,13 @@ fornalha_menu:
   show_in_gui: true
   size: 256
   unicode: \uE032
+
+niveis_menu:
+  id: niveis_menu
+  caminho: assets/oneblock/textures/gui/niveis_menu.png
+  ascent: 30
+  height: 256
+  default: true
+  show_in_gui: true
+  size: 256
+  unicode: \uE033

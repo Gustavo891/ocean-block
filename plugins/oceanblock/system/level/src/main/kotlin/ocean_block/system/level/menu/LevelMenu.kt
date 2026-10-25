@@ -26,7 +26,7 @@ class LevelMenu : View() {
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
         config.size(6)
-        config.title(Mini.mm.deserialize("<dark_gray>Nível"))
+        config.title(Mini.mm.deserialize(TITLE))
     }
 
     override fun onFirstRender(render: RenderContext) {
@@ -90,6 +90,7 @@ class LevelMenu : View() {
     private fun close(): ItemStack = itemStack(Material.BARRIER) { meta { name("<red>Fechar") } }
 
     private companion object {
+        const val TITLE = "<white><shift:-48><glyph:niveis_menu>"
         const val MAX_STACK = 64
         const val PREVIOUS_SLOT = 45
         const val CLOSE_SLOT = 49
