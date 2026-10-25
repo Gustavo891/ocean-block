@@ -2,7 +2,7 @@ package ocean_block.system.machines.miner
 
 object MinerRules {
 
-    const val INTERVAL = 40
+    const val BLOCK_UNITS = 120
     const val ENERGY_PER_BLOCK = 40L
     const val STORAGE = 27
     const val PROGRESS_KEY = "minerador_progress"
@@ -15,17 +15,17 @@ object MinerRules {
 
     fun canMine(material: String): Boolean = material in MINEABLE
 
-    fun advance(progress: Int, ticks: Int): Int = minOf(progress + ticks, INTERVAL)
+    fun advance(progress: Int, gain: Int): Int = minOf(progress + gain, BLOCK_UNITS + gain - 1)
 
-    fun isDue(progress: Int): Boolean = progress >= INTERVAL
+    fun isDue(progress: Int): Boolean = progress >= BLOCK_UNITS
+
+    fun afterBreak(progress: Int): Int = (progress - BLOCK_UNITS).coerceAtLeast(0)
 
     fun adopts(material: String): Boolean = material == "NOTE_BLOCK"
 
     const val SPIN_STEP_DEGREES = 90f
 
     const val ON_KEY = "minerador_ligado"
-
-    fun cycleEnergy(ticks: Int): Long = ENERGY_PER_BLOCK * ticks / INTERVAL
 
     fun isOn(counter: Long?): Boolean = counter != 0L
 

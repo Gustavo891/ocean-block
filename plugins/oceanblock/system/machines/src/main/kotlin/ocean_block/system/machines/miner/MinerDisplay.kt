@@ -17,9 +17,8 @@ object MinerDisplay {
 
     private val TAG = NamespacedKey("oceanblock", "maquina_display")
     private val CASING_MODEL = NamespacedKey("oneblock", "minerador_carcaca")
-    private val DRILL_MODEL = NamespacedKey("oneblock", "minerador_broca")
 
-    private class Parts(val casing: ItemDisplay, val drill: ItemDisplay, var angle: Float = 0f) {
+    private class Parts(val casing: ItemDisplay, val drill: ItemDisplay, var tier: DrillTier, var angle: Float = 0f) {
         val isValid: Boolean get() = casing.isValid && drill.isValid
         fun remove() {
             casing.remove()
@@ -30,10 +29,20 @@ object MinerDisplay {
     private val displays = mutableMapOf<UUID, Parts>()
 
     fun ensure(placed: PlacedBlock, block: Block) {
-        if (displays[placed.uuid]?.isValid == true) return
+        val tier = MinerBlock.tier(placed)
+        val current = displays[placed.uuid]
+        if (current?.isValid == true) {
+            if (current.tier != tier) {
+                current.drill.setItemStack(modelItem(drillModel(tier)))
+                current.tier = tier
+            }
+            return
+        }
         displays.remove(placed.uuid)?.remove()
-        displays[placed.uuid] = Parts(spawn(placed, block, CASING_MODEL), spawn(placed, block, DRILL_MODEL))
+        displays[placed.uuid] = Parts(spawn(placed, block, CASING_MODEL), spawn(placed, block, drillModel(tier)), tier)
     }
+
+    fun drillModel(tier: DrillTier): NamespacedKey = NamespacedKey("oneblock", tier.model)
 
     fun spin(placed: PlacedBlock, ticks: Int) {
         val parts = displays[placed.uuid]?.takeIf { it.isValid } ?: return
@@ -70,8 +79,11 @@ object MinerDisplay {
     private fun spawn(placed: PlacedBlock, block: Block, model: NamespacedKey): ItemDisplay =
         block.world.spawn(block.location.add(0.5, 0.5, 0.5), ItemDisplay::class.java) { entity ->
             entity.isPersistent = false
-            entity.setItemStack(ItemStack(Material.PAPER).apply { editMeta { it.itemModel = model } })
+            entity.setItemStack(modelItem(model))
             entity.itemDisplayTransform = ItemDisplay.ItemDisplayTransform.NONE
             entity.persistentDataContainer.set(TAG, PersistentDataType.STRING, placed.uuid.toString())
         }
+
+    private fun modelItem(model: NamespacedKey): ItemStack =
+        ItemStack(Material.PAPER).apply { editMeta { it.itemModel = model } }
 }

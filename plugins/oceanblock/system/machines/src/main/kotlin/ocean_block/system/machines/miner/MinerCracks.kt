@@ -15,16 +15,17 @@ object MinerCracks {
     private const val HIT_PITCH = 0.8f
     private const val STALE_TICKS = MinerCrackRules.CYCLE_TICKS * 3
 
-    private class Crack(val block: Location, val source: Int, var paid: Int, var paidAt: Int, var stage: Int = -1)
+    private class Crack(val block: Location, val source: Int, var paid: Int, var gain: Int, var paidAt: Int, var stage: Int = -1)
 
     private val cracks = mutableMapOf<UUID, Crack>()
 
-    fun update(miner: UUID, block: Block, progress: Int) {
+    fun update(miner: UUID, block: Block, progress: Int, gain: Int) {
         val location = block.location
         val current = cracks[miner]
         if (current != null && current.block != location) clear(miner)
-        val crack = cracks.getOrPut(miner) { Crack(location, sourceId(miner), progress, Bukkit.getCurrentTick()) }
+        val crack = cracks.getOrPut(miner) { Crack(location, sourceId(miner), progress, gain, Bukkit.getCurrentTick()) }
         crack.paid = progress
+        crack.gain = gain
         crack.paidAt = Bukkit.getCurrentTick()
     }
 
@@ -41,7 +42,7 @@ object MinerCracks {
         val now = Bukkit.getCurrentTick()
         cracks.filterValues { now - it.paidAt > STALE_TICKS }.keys.forEach(::clear)
         cracks.values.forEach { crack ->
-            val stage = MinerCrackRules.stage(MinerCrackRules.progress(crack.paid, now - crack.paidAt))
+            val stage = MinerCrackRules.stage(MinerCrackRules.progress(crack.paid, crack.gain, now - crack.paidAt))
             if (stage == crack.stage) return@forEach
             crack.stage = stage
             send(crack.block, MinerCrackRules.damage(stage), crack.source)

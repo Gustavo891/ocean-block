@@ -8,6 +8,8 @@ import ocean_block.system.machines.MachineBlock
 import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.furnace.FurnaceBlock
 import ocean_block.system.machines.generator.GeneratorBlock
+import ocean_block.system.machines.miner.DrillItem
+import ocean_block.system.machines.miner.DrillTier
 import ocean_block.system.machines.miner.MinerBlock
 import ocean_block.system.machines.pickaxe.SmelterPickaxeItem
 import ocean_block.system.machines.solar.SolarBlock
@@ -25,6 +27,8 @@ object MachineRecipes {
     private fun redstone(n: Int) = material(Material.REDSTONE, "Redstone", n)
     private fun lapis(n: Int) = material(Material.LAPIS_LAZULI, "Lápis-lazúli", n)
     private fun coal(n: Int) = material(Material.COAL, "Carvão", n, "Carvões")
+    private fun diamond(n: Int) = material(Material.DIAMOND, "Diamante", n, "Diamantes")
+    private fun drill(tier: DrillTier) = custom(tier.itemId.orEmpty(), "Broca de ${tier.label}", 1, "Brocas de ${tier.label}")
 
     fun register() {
         Recipes.register(
@@ -46,6 +50,22 @@ object MachineRecipes {
         Recipes.register(
             block(MinerBlock, "Minerador", "Quebra sozinho a pedra e o minério logo abaixo.",
                 iron(14), gold(4), redstone(8)),
+        )
+        drillRecipe(DrillTier.GOLD, "A broca de ouro quebra um bloco a cada 1,5 s.",
+            material(Material.GOLD_BLOCK, "Bloco de ouro", 2, "Blocos de ouro"), iron(4), redstone(4))
+        drillRecipe(DrillTier.DIAMOND, "A broca de diamante quebra um bloco por segundo.",
+            drill(DrillTier.GOLD), diamond(6), redstone(4))
+        drillRecipe(DrillTier.OBSIDIAN, "A broca de obsidiana quebra um bloco a cada 0,75 s.",
+            drill(DrillTier.DIAMOND), material(Material.OBSIDIAN, "Obsidiana", 8, "Obsidianas"), diamond(2))
+        drillRecipe(DrillTier.NETHERITE, "A broca de netherite quebra um bloco a cada 0,5 s.",
+            drill(DrillTier.OBSIDIAN), material(Material.NETHERITE_INGOT, "Lingote de netherite", 2, "Lingotes de netherite"))
+    }
+
+    private fun drillRecipe(tier: DrillTier, description: String, vararg ingredients: Ingredient) {
+        val item = DrillItem.of(tier) ?: return
+        Recipes.register(
+            recipe(item.id, "Broca de ${tier.label}", description, RecipeCategory.MAQUINAS, { item.build() }, *ingredients)
+                .copy(research = null),
         )
     }
 

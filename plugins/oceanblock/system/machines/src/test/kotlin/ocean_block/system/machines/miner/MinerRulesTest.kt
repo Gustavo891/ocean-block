@@ -17,15 +17,33 @@ class MinerRulesTest : StringSpec({
             .forEach { MinerRules.canMine(it) shouldBe false }
     }
 
-    "progresso satura no intervalo" {
-        MinerRules.advance(0, 10) shouldBe 10
-        MinerRules.advance(35, 10) shouldBe MinerRules.INTERVAL
-        MinerRules.isDue(39) shouldBe false
-        MinerRules.isDue(40) shouldBe true
+    "broca de ferro quebra um bloco a cada 4 ciclos" {
+        val gain = DrillTier.IRON.gain
+        val steps = generateSequence(MinerRules.advance(0, gain)) { MinerRules.advance(it, gain) }.take(4).toList()
+        steps shouldBe listOf(30, 60, 90, 120)
+        steps.map(MinerRules::isDue) shouldBe listOf(false, false, false, true)
+        MinerRules.afterBreak(120) shouldBe 0
     }
 
-    "um bloco a cada 2 segundos custa 40 E" {
-        MinerRules.INTERVAL shouldBe 40
+    "obsidiana guarda a sobra e quebra 2 blocos a cada 3 ciclos" {
+        val gain = DrillTier.OBSIDIAN.gain
+        MinerRules.advance(0, gain) shouldBe 80
+        MinerRules.advance(80, gain) shouldBe 160
+        MinerRules.isDue(160) shouldBe true
+        MinerRules.afterBreak(160) shouldBe 40
+        MinerRules.advance(40, gain) shouldBe 120
+        MinerRules.isDue(120) shouldBe true
+        MinerRules.afterBreak(120) shouldBe 0
+    }
+
+    "sem bloco para quebrar o progresso para no teto do nivel" {
+        MinerRules.advance(120, DrillTier.IRON.gain) shouldBe 149
+        MinerRules.advance(199, DrillTier.OBSIDIAN.gain) shouldBe 199
+        MinerRules.advance(120, DrillTier.NETHERITE.gain) shouldBe 239
+    }
+
+    "um bloco custa 40 E e o armazenamento tem 27 pilhas" {
+        MinerRules.BLOCK_UNITS shouldBe 120
         MinerRules.ENERGY_PER_BLOCK shouldBe 40L
         MinerRules.STORAGE shouldBe 27
     }
@@ -42,11 +60,6 @@ class MinerRulesTest : StringSpec({
         MinerRules.adopts("NOTE_BLOCK") shouldBe true
         MinerRules.adopts("AIR") shouldBe false
         MinerRules.adopts("STONE") shouldBe false
-    }
-
-    "ligado gasta a energia de um bloco a cada 2 segundos, espalhada pelos ciclos" {
-        MinerRules.cycleEnergy(10) shouldBe 10L
-        MinerRules.cycleEnergy(40) shouldBe MinerRules.ENERGY_PER_BLOCK
     }
 
     "sem counter o minerador vem ligado" {

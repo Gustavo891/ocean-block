@@ -28,8 +28,10 @@ object MinerBlock : MachineBlock() {
     override val id: String = MachineIds.MINER
     override val displayName: String = "<white>Minerador"
     override val lore: List<String> = listOf(
-        "<gray>Quebra a pedra ou o minério logo abaixo",
-        "<gray>a cada <white>2 s<gray>, gastando <yellow>40 E <gray>por bloco.",
+        "<gray>Quebra a pedra ou o minério logo abaixo,",
+        "<gray>gastando <yellow>40 E <gray>por bloco.",
+        "<gray>Vem com broca de ferro (<white>2 s<gray> por bloco);",
+        "<gray>brocas melhores se encaixam no menu.",
         "<gray>Guarda 27 pilhas e entrega em baú encostado.",
         "<gray>Precisa de energia a até <white>8 blocos<gray>.",
     )
@@ -66,13 +68,14 @@ object MinerBlock : MachineBlock() {
             MinerCracks.clear(placed.uuid)
             return EnergyNetwork.setNoPower(placed, false)
         }
-        if (!EnergyNetwork.draw(placed, MinerRules.cycleEnergy(TICKS))) return MinerCracks.clear(placed.uuid)
+        val tier = tier(placed)
+        if (!EnergyNetwork.draw(placed, tier.cycleEnergy)) return MinerCracks.clear(placed.uuid)
         MinerDisplay.spin(placed, TICKS)
-        val progress = MinerRules.advance(placed.counters[MinerRules.PROGRESS_KEY]?.toInt() ?: 0, TICKS)
+        val progress = MinerRules.advance(placed.counters[MinerRules.PROGRESS_KEY]?.toInt() ?: 0, tier.gain)
         setCounter(placed, MinerRules.PROGRESS_KEY, progress.toLong())
         val below = block.getRelative(BlockFace.DOWN)
         if (!canBreak(placed, block, below)) return MinerCracks.clear(placed.uuid)
-        if (!MinerRules.isDue(progress)) return MinerCracks.update(placed.uuid, below, progress)
+        if (!MinerRules.isDue(progress)) return MinerCracks.update(placed.uuid, below, progress, tier.gain)
         val drops = below.getDrops(TOOL).toList()
         val storage = placed.buildStorageInventory(MinerRules.STORAGE)
         val full = !fits(storage, drops)
@@ -84,8 +87,16 @@ object MinerBlock : MachineBlock() {
         val leftovers = drops.flatMap { drop -> outputContainer(block)?.addItem(drop)?.values ?: listOf(drop) }
         leftovers.forEach { storage.addItem(it) }
         placed.setStorage(storage)
-        setCounter(placed, MinerRules.PROGRESS_KEY, 0)
+        setCounter(placed, MinerRules.PROGRESS_KEY, MinerRules.afterBreak(progress).toLong())
         PlacedBlockManager.markDirty(placed)
+    }
+
+    fun tier(placed: PlacedBlock): DrillTier = DrillTier.of(placed.counters[DrillTier.KEY])
+
+    fun setTier(placed: PlacedBlock, tier: DrillTier) {
+        if (tier == DrillTier.IRON) placed.counters.remove(DrillTier.KEY) else placed.counters[DrillTier.KEY] = tier.level.toLong()
+        PlacedBlockManager.saveNow(placed)
+        placed.location.toBukkit()?.block?.let { MinerDisplay.ensure(placed, it) }
     }
 
     fun isOn(placed: PlacedBlock): Boolean = MinerRules.isOn(placed.counters[MinerRules.ON_KEY])

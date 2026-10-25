@@ -14,6 +14,7 @@ import ocean_block.system.machines.furnace.FurnaceRecipes
 import ocean_block.system.machines.generator.GeneratorBlock
 import ocean_block.system.machines.generator.GeneratorDialog
 import ocean_block.system.machines.generator.GeneratorMenu
+import ocean_block.system.machines.miner.DrillItem
 import ocean_block.system.machines.miner.MinerBlock
 import ocean_block.system.machines.miner.MinerCracks
 import ocean_block.system.machines.miner.MinerDisplay
@@ -42,6 +43,7 @@ object MachinesSystem {
         machines.forEach(CustomBlockRegistry::register)
         plugin.server.pluginManager.registerEvents(MachineInteractListener(viewFrame, machines.associateBy { it.id }), plugin)
         CustomItemRegistry.register(SmelterPickaxeItem)
+        DrillItem.all.forEach(CustomItemRegistry::register)
         MachineRecipes.register()
         viewFrame.with(GeneratorMenu(), FurnaceMenu(), MinerMenu())
         GeneratorDialog.registerIcons()
