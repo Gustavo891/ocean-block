@@ -153,7 +153,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Ao subir de nível: título `NÍVEL N`, som de level-up e aviso `Nível N! Liberado: ...` na região `avisos` quando abriu receita.
 - [ ] `/nivel dar <você> 100000` (admin): um título só com o nível final e o aviso lista todas as receitas abertas no caminho. `/nivel definir <você> 50`: barra cheia, `/nivel` mostra `Nível máximo` e XP novo não soma mais.
 - [ ] Modo criativo não ganha XP de coleta nem de receita.
-- [ ] `/nivel` (e `/level`, `/niveis`) abre o diálogo no tema `mare`: card do nível com barra e `XP atual / próximo`, card "Como ganhar XP" com os valores do `nivel.yml`, e as receitas em ordem de nível com `Liberada`/`Bloqueada`, paginadas com `<` `>`.
+- [ ] `/nivel` (e `/level`, `/niveis`) abre o baú `Nível` na página do seu nível: os níveis 1–25 em caminho de serpente (casa verde = alcançado, dourada = atual, cinza = bloqueado, número = quantidade do item), nível que libera receita mostra o item da receita, lore com o estado e `Libera: ...`; setas trocam para 26–50; o frasco de XP mostra nível, XP e como ganhar XP; a barreira fecha.
 - [ ] Editar `nivel.yml` com um valor negativo e reiniciar: aviso `[nivel]` no console e o padrão vale.
 - [ ] Reiniciar o servidor: nível e XP continuam iguais.
 

@@ -1,6 +1,5 @@
-package ocean_block.system.level.dialog
+package ocean_block.system.level.menu
 
-import ocean_block.system.craft.recipe.OceanRecipe
 import ocean_block.system.level.config.LevelConfig
 import ocean_block.system.level.curve.LevelCurve
 import java.text.NumberFormat
@@ -33,18 +32,6 @@ object LevelLore {
         )
     }
 
-    fun recipeEntry(recipe: OceanRecipe, playerLevel: Int, icon: String): Map<String, String> {
-        val unlocked = playerLevel >= recipe.level
-        return mapOf(
-            "item" to icon,
-            "nome" to recipe.name,
-            "nivel" to "Nível ${recipe.level}",
-            "estado" to if (unlocked) "✔ Liberada" else "✖ Bloqueada",
-            "situacao" to if (unlocked) "Liberada" else "Bloqueada",
-            "estado_estilo" to if (unlocked) "good" else "bad",
-            "bloqueada" to (!unlocked).toString(),
-        )
-    }
 
     fun sources(config: LevelConfig, recipeLevels: Collection<Int>): List<Map<String, String>> {
         val recipeXp = recipeLevels.ifEmpty { listOf(1) }.map(config::recipeXp)

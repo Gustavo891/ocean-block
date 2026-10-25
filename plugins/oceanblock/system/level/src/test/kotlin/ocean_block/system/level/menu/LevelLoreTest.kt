@@ -1,4 +1,4 @@
-package ocean_block.system.level.dialog
+package ocean_block.system.level.menu
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
@@ -41,26 +41,6 @@ class LevelLoreTest : StringSpec({
         header["barra"] shouldBe "100"
     }
 
-    "receita acima do nivel do jogador fica bloqueada" {
-        val entry = LevelLore.recipeEntry(recipe(8), 7, "furnace")
-
-        entry["item"] shouldBe "furnace"
-        entry["nome"] shouldBe "Fundição"
-        entry["nivel"] shouldBe "Nível 8"
-        entry["estado"] shouldBe "✖ Bloqueada"
-        entry["estado_estilo"] shouldBe "bad"
-        entry["situacao"] shouldBe "Bloqueada"
-        entry["bloqueada"] shouldBe "true"
-    }
-
-    "receita do nivel do jogador fica liberada" {
-        val entry = LevelLore.recipeEntry(recipe(8), 8, "furnace")
-
-        entry["estado"] shouldBe "✔ Liberada"
-        entry["estado_estilo"] shouldBe "good"
-        entry["situacao"] shouldBe "Liberada"
-        entry["bloqueada"] shouldBe "false"
-    }
 
     "fontes de XP usam as faixas do nivel.yml padrao" {
         val sources = LevelLore.sources(LevelConfig.DEFAULT, listOf(1, 3, 8, 40))

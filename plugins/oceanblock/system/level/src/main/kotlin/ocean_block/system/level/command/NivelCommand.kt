@@ -10,17 +10,19 @@ import ocean_block.system.craft.recipe.Recipes
 import ocean_block.system.level.PlayerLevels
 import ocean_block.system.level.curve.LevelCurve
 import ocean_block.system.level.data.LevelManager
-import ocean_block.system.level.dialog.LevelDialog
+import me.devnatan.inventoryframework.ViewFrame
+import ocean_block.system.level.menu.LevelMenu
+import ocean_block.system.level.menu.LevelPath
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 @CommandAlias("nivel|level|niveis")
-class NivelCommand : BaseCommand() {
+class NivelCommand(private val viewFrame: ViewFrame) : BaseCommand() {
 
     @Default
     fun onDefault(player: Player) {
-        if (!LevelDialog.open(player)) summary(player).forEach(player::sendRichMessage)
+        viewFrame.open(LevelMenu::class.java, player, LevelPath.pageOf(PlayerLevels.levelOf(player)))
     }
 
     @Subcommand("dar")

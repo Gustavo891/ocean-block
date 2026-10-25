@@ -1,0 +1,17 @@
+nivel_reached:
+  material: PAPER
+  item_model: oneblock:nivel_reached
+  type: flat
+  texture: assets/oneblock/textures/item/nivel/nivel_alcancado.png
+
+nivel_current:
+  material: PAPER
+  item_model: oneblock:nivel_current
+  type: flat
+  texture: assets/oneblock/textures/item/nivel/nivel_atual.png
+
+nivel_locked:
+  material: PAPER
+  item_model: oneblock:nivel_locked
+  type: flat
+  texture: assets/oneblock/textures/item/nivel/nivel_bloqueado.png
