@@ -142,6 +142,15 @@ data class DefProgress(
     override val path: String,
 ) : DefNode
 
+data class DefPixels(
+    val bind: String,
+    val w: Int,
+    val h: Int,
+    val scale: Int,
+    val position: UiPosition?,
+    override val path: String,
+) : DefNode
+
 data class DefRepeat(val list: String, val perPage: Int?, val node: DefNode, override val path: String) : DefNode
 
 data class DefScoped(

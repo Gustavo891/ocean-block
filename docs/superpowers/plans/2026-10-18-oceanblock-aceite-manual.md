@@ -171,8 +171,16 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 
 ## 11. Menu da ilha
 
-### Hub (`/ilha`)
-- [ ] Com ilha, `/ilha` abre o menu `Ilha de <dono>` (fundo `ilha_menu`, sem vidro): cabeça do dono no topo com membros `n/max`, borda, nível do gerador e visitas; embaixo Ir para a ilha, Membros, Melhorias, Configurações, Visitas, Receitas, Nível e Missões. Não existe mais botão de Fases.
+### Dialog da ilha (`/ilha`)
+- [ ] Com ilha, `/ilha` abre o dialog `Sua Ilha` no tema escuro: mapa da ilha à esquerda, card com o seu personagem de corpo inteiro com a sua skin (3/4, frente, topo e lado), nome, status pública/privada, membros, borda, gerador, configurações e moedas; botão verde Ir para a ilha, Receitas e 6 cards (Membros, Melhorias, Configurações, Visitas, Nível, Missões).
+- [ ] O mapa mostra a ilha vista de cima com sombreado de altura, água mais escura quanto mais funda, e um quadrado branco com borda escura onde você está (só quando está dentro da borda). Construir algo e reabrir depois de 20 s: o mapa mostra a mudança.
+- [ ] Trocar de skin (SkinsRestorer) e reabrir: o personagem usa a skin nova; skin slim mostra braços finos. Sem skin ou com a Mojang fora do ar, aparece o personagem padrão e o log tem `[ilha] skin de <nome> indisponível`.
+- [ ] Cada card fecha o dialog e abre o menu de baú correspondente (Membros, Melhorias, Configurações, Visitas) ou roda `/nivel`, `/missoes`, `/receitas`. Ir para a ilha teleporta.
+- [ ] Membro parado na ilha do amigo: o dialog mostra a ilha do amigo. `/ilha menu` continua abrindo o menu de baú abaixo.
+- [ ] O dialog abre em até ~4 s mesmo longe da ilha (chunks carregados de forma assíncrona) e sem travar o servidor.
+
+### Hub de baú (`/ilha menu`)
+- [ ] `/ilha menu` abre o menu `Ilha de <dono>` (fundo `ilha_menu`, sem vidro): cabeça do dono no topo com membros `n/max`, borda, nível do gerador e visitas; embaixo Ir para a ilha, Membros, Melhorias, Configurações, Visitas, Receitas, Nível e Missões. Não existe mais botão de Fases.
 - [ ] `/ilha ir` (ou `/ilha home`) e o botão Ir para a ilha teleportam para o spawn da ilha. O holograma do spawn mostra `(/ilha ir)`.
 - [ ] Receitas, Nível e Missões fecham o menu e abrem `/receitas`, `/nivel` e `/missoes`.
 - [ ] Membro parado na ilha do amigo: `/ilha` abre o menu da ilha do amigo (sem poder remover, convidar nem mudar nada). Visitante numa ilha alheia: `/ilha` abre o menu da própria ilha.

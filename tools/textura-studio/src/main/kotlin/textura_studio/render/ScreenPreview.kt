@@ -35,6 +35,8 @@ data class PreviewRequest(
     val values: Map<String, String> = emptyMap(),
     /** Temas ainda não salvos (nome do .yml -> conteúdo) que substituem os do disco no preview. */
     val themeFiles: Map<String, String> = emptyMap(),
+    /** Imagens de exemplo para nós `pixels`; binds ausentes usam um xadrez do tamanho do nó. */
+    val pixels: Map<String, BufferedImage> = emptyMap(),
 )
 
 data class Box(val x: Int, val y: Int, val w: Int, val h: Int)
@@ -134,6 +136,10 @@ class ScreenPreview(private val assets: StudioAssets) {
                 val entries = request.lists[list] ?: List(count) { emptyMap() }
                 list(list) { entries }
             }
+            PixelSamples.of(definition).forEach { (bind, sample) ->
+                val image = request.pixels[bind] ?: sample
+                pixels(bind) { image }
+            }
         }
         val session = DialogSession(definition.id, binds, request.values).also {
             it.page = page
@@ -230,10 +236,14 @@ class ScreenPreview(private val assets: StudioAssets) {
         val measurer = TextMeasurer(assets.kit)
         val imagesByLine = laid.images.groupBy { it.y / LINE }
         val textsByLine = laid.texts.groupBy { it.y / LINE }
+        val pixelsByLine = laid.pixels.groupBy { it.y / LINE }
 
         canvas.clip(0, top, width, visible)
         for (line in 0 until lines) {
             imagesByLine[line].orEmpty().forEach { art.draw(it, originX, originY, laid.width) }
+            pixelsByLine[line].orEmpty().forEach { placed ->
+                PixelSamples.scaled(placed)?.let { canvas.draw(it, originX + placed.x, originY + placed.y) }
+            }
             textsByLine[line].orEmpty().sortedBy { it.x }.forEach { placed ->
                 val room = minOf(placed.maxWidth, laid.width - placed.x)
                 val content = if (room > 0) measurer.fit(placed.text, placed.bold, room) else ""

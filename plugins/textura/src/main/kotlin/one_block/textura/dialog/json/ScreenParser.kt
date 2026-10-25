@@ -4,6 +4,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import one_block.textura.dialog.DialogValues
+import one_block.textura.dialog.kit.UiPixels
 import one_block.textura.dialog.node.ContainerKind
 import one_block.textura.dialog.node.UiAlign
 import one_block.textura.dialog.node.UiPosition
@@ -224,6 +225,7 @@ class ScreenParser(private val logger: Logger) {
                     placeholders(node.value)
                     placeholders(node.max)
                 }
+                is DefPixels -> keys += node.bind
                 is DefSpace, is DefImage -> Unit
             }
         }
@@ -278,6 +280,7 @@ class ScreenParser(private val logger: Logger) {
                 "text" -> text(obj, path)
                 "icon" -> icon(obj, path)
                 "image" -> DefImage(obj.string("image").orEmpty(), size(obj, "w", path), position(obj, path), path)
+                "pixels" -> pixels(obj, path)
                 "switch" -> DefSwitch(obj.bool("switch", path), obj.string("bind"), obj.string("tooltip"), path)
                 "segmented" -> segmented(obj, path)
                 "button" -> DefButton(
@@ -418,6 +421,20 @@ class ScreenParser(private val logger: Logger) {
             return DefSlider(
                 obj.int("slider", min, path), min, max, step, obj.string("unit").orEmpty(),
                 obj.string("bind"), size(obj, "w", path), obj.string("tooltip"), path,
+            )
+        }
+
+        private fun pixels(obj: JsonObject, path: String): DefPixels {
+            val bind = obj.string("pixels").orEmpty()
+            if (bind.isBlank()) warn(path, "pixels sem o nome do bind")
+            val scale = obj.int("scale", 1, path)
+            if (scale !in UiPixels.SCALES) warn(path, "pixels com scale $scale fora de ${UiPixels.SCALES.first}..${UiPixels.SCALES.last}")
+            val w = obj.int("w", 0, path)
+            val h = obj.int("h", 0, path)
+            if (w !in 1..MAX_PIXELS || h !in 1..MAX_PIXELS) warn(path, "pixels precisa de 'w' e 'h' entre 1 e $MAX_PIXELS")
+            return DefPixels(
+                bind, w.coerceIn(1, MAX_PIXELS), h.coerceIn(1, MAX_PIXELS),
+                scale.coerceIn(UiPixels.SCALES.first, UiPixels.SCALES.last), position(obj, path), path,
             )
         }
 
@@ -613,6 +630,7 @@ class ScreenParser(private val logger: Logger) {
         const val REPEAT = "repeat"
         const val PER_PAGE = "perPage"
         const val MAX_PER_PAGE = 64
+        private const val MAX_PIXELS = 256
         private const val DEFAULT_COUNT = "1"
         val PLACEHOLDER = Regex("""\{([A-Za-z0-9_.-]+)""")
 
@@ -622,7 +640,7 @@ class ScreenParser(private val logger: Logger) {
             "box" to ContainerKind.Box,
             "grid" to ContainerKind.Grid,
         )
-        private val LEAVES = listOf("text", "button", "nav", "dropdown", "slider", "progress", "segmented", "switch", "chip", "pair", "slots", "image", "icon", "space")
+        private val LEAVES = listOf("text", "button", "nav", "dropdown", "slider", "progress", "segmented", "switch", "chip", "pair", "slots", "image", "pixels", "icon", "space")
         private val COMMON = setOf("name", REPEAT)
         private val ROOT = setOf("theme", "title", "close")
         private val WRAPPER = setOf("title", "theme", "document", "pages", "hideFooter", "canCloseWithEscape", "pause", "close")
@@ -637,6 +655,7 @@ class ScreenParser(private val logger: Logger) {
             "text" to setOf("text", "style", "align", "w", "icon", "color", "bold", "scale", "tooltip", "x", "y"),
             "icon" to setOf("icon", "size", "x", "y", "bind", "states", "frame"),
             "image" to setOf("image", "w", "x", "y"),
+            "pixels" to setOf("pixels", "w", "h", "scale", "x", "y"),
             "switch" to setOf("switch", "bind", "tooltip"),
             "segmented" to setOf("segmented", "selected", "bind", "w", "tooltip"),
             "button" to setOf("button", "bind", "w", "icon", "tooltip", "onClick", "look", "selected", "disabled"),

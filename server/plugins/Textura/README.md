@@ -195,6 +195,7 @@ Folhas:
 | `{"text": "…"}` | `style` (aceita `"{chave}"`, ex.: `good`/`bad` por entrada), `align` (`left`/`center`/`right`), `w`, `icon`, `color`, `bold`, `tooltip`; `scale` só aceita 1 |
 | `{"icon": "ui:x"}` | `size` (px, default 8); `"frame": true` desenha a surface `frame` do tema (no `stone`, o `well`, fundo de slot do inventário) em volta, com 4 px de folga |
 | `{"image": "ui:x"}` | `w` (estica se a imagem tiver `.slice`) |
+| `{"pixels": "chave"}` | `w`, `h` (px, 1..256, obrigatórios), `scale` (1..4, px de tela por pixel da imagem). Desenha a imagem que o código passa em `binds.pixels("chave") { bufferedImage }`, gerada na hora (mapa, skin); sem imagem, o nó só ocupa o espaço |
 | `{"switch": true}` | `bind`, `tooltip` |
 | `{"segmented": ["A","B"]}` | `selected`, `bind`, `w`, `tooltip` |
 | `{"button": "rótulo"}` | `bind`, `w`, `icon`, `tooltip` |
@@ -223,6 +224,12 @@ DialogApi.open(player, "settings") { binds ->
     binds.button("reset") { click -> prefs.reset() }
 }
 ```
+
+O nó `pixels` vira glyphs brancos de 1 px de altura × `scale` coloridos pela cor do texto,
+um por corrida de pixels iguais na linha (pixel com alfa < 128 fica vazio). Os glyphs
+(escalas 1..4, larguras 1..64) entram sempre no pack; imagem muito colorida gera muitos
+componentes, então mantenha `w`×`h` moderado (o menu da ilha usa 128×128 em escala 2 e
+44×76 em escala 1).
 
 Depois de qualquer clique a tela é redesenhada. Num `button`, `click.close()`
 fecha o dialog e `click.open("outra") { ... }` troca de tela. Os nomes de `bind`

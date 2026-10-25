@@ -18,6 +18,7 @@ import one_block.textura.dialog.kit.UiKit
 import one_block.textura.dialog.kit.UiPiece
 import one_block.textura.dialog.kit.UiPieceSource
 import one_block.textura.dialog.kit.UiPieces
+import one_block.textura.dialog.kit.UiPixels
 import one_block.textura.dialog.kit.UiSlice
 import one_block.textura.dialog.kit.UiTextFont
 import one_block.textura.dialog.kit.UiUsage
@@ -51,7 +52,8 @@ class UiPackWriter(
         val icons = usage.icons.mapNotNull { size -> icon(size)?.let { size to it } }.toMap()
         val hit = UiPieceSource(HIT, BufferedImage(1, HIT_HEIGHT, BufferedImage.TYPE_INT_ARGB))
 
-        val sources = arts.values.flatMap(::artSources) + surfaces.values.flatMap { it.pieces } + icons.values + hit
+        val pixels = pixelSources()
+        val sources = arts.values.flatMap(::artSources) + surfaces.values.flatMap { it.pieces } + icons.values + hit + pixels
         val chars = UiCodepoints.assign(sources.map { it.name })
         val packed = sources.associate { it.name to texture(builder, it, chars.getValue(it.name)) }
 
@@ -65,7 +67,16 @@ class UiPackWriter(
             icons = icons.mapValues { (size, source) -> plain(packed.getValue(source.name), source.image.width / source.detail, size.size) },
             textFont = textFont,
             hit = packed.getValue(HIT).piece,
+            pixels = pixels.associate { it.name to packed.getValue(it.name).piece },
         )
+    }
+
+    private fun pixelSources(): List<UiPieceSource> = UiPixels.SCALES.flatMap { scale ->
+        UiPixels.WIDTHS.map { width ->
+            val image = BufferedImage(width * scale, scale, BufferedImage.TYPE_INT_ARGB)
+            for (x in 0 until image.width) for (y in 0 until image.height) image.setRGB(x, y, WHITE)
+            UiPieceSource(UiPixels.name(scale, width), image)
+        }
     }
 
     private fun plain(packed: Packed, width: Int, height: Int): UiImage =
@@ -188,6 +199,7 @@ class UiPackWriter(
         private const val NAMESPACE = "oneblock"
         private const val HIT = "ui:#hit"
         private const val HIT_HEIGHT = 9
+        private const val WHITE = 0xFFFFFFFF.toInt()
         private val SHADERS = listOf("gui.vsh", "gui.fsh")
     }
 }

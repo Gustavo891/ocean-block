@@ -4,6 +4,7 @@ import one_block.textura.api.DialogBinds
 import one_block.textura.api.DialogClick
 import one_block.textura.dialog.node.UiOutcome
 import org.bukkit.entity.Player
+import java.awt.image.BufferedImage
 
 class DialogSession(
     val screenId: String,
@@ -71,4 +72,6 @@ class DialogSession(
     fun entries(list: String): List<Map<String, String>> = binds.lists[list]?.get().orEmpty()
 
     fun listPage(list: String): Int = binds.listPages[list]?.asInt ?: 0
+
+    fun pixels(key: String): BufferedImage? = binds.pixels[key]?.get()
 }

@@ -19,6 +19,7 @@ import one_block.textura.dialog.node.ContainerNode
 import one_block.textura.dialog.node.HotspotNode
 import one_block.textura.dialog.node.IconNode
 import one_block.textura.dialog.node.ImageNode
+import one_block.textura.dialog.node.PixelsNode
 import one_block.textura.dialog.node.TextNode
 import one_block.textura.dialog.node.UiAction
 import one_block.textura.dialog.node.UiAlign
@@ -87,6 +88,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             is DefText -> text(def)
             is DefIcon -> iconNode(def)
             is DefImage -> ImageNode(def.id, def.w, def.position)
+            is DefPixels -> pixels(def)
             is DefSwitch -> switch(def)
             is DefSegmented -> segmented(def)
             is DefButton -> button(def)
@@ -312,6 +314,12 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                 ),
             )
             return ContainerNode(ContainerKind.Box, children, cross = UiAlign.Center, w = UiSize.Px(width))
+        }
+
+        private fun pixels(def: DefPixels): UiNode {
+            val image = session.pixels(def.bind)
+                ?: return ContainerNode(ContainerKind.Box, emptyList(), w = UiSize.Px(def.w), h = UiSize.Px(def.h), position = def.position)
+            return PixelsNode(image, def.scale, UiSize.Px(def.w), UiSize.Px(def.h), def.position)
         }
 
         private fun progress(def: DefProgress): UiNode {

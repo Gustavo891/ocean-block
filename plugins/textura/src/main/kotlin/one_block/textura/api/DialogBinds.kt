@@ -1,5 +1,6 @@
 package one_block.textura.api
 
+import java.awt.image.BufferedImage
 import java.util.function.BooleanSupplier
 import java.util.function.Consumer
 import java.util.function.IntConsumer
@@ -24,8 +25,9 @@ class DialogBinds {
     internal val lists = mutableMapOf<String, Supplier<List<Map<String, String>>>>()
     internal val listPages = mutableMapOf<String, IntSupplier>()
     internal val listButtons = mutableMapOf<String, DialogListAction>()
+    internal val pixels = mutableMapOf<String, Supplier<BufferedImage>>()
 
-    internal val keys: Set<String> get() = values.keys + indexes.keys + buttons.keys + lists.keys + listPages.keys + listButtons.keys
+    internal val keys: Set<String> get() = values.keys + indexes.keys + buttons.keys + lists.keys + listPages.keys + listButtons.keys + pixels.keys
 
     fun switch(key: String, get: BooleanSupplier, set: Consumer<Boolean>) {
         values[key] = ValueBind({ get.asBoolean.toString() }, { set.accept(it == "true") })
@@ -69,5 +71,9 @@ class DialogBinds {
 
     fun listButton(key: String, action: DialogListAction) {
         listButtons[key] = action
+    }
+
+    fun pixels(key: String, image: Supplier<BufferedImage>) {
+        pixels[key] = image
     }
 }

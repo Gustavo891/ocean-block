@@ -31,6 +31,16 @@ interface UiKit {
     fun spaceChar(amount: Int): String?
     fun charAdvance(codePoint: Int): Int
     val hit: UiPiece?
+    fun pixel(scale: Int, width: Int): UiPiece? = null
+}
+
+object UiPixels {
+
+    val SCALES: IntRange = 1..4
+    val WIDTHS: List<Int> = (0..6).map { 1 shl it }
+    val MAX_WIDTH: Int = WIDTHS.last()
+
+    fun name(scale: Int, width: Int): String = "pixel:$scale:$width"
 }
 
 object UiFonts {

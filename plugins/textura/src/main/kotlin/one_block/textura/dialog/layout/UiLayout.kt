@@ -8,6 +8,7 @@ import one_block.textura.dialog.node.ContainerNode
 import one_block.textura.dialog.node.HotspotNode
 import one_block.textura.dialog.node.IconNode
 import one_block.textura.dialog.node.ImageNode
+import one_block.textura.dialog.node.PixelsNode
 import one_block.textura.dialog.node.TextNode
 import one_block.textura.dialog.node.UiAlign
 import one_block.textura.dialog.node.UiNode
@@ -30,6 +31,7 @@ class UiLayout(private val kit: UiKit) {
         val texts = mutableListOf<PlacedText>()
         val hotspots = mutableListOf<PlacedHotspot>()
         val boxes = mutableListOf<PlacedBox>()
+        val pixels = mutableListOf<PlacedPixels>()
     }
 
     private data class Area(val x: Int, val y: Int, val width: Int, val height: Int?)
@@ -37,7 +39,7 @@ class UiLayout(private val kit: UiKit) {
     fun layout(screen: UiScreen): LaidOut {
         val sink = Sink()
         val height = place(screen.root, 0, 0, screen.width, null, sink)
-        return LaidOut(screen.width, height, sink.images.toList(), sink.texts.toList(), sink.hotspots.toList(), sink.boxes.toList())
+        return LaidOut(screen.width, height, sink.images.toList(), sink.texts.toList(), sink.hotspots.toList(), sink.boxes.toList(), sink.pixels.toList())
     }
 
     fun intrinsicWidth(node: UiNode): Int {
@@ -52,6 +54,7 @@ class UiLayout(private val kit: UiKit) {
             is IconNode -> node.size
             is TextNode -> measurer.width(node.text, node.bold)
             is HotspotNode -> 0
+            is PixelsNode -> (node.w as? UiSize.Px)?.value ?: (node.image.width * node.scale)
             is ContainerNode -> {
                 val flow = node.children.filter { it.position == null }.map(::intrinsicWidth)
                 node.pad * 2 + when (node.kind) {
@@ -82,6 +85,7 @@ class UiLayout(private val kit: UiKit) {
             is TextNode -> placeText(node, x, y, width, sink)
             is HotspotNode -> placeHotspot(node, x, y, width, parentHeight, sink)
             is ContainerNode -> placeContainer(node, x, y, width, parentHeight, sink)
+            is PixelsNode -> placePixels(node, x, y, width, sink)
         }
         node.tag?.let { sink.boxes += PlacedBox(it, x, y, if (node is IconNode) node.size else width, height) }
         return height
@@ -111,6 +115,12 @@ class UiLayout(private val kit: UiKit) {
         }
         sink.texts += PlacedText(node.text, node.color, node.bold, x + offset, y, width - offset, node.shadow)
         return TextNode.LINE_HEIGHT
+    }
+
+    private fun placePixels(node: PixelsNode, x: Int, y: Int, width: Int, sink: Sink): Int {
+        val height = (node.h as? UiSize.Px)?.value ?: (node.image.height * node.scale)
+        sink.pixels += PlacedPixels(node.image, x, y, width, height, node.scale)
+        return height
     }
 
     private fun placeHotspot(node: HotspotNode, x: Int, y: Int, width: Int, parentHeight: Int?, sink: Sink): Int {

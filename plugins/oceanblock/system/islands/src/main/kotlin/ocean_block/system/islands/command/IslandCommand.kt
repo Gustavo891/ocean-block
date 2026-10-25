@@ -9,6 +9,7 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.libs.coordinate.SimpleLocation
+import ocean_block.system.islands.dialog.IslandDialog
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.member.IslandMembership
@@ -65,7 +66,8 @@ class IslandCommand(
             createAndEnter(sender)
             return
         }
-        openMenu(sender)
+        val island = IslandMembership.menuIsland(sender) ?: return openMenu(sender)
+        IslandDialog.open(sender, island, viewFrame)
     }
 
     private fun goToOther(sender: Player, targetName: String) {

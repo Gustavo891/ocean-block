@@ -5,6 +5,7 @@ import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.text.format.TextColor
 import one_block.textura.api.DialogBinds
 import org.bukkit.entity.Player
+import java.awt.image.BufferedImage
 
 sealed interface UiSize {
     data class Px(val value: Int) : UiSize
@@ -74,6 +75,15 @@ data class TextNode(
     }
 }
 
+data class PixelsNode(
+    val image: BufferedImage,
+    val scale: Int,
+    override val w: UiSize,
+    override val h: UiSize,
+    override val position: UiPosition? = null,
+    override val tag: String? = null,
+) : UiNode
+
 data class HotspotNode(
     val action: UiAction?,
     val tooltip: HoverEventSource<*>?,
@@ -113,4 +123,5 @@ fun UiNode.tagged(tag: String): UiNode = when (this) {
     is TextNode -> copy(tag = tag)
     is HotspotNode -> copy(tag = tag)
     is ContainerNode -> copy(tag = tag)
+    is PixelsNode -> copy(tag = tag)
 }

@@ -1,0 +1,65 @@
+abismo:
+  icon-gap: 4
+  icon-size: 9
+  text:
+    heading: { color: "#ffffff", bold: true }
+    body: { color: "#dadbe0" }
+    muted: { color: "#9a9ca4" }
+    good: { color: "#72d655" }
+    bad: { color: "#ff6f61" }
+    accent: { color: "#5fd6e8" }
+    selected: { color: "#ffffa0" }
+    count: { color: "#ffffff" }
+    disabled: { color: "#8b8b8b", shadow: false }
+    button: { color: "#2a2c31", shadow: false }
+    button-light: { color: "#ffffff" }
+    tooltip: { color: "#a8a8b3" }
+  surfaces:
+    sheet: ui:abismo/sheet
+    card: ui:abismo/card
+    well: ui:abismo/well
+    frame: ui:abismo/well
+  switch:
+    on: ui:mare/switch_on
+    off: ui:mare/switch_off
+    labels: { on: "Ligado", off: "Desligado" }
+  segmented:
+    art: ui:stone/segment
+    selected-art: ui:stone/segment_selected
+    text-style: body
+    selected-text-style: selected
+    pad: 8
+    frame: ui:stone/segment_frame
+  button:
+    art: ui:abismo/button
+    text-style: button
+    looks:
+      acao:
+        art: ui:abismo/button_green
+        text-style: button-light
+        selected-art: ui:abismo/button_green_selected
+        selected-text-style: button-light
+        disabled-art: ui:abismo/button_disabled
+        disabled-text-style: disabled
+  nav:
+    art: ui:stone/nav
+    active-art: ui:stone/nav_active
+    text-style: body
+    active-text-style: selected
+    pad: 7
+  dropdown:
+    art: ui:stone/dropdown
+    arrow: ui:stone/arrow_down
+    text-style: body
+  slider:
+    track: ui:stone/slider_track
+    fill: ui:stone/slider_fill
+    text-style: body
+  slots:
+    art: ui:mare/slot
+    missing-art: ui:mare/slot_missing
+    text-style: count
+  chip:
+    art: ui:mare/chip
+    text-style: body
+    height: 20

@@ -8,7 +8,10 @@ class PackedUiKit(
     private val icons: Map<IconSize, UiImage>,
     private val textFont: UiTextFont,
     override val hit: UiPiece?,
+    private val pixels: Map<String, UiPiece> = emptyMap(),
 ) : UiKit {
+
+    override fun pixel(scale: Int, width: Int): UiPiece? = pixels[UiPixels.name(scale, width)]
 
     private val spaces = UiFonts.spaceChars()
     private val known: Set<String> = images.keys + icons.keys.map { it.id } + surfaces.keys.map { it.id }

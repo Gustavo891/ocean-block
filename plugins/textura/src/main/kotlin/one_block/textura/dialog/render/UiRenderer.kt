@@ -5,6 +5,8 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.ShadowColor
+import net.kyori.adventure.text.format.TextColor
+import one_block.textura.dialog.kit.UiPixels
 import net.kyori.adventure.text.format.TextDecoration
 import one_block.textura.dialog.kit.IconSize
 import one_block.textura.dialog.kit.SurfaceSize
@@ -53,6 +55,7 @@ class UiRenderer(
 
         val imagesByLine = laid.images.groupBy { it.y / LINE }
         val textsByLine = laid.texts.groupBy { it.y / LINE }
+        val pixelsByLine = pixelRows(laid).groupBy { it.y / LINE }
 
         return (0 until count).map { n ->
             val line = Line()
@@ -61,9 +64,36 @@ class UiRenderer(
             markers(line, margin, spans)
             line.moveTo(0)
             imagesByLine[n].orEmpty().forEach { image(line, margin, it, laid.width) }
+            pixelsByLine[n].orEmpty().forEach { pixelRow(line, margin, it) }
             textsByLine[n].orEmpty().sortedBy { it.x }.forEach { text(line, margin, it, laid.width) }
             line.moveTo(body)
             line.builder.build()
+        }
+    }
+
+    private class PixelRow(val y: Int, val x: Int, val scale: Int, val runs: List<PixelRun>)
+
+    private fun pixelRows(laid: LaidOut): List<PixelRow> = laid.pixels.flatMap { placed ->
+        val scale = placed.scale
+        val columns = minOf(placed.image.width, placed.width / scale, (laid.width - placed.x) / scale)
+        val rows = minOf(placed.image.height, placed.height / scale)
+        if (columns <= 0 || rows <= 0) return@flatMap emptyList()
+        if (kit.pixel(scale, 1) == null) {
+            warn("Pixels em escala $scale não estão no pack — rode /textura gerar")
+            return@flatMap emptyList()
+        }
+        (0 until rows).map { row ->
+            val argb = placed.image.getRGB(0, row, columns, 1, null, 0, columns)
+            PixelRow(placed.y + row * scale, placed.x, scale, PixelRuns.of(argb))
+        }
+    }
+
+    private fun pixelRow(line: Line, margin: Int, row: PixelRow) {
+        val font = kit.imageFont(row.y % LINE)
+        row.runs.flatMap { PixelRuns.pieces(it, UiPixels.MAX_WIDTH) }.forEach { piece ->
+            val glyph = kit.pixel(row.scale, piece.width) ?: return@forEach
+            line.moveTo(margin + row.x + piece.x * row.scale)
+            line.append(Component.text(glyph.char).font(font).color(TextColor.color(piece.rgb)).shadowColor(NO_SHADOW), glyph.advance)
         }
     }
 

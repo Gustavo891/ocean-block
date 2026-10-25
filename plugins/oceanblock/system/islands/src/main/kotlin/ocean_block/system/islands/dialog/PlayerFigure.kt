@@ -1,0 +1,153 @@
+package ocean_block.system.islands.dialog
+
+import java.awt.image.BufferedImage
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.sin
+import kotlin.math.sqrt
+
+object PlayerFigure {
+
+    const val WIDTH = 44
+    const val HEIGHT = 76
+
+    private const val UNIT = 2.0
+    private const val CENTER_Y = 16.0
+    private const val FAR = 50.0
+    private const val YAW = -25.0
+    private const val PITCH = 15.0
+    private const val OPAQUE = 128
+    private const val HEAD_INFLATE = 0.5
+    private const val LIMB_INFLATE = 0.25
+    private const val AMBIENT = 0.45
+    private const val DIFFUSE = 0.6
+
+    private data class Vec(val x: Double, val y: Double, val z: Double) {
+        operator fun plus(o: Vec) = Vec(x + o.x, y + o.y, z + o.z)
+        operator fun times(s: Double) = Vec(x * s, y * s, z * s)
+        fun dot(o: Vec) = x * o.x + y * o.y + z * o.z
+    }
+
+    private data class Box(val u: Int, val v: Int, val x: Double, val y: Double, val z: Double, val w: Int, val h: Int, val d: Int, val inflate: Double) {
+        val min = Vec(x - inflate, y - inflate, z - inflate)
+        val max = Vec(x + w + inflate, y + h + inflate, z + d + inflate)
+    }
+
+    private class Hit(val t: Double, val argb: Int, val normal: Vec)
+
+    private val light = Vec(-0.5, 0.7, 0.5).let { it * (1 / sqrt(it.dot(it))) }
+
+    fun render(skin: BufferedImage, slim: Boolean): BufferedImage {
+        val boxes = boxes(slim, legacy = skin.height < skin.width)
+        val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
+        val direction = toModel(Vec(0.0, 0.0, -1.0))
+        for (py in 0 until HEIGHT) {
+            for (px in 0 until WIDTH) {
+                val view = Vec((px + 0.5 - WIDTH / 2.0) / UNIT, (HEIGHT / 2.0 - (py + 0.5)) / UNIT, FAR)
+                val origin = toModel(view) + Vec(0.0, CENTER_Y, 0.0)
+                val hit = boxes.mapNotNull { trace(skin, it, origin, direction) }.minByOrNull { it.t } ?: continue
+                image.setRGB(px, py, lit(hit))
+            }
+        }
+        return image
+    }
+
+    private fun boxes(slim: Boolean, legacy: Boolean): List<Box> {
+        val arm = if (slim) 3 else 4
+        val leftArm = if (legacy) 40 to 16 else 32 to 48
+        val leftLeg = if (legacy) 0 to 16 else 16 to 48
+        val base = listOf(
+            Box(0, 0, -4.0, 24.0, -4.0, 8, 8, 8, 0.0),
+            Box(16, 16, -4.0, 12.0, -2.0, 8, 12, 4, 0.0),
+            Box(40, 16, -4.0 - arm, 12.0, -2.0, arm, 12, 4, 0.0),
+            Box(leftArm.first, leftArm.second, 4.0, 12.0, -2.0, arm, 12, 4, 0.0),
+            Box(0, 16, -4.0, 0.0, -2.0, 4, 12, 4, 0.0),
+            Box(leftLeg.first, leftLeg.second, 0.0, 0.0, -2.0, 4, 12, 4, 0.0),
+        )
+        val hat = Box(32, 0, -4.0, 24.0, -4.0, 8, 8, 8, HEAD_INFLATE)
+        if (legacy) return base + hat
+        return base + hat + listOf(
+            Box(16, 32, -4.0, 12.0, -2.0, 8, 12, 4, LIMB_INFLATE),
+            Box(40, 32, -4.0 - arm, 12.0, -2.0, arm, 12, 4, LIMB_INFLATE),
+            Box(48, 48, 4.0, 12.0, -2.0, arm, 12, 4, LIMB_INFLATE),
+            Box(0, 32, -4.0, 0.0, -2.0, 4, 12, 4, LIMB_INFLATE),
+            Box(0, 48, 0.0, 0.0, -2.0, 4, 12, 4, LIMB_INFLATE),
+        )
+    }
+
+    private fun trace(skin: BufferedImage, box: Box, origin: Vec, direction: Vec): Hit? {
+        var near = Double.NEGATIVE_INFINITY
+        var far = Double.POSITIVE_INFINITY
+        var axis = -1
+        val o = doubleArrayOf(origin.x, origin.y, origin.z)
+        val d = doubleArrayOf(direction.x, direction.y, direction.z)
+        val lo = doubleArrayOf(box.min.x, box.min.y, box.min.z)
+        val hi = doubleArrayOf(box.max.x, box.max.y, box.max.z)
+        for (i in 0..2) {
+            if (d[i] == 0.0) {
+                if (o[i] < lo[i] || o[i] > hi[i]) return null
+                continue
+            }
+            val t1 = (lo[i] - o[i]) / d[i]
+            val t2 = (hi[i] - o[i]) / d[i]
+            val enter = minOf(t1, t2)
+            if (enter > near) {
+                near = enter
+                axis = i
+            }
+            far = minOf(far, maxOf(t1, t2))
+        }
+        if (axis < 0 || near > far || far < 0) return null
+        val sign = if (d[axis] > 0) -1.0 else 1.0
+        val normal = when (axis) {
+            0 -> Vec(sign, 0.0, 0.0)
+            1 -> Vec(0.0, sign, 0.0)
+            else -> Vec(0.0, 0.0, sign)
+        }
+        val point = origin + direction * near
+        val argb = texel(skin, box, point, normal)
+        if ((argb ushr 24) < OPAQUE) return null
+        return Hit(near, argb, normal)
+    }
+
+    private fun texel(skin: BufferedImage, box: Box, point: Vec, normal: Vec): Int {
+        fun fraction(value: Double, lo: Double, hi: Double) = ((value - lo) / (hi - lo)).coerceIn(0.0, 0.9999)
+        val fx = fraction(point.x, box.min.x, box.max.x)
+        val fy = 1 - fraction(point.y, box.min.y, box.max.y)
+        val fz = fraction(point.z, box.min.z, box.max.z)
+        val (w, h, d) = Triple(box.w, box.h, box.d)
+        val (tx, ty) = when {
+            normal.z > 0 -> box.u + d + cell(fx, w) to box.v + d + cell(fy, h)
+            normal.z < 0 -> box.u + 2 * d + w + cell(1 - fx, w) to box.v + d + cell(fy, h)
+            normal.x < 0 -> box.u + cell(fz, d) to box.v + d + cell(fy, h)
+            normal.x > 0 -> box.u + d + w + cell(1 - fz, d) to box.v + d + cell(fy, h)
+            normal.y > 0 -> box.u + d + cell(fx, w) to box.v + cell(fz, d)
+            else -> box.u + d + w + cell(fx, w) to box.v + cell(fz, d)
+        }
+        if (tx !in 0 until skin.width || ty !in 0 until skin.height) return 0
+        return skin.getRGB(tx, ty)
+    }
+
+    private fun cell(fraction: Double, size: Int): Int = floor(fraction.coerceIn(0.0, 0.9999) * size).toInt()
+
+    private fun lit(hit: Hit): Int {
+        val factor = AMBIENT + DIFFUSE * maxOf(0.0, toView(hit.normal).dot(light))
+        val r = (((hit.argb shr 16) and 0xFF) * factor).toInt().coerceIn(0, 255)
+        val g = (((hit.argb shr 8) and 0xFF) * factor).toInt().coerceIn(0, 255)
+        val b = ((hit.argb and 0xFF) * factor).toInt().coerceIn(0, 255)
+        return (0xFF shl 24) or (r shl 16) or (g shl 8) or b
+    }
+
+    private val yaw = Math.toRadians(YAW)
+    private val pitch = Math.toRadians(PITCH)
+
+    private fun toView(p: Vec): Vec {
+        val y1 = Vec(p.x * cos(yaw) + p.z * sin(yaw), p.y, -p.x * sin(yaw) + p.z * cos(yaw))
+        return Vec(y1.x, y1.y * cos(pitch) - y1.z * sin(pitch), y1.y * sin(pitch) + y1.z * cos(pitch))
+    }
+
+    private fun toModel(v: Vec): Vec {
+        val x1 = Vec(v.x, v.y * cos(pitch) + v.z * sin(pitch), -v.y * sin(pitch) + v.z * cos(pitch))
+        return Vec(x1.x * cos(yaw) - x1.z * sin(yaw), x1.y, x1.x * sin(yaw) + x1.z * cos(yaw))
+    }
+}
