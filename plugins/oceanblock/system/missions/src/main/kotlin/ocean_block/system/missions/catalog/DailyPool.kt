@@ -1,0 +1,25 @@
+package ocean_block.system.missions.catalog
+
+import ocean_block.system.missions.model.Mission
+import ocean_block.system.missions.model.MissionObjective
+
+object DailyPool {
+
+    const val DAILY_COUNT = 3
+
+    val all: List<Mission> = listOf(
+        Mission("detritos_30", "Colete 30 detritos", MissionObjective.CollectDebris(30, false), 0),
+        Mission("gancho_15", "Colete 15 detritos usando o gancho", MissionObjective.CollectDebris(15, true), 0),
+        Mission("gerador_64", "Quebre 64 blocos do gerador", MissionObjective.BreakGeneratorBlocks(64, null), 0),
+        Mission("gerador_128", "Quebre 128 blocos do gerador", MissionObjective.BreakGeneratorBlocks(128, null), 0),
+        Mission("receitas_3", "Fabrique 3 receitas", MissionObjective.CraftAny(3), 0),
+        Mission("venda_2000", "Venda $2.000 em itens", MissionObjective.Sell(2000), 0),
+        Mission("venda_5000", "Venda $5.000 em itens", MissionObjective.Sell(5000), 0),
+    )
+
+    private val byId: Map<String, Mission> = all.associateBy { it.id }
+
+    fun byId(id: String): Mission? = byId[id]
+
+    fun group(id: String): String = id.substringBeforeLast('_')
+}
