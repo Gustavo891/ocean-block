@@ -3,6 +3,7 @@ package ocean_block.system.missions
 import co.aikar.commands.PaperCommandManager
 import ocean_block.system.missions.command.MissoesCommand
 import ocean_block.system.missions.data.MissionManager
+import ocean_block.system.missions.dialog.MissionDialog
 import ocean_block.system.missions.listener.MissionListener
 import ocean_block.system.missions.notify.MissionNotifier
 import one_block.textura.api.NotificationApi
@@ -15,6 +16,7 @@ object MissionsSystem {
     fun init(plugin: JavaPlugin, paperCommandManager: PaperCommandManager) {
         MissionManager.onInit()
         NotificationApi.registerItemIcons(listOf(MissionNotifier.ICON_MATERIAL))
+        MissionDialog.registerIcons()
         plugin.server.pluginManager.registerEvents(MissionListener(), plugin)
         paperCommandManager.registerCommand(MissoesCommand())
         plugin.server.scheduler.runTaskTimer(plugin, Runnable {

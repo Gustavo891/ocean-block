@@ -27,7 +27,7 @@ class IslandView : View() {
         config.layout(
             "    i    ",
             " t m u s ",
-            "  w r p  ",
+            " w r p q ",
         )
     }
 
@@ -64,6 +64,9 @@ class IslandView : View() {
         render.layoutSlot('p')
             .renderWith { action(Material.EXPERIENCE_BOTTLE, "Nível", "Mostra seu nível e as receitas.") }
             .onClick { click -> runCommand(click, "nivel") }
+        render.layoutSlot('q')
+            .renderWith { action(Material.MAP, "Missões", "Mostra sua missão e as diárias.") }
+            .onClick { click -> runCommand(click, "missoes") }
     }
 
     private fun open(click: SlotClickContext, view: Class<out View>, island: Island) {

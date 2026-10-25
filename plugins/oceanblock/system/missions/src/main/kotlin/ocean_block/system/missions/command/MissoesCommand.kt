@@ -10,6 +10,7 @@ import ocean_block.system.missions.MissionTracker
 import ocean_block.system.missions.catalog.DailyPool
 import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.data.MissionManager
+import ocean_block.system.missions.dialog.MissionDialog
 import ocean_block.system.missions.rules.MissionRules
 import ocean_block.system.missions.text.MissionText
 import org.bukkit.Bukkit
@@ -21,7 +22,7 @@ class MissoesCommand : BaseCommand() {
 
     @Default
     fun onDefault(player: Player) {
-        MissionTracker.refresh(player)
+        if (MissionDialog.open(player)) return
         summary(player).forEach(player::sendRichMessage)
     }
 

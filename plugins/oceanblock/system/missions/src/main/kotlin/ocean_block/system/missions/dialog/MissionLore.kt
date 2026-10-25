@@ -1,0 +1,54 @@
+package ocean_block.system.missions.dialog
+
+import ocean_block.system.missions.catalog.DailyPool
+import ocean_block.system.missions.catalog.MissionTrail
+import ocean_block.system.missions.model.DailyMission
+import ocean_block.system.missions.model.MissionObjective
+import ocean_block.system.missions.model.PlayerMissions
+import ocean_block.system.missions.text.MissionText
+import java.time.Duration
+import java.time.LocalDateTime
+
+object MissionLore {
+
+    const val LOCKED_DAILIES = "Termine a trilha para liberar as diárias."
+
+    fun trail(state: PlayerMissions): Map<String, String> {
+        val mission = MissionTrail.at(state.trailIndex) ?: return mapOf(
+            "titulo" to "Trilha concluída!",
+            "texto" to "Você completou as ${MissionTrail.size} missões da trilha.",
+            "contador" to "",
+            "xp" to "",
+            "barra" to "100",
+        )
+        return mapOf(
+            "titulo" to "Missão ${state.trailIndex + 1} de ${MissionTrail.size}",
+            "texto" to mission.text,
+            "contador" to MissionText.counter(mission.objective, state.trailProgress),
+            "xp" to "+${MissionText.number(mission.xp.toLong())} XP",
+            "barra" to percent(mission.objective, state.trailProgress),
+        )
+    }
+
+    fun daily(daily: DailyMission): Map<String, String> {
+        val mission = DailyPool.byId(daily.id)
+        val progress = if (daily.done) mission?.objective?.goal ?: 1 else daily.progress
+        return mapOf(
+            "texto" to (mission?.text ?: daily.id),
+            "contador" to (mission?.let { MissionText.counter(it.objective, progress) } ?: ""),
+            "xp" to "+${MissionText.number(daily.xp.toLong())} XP",
+            "barra" to if (daily.done || mission == null) "100" else percent(mission.objective, progress),
+            "feito" to daily.done.toString(),
+            "estado" to if (daily.done) "✔ Concluída" else "Em andamento",
+            "estado_estilo" to if (daily.done) "good" else "muted",
+        )
+    }
+
+    fun resetIn(now: LocalDateTime): String {
+        val minutes = Duration.between(now, now.toLocalDate().plusDays(1).atStartOfDay()).toMinutes()
+        return "Renovam em %02d:%02d".format(minutes / 60, minutes % 60)
+    }
+
+    private fun percent(objective: MissionObjective, progress: Long): String =
+        (progress.coerceIn(0, objective.goal) * 100 / objective.goal).toString()
+}
