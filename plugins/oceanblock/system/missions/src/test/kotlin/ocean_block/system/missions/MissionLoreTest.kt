@@ -42,6 +42,7 @@ class MissionLoreTest : StringSpec({
 
         daily["feito"] shouldBe "true"
         daily["barra"] shouldBe "100"
+        daily["estado"] shouldBe "Concluída"
     }
 
     "renovacao conta ate a meia-noite" {

@@ -39,7 +39,7 @@ object MissionLore {
             "xp" to "+${MissionText.number(daily.xp.toLong())} XP",
             "barra" to if (daily.done || mission == null) "100" else percent(mission.objective, progress),
             "feito" to daily.done.toString(),
-            "estado" to if (daily.done) "✔ Concluída" else "Em andamento",
+            "estado" to if (daily.done) "Concluída" else "Em andamento",
             "estado_estilo" to if (daily.done) "good" else "muted",
         )
     }
