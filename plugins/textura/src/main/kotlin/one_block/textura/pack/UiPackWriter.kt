@@ -131,7 +131,7 @@ class UiPackWriter(
     private fun icon(size: IconSize): UiPieceSource? {
         val art = catalog.art(size.id) ?: return missing(size.id)
         val native = if (size.id.startsWith(UiArtCatalog.ITEM_PREFIX) && size.size < art.image.height) IconScale.native(art.image, size.size) else null
-        val detail = if (native == null && !size.id.startsWith(UiArtCatalog.ITEM_PREFIX)) IconScale.detail(art.image, size.size) else 1
+        val detail = if (native == null) IconScale.detail(art.image, size.size) else 1
         val resized = native ?: IconScale.resize(art.image, size.size * detail) ?: run {
             logger.warning("[ui] Ícone '${size.id}' com tamanho inválido ${size.size}")
             return null

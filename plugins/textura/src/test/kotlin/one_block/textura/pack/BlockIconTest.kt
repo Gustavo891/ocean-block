@@ -23,6 +23,16 @@ class BlockIconTest : StringSpec({
         icon.getRGB(12, 10) shouldBe 0xFF000099.toInt()
     }
 
+    "em alta resolucao o cubo mantem as mesmas faces nas mesmas proporcoes" {
+        val icon = BlockIcon.render(BlockFaces(solid(0xFFFF0000.toInt()), solid(0xFF00FF00.toInt()), solid(0xFF0000FF.toInt())), 64)
+
+        icon.width shouldBe 64
+        icon.getRGB(32, 12) shouldBe 0xFFFF0000.toInt()
+        icon.getRGB(12, 40) shouldBe 0xFF00CC00.toInt()
+        icon.getRGB(48, 40) shouldBe 0xFF000099.toInt()
+        alpha(icon.getRGB(0, 0)) shouldBe 0
+    }
+
     "os cantos fora do cubo ficam transparentes" {
         val icon = BlockIcon.render(BlockFaces(solid(-1), solid(-1), solid(-1)))
 

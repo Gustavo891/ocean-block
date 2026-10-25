@@ -7,32 +7,30 @@ data class BlockFaces<T>(val top: T, val front: T, val side: T, val under: T? = 
 object BlockIcon {
 
     private const val SIZE = 16
-    private const val HALF = SIZE / 2
-    private const val QUARTER = SIZE / 4
     private const val FRONT_SHADE = 0.8
     private const val SIDE_SHADE = 0.6
 
-    fun render(faces: BlockFaces<BufferedImage>): BufferedImage {
-        val result = BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB)
-        for (px in 0 until SIZE) {
-            for (py in 0 until SIZE) {
-                pixel(faces, px + 0.5, py + 0.5)?.let { result.setRGB(px, py, it) }
+    fun render(faces: BlockFaces<BufferedImage>, size: Int = SIZE): BufferedImage {
+        val result = BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB)
+        for (px in 0 until size) {
+            for (py in 0 until size) {
+                pixel(faces, px + 0.5, py + 0.5, size / 2.0, size / 4.0)?.let { result.setRGB(px, py, it) }
             }
         }
         return result
     }
 
-    private fun pixel(faces: BlockFaces<BufferedImage>, x: Double, y: Double): Int? {
-        val u = (x / HALF - (y - QUARTER) / QUARTER) / 2
-        val v = (x / HALF + (y - QUARTER) / QUARTER) / 2
+    private fun pixel(faces: BlockFaces<BufferedImage>, x: Double, y: Double, half: Double, quarter: Double): Int? {
+        val u = (x / half - (y - quarter) / quarter) / 2
+        val v = (x / half + (y - quarter) / quarter) / 2
         if (u in 0.0..<1.0 && v in 0.0..<1.0) return top(faces, u, v)
-        return if (x < HALF) {
-            val s = x / HALF
-            val t = (y - QUARTER - QUARTER * s) / HALF
+        return if (x < half) {
+            val s = x / half
+            val t = (y - quarter - quarter * s) / half
             if (t in 0.0..<1.0) shade(sample(faces.front, s, t), FRONT_SHADE) else null
         } else {
-            val s = (x - HALF) / HALF
-            val t = (y - HALF + QUARTER * s) / HALF
+            val s = (x - half) / half
+            val t = (y - half + quarter * s) / half
             if (t in 0.0..<1.0) shade(sample(faces.side, s, t), SIDE_SHADE) else null
         }
     }

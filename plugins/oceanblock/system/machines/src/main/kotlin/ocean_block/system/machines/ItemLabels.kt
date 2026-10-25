@@ -1,5 +1,8 @@
 package ocean_block.system.machines
 
+import one_block.textura.api.TranslationApi
+import org.bukkit.Material
+
 object ItemLabels {
 
     fun icon(material: String): String = when {
@@ -10,4 +13,10 @@ object ItemLabels {
         material.endsWith("_WOOD") -> material.removeSuffix("_WOOD").lowercase() + "_log"
         else -> material.lowercase()
     }
+
+    fun name(material: String): String =
+        Material.matchMaterial(material)?.let { TranslationApi.translate(it.translationKey()) } ?: fallbackName(material)
+
+    fun fallbackName(material: String): String =
+        material.lowercase().replace('_', ' ').replaceFirstChar { it.uppercase() }
 }

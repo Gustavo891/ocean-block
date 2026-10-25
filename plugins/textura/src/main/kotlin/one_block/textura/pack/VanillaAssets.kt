@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Logger
 import java.util.zip.ZipFile
 import javax.imageio.ImageIO
+import org.bukkit.Material
 
 class VanillaAssets(private val folder: File, private val version: String, private val logger: Logger) {
 
@@ -24,9 +25,16 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         val jar = jar(download) ?: return null
         val image = runCatching {
             ZipFile(jar).use { zip ->
-                val base = VanillaTextures.find(name) { path -> read(zip, path) }
-                val overlay = if (name in TINTED_POTIONS) read(zip, "item/potion_overlay") else null
-                if (base != null && overlay != null) tinted(base, overlay) else base
+                val frame = { path: String -> read(zip, path)?.let(::firstFrame) }
+                val flat = frame("item/$name")
+                when {
+                    flat == null && isFullBlock(name) -> VanillaTextures.faces(name, frame)?.let { BlockIcon.render(tintedTop(name, it), BLOCK_ICON_SIZE) }
+                    else -> {
+                        val base = flat ?: VanillaTextures.find(name, frame)
+                        val overlay = if (name in TINTED_POTIONS) read(zip, "item/potion_overlay") else null
+                        if (base != null && overlay != null) tinted(base, overlay) else base
+                    }
+                }
             }
         }.getOrElse {
             logger.warning("[ui] Falha ao ler textura vanilla '$name': ${it.message}")
@@ -110,6 +118,16 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         return (argb and 0xFF000000.toInt()) or (r shl 16) or (g shl 8) or b
     }
 
+    private fun isFullBlock(name: String): Boolean =
+        runCatching { Material.matchMaterial(name)?.let { it.isBlock && it.isOccluding } == true }.getOrDefault(false)
+
+    private fun tintedTop(name: String, faces: BlockFaces<BufferedImage>): BlockFaces<BufferedImage> {
+        val color = TINTED_TOPS[name] ?: return faces
+        val top = BufferedImage(faces.top.width, faces.top.height, BufferedImage.TYPE_INT_ARGB)
+        for (x in 0 until top.width) for (y in 0 until top.height) top.setRGB(x, y, multiply(faces.top.getRGB(x, y), color))
+        return faces.copy(top = top)
+    }
+
     private fun firstFrame(image: BufferedImage): BufferedImage =
         if (image.height > image.width && image.height % image.width == 0) image.getSubimage(0, 0, image.width, image.width) else image
 
@@ -182,6 +200,8 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         val LOCALE = Regex("[a-z]{2,3}_[a-z]{2,3}")
         val NAME = Regex("[a-z0-9_]+")
         val TINTED_POTIONS = setOf("potion", "splash_potion", "lingering_potion")
+        private const val BLOCK_ICON_SIZE = 64
+        private val TINTED_TOPS = mapOf("grass_block" to 0x7CBD6B)
         const val WATER_COLOR = 0x385DC6
     }
 }

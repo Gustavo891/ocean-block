@@ -42,7 +42,7 @@ class ArtPainter(private val canvas: Canvas, private val catalog: UiArtCatalog, 
     private fun icon(placed: PlacedImage, size: Int, originX: Int, originY: Int) {
         val art = catalog.art(placed.id) ?: return warn("Ícone '${placed.id}' não existe")
         val native = if (placed.id.startsWith(UiArtCatalog.ITEM_PREFIX) && size < art.image.height) IconScale.native(art.image, size) else null
-        val detail = if (native == null && !placed.id.startsWith(UiArtCatalog.ITEM_PREFIX)) IconScale.detail(art.image, size) else 1
+        val detail = if (native == null) IconScale.detail(art.image, size) else 1
         val image = native ?: IconScale.resize(art.image, size * detail) ?: return
         canvas.draw(image, (originX + placed.x).toDouble(), (originY + placed.y).toDouble(), image.width.toDouble() / detail, image.height.toDouble() / detail)
     }
