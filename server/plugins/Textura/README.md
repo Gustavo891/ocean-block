@@ -431,9 +431,9 @@ coleta:
 | `espacamento` | px entre uma linha e a próxima (0..32). O passo é 13 + espaçamento | 1 |
 | `fundo` | placa escura semitransparente na largura do conteúdo | true |
 | `direcao` | `baixo` ou `cima` | `cima` nas âncoras `BASE_*`, `baixo` nas outras |
-| `animacao` | `true`: a linha fica parada 2 s e depois sobe 16 px em 1,5 s sumindo aos poucos, animada pelo próprio cliente; precisa de `y >= 0` | false |
+| `animacao` | `true`: a linha fica parada 2 s e depois some aos poucos em 1,5 s, no mesmo lugar, animada pelo próprio cliente; precisa de `y >= 0` | false |
 
-`CENTRO` alinha pela esquerda a partir do centro da tela, e `y: 0` fica 32 px acima do centro (a região `xp`, com `x: 8` e `y: 28`, põe o texto logo à direita da mira). Numa região animada o marcador leva a fase de início (tempo do mundo no ciclo de 200 ticks, que divide os 24000 do dia) nos 4 bits baixos do G e no lift do B; o shader (âncora 8) calcula a idade pelo `GameTime` do cliente e anima liso, sem o servidor redesenhar (constantes `TEXTURA_HUD_ANIM_*` no `text.vsh`; a duração da linha deve cobrir parada + subida, 70 ticks).
+`CENTRO` alinha pela esquerda a partir do centro da tela, e `y: 0` fica 32 px acima do centro (a região `xp`, com `x: 8` e `y: 28`, põe o texto logo à direita da mira). Numa região animada o marcador leva a fase de início (tempo do mundo no ciclo de 200 ticks, que divide os 24000 do dia) nos 4 bits baixos do G e no lift do B; o shader (âncora 8) calcula a idade pelo `GameTime` do cliente e anima liso, sem o servidor redesenhar (constantes `TEXTURA_HUD_ANIM_*` no `text.vsh`; a duração da linha deve cobrir parada + sumiço, 70 ticks).
 
 `y: 0` põe a primeira linha onde o texto da bossbar ficaria. Âncoras à direita
 alinham pela direita: o fundo termina em `x`. Valor inválido gera um aviso

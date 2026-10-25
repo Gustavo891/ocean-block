@@ -45,8 +45,7 @@ const float TEXTURA_HUD_BAR_STEP = 19.0;
 const float TEXTURA_HUD_CENTER_TOP = 32.0;
 const float TEXTURA_HUD_ANIM_PERIOD = 200.0;
 const float TEXTURA_HUD_ANIM_HOLD = 40.0;
-const float TEXTURA_HUD_ANIM_RISE = 30.0;
-const float TEXTURA_HUD_ANIM_DISTANCE = 16.0;
+const float TEXTURA_HUD_ANIM_FADE = 30.0;
 
 const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(0.0, 0.0, 0.0),
@@ -147,8 +146,8 @@ void main() {
         float fade = 1.0;
         if (hudAnchor == 8) {
             float age = mod(GameTime * 24000.0 - float(hudPhase), TEXTURA_HUD_ANIM_PERIOD);
-            float k = smoothstep(0.0, 1.0, clamp((age - TEXTURA_HUD_ANIM_HOLD) / TEXTURA_HUD_ANIM_RISE, 0.0, 1.0));
-            offset = texturaHudOffset(hudAnchor) - vec2(0.0, k * TEXTURA_HUD_ANIM_DISTANCE);
+            float k = smoothstep(0.0, 1.0, clamp((age - TEXTURA_HUD_ANIM_HOLD) / TEXTURA_HUD_ANIM_FADE, 0.0, 1.0));
+            offset = texturaHudOffset(hudAnchor);
             fade = 1.0 - k;
         } else {
             offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift) * TEXTURA_HUD_LIFT_STEP);
