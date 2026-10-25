@@ -10,6 +10,7 @@ import ocean_block.system.craft.recipe.Recipes
 import ocean_block.system.level.PlayerLevels
 import ocean_block.system.level.curve.LevelCurve
 import ocean_block.system.level.data.LevelManager
+import ocean_block.system.level.dialog.LevelDialog
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -19,7 +20,7 @@ class NivelCommand : BaseCommand() {
 
     @Default
     fun onDefault(player: Player) {
-        summary(player).forEach(player::sendRichMessage)
+        if (!LevelDialog.open(player)) summary(player).forEach(player::sendRichMessage)
     }
 
     @Subcommand("dar")

@@ -9,6 +9,7 @@ import ocean_block.system.level.command.NivelCommand
 import ocean_block.system.level.config.LevelFile
 import ocean_block.system.level.curve.LevelCurve
 import ocean_block.system.level.data.LevelManager
+import ocean_block.system.level.dialog.LevelDialog
 import ocean_block.system.level.listener.XpListener
 import ocean_block.system.level.notify.LevelNotifier
 import ocean_block.system.scoreboard.level.AccountLevel
@@ -26,6 +27,7 @@ object LevelSystem {
         RecipeLocks.install { PlayerLevels.levelOf(it) }
         AccountLevel.source = { LevelCurve.progress(LevelManager.xp(it.uniqueId)) }
         NotificationApi.registerItemIcons(listOf(LevelNotifier.ICON_MATERIAL))
+        LevelDialog.registerIcons()
         plugin.server.pluginManager.registerEvents(XpListener(), plugin)
         plugin.server.pluginManager.registerEvents(LevelNotifier, plugin)
         paperCommandManager.registerCommand(NivelCommand())
