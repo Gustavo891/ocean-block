@@ -20,6 +20,7 @@ import ocean_block.system.machines.miner.MinerCracks
 import ocean_block.system.machines.miner.MinerDisplay
 import ocean_block.system.machines.miner.MinerMenu
 import ocean_block.system.machines.pickaxe.SmelterPickaxeItem
+import ocean_block.system.machines.recipe.BlockedVanillaRecipes
 import ocean_block.system.machines.recipe.MachineRecipes
 import ocean_block.system.machines.solar.SolarBlock
 import me.devnatan.inventoryframework.ViewFrame
@@ -45,6 +46,7 @@ object MachinesSystem {
         CustomItemRegistry.register(SmelterPickaxeItem)
         DrillItem.all.forEach(CustomItemRegistry::register)
         MachineRecipes.register()
+        BlockedVanillaRecipes.remove()
         viewFrame.with(GeneratorMenu(), FurnaceMenu(), MinerMenu())
         GeneratorDialog.registerIcons()
         FurnaceRecipes.load()

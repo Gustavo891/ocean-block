@@ -11,7 +11,6 @@ import ocean_block.system.machines.MachineBlock
 import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.MachineItems
 import ocean_block.system.machines.energy.EnergyRules
-import ocean_block.system.stations.smelter.Fuel
 import org.bukkit.Particle
 import org.bukkit.Sound
 

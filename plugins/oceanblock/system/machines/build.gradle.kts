@@ -11,7 +11,6 @@ dependencies {
 
     compileOnly(projects.plugins.oceanblock.system.craft)
     compileOnly(projects.plugins.oceanblock.system.customItems)
-    compileOnly(projects.plugins.oceanblock.system.stations)
     compileOnly(projects.plugins.oceanblock.system.preferences)
     compileOnly(projects.plugins.oceanblock.system.islands)
 

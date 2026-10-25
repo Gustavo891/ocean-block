@@ -12,5 +12,7 @@ sealed interface MissionSignal {
 
     data class Sold(val value: Long) : MissionSignal
 
+    data class Smelted(val amount: Int) : MissionSignal
+
     data class State(val level: Int, val upgrades: Map<String, Int>?, val hasGenerator: Boolean) : MissionSignal
 }

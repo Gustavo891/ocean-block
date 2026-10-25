@@ -24,8 +24,10 @@ class MissionTextTest : StringSpec({
     "missao de um passo nao tem contador" {
         MissionText.hud(MissionRules.Current(MissionTrail.all[1], 0, null), trailDone = false) shouldBe
             "<aqua>Missão:</aqua> <white>Faça um gerador de pedra</white>"
-        MissionText.hud(MissionRules.Current(MissionTrail.all[3], 0, null), trailDone = false) shouldBe
-            "<aqua>Missão:</aqua> <white>Faça uma Fundição</white>"
+        MissionText.hud(MissionRules.Current(MissionTrail.all[10], 0, null), trailDone = false) shouldBe
+            "<aqua>Missão:</aqua> <white>Faça uma Fornalha elétrica</white>"
+        MissionText.hud(MissionRules.Current(MissionTrail.all[3], 4, null), trailDone = false) shouldBe
+            "<aqua>Missão:</aqua> <white>Derreta 10 minérios brutos</white> <gray>4/10"
     }
 
     "diaria mostra a posicao entre as tres" {

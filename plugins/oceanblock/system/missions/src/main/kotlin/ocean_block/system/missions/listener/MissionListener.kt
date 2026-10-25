@@ -14,6 +14,8 @@ import ocean_block.system.sell.listener.SellEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.Material
+import org.bukkit.event.inventory.FurnaceExtractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import kotlin.math.roundToLong
@@ -46,6 +48,12 @@ class MissionListener : Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
+    fun onSmelt(event: FurnaceExtractEvent) {
+        if (event.itemType !in SMELTED_ORES || event.itemAmount <= 0) return
+        MissionTracker.signal(event.player, MissionSignal.Smelted(event.itemAmount))
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onLevelUp(event: PlayerLevelUpEvent) {
         MissionTracker.signal(event.player, MissionTracker.stateOf(event.player))
     }
@@ -68,3 +76,5 @@ class MissionListener : Listener {
         MissionHud.hide(event.player)
     }
 }
+
+private val SMELTED_ORES = setOf(Material.IRON_INGOT, Material.COPPER_INGOT, Material.GOLD_INGOT)

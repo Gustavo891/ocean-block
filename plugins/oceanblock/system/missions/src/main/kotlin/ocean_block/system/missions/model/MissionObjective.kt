@@ -20,6 +20,10 @@ sealed interface MissionObjective {
         override val goal: Long get() = 1
     }
 
+    data class Smelt(val amount: Int) : MissionObjective {
+        override val goal: Long get() = amount.toLong()
+    }
+
     data class CraftAny(val amount: Int) : MissionObjective {
         override val goal: Long get() = amount.toLong()
     }

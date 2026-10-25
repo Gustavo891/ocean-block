@@ -1,4 +1,4 @@
-package ocean_block.system.stations.smelter
+package ocean_block.system.machines.generator
 
 object Fuel {
 

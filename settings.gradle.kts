@@ -28,7 +28,6 @@ include(
     ":plugins:oceanblock:system:collections",
     ":plugins:oceanblock:system:craft",
     ":plugins:oceanblock:system:drift",
-    ":plugins:oceanblock:system:stations",
     ":plugins:oceanblock:system:machines",
     ":plugins:oceanblock:system:preferences",
     ":plugins:oceanblock:system:level",

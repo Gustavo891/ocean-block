@@ -67,8 +67,8 @@ class MissionRulesTest : StringSpec({
         state.trailIndex shouldBe 8
     }
 
-    "fundicao conclui a 4 e o estado seguinte conclui a 5" {
-        val (afterCraft, craftDone) = MissionRules.apply(at(3), MissionSignal.Crafted("fundicao"))
+    "derreter soma os lingotes ate 10 e o estado seguinte conclui a 5" {
+        val (afterCraft, craftDone) = feed(at(3), MissionSignal.Smelted(4), MissionSignal.Smelted(6))
         craftDone.size shouldBe 1
         afterCraft.trailIndex shouldBe 4
 

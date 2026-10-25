@@ -122,7 +122,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Com a barra do battle pass ativa, as notificações continuam no lugar certo e nenhuma barra fica pulando.
 - [ ] Textos normais (chat, títulos, nomes) não mudam de lugar nem de cor.
 
-## 10. Gerador, fundição, nível e missões
+## 10. Gerador, fornalha, nível e missões
 
 ### Preparação
 - [ ] `server/plugins/ocean-block/drift.yml` sem os torrões e sem areia/cascalho no barril; `gerador.yml` e `nivel.yml` copiados na primeira subida.
@@ -136,12 +136,12 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Um gerador fora de qualquer ilha (mundo do spawn) continua formando pedregulho vanilla.
 - [ ] Editar `gerador.yml` com um bloco inválido e reiniciar: aviso `[gerador]` no console e o resto da tabela vale.
 
-### Fundição
-- [ ] Craftar a Fundição (8 Argilas + 4 Tábuas) e colocar: aparece uma fornalha comum (Fundições antigas viram fornalha comum sozinhas, mantendo a direção). Clique direito não abre o inventário vanilla.
-- [ ] Clique direito com 8 minérios de ferro brutos carrega a entrada; com tábua carrega combustível. A fundição acende e sai 1 lingote de ferro a cada ~10 s; o item em cima mostra o que está fundindo.
-- [ ] Shift + clique direito retira todos os lingotes prontos.
-- [ ] Quebrar a fundição carregada (entrada, combustível e saída) e colocar de novo: o item quebrado guarda tudo e a fundição volta igual.
-- [ ] Funil vanilla acima, ao lado ou abaixo da Fundição básica: não entra nem sai nada (o inventário vanilla da fornalha fica intocado).
+### Fornalha (sem Fundição)
+- [ ] `/receitas` não tem mais Fundição, Fundição rápida nem Fundição com funil; `/cblock give fundicao` não existe.
+- [ ] Minério bruto derrete na fornalha vanilla normalmente.
+- [ ] Mesa de trabalho vanilla não crafta Alto-forno nem Sensor de luz solar (as receitas somem do livro de receitas).
+- [ ] Gerador de energia e Fornalha elétrica pedem 1 Fornalha vanilla na receita, no lugar da Fundição.
+- [ ] Missão 4 da trilha: "Derreta 10 minérios brutos" conta os lingotes de ferro, cobre e ouro tirados de uma fornalha vanilla (0/10 no HUD); a missão 11 é "Faça uma Fornalha elétrica".
 
 ### Nível (`/nivel`)
 - [ ] `/pesquisa` não existe mais.

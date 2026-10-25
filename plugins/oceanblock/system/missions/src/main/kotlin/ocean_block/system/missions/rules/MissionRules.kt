@@ -70,6 +70,7 @@ object MissionRules {
         is MissionObjective.Craft ->
             if (signal is MissionSignal.Crafted && signal.recipeId == objective.recipeId) 1 else 0
         is MissionObjective.CraftAny -> if (signal is MissionSignal.Crafted) 1 else 0
+        is MissionObjective.Smelt -> if (signal is MissionSignal.Smelted) max(0, signal.amount).toLong() else 0
         is MissionObjective.ReachLevel ->
             if (signal is MissionSignal.State && signal.level >= objective.level) 1 else 0
         is MissionObjective.Sell -> if (signal is MissionSignal.Sold) max(0, signal.value) else 0

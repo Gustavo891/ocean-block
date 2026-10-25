@@ -20,7 +20,7 @@ object FurnaceBlock : MachineBlock() {
     override val displayName: String = "<white>Fornalha elétrica"
     override val lore: List<String> = listOf(
         "<gray>Derrete <white>4 itens <gray>ao mesmo tempo,",
-        "<gray>4 vezes mais rápido que a Fundição.",
+        "<gray>4 vezes mais rápido que a fornalha comum.",
         "<gray>Gasta <yellow>20 E/s <gray>por item derretendo.",
         "<gray>Precisa de energia a até <white>8 blocos<gray>.",
     )

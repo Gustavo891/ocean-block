@@ -13,9 +13,8 @@ import ocean_block.system.machines.miner.DrillTier
 import ocean_block.system.machines.miner.MinerBlock
 import ocean_block.system.machines.pickaxe.SmelterPickaxeItem
 import ocean_block.system.machines.solar.SolarBlock
-import ocean_block.system.stations.recipe.StationIngredients.custom
-import ocean_block.system.stations.recipe.StationIngredients.material
-import ocean_block.system.stations.smelter.SmelterTier
+import ocean_block.system.machines.recipe.MachineIngredients.custom
+import ocean_block.system.machines.recipe.MachineIngredients.material
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -28,6 +27,7 @@ object MachineRecipes {
     private fun lapis(n: Int) = material(Material.LAPIS_LAZULI, "Lápis-lazúli", n)
     private fun coal(n: Int) = material(Material.COAL, "Carvão", n, "Carvões")
     private fun diamond(n: Int) = material(Material.DIAMOND, "Diamante", n, "Diamantes")
+    private fun furnace(n: Int) = material(Material.FURNACE, "Fornalha", n, "Fornalhas")
     private fun drill(tier: DrillTier) = custom(tier.itemId.orEmpty(), "Broca de ${tier.label}", 1, "Brocas de ${tier.label}")
 
     fun register() {
@@ -37,7 +37,7 @@ object MachineRecipes {
         )
         Recipes.register(
             block(GeneratorBlock, 18, "Gerador de energia", "Queima combustível e alimenta máquinas a até 8 blocos.",
-                custom(SmelterTier.BASIC.blockId, "Fundição", 1, "Fundições"), iron(8), copper(6), redstone(4)),
+                furnace(1), iron(8), copper(6), redstone(4)),
         )
         Recipes.register(
             block(SolarBlock, 20, "Painel solar", "Gera um pouco de energia de dia, sem combustível.",
@@ -45,7 +45,7 @@ object MachineRecipes {
         )
         Recipes.register(
             block(FurnaceBlock, 22, "Fornalha elétrica", "Derrete 4 itens ao mesmo tempo, 4 vezes mais rápido.",
-                custom(SmelterTier.IMPROVED.blockId, "Fundição rápida", 1, "Fundições rápidas"), iron(10), gold(4), redstone(8)),
+                furnace(1), iron(10), gold(4), redstone(8)),
         )
         Recipes.register(
             block(MinerBlock, 25, "Minerador", "Quebra sozinho a pedra e o minério logo abaixo.",

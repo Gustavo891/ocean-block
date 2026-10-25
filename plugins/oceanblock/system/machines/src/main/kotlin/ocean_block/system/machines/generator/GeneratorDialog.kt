@@ -8,7 +8,6 @@ import ocean_block.system.machines.MachineIds
 import ocean_block.system.machines.MachineItems
 import ocean_block.system.machines.energy.EnergyEffects
 import ocean_block.system.machines.energy.EnergyNetwork
-import ocean_block.system.stations.smelter.Fuel
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
 import one_block.textura.api.DialogOpenResult
