@@ -65,4 +65,10 @@ class NetRulesTest : StringSpec({
     "mais pilhas que a capacidade esta cheio" {
         NetRules.isFull(30, 27) shouldBe true
     }
+
+    "rede antiga em tear e adotada como movel, o resto nao" {
+        NetRules.adopts("LOOM") shouldBe true
+        NetRules.adopts("BARRIER") shouldBe false
+        NetRules.adopts("AIR") shouldBe false
+    }
 })

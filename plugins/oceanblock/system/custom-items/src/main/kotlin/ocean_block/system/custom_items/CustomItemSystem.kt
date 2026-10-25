@@ -3,7 +3,9 @@ package ocean_block.system.custom_items
 import co.aikar.commands.PaperCommandManager
 import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.system.custom_items.block.CustomBlockCommand
+import ocean_block.system.custom_items.block.BlockItemUpgradeListener
 import ocean_block.system.custom_items.block.CustomBlockListener
+import ocean_block.system.custom_items.block.furniture.FurnitureBreakListener
 import ocean_block.system.custom_items.block.CustomBlockRegistry
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.custom_items.content.multitool.MultiToolItem
@@ -28,6 +30,8 @@ object CustomItemSystem {
         registerCompletions(commandManager)
         plugin.server.pluginManager.registerEvents(CustomItemListener(), plugin)
         plugin.server.pluginManager.registerEvents(CustomBlockListener(viewFrame), plugin)
+        plugin.server.pluginManager.registerEvents(FurnitureBreakListener(), plugin)
+        plugin.server.pluginManager.registerEvents(BlockItemUpgradeListener(), plugin)
         startHeldTickTask()
 
         registerBuiltInItems()

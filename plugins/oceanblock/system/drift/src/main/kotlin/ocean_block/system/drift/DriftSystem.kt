@@ -12,7 +12,7 @@ import ocean_block.system.drift.hook.FirstJoinListener
 import ocean_block.system.drift.hook.GanchoItem
 import ocean_block.system.drift.loot.ConfigDebrisPool
 import ocean_block.system.drift.net.NetBlock
-import ocean_block.system.drift.net.NetFullNotifier
+import ocean_block.system.drift.net.NetDisplay
 import ocean_block.system.drift.net.NetListener
 import ocean_block.system.drift.net.view.NetStorageView
 import ocean_block.system.drift.recipe.DriftRecipes
@@ -20,6 +20,8 @@ import one_block.textura.api.NotificationApi
 import org.bukkit.plugin.java.JavaPlugin
 
 object DriftSystem {
+
+    private const val DISPLAY_CLEANUP_TICKS = 100L
 
     var config: DriftConfig? = null
         private set
@@ -40,12 +42,13 @@ object DriftSystem {
 
     fun onDisable() {
         DebrisManager.stop()
+        NetDisplay.removeAll()
     }
 
     private fun registerNotifications(plugin: JavaPlugin) {
         plugin.server.pluginManager.registerEvents(CollectNotifier, plugin)
         val materials = config?.types.orEmpty().flatMap { type -> type.drops.map { it.material } }.toSet()
-        val icons = materials.map { CollectNotifier.iconOf(it).removePrefix("item:") } + NetFullNotifier.ICON.removePrefix("item:")
+        val icons = materials.map { CollectNotifier.iconOf(it).removePrefix("item:") }
         NotificationApi.registerItemIcons(icons.distinct())
     }
 
@@ -53,5 +56,6 @@ object DriftSystem {
         CustomBlockRegistry.register(NetBlock)
         viewFrame.with(NetStorageView())
         plugin.server.pluginManager.registerEvents(NetListener(viewFrame), plugin)
+        plugin.server.scheduler.runTaskTimer(plugin, Runnable { NetDisplay.cleanup() }, 100L, DISPLAY_CLEANUP_TICKS)
     }
 }

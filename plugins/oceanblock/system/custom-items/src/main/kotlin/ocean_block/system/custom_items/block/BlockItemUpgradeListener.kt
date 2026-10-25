@@ -1,8 +1,7 @@
-package ocean_block.system.machines
+package ocean_block.system.custom_items.block
 
 import ocean_block.libs.coordinate.SimpleLocation
 import ocean_block.system.custom_items.CustomIds
-import ocean_block.system.custom_items.block.PlacedBlockCodec
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryOpenEvent
@@ -10,13 +9,12 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.Inventory
 import java.util.UUID
 
-object LegacyItems {
+object BlockItemRules {
 
-    fun isOutdated(id: String, itemMaterial: String, blockMaterial: String): Boolean =
-        id in MachineIds.blocks && itemMaterial != blockMaterial
+    fun isOutdated(itemMaterial: String, blockMaterial: String): Boolean = itemMaterial != blockMaterial
 }
 
-class LegacyItemListener(private val machines: Map<String, MachineBlock>) : Listener {
+class BlockItemUpgradeListener : Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) = upgrade(event.player.inventory)
@@ -31,10 +29,10 @@ class LegacyItemListener(private val machines: Map<String, MachineBlock>) : List
         inventory.contents.forEachIndexed { slot, item ->
             if (item == null) return@forEachIndexed
             val id = CustomIds.of(item) ?: return@forEachIndexed
-            val machine = machines[id] ?: return@forEachIndexed
-            if (!LegacyItems.isOutdated(id, item.type.name, machine.material.name)) return@forEachIndexed
+            val custom = CustomBlockRegistry.get(id) ?: return@forEachIndexed
+            if (!BlockItemRules.isOutdated(item.type.name, custom.material.name)) return@forEachIndexed
             val placed = PlacedBlockCodec.read(item, id, NOWHERE, NOBODY)
-            inventory.setItem(slot, machine.buildItem(placed, item.amount))
+            inventory.setItem(slot, custom.buildItem(placed, item.amount))
         }
     }
 

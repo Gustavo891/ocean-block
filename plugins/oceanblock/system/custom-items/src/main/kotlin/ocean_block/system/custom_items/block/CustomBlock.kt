@@ -21,6 +21,7 @@ abstract class CustomBlock {
     abstract val displayName: String
     open val lore: List<String> = emptyList()
     open val itemModel: NamespacedKey? = null
+    open val furnitureFeel: Material = Material.IRON_BLOCK
 
     open val limitPerIsland: Int = 5
 

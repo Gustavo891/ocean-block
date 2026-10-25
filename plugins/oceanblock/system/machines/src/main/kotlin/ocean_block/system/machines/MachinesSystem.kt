@@ -14,7 +14,6 @@ import ocean_block.system.machines.generator.GeneratorBlock
 import ocean_block.system.machines.generator.GeneratorDialog
 import ocean_block.system.machines.generator.GeneratorMenu
 import ocean_block.system.machines.miner.MinerBlock
-import ocean_block.system.machines.miner.MinerBreakListener
 import ocean_block.system.machines.miner.MinerCracks
 import ocean_block.system.machines.miner.MinerDisplay
 import ocean_block.system.machines.miner.MinerMenu
@@ -41,14 +40,12 @@ object MachinesSystem {
         val machines = listOf(GeneratorBlock, SolarBlock, FurnaceBlock, MinerBlock)
         machines.forEach(CustomBlockRegistry::register)
         plugin.server.pluginManager.registerEvents(MachineInteractListener(viewFrame, machines.associateBy { it.id }), plugin)
-        plugin.server.pluginManager.registerEvents(LegacyItemListener(machines.associateBy { it.id }), plugin)
         CustomItemRegistry.register(SmelterPickaxeItem)
         MachineRecipes.register()
         viewFrame.with(GeneratorMenu(), FurnaceMenu(), MinerMenu())
         GeneratorDialog.registerIcons()
         FurnaceRecipes.load()
         plugin.server.pluginManager.registerEvents(IndexListener(plugin), plugin)
-        plugin.server.pluginManager.registerEvents(MinerBreakListener(), plugin)
         plugin.server.pluginManager.registerEvents(FurnaceHopperGuard(), plugin)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable {
             EnergyIndex.rebuild()

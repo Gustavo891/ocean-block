@@ -44,13 +44,6 @@ class MinerRulesTest : StringSpec({
         MinerRules.adopts("STONE") shouldBe false
     }
 
-    "golpes para quebrar valem dentro da janela" {
-        MinerRules.hits(previous = null, now = 100) shouldBe 1
-        MinerRules.hits(previous = MinerHits(2, 90), now = 100) shouldBe 3
-        MinerRules.hits(previous = MinerHits(2, 50), now = 100) shouldBe 1
-        MinerRules.HITS_TO_BREAK shouldBe 3
-    }
-
     "ligado gasta a energia de um bloco a cada 2 segundos, espalhada pelos ciclos" {
         MinerRules.cycleEnergy(10) shouldBe 10L
         MinerRules.cycleEnergy(40) shouldBe MinerRules.ENERGY_PER_BLOCK

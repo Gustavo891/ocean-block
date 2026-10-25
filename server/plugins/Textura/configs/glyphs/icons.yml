@@ -421,3 +421,13 @@ mouse_clicks:
   - \uE00E
   - \uE00C
   - \uE00D
+
+rede_icone:
+  id: rede_icone
+  caminho: assets/oneblock/textures/icons/rede.png
+  unicode: \uE230
+  ascent: 8
+  size: 16
+  height: 16
+  default: true
+  show_in_gui: true

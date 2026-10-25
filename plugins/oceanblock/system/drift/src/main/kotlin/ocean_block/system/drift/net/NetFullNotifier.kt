@@ -5,7 +5,6 @@ import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.islands.island.IslandManager
 import one_block.textura.api.NotificationApi
 import one_block.textura.notify.NotificationLine
-import org.bukkit.Material
 
 internal object NetFullNotifier {
 
@@ -13,7 +12,7 @@ internal object NetFullNotifier {
     private const val DURATION_TICKS = 100
     private const val TEXT = "<yellow>Sua Rede de Detritos ficou cheia!</yellow>"
 
-    val ICON = "item:${Material.LOOM.key.key}"
+    const val ICON = "glyph:rede_icone"
 
     fun afterChange(placed: PlacedBlock) {
         val full = NetIndex.isFull(placed)

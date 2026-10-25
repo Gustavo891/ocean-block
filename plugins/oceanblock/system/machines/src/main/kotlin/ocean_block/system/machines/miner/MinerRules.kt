@@ -19,9 +19,6 @@ object MinerRules {
 
     fun isDue(progress: Int): Boolean = progress >= INTERVAL
 
-    const val HITS_TO_BREAK = 3
-    const val HIT_WINDOW_TICKS = 30
-
     fun adopts(material: String): Boolean = material == "NOTE_BLOCK"
 
     const val SPIN_STEP_DEGREES = 90f
@@ -33,9 +30,4 @@ object MinerRules {
     fun isOn(counter: Long?): Boolean = counter != 0L
 
     fun nextSpin(angle: Float): Float = (angle + SPIN_STEP_DEGREES) % 360f
-
-    fun hits(previous: MinerHits?, now: Int): Int =
-        if (previous != null && now - previous.lastTick <= HIT_WINDOW_TICKS) previous.count + 1 else 1
 }
-
-data class MinerHits(val count: Int, val lastTick: Int)

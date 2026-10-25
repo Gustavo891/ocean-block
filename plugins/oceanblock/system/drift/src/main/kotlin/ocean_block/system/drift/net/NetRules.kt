@@ -14,6 +14,8 @@ object NetRules {
 
     fun isFull(usedSlots: Int, capacity: Int): Boolean = usedSlots >= capacity
 
+    fun adopts(material: String): Boolean = material == "LOOM"
+
     private fun distanceSquared(x: Double, y: Double, z: Double, net: NetPoint): Double {
         val dx = net.x - x
         val dy = net.y - y
