@@ -1,0 +1,7 @@
+{
+  "parent": "oneblock:block/minerador_broca_icone",
+  "textures": {
+    "particle": "oneblock:block/maquinas/minerador_broca_ouro",
+    "bit": "oneblock:block/maquinas/minerador_broca_ouro"
+  }
+}

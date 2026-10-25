@@ -1,6 +1,19 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "oneblock:block/minerador_broca_diamante"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": "none",
+        "model": {
+          "type": "minecraft:model",
+          "model": "oneblock:block/minerador_broca_diamante"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "oneblock:block/minerador_broca_diamante_icone"
+    }
   }
 }
