@@ -144,7 +144,6 @@ class MinerMenu : View() {
             if (tier == DrillTier.IRON) "<yellow>Clique numa broca do seu inventário" else "<yellow>Clique para tirar a broca.",
             if (tier == DrillTier.IRON) "<yellow>para encaixar." else "<gray>Clique numa broca do inventário para trocar.",
         )
-        if (tier == DrillTier.IRON) return MachineMenus.icon(Material.IRON_PICKAXE, DrillItem.name(tier), lore)
         return MachineMenus.icon(Material.PAPER, DrillItem.name(tier), lore).apply {
             editMeta { it.itemModel = MinerDisplay.drillModel(tier) }
         }
