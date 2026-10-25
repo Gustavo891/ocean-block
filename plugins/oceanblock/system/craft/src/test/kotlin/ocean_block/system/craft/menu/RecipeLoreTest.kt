@@ -37,6 +37,7 @@ class RecipeLoreTest : StringSpec({
 
         lore shouldContainExactly listOf(
             "<gray>Descrição de gancho.",
+            "<dark_gray>Nível 1",
             "",
             "<white>Ingredientes:",
             "<green>✔ <gray>3 Tábuas <dark_gray>(você tem 12)",
@@ -51,13 +52,18 @@ class RecipeLoreTest : StringSpec({
 
         val lore = RecipeLore.lore(RecipeCard(gancho, 1, shortages, owned = listOf(3, 1)))
 
-        lore[4] shouldBe "<red>✖ <gray>2 Linhas <dark_gray>(você tem 1)"
+        lore[5] shouldBe "<red>✖ <gray>2 Linhas <dark_gray>(você tem 1)"
         lore.last() shouldBe "<red>Faltam itens."
     }
 
-    "receita bloqueada manda para o /pesquisa" {
-        RecipeLore.lore(RecipeCard(gancho, 1, emptyList(), lockedBy = "Peneira de ferro")).last() shouldBe
-            "<red>Pesquise em <white>/pesquisa</white>: Peneira de ferro"
+    "receita bloqueada diz o nivel exigido" {
+        RecipeLore.lore(RecipeCard(gancho, 1, emptyList(), requiredLevel = 8)).last() shouldBe "<red>Requer nível 8"
+    }
+
+    "lore mostra o nivel da receita logo apos a descricao" {
+        val rede = recipe("rede", tabuas(4)).copy(level = 3)
+
+        RecipeLore.lore(RecipeCard(rede, 1, emptyList()))[1] shouldBe "<dark_gray>Nível 3"
     }
 
     "categoria aberta e fechada" {
@@ -91,8 +97,8 @@ class RecipeLoreTest : StringSpec({
         RecipeCategory.MAQUINAS.displayName shouldBe "Máquinas"
     }
 
-    "receita guarda a pesquisa que a libera" {
-        recipe("peneira_ferro", tabuas(1)).copy(research = "peneira_ferro").research shouldBe "peneira_ferro"
-        gancho.research shouldBe null
+    "receita guarda o nivel que a libera" {
+        recipe("rede", tabuas(1)).copy(level = 3).level shouldBe 3
+        gancho.level shouldBe 1
     }
 })

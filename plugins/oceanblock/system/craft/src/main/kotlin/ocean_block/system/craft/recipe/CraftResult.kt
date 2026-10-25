@@ -8,5 +8,5 @@ sealed interface CraftResult {
 
     data class Missing(val shortages: List<Shortage>) : CraftResult
 
-    data class Locked(val research: String) : CraftResult
+    data class Locked(val level: Int) : CraftResult
 }

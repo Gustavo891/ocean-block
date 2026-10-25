@@ -78,7 +78,7 @@ class RecipesMenu : View() {
                 player.playSound(player, Sound.BLOCK_NOTE_BLOCK_BASS, 0.7f, 1f)
             }
             is CraftResult.Locked -> {
-                player.sendRichMessage("<red>Pesquise antes em <white>/pesquisa</white>: ${result.research}")
+                player.sendRichMessage("<red>Você precisa do nível <white>${result.level}</white> para craftar isso.")
                 player.playSound(player, Sound.BLOCK_NOTE_BLOCK_BASS, 0.7f, 1f)
             }
         }
@@ -98,7 +98,7 @@ class RecipesMenu : View() {
             recipe,
             result.amount,
             RecipeCrafter.shortages(player, recipe),
-            RecipeLocks.lockedBy(player, recipe),
+            RecipeLocks.requiredLevel(player, recipe),
             recipe.ingredients.map { RecipeCrafter.count(player, it) },
         )
         return itemStack(result) {

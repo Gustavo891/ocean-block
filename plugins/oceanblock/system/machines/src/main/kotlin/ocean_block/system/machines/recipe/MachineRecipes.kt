@@ -32,51 +32,51 @@ object MachineRecipes {
 
     fun register() {
         Recipes.register(
-            recipe(MachineIds.PICKAXE, "Picareta fundidora", "Minério quebrado já sai em lingote.", RecipeCategory.FERRAMENTAS,
+            recipe(MachineIds.PICKAXE, "Picareta fundidora", "Minério quebrado já sai em lingote.", RecipeCategory.FERRAMENTAS, 12,
                 { SmelterPickaxeItem.build() }, iron(4), gold(2), coal(8)),
         )
         Recipes.register(
-            block(GeneratorBlock, "Gerador de energia", "Queima combustível e alimenta máquinas a até 8 blocos.",
+            block(GeneratorBlock, 18, "Gerador de energia", "Queima combustível e alimenta máquinas a até 8 blocos.",
                 custom(SmelterTier.BASIC.blockId, "Fundição", 1, "Fundições"), iron(8), copper(6), redstone(4)),
         )
         Recipes.register(
-            block(SolarBlock, "Painel solar", "Gera um pouco de energia de dia, sem combustível.",
+            block(SolarBlock, 20, "Painel solar", "Gera um pouco de energia de dia, sem combustível.",
                 copper(6), lapis(4), redstone(2), iron(2)),
         )
         Recipes.register(
-            block(FurnaceBlock, "Fornalha elétrica", "Derrete 4 itens ao mesmo tempo, 4 vezes mais rápido.",
+            block(FurnaceBlock, 22, "Fornalha elétrica", "Derrete 4 itens ao mesmo tempo, 4 vezes mais rápido.",
                 custom(SmelterTier.IMPROVED.blockId, "Fundição rápida", 1, "Fundições rápidas"), iron(10), gold(4), redstone(8)),
         )
         Recipes.register(
-            block(MinerBlock, "Minerador", "Quebra sozinho a pedra e o minério logo abaixo.",
+            block(MinerBlock, 25, "Minerador", "Quebra sozinho a pedra e o minério logo abaixo.",
                 iron(14), gold(4), redstone(8)),
         )
-        drillRecipe(DrillTier.GOLD, "A broca de ouro quebra um bloco a cada 1,5 s.",
+        drillRecipe(DrillTier.GOLD, 28, "A broca de ouro quebra um bloco a cada 1,5 s.",
             material(Material.GOLD_BLOCK, "Bloco de ouro", 2, "Blocos de ouro"), iron(4), redstone(4))
-        drillRecipe(DrillTier.DIAMOND, "A broca de diamante quebra um bloco por segundo.",
+        drillRecipe(DrillTier.DIAMOND, 32, "A broca de diamante quebra um bloco por segundo.",
             drill(DrillTier.GOLD), diamond(6), redstone(4))
-        drillRecipe(DrillTier.OBSIDIAN, "A broca de obsidiana quebra um bloco a cada 0,75 s.",
+        drillRecipe(DrillTier.OBSIDIAN, 36, "A broca de obsidiana quebra um bloco a cada 0,75 s.",
             drill(DrillTier.DIAMOND), material(Material.OBSIDIAN, "Obsidiana", 8, "Obsidianas"), diamond(2))
-        drillRecipe(DrillTier.NETHERITE, "A broca de netherite quebra um bloco a cada 0,5 s.",
+        drillRecipe(DrillTier.NETHERITE, 40, "A broca de netherite quebra um bloco a cada 0,5 s.",
             drill(DrillTier.OBSIDIAN), material(Material.NETHERITE_INGOT, "Lingote de netherite", 2, "Lingotes de netherite"))
     }
 
-    private fun drillRecipe(tier: DrillTier, description: String, vararg ingredients: Ingredient) {
+    private fun drillRecipe(tier: DrillTier, level: Int, description: String, vararg ingredients: Ingredient) {
         val item = DrillItem.of(tier) ?: return
         Recipes.register(
-            recipe(item.id, "Broca de ${tier.label}", description, RecipeCategory.MAQUINAS, { item.build() }, *ingredients)
-                .copy(research = null),
+            recipe(item.id, "Broca de ${tier.label}", description, RecipeCategory.MAQUINAS, level, { item.build() }, *ingredients),
         )
     }
 
-    private fun block(machine: MachineBlock, name: String, description: String, vararg ingredients: Ingredient) =
-        recipe(machine.id, name, description, RecipeCategory.MAQUINAS, { machine.buildItem() }, *ingredients)
+    private fun block(machine: MachineBlock, level: Int, name: String, description: String, vararg ingredients: Ingredient) =
+        recipe(machine.id, name, description, RecipeCategory.MAQUINAS, level, { machine.buildItem() }, *ingredients)
 
     private fun recipe(
         id: String,
         name: String,
         description: String,
         category: RecipeCategory,
+        level: Int,
         result: () -> ItemStack,
         vararg ingredients: Ingredient,
     ) = OceanRecipe(
@@ -86,6 +86,6 @@ object MachineRecipes {
         category = category,
         result = result,
         ingredients = ingredients.toList(),
-        research = id,
+        level = level,
     )
 }

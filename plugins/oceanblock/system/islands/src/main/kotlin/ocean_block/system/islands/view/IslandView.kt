@@ -62,8 +62,8 @@ class IslandView : View() {
             .renderWith { action(Material.CRAFTING_TABLE, "Receitas", "Abre as receitas de craft.") }
             .onClick { click -> runCommand(click, "receitas") }
         render.layoutSlot('p')
-            .renderWith { action(Material.WRITABLE_BOOK, "Pesquisa", "Abre as pesquisas da ilha.") }
-            .onClick { click -> runCommand(click, "pesquisa") }
+            .renderWith { action(Material.EXPERIENCE_BOTTLE, "Nível", "Mostra seu nível e as receitas.") }
+            .onClick { click -> runCommand(click, "nivel") }
     }
 
     private fun open(click: SlotClickContext, view: Class<out View>, island: Island) {

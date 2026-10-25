@@ -20,7 +20,6 @@ import ocean_block.system.drift.DriftSystem
 import ocean_block.system.stations.StationsSystem
 import ocean_block.system.machines.MachinesSystem
 import ocean_block.system.preferences.PreferencesSystem
-import ocean_block.system.research.ResearchSystem
 import ocean_block.system.currencies.CurrenciesSystem
 import ocean_block.system.currencies.currency.CurrencyManager
 import ocean_block.system.enchants.EnchantsSystem
@@ -69,7 +68,6 @@ class OceanBlockPlugin : JavaPlugin() {
         DriftSystem.onDisable()
         StationsSystem.onDisable()
         MachinesSystem.onDisable()
-        ResearchSystem.onDisable()
         CoinFlipManager.onDisable()
         PlacedBlockManager.onDisable()
         CollectionsSystem.onDisable()
@@ -94,7 +92,6 @@ class OceanBlockPlugin : JavaPlugin() {
             { StationsSystem.init(this) },
             { PreferencesSystem.init(viewFrame, paperCommandManager) },
             { MachinesSystem.init(this, viewFrame) },
-            { ResearchSystem.init(this, viewFrame, paperCommandManager) },
             { BattlePassSystem.init(viewFrame, paperCommandManager) },
             { PlaytimeSystem.init(this) },
             { ScoreboardSystem.init(this, paperCommandManager) },

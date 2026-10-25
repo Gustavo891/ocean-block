@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack
 object RecipeCrafter {
 
     fun craft(player: Player, recipe: OceanRecipe): CraftResult {
-        RecipeLocks.lockedBy(player, recipe)?.let { return CraftResult.Locked(it) }
+        RecipeLocks.requiredLevel(player, recipe)?.let { return CraftResult.Locked(it) }
         val inventory = player.inventory
         val contents = inventory.storageContents.toList()
         val remaining = IngredientMath.consume(contents, recipe.ingredients)

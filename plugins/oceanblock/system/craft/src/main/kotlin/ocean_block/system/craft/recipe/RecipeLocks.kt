@@ -5,12 +5,15 @@ import org.bukkit.entity.Player
 object RecipeLocks {
 
     @Volatile
-    private var provider: (Player, OceanRecipe) -> String? = { _, _ -> null }
+    private var provider: ((Player) -> Int)? = null
 
-    fun install(provider: (Player, OceanRecipe) -> String?) {
+    fun install(provider: (Player) -> Int) {
         this.provider = provider
     }
 
-    fun lockedBy(player: Player, recipe: OceanRecipe): String? =
-        if (recipe.research == null) null else provider(player, recipe)
+    fun requiredLevel(player: Player, recipe: OceanRecipe): Int? =
+        required(recipe.level, provider?.invoke(player))
+
+    fun required(recipeLevel: Int, playerLevel: Int?): Int? =
+        if (playerLevel == null || playerLevel >= recipeLevel) null else recipeLevel
 }

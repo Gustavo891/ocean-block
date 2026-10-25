@@ -9,7 +9,7 @@ data class RecipeCard(
     val recipe: OceanRecipe,
     val amount: Int,
     val shortages: List<Shortage>,
-    val lockedBy: String? = null,
+    val requiredLevel: Int? = null,
     val owned: List<Int> = emptyList(),
 )
 
@@ -30,7 +30,7 @@ object RecipeLore {
             val mark = if (short) "<red>✖" else "<green>✔"
             "$mark <gray>${amountOf(ingredient, ingredient.amount)} <dark_gray>(você tem $have)"
         }
-        return listOf("<gray>${card.recipe.description}", "", "<white>Ingredientes:") + ingredients + listOf("", status(card))
+        return listOf("<gray>${card.recipe.description}", "<dark_gray>Nível ${card.recipe.level}", "", "<white>Ingredientes:") + ingredients + listOf("", status(card))
     }
 
     fun categoryName(category: RecipeCategory, active: Boolean): String =
@@ -46,7 +46,7 @@ object RecipeLore {
         "Falta: " + shortages.joinToString(SEPARATOR) { amountOf(it.ingredient, it.missing) }
 
     private fun status(card: RecipeCard): String = when {
-        card.lockedBy != null -> "<red>Pesquise em <white>/pesquisa</white>: ${card.lockedBy}"
+        card.requiredLevel != null -> "<red>Requer nível ${card.requiredLevel}"
         card.shortages.isNotEmpty() -> "<red>Faltam itens."
         else -> "<yellow>Clique para craftar!"
     }

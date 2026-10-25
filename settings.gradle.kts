@@ -31,7 +31,6 @@ include(
     ":plugins:oceanblock:system:stations",
     ":plugins:oceanblock:system:machines",
     ":plugins:oceanblock:system:preferences",
-    ":plugins:oceanblock:system:research",
     ":plugins:oceanblock:system:currencies",
     ":plugins:oceanblock:system:enchants",
     ":plugins:oceanblock:system:islands",
