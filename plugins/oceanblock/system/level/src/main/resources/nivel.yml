@@ -1,0 +1,21 @@
+detritos:
+  padrao: 4
+  tipos:
+    tabua: 4
+    folhas: 3
+    sucata: 6
+    barril: 10
+gerador:
+  COBBLESTONE: 1
+  STONE: 1
+  COAL_ORE: 3
+  COPPER_ORE: 4
+  IRON_ORE: 5
+  REDSTONE_ORE: 6
+  GOLD_ORE: 8
+  LAPIS_ORE: 8
+  EMERALD_ORE: 15
+  DIAMOND_ORE: 20
+receitas:
+  base: 10
+  por-nivel: 3

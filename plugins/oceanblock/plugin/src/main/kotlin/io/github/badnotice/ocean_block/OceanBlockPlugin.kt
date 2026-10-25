@@ -31,6 +31,7 @@ import ocean_block.system.islands.listener.PlayerListener
 import ocean_block.system.battle_pass.BattlePassSystem
 import ocean_block.system.playtime.PlaytimeSystem
 import ocean_block.system.playtime.player_playtime.PlayerPlaytimeManager
+import ocean_block.system.level.LevelSystem
 import ocean_block.system.scoreboard.ScoreboardSystem
 import ocean_block.system.sell.SellSystem
 import ocean_block.system.sell.command.SellCommand
@@ -72,6 +73,7 @@ class OceanBlockPlugin : JavaPlugin() {
         PlacedBlockManager.onDisable()
         CollectionsSystem.onDisable()
         SpawnSystem.onDisable()
+        LevelSystem.onDisable()
         ScoreboardSystem.onDisable()
         IslandsSystem.onDisable()
         CurrencyManager.onDisable()
@@ -96,6 +98,7 @@ class OceanBlockPlugin : JavaPlugin() {
             { PlaytimeSystem.init(this) },
             { ScoreboardSystem.init(this, paperCommandManager) },
             { SellSystem.init(this, viewFrame) },
+            { LevelSystem.init(this, viewFrame, paperCommandManager) },
             { ShopSystem.init(this, viewFrame) },
             { SpawnSystem.init(this, paperCommandManager) },
             { StarterKitSystem.init(this) },
