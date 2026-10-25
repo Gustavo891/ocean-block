@@ -237,6 +237,17 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] O menu do Minerador tem uma alavanca Ligado/Desligado. Ligado e com energia no raio, a broca gira sem parar e o gerador perde 20 E/s mesmo sem nada para minerar (a linha de energia fica acesa); desligado ou sem energia, a broca para e não gasta nada.
 - [ ] Explosão, pistão e água não mexem no Minerador.
 
+### Brocas do Minerador
+- [ ] `/receitas` → `Máquinas` lista Broca de ouro, diamante, obsidiana e netherite sem pedir pesquisa; cada uma (menos a de ouro) pede a broca anterior. A de netherite pede 2 lingotes de netherite.
+- [ ] Na mão, cada broca aparece como a broca 3D na cor do material (dourada, ciano, roxo escuro, preta com friso dourado), centrada no slot.
+- [ ] Um Minerador novo (ou de antes desta versão) mostra no menu `Broca de ferro` (picareta de ferro) e quebra um bloco a cada 2 s puxando 20 E/s.
+- [ ] Com o menu aberto, clicar numa Broca de ouro do inventário encaixa uma só (a pilha perde 1), toca a bigorna e a broca que gira fica dourada; o Minerador quebra a cada 1,5 s e a alavanca diz 28 E/s.
+- [ ] Encaixar a de diamante com a de ouro encaixada devolve a de ouro ao inventário (cai nos pés se estiver cheio); encaixar a mesma broca de novo não faz nada (som grave), assim como clicar em outro item.
+- [ ] Clicar no slot da broca devolve a broca e volta para ferro; com o inventário cheio aparece `Seu inventário está cheio.` e nada muda.
+- [ ] Obsidiana quebra 2 blocos a cada 1,5 s e netherite um bloco a cada 0,5 s; as rachaduras acompanham o ritmo.
+- [ ] Quebrar o Minerador com uma broca encaixada e recolocar: a broca continua encaixada.
+- [ ] Visitante não encaixa nem tira broca.
+
 ### Fornalha elétrica como alto-forno e Painel solar como sensor de luz
 - [ ] A Fornalha elétrica é um alto-forno com textura de aço e fogo azul: a frente vira para quem coloca e acende (fogo azul animado) só enquanto derrete com energia. Funil não põe nem tira nada dela. Fornalhas elétricas antigas viram alto-forno sozinhas com os itens intactos.
 - [ ] Todo alto-forno do jogo passa a ter essa textura, com o mesmo relevo das máquinas (moldura levantada e painel rebaixado), aceso ou apagado e em qualquer direção; a fornalha comum continua vanilla.
