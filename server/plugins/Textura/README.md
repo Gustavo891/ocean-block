@@ -481,6 +481,12 @@ NotificationApi.clear(player, "coleta")
   altura da fonte dele, não na da linha. Um caractere que não existe na fonte de
   texto das notificações (`ui.fonte-texto`) sai como o quadradinho de glyph
   ausente e é medido com 6 px.
+- Fundo de toast: um glyph de `configs/glyphs` com id começando em `toast_`
+  vira fundo, assado no tamanho nativo na fonte da linha (segue a posição da
+  linha e empilha). A linha desenha o fundo alinhado à âncora e o texto 26 px
+  dentro dele, com o topo do fundo 3 px acima do texto. Com passo 14, duas
+  linhas cobrem um fundo de 28 px; a segunda usa um fundo transparente
+  (`toast_linha`) só para ter o mesmo recuo.
 - Cores: só existem as 16 cores legadas. Uma cor hex (`<#ff8800>`, gradiente)
   vira a mais próxima delas. O negrito soma 1 px por caractere, espaço
   incluído.

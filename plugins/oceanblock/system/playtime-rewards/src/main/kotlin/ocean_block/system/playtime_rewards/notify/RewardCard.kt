@@ -2,20 +2,17 @@ package ocean_block.system.playtime_rewards.notify
 
 import ocean_block.system.playtime_rewards.text.RewardText
 
+data class ToastLine(val text: String, val icon: String)
+
 object RewardCard {
 
-    const val HINT = "Resgate: /recompensas"
+    const val HINT = "Use /recompensas"
 
-    private const val WIDTH = 160
-    private const val TEXT_X = 30
+    private const val BACKDROP = "glyph:toast_tempo"
+    private const val LINE = "glyph:toast_linha"
 
-    fun lines(minutes: Int): List<String> {
-        val room = WIDTH - TEXT_X
-        val title = "${RewardText.duration(minutes.toLong())} online!"
-        return listOf(
-            "<shadow:#00000000><white><glyph:toast_tempo></white><shift:-$room>" +
-                "<yellow>$title</yellow><shift:${room - LineText.width(title)}></shadow>",
-            "<shadow:#00000000><shift:$TEXT_X><white>$HINT</white><shift:${room - LineText.width(HINT)}></shadow>",
-        )
-    }
+    fun lines(minutes: Int): List<ToastLine> = listOf(
+        ToastLine("<shadow:#00000000><yellow>${RewardText.duration(minutes.toLong())} online!</yellow></shadow>", BACKDROP),
+        ToastLine("<shadow:#00000000><white>$HINT</white></shadow>", LINE),
+    )
 }

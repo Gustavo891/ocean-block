@@ -7,6 +7,7 @@ import one_block.textura.dialog.kit.UiTextFont
 import one_block.textura.notify.layout.LineGeometry
 import one_block.textura.notify.layout.PlaquePieces
 import one_block.textura.notify.region.NotificationRegion
+import one_block.textura.notify.render.BackdropGlyph
 import one_block.textura.notify.render.IconGlyph
 import one_block.textura.notify.render.NotificationFonts
 import one_block.textura.notify.render.NotificationIcons
@@ -53,12 +54,17 @@ internal class NotificationPackWriter(
             }
             icons[NotificationIcons.item(material)] = bake(builder, "item/$material", image, nextChar(), ICON_OFFSET) to GlyphAdvance.of(image)
         }
-        glyphFiles.toSortedMap().forEach { (id, file) ->
+        val backdrops = linkedMapOf<String, Pair<Baked, Int>>()
+        glyphFiles.toSortedMap().filterKeys(NotificationIcons::isBackdrop).forEach { (id, file) ->
+            val image = runCatching { ImageIO.read(file) }.getOrNull() ?: return@forEach
+            backdrops[NotificationIcons.glyph(id)] = bake(builder, "toast/${slug(id)}", image, nextChar(), BACKDROP_OFFSET) to image.width
+        }
+        glyphFiles.toSortedMap().filterKeys { !NotificationIcons.isBackdrop(it) }.forEach { (id, file) ->
             val image = runCatching { ImageIO.read(file) }.getOrNull()?.let(::scaled) ?: return@forEach
             icons[NotificationIcons.glyph(id)] = bake(builder, "glyph/${slug(id)}", image, nextChar(), ICON_OFFSET) to GlyphAdvance.of(image)
         }
 
-        val pieces = listOf(left, right) + bodies.values + icons.values.map { it.first }
+        val pieces = listOf(left, right) + bodies.values + icons.values.map { it.first } + backdrops.values.map { it.first }
         val space = FontProvider.space(mapOf(" " to UiTextFont.SPACE_ADVANCE, ZERO_WIDTH to 0))
         tops.forEach { top ->
             val text = textFont.providers.map { FontProvider.bitMap(it.file, it.height, LineGeometry.textAscent(it.ascent, top), it.chars) }
@@ -72,6 +78,7 @@ internal class NotificationPackWriter(
             textTops = tops,
             plaque = PlaqueGlyphs(left.char, right.char, bodies.mapValues { it.value.char }),
             icons = icons.mapValues { (_, baked) -> IconGlyph(baked.first.char, baked.second) },
+            backdrops = backdrops.mapValues { (_, baked) -> BackdropGlyph(baked.first.char, baked.second) },
         )
     }
 
@@ -119,6 +126,7 @@ internal class NotificationPackWriter(
         const val DEFAULT_PLAQUE = 0x42000000
         private const val PLAQUE_OFFSET = LineGeometry.BASE_ASCENT + LineGeometry.TEXT_TOP_PADDING
         private const val ICON_OFFSET = LineGeometry.BASE_ASCENT
+        private const val BACKDROP_OFFSET = LineGeometry.BASE_ASCENT + LineGeometry.BACKDROP_TEXT_TOP
         private val ZERO_WIDTH = Char(0x200C).toString()
         private val SLUG = Regex("[a-z0-9_]+")
     }

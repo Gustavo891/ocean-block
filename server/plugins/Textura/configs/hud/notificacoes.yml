@@ -29,22 +29,12 @@ xp:
   direcao: baixo
   animacao: true
 
-nivel:
-  id: nivel
+toasts:
+  id: toasts
   ancora: TOPO_DIREITA
   x: 0
-  y: 4
-  linhas: 2
-  espacamento: 0
-  fundo: false
-  direcao: baixo
-
-tempo:
-  id: tempo
-  ancora: TOPO_DIREITA
-  x: 0
-  y: 38
-  linhas: 2
-  espacamento: 0
+  y: 0
+  linhas: 6
+  espacamento: 1
   fundo: false
   direcao: baixo

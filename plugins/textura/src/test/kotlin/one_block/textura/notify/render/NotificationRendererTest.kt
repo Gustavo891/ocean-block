@@ -200,4 +200,25 @@ class NotificationRendererTest : StringSpec({
             draw.color?.blue()?.rem(AnchorMarker.STEP) shouldBe 5
         }
     }
+
+    "linha com fundo de toast desenha o fundo na largura dele e o texto 26 px para dentro" {
+        val toastKit = NotificationKit(textFont, setOf(0), null, emptyMap(), mapOf("glyph:toast_x" to BackdropGlyph("T", 132)))
+        val corner = NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, 0, 0, 6, 1, false, StackDirection.DOWN)
+        val component = renderer.render(listOf(corner), mapOf("toasts" to listOf(NotificationLine("ab", "glyph:toast_x", 100))), toastKit) { null }
+
+        val out = mutableListOf<Pair<String, Int>>()
+        var x = 0
+        fun walk(c: Component) {
+            if (c is TextComponent && c.content().isNotEmpty()) {
+                if (c.font() == SpacingFont.KEY) x += c.content().sumOf { SpacingFont.ADVANCES.getValue(it.toString()) }
+                else { out += c.content() to x; x += if (c.content() == "T") 133 else c.content().codePoints().toArray().sumOf { textFont.advance(it) } }
+            }
+            c.children().forEach(::walk)
+        }
+        walk(component)
+
+        out.first() shouldBe ("T" to -132)
+        out.last().second shouldBe -132 + 26
+        x shouldBe 0
+    }
 })

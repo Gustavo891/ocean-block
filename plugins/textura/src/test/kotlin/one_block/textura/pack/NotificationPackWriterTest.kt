@@ -35,7 +35,7 @@ class NotificationPackWriterTest : StringSpec({
             Logger.getLogger("NotificationPackWriterTest"),
         ).write(builder)
 
-        kit.textTops.toList() shouldBe listOf(4, 17, 18, 28, 32, 38, 51, 70, 84, 98, 112, 126, 140)
+        kit.textTops.toList() shouldBe listOf(0, 4, 14, 18, 28, 32, 42, 56, 70, 84, 98, 112, 126, 140)
         kit.icons.keys shouldBe setOf("item:oak_planks")
         kit.icons.getValue("item:oak_planks").advance shouldBe 7
         kit.plaque shouldNotBe null
@@ -53,6 +53,35 @@ class NotificationPackWriterTest : StringSpec({
             bitmaps.single { it.get("file").asString == "textura:notify/item/oak_planks.png" }.get("ascent").asInt shouldBe 7 - 70
             providers.map { it.get("type").asString }.toSet() shouldContainAll listOf("space", "bitmap")
             file.getEntry("assets/textura/textures/notify/item/oak_planks.png") shouldNotBe null
+        }
+    }
+
+    "glyph toast_ vira fundo no tamanho real, ancorado 3 px acima do texto da linha" {
+        val card = Files.createTempFile("toast_card", ".png").toFile().apply { deleteOnExit() }
+        javax.imageio.ImageIO.write(BufferedImage(132, 28, BufferedImage.TYPE_INT_ARGB).apply { setRGB(0, 0, 0xFF212121.toInt()) }, "png", card)
+        val builder = PackBuilder()
+        val kit = NotificationPackWriter(
+            RegionConfigParser.DEFAULTS,
+            textFont,
+            emptySet(),
+            { null },
+            mapOf("toast_card" to card),
+            null,
+            Logger.getLogger("NotificationPackWriterTest"),
+        ).write(builder)
+
+        kit.backdrop("glyph:toast_card")?.width shouldBe 132
+        kit.icons.containsKey("glyph:toast_card") shouldBe false
+
+        val zip = Files.createTempFile("notify", ".zip").toFile().apply { deleteOnExit() }
+        builder.build(zip)
+        ZipFile(zip).use { file ->
+            val font = file.getEntry("assets/textura/font/notify/70.json") ?: error("fonte notify/70 ausente")
+            val json = JsonParser.parseString(file.getInputStream(font).use { it.readBytes().decodeToString() }).asJsonObject
+            val backdrop = json.getAsJsonArray("providers").map { it.asJsonObject }
+                .single { it.get("type").asString == "bitmap" && it.get("file").asString == "textura:notify/toast/toast_card.png" }
+            backdrop.get("height").asInt shouldBe 28
+            backdrop.get("ascent").asInt shouldBe 10 - 70
         }
     }
 })

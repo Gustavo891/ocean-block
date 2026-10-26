@@ -5,6 +5,8 @@ import one_block.textura.dialog.kit.UiTextFont
 
 internal data class IconGlyph(val char: String, val advance: Int)
 
+internal data class BackdropGlyph(val char: String, val width: Int)
+
 internal data class PlaqueGlyphs(val leftCap: String, val rightCap: String, val bodies: Map<Int, String>)
 
 internal class NotificationKit(
@@ -12,9 +14,12 @@ internal class NotificationKit(
     val textTops: Set<Int>,
     val plaque: PlaqueGlyphs?,
     val icons: Map<String, IconGlyph>,
+    val backdrops: Map<String, BackdropGlyph> = emptyMap(),
 ) {
 
     fun icon(id: String?): IconGlyph? = id?.let { icons[NotificationIcons.normalize(it)] }
+
+    fun backdrop(id: String?): BackdropGlyph? = id?.let { backdrops[NotificationIcons.normalize(it)] }
 
     companion object {
 
@@ -33,6 +38,9 @@ internal object NotificationIcons {
 
     const val ITEM_PREFIX = "item:"
     const val GLYPH_PREFIX = "glyph:"
+    const val BACKDROP_PREFIX = "toast_"
+
+    fun isBackdrop(glyphId: String): Boolean = glyphId.startsWith(BACKDROP_PREFIX)
 
     fun normalize(id: String): String {
         val trimmed = id.trim()

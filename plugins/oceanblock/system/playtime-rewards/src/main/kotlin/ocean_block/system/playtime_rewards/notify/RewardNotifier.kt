@@ -14,13 +14,12 @@ object RewardNotifier {
     private const val REGION = "avisos"
     private const val DURATION_TICKS = 100
     private const val KEY = "tempo"
-    private const val CARD_REGION = "tempo"
+    private const val CARD_REGION = "toasts"
     private const val CARD_TICKS = 100
 
     fun reached(player: Player, milestone: Milestone) {
-        NotificationApi.clear(player, CARD_REGION)
         RewardCard.lines(milestone.minutes).forEachIndexed { index, line ->
-            NotificationApi.push(player, CARD_REGION, NotificationLine(line, null, CARD_TICKS, "tempo_$index"))
+            NotificationApi.push(player, CARD_REGION, NotificationLine(line.text, line.icon, CARD_TICKS, "tempo_$index"))
         }
         player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
     }

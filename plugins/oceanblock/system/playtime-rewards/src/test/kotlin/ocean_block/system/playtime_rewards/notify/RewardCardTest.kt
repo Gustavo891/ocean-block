@@ -6,20 +6,15 @@ import io.kotest.matchers.shouldBe
 
 class RewardCardTest : StringSpec({
 
-    "o toast de tempo tem o fundo na primeira linha, titulo amarelo e a dica em branco" {
-        val title = "4 h online!"
-        val hint = RewardCard.HINT
-
+    "o toast de tempo tem titulo amarelo sobre o fundo e a dica em branco na linha de baixo" {
         RewardCard.lines(240) shouldContainExactly listOf(
-            "<shadow:#00000000><white><glyph:toast_tempo></white><shift:-130><yellow>$title</yellow>" +
-                "<shift:${130 - LineText.width(title)}></shadow>",
-            "<shadow:#00000000><shift:30><white>$hint</white><shift:${130 - LineText.width(hint)}></shadow>",
+            ToastLine("<shadow:#00000000><yellow>4 h online!</yellow></shadow>", "glyph:toast_tempo"),
+            ToastLine("<shadow:#00000000><white>Use /recompensas</white></shadow>", "glyph:toast_linha"),
         )
     }
 
-    "a dica cabe no toast" {
-        (LineText.width(RewardCard.HINT) <= 130) shouldBe true
-        RewardCard.HINT shouldBe "Resgate: /recompensas"
+    "a dica cabe no toast menor" {
+        (LineText.width(RewardCard.HINT) <= 106) shouldBe true
     }
 
     "largura segue a fonte vanilla" {

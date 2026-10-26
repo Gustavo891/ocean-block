@@ -57,6 +57,17 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
         val animatedPhase = phase.takeIf { region.animated }
         val font = NotificationFonts.key(slot.textTop)
         val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, slot.lift, font, animatedPhase)
+        val backdrop = kit.backdrop(line.icon)
+        if (backdrop != null) {
+            val box = LineGeometry.span(region, backdrop.width).boxLeft
+            val cursor = Cursor()
+            cursor.moveTo(box)
+            cursor.draw(glyph(backdrop.char, font, AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)), backdrop.width + 1)
+            cursor.moveTo(box + LineGeometry.BACKDROP_TEXT_X)
+            cursor.draw(Component.text().font(font).append(text.component).build(), text.width)
+            cursor.moveTo(0)
+            return cursor.build()
+        }
         val icon = kit.icon(line.icon)
         val span = LineGeometry.span(region, LineGeometry.contentWidth(text.width, icon != null))
         val cursor = Cursor()

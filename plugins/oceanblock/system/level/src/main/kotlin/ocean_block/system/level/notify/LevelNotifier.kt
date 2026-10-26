@@ -16,7 +16,7 @@ object LevelNotifier : Listener {
     const val ICON_MATERIAL = "experience_bottle"
 
     private const val XP_DURATION_TICKS = 70
-    private const val CARD_REGION = "nivel"
+    private const val CARD_REGION = "toasts"
     private const val CARD_TICKS = 100
 
     private val tallies = mutableMapOf<UUID, XpTally>()
@@ -29,9 +29,8 @@ object LevelNotifier : Listener {
     }
 
     fun levelUp(player: Player, level: Int, coins: Double, unlocked: List<String>) {
-        NotificationApi.clear(player, CARD_REGION)
         LevelUpCard.lines(level, coins).forEachIndexed { index, line ->
-            NotificationApi.push(player, CARD_REGION, NotificationLine(line, null, CARD_TICKS, "nivel_$index"))
+            NotificationApi.push(player, CARD_REGION, NotificationLine(line.text, line.icon, CARD_TICKS, "nivel_$index"))
         }
         player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
     }
