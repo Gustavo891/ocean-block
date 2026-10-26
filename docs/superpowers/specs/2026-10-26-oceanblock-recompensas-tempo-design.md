@@ -12,7 +12,7 @@ Dar ao jogador objetivos de longo prazo por ficar no servidor: marcos de tempo t
 - Paga Coins, Pérolas, XP de nível e itens/comandos.
 - Resgate manual numa tela; nada cai sozinho.
 - Tempo AFK conta: usa o mesmo tempo do `%playtime_total%` (`PlayerPlaytime.getElapsedSeconds()`).
-- Aviso: notificação Textura na região `avisos` + som; lembrete no login quando há pendentes.
+- Aviso: faixa dourada no centro, no estilo do Level UP, escolhida entre três prévias + som; lembrete no login (região `avisos`) quando há pendentes.
 - Comando próprio `/recompensas` (aliases `/recompensa`, `/tempo`); nada no `/ilha`.
 - Escada padrão de 10 marcos até 100 h.
 
@@ -45,7 +45,7 @@ Formato por marco: `marcos.<id>.minutos`, `coins`, `perolas`, `xp`, `icone` (mat
 
 - Módulo novo `system/playtime-rewards` (pacote `ocean_block.system.playtime_rewards`), `PlaytimeRewardsSystem.init(plugin, paperCommandManager)` depois de `MissionsSystem`; `onDisable` no `OceanBlockPlugin.onDisable()`.
 - Dados: `PlaytimeRewards(uuid, claimed: List<String>)`, coleção `playtime_rewards`, índice único `uuid`, manager com dirty-set (flush de 30 s, limpa só após sucesso).
-- Tarefa a cada 20 s no main thread: para cada online, compara o último tempo lido com o atual; cada marco recém-atingido gera a notificação `Recompensa de <nome> liberada! Use /recompensas` (região `avisos`, ícone `item:clock`, 100 ticks, chave `tempo`) e o som `BLOCK_NOTE_BLOCK_BELL`. No join, se há pendentes: `Você tem N recompensa(s) por tempo para resgatar! Use /recompensas`.
+- Tarefa a cada 20 s no main thread: para cada online, compara o último tempo lido com o atual; cada marco recém-atingido mostra um title da família da tela de subida de nível (variação B das prévias, escolhida pelo usuário): faixa dourada `4 HORAS ONLINE!` com brilhos piscando, sem sombra, e as linhas `Recompensa liberada!` (dourado) e `Use /recompensas para resgatar` (verde) na região animada `tempo` logo abaixo da mira, com o som `BLOCK_NOTE_BLOCK_BELL`. Marco fora da escada padrão usa a faixa `TEMPO ONLINE!`. No join, se há pendentes: `Você tem N recompensa(s) por tempo para resgatar! Use /recompensas`.
 
 ## Tela `/recompensas`
 

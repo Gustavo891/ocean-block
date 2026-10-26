@@ -46,10 +46,6 @@ class RewardTextTest : StringSpec({
         RewardText.prizes(Milestone("x", 1, coins = 0, pearls = 0, xp = 0)) { it } shouldBe "—"
     }
 
-    "aviso de marco atingido" {
-        RewardText.reached(Milestone("4h", 240, 0, 0, 0)) shouldBe "Recompensa de 4 h liberada! Use /recompensas"
-    }
-
     "lembrete no login no singular e no plural" {
         RewardText.pending(1) shouldBe "Você tem 1 recompensa por tempo para resgatar! Use /recompensas"
         RewardText.pending(3) shouldBe "Você tem 3 recompensas por tempo para resgatar! Use /recompensas"

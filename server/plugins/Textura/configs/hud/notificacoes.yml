@@ -39,3 +39,14 @@ nivel:
   fundo: false
   direcao: baixo
   animacao: true
+
+tempo:
+  id: tempo
+  ancora: CENTRO
+  x: 0
+  y: 44
+  linhas: 2
+  espacamento: 0
+  fundo: false
+  direcao: baixo
+  animacao: true

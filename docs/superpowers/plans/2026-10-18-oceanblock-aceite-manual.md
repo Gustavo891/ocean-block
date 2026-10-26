@@ -296,7 +296,8 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Resgatar um marco liberado paga coins, pérolas (`/perolas`), XP (aparece o `+N XP`) e itens (sobra cai no chão), toca som e diz `Recompensa de X resgatada!`; o botão apaga na hora. Clicar de novo não paga nada.
 - [ ] `Resgatar tudo` paga todos os liberados de uma vez com uma mensagem só; sem pendentes fica apagado.
 - [ ] Em criativo o XP do marco também entra (o nível sobe em `/nivel`).
-- [ ] Ao passar de um marco jogando (teste com `resetar` e um marco de poucos minutos no yml), em até 20 s aparece no topo esquerdo `Recompensa de X liberada! Use /recompensas` com ícone de relógio e som de sino.
+- [ ] Ao passar de um marco jogando (teste com `resetar` e um marco de poucos minutos no yml), em até 20 s aparece no centro a faixa dourada `X HORAS ONLINE!` (ou `30 MINUTOS ONLINE!`, `1 HORA ONLINE!`) com brilhos piscando dos dois lados, sem sombra escura atrás, e logo abaixo da mira `Recompensa liberada!` em dourado e `Use /recompensas para resgatar` em verde, que somem sozinhas; toca um sino. A faixa fica da mesma família da tela de subida de nível.
+- [ ] Um marco com minutos fora da escada padrão (ex.: 5 no yml) mostra a faixa `TEMPO ONLINE!`.
 - [ ] Entrar com recompensas pendentes mostra `Você tem N recompensas por tempo para resgatar! Use /recompensas` uns 3 s depois do login.
 - [ ] Sair e voltar (ou reiniciar o servidor depois de 30 s): marcos resgatados continuam resgatados.
 - [ ] `/recompensas resetar <jogador>` (admin) volta todos os marcos a não resgatados.

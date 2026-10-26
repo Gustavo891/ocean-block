@@ -18,6 +18,7 @@ object PlaytimeRewardsSystem {
         RewardDialog.registerIcons()
         val watcher = PlaytimeWatcher(plugin)
         plugin.server.pluginManager.registerEvents(watcher, plugin)
+        plugin.server.pluginManager.registerEvents(RewardNotifier, plugin)
         watcher.start()
         paperCommandManager.registerCommand(RecompensasCommand())
     }

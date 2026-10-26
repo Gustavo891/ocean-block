@@ -36,8 +36,6 @@ object RewardText {
         return parts.joinToString(SEPARATOR).ifEmpty { "—" }
     }
 
-    fun reached(milestone: Milestone): String = "Recompensa de ${duration(milestone.minutes)} liberada! Use $COMMAND"
-
     fun pending(count: Int): String {
         val noun = if (count == 1) "recompensa" else "recompensas"
         return "Você tem $count $noun por tempo para resgatar! Use $COMMAND"
