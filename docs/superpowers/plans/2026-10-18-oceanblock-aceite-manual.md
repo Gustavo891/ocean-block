@@ -11,7 +11,8 @@ Verificações que precisam de jogador no jogo; os agentes não conseguiram roda
 - [ ] Em X=5000, Z=5000: construir na superfície e cavar o fundo, selecionar 100×100 da altura mínima à máxima e `//regen`: água e fundo voltam.
 
 ## 3. Ilha
-- [ ] Jogador novo entra (ou `/ilha`, ou o portal do spawn): a ilha do schematic aparece no centro do lote e o jogador é levado para cima dela só depois da colagem, no centro, com os pés em Y 64 (chão em Y 63), sem cair na água nem ficar preso em bloco.
+- [ ] Jogador novo entra (ou `/ilha`): a ilha do schematic aparece no centro do lote e o jogador é levado para cima dela só depois da colagem, no centro, com os pés em Y 64 (chão em Y 63), sem cair na água nem ficar preso em bloco.
+- [ ] Jogador que já tem ilha e entra fora do mundo das ilhas (ex.: ficou no mundo `spawn`) aparece na própria ilha; morrer sem cama também renasce na ilha. Membro sem ilha própria vai para a ilha onde é membro. `/spawn` não existe mais.
 - [ ] Morrer e renascer: volta em cima da ilha no centro, não dentro do tronco da árvore.
 - [ ] Renomear `island.schem` temporariamente e criar ilha com outro jogador novo: 3×3 de grama sobre terra (grama em Y 63, terra em Y 62), jogador em pé na grama + log `[ilha]` severe. Voltar o nome.
 - [ ] Quebrar o bloco central: dropa normalmente, não regenera, nenhum mob nasce.
@@ -94,7 +95,6 @@ Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `se
 
 ### Menu
 - [ ] Depois de instalar o jar e reiniciar, o pack sobe com o glyph `receitas_menu`; `/receitas`, `/craft` e `/receita` abrem um baú com o fundo desenhado e o título `Receitas`.
-- [ ] Clicar no NPC "RECEITAS" do spawn abre o menu.
 - [ ] A coluna da esquerda mostra `Ferramentas` (picareta de ferro), `Coleta` (baú) e `Estações` (composteira); a aberta brilha e diz `Aberta agora.`. Clicar em outra troca as receitas e volta para a primeira página.
 - [ ] Fechar o menu em `Coleta` e abrir de novo: continua em `Coleta`. Sair do servidor e entrar de novo: volta para `Ferramentas`.
 - [ ] Cada receita é o item resultado; a lore mostra a descrição, `Nível N`, um ingrediente por linha com `✔` verde ou `✖` vermelho e `(você tem N)`, e no fim `Clique para craftar!`, `Faltam itens.` ou `Requer nível N`.

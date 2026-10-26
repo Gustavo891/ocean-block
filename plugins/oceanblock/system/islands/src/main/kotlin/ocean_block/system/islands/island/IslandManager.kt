@@ -2,6 +2,7 @@ package ocean_block.system.islands.island
 
 import ocean_block.libs.instance.Instance
 import ocean_block.libs.instance.ScheduledExecutor
+import ocean_block.system.islands.member.MemberRules
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.position.Position
 import org.bukkit.Bukkit
@@ -158,6 +159,9 @@ object IslandManager {
     fun getIslandByOwnerName(targetName: String): Island? = islandsByOwnerName[targetName.lowercase()]
 
     fun getIslandByOwnerUUID(targetUUID: UUID): Island? = islandsByOwnerUuid[targetUUID]
+
+    fun getHomeIsland(player: Player): Island? =
+        MemberRules.homeIsland(getIslandByOwnerUUID(player.uniqueId), islandsById.values, player.name)
 
     fun getIslandAt(location: Location): Island? {
         if (location.world?.name != "world") return null

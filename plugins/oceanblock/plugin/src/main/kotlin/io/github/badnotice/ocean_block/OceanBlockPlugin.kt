@@ -38,7 +38,6 @@ import ocean_block.system.sell.command.SellCommand
 import ocean_block.system.sell.command.SellItemsCommand
 import ocean_block.system.shop.ShopSystem
 import ocean_block.system.shop.command.ShopCommand
-import ocean_block.system.spawn.SpawnSystem
 import ocean_block.system.starter_kit.StarterKitSystem
 import ocean_block.system.tops.TopsSystem
 import ocean_block.system.tops.command.TopsCommand
@@ -71,7 +70,6 @@ class OceanBlockPlugin : JavaPlugin() {
         CoinFlipManager.onDisable()
         PlacedBlockManager.onDisable()
         CollectionsSystem.onDisable()
-        SpawnSystem.onDisable()
         LevelSystem.onDisable()
         MissionsSystem.onDisable()
         ScoreboardSystem.onDisable()
@@ -100,7 +98,6 @@ class OceanBlockPlugin : JavaPlugin() {
             { LevelSystem.init(this, viewFrame, paperCommandManager) },
             { MissionsSystem.init(this, paperCommandManager) },
             { ShopSystem.init(this, viewFrame) },
-            { SpawnSystem.init(this, paperCommandManager) },
             { StarterKitSystem.init(this) },
             { TopsSystem.init(this, viewFrame) },
             { WorldsSystem.init(this) },

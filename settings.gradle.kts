@@ -41,7 +41,6 @@ include(
     ":plugins:oceanblock:system:sell",
     ":plugins:oceanblock:system:shop",
     ":plugins:oceanblock:system:scoreboard",
-    ":plugins:oceanblock:system:spawn",
     ":plugins:oceanblock:system:starter-kit",
     ":plugins:oceanblock:system:tops",
     ":plugins:oceanblock:system:worlds",

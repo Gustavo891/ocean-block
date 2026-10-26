@@ -2,7 +2,6 @@ package ocean_block.system.scoreboard.config
 
 import me.clip.placeholderapi.PlaceholderAPI
 import ocean_block.libs.instance.Instance
-import ocean_block.system.spawn.spawn.SpawnManager
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -11,7 +10,7 @@ sealed interface BoardCondition {
     fun test(player: Player): Boolean
 
     data object AtSpawn : BoardCondition {
-        override fun test(player: Player): Boolean = SpawnManager.isAtSpawn(player)
+        override fun test(player: Player): Boolean = player.world.name.equals(SPAWN_WORLD, ignoreCase = true)
     }
 
     data class InWorld(val world: String) : BoardCondition {
@@ -59,3 +58,5 @@ sealed interface BoardCondition {
         }
     }
 }
+
+private const val SPAWN_WORLD = "spawn"

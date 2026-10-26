@@ -20,8 +20,13 @@ class PlayerListener : Listener {
     fun onPlayerSpawnLocation(event: PlayerSpawnLocationEvent) {
         val player = event.player
 
-        val island = IslandManager.getIslandByOwnerUUID(player.uniqueId)
-        if (island != null) return
+        val home = IslandManager.getHomeIsland(player)
+        if (home != null) {
+            if (event.spawnLocation.world?.name != ISLAND_WORLD) {
+                home.spawn.add(.0, 2.0, .0).toBukkit()?.let { event.spawnLocation = it }
+            }
+            return
+        }
 
         val created = IslandManager.createIsland(player) { ready -> runNextTask { enterNewIsland(player, ready) } } ?: return
         val spawn = created.spawn.add(.0, 2.0, .0).toBukkit() ?: return
@@ -62,9 +67,9 @@ class PlayerListener : Listener {
     @EventHandler
     fun onPlayerRespawn(event: PlayerRespawnEvent) {
         val player = event.player
-        if (player.world.name != "world") return
+        if (event.isBedSpawn || event.isAnchorSpawn) return
 
-        val islandAt = IslandManager.getIslandByPlayer(player.uniqueId) ?: return
+        val islandAt = IslandManager.getHomeIsland(player) ?: return
         val respawnLoc = islandAt.spawn.toBukkit()?.add(0.0, 2.0, 0.0) ?: return
 
         event.respawnLocation = respawnLoc
@@ -81,3 +86,5 @@ class PlayerListener : Listener {
         }
     }
 }
+
+private const val ISLAND_WORLD = "world"

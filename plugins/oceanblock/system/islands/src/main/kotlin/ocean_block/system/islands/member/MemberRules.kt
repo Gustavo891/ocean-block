@@ -32,4 +32,7 @@ object MemberRules {
 
     fun menuIsland(here: Island?, owned: Island?, player: UUID, playerName: String): Island? =
         here?.takeIf { it.ownerUuid == player || it.isMember(playerName) } ?: owned
+
+    fun homeIsland(owned: Island?, islands: Collection<Island>, playerName: String): Island? =
+        owned ?: islands.firstOrNull { it.isMember(playerName) }
 }
