@@ -443,7 +443,7 @@ coleta:
 | `ancora` | `TOPO_ESQUERDA`, `TOPO_DIREITA`, `MEIO_ESQUERDA`, `MEIO_DIREITA`, `BASE_ESQUERDA`, `BASE_DIREITA`, `CENTRO` | obrigatório |
 | `x`, `y` | deslocamento em px de GUI (x para a direita, y para baixo) a partir da âncora | 0 |
 | `linhas` | máximo de linhas visíveis (1..15). Cheia, a mais antiga sai | 3 |
-| `espacamento` | px entre uma linha e a próxima (0..32). O passo é 13 + espaçamento | 1 |
+| `espacamento` | px entre uma linha e a próxima (-2..32). O passo é 13 + espaçamento | 1 |
 | `fundo` | placa escura semitransparente na largura do conteúdo | true |
 | `direcao` | `baixo` ou `cima` | `cima` nas âncoras `BASE_*`, `baixo` nas outras |
 | `animacao` | `true`: a linha fica parada 2 s e depois some aos poucos em 1,5 s, no mesmo lugar, animada pelo próprio cliente; precisa de `y >= 0` | false |
@@ -483,11 +483,13 @@ NotificationApi.clear(player, "coleta")
   ausente e é medido com 6 px.
 - Fundo de toast: um glyph de `configs/glyphs` com id começando em `toast_`
   vira fundo, assado no tamanho nativo na fonte da linha (segue a posição da
-  linha e empilha). A linha desenha o fundo alinhado à âncora e o texto 36 px
-  dentro dele, com o topo do fundo 3 px acima do texto. Na região `toasts`
-  (passo 16), duas linhas avançam 32 px: o fundo de 30 px deixa 2 px até o
-  próximo toast. A segunda linha usa um fundo transparente da mesma largura
-  (`toast_linha`) só para ter o mesmo recuo. O fundo precisa ter pelo menos
+  linha e empilha). A linha desenha o fundo alinhado à âncora e o texto 28 px
+  dentro dele, com o topo do fundo 2 px acima do texto. `subida: N` no yml
+  do glyph faz o texto da linha subir N px dentro do passo (o `/textura
+  gerar` assa as fontes dessas alturas). Na região `toasts` (passo 12), duas
+  linhas avançam 24 px: o fundo de 22 px deixa 2 px até o próximo toast. A
+  segunda linha usa um fundo transparente da mesma largura (`toast_linha`,
+  `subida: 2`), que dá o recuo e aproxima o texto do título. O fundo precisa ter pelo menos
   10 px de altura, senão as fontes de notificação não são geradas. O avanço
   do fundo é medido como o cliente mede (até a última coluna visível), então
   a posição só usa a largura da imagem e um fundo transparente não desloca a

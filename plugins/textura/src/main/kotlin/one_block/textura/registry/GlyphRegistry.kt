@@ -272,7 +272,8 @@ class GlyphRegistry(private val logger: Logger) {
         warnDuplicate(file, id)
         staging[id] = GlyphData(
             key, id, caminho, unicode,
-            attrs.ascent, attrs.height, attrs.size, attrs.default, attrs.showInGui, fonts
+            attrs.ascent, attrs.height, attrs.size, attrs.default, attrs.showInGui, fonts,
+            raise = config.getInt("$key.subida", 0)
         )
 
         return changed

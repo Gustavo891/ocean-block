@@ -5,7 +5,7 @@ import one_block.textura.dialog.kit.UiTextFont
 
 internal data class IconGlyph(val char: String, val advance: Int)
 
-internal data class BackdropGlyph(val char: String, val width: Int, val advance: Int)
+internal data class BackdropGlyph(val char: String, val width: Int, val advance: Int, val raise: Int = 0)
 
 internal data class PlaqueGlyphs(val leftCap: String, val rightCap: String, val bodies: Map<Int, String>)
 

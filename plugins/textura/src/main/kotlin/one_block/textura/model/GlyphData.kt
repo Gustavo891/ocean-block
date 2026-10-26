@@ -45,7 +45,8 @@ data class GlyphData(
     /** Chave da folha no yml quando o glyph é uma fatia de sprite-sheet, `null` quando não é. */
     val sheetKey: String? = null,
     /** Linha da fatia dentro da folha, 0-based. Sempre `0` em glyph simples. */
-    val sheetIndex: Int = 0
+    val sheetIndex: Int = 0,
+    val raise: Int = 0
 ) {
     /** Converte o [unicode] (ex.: `` ou um caractere literal) no char renderizável. */
     val char: String

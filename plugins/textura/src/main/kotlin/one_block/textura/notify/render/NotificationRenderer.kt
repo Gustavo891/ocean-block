@@ -56,15 +56,16 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
         val slot = LineGeometry.slot(region, index) ?: return null
         val animatedPhase = phase.takeIf { region.animated }
         val font = NotificationFonts.key(slot.textTop)
-        val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, slot.lift, font, animatedPhase)
         val backdrop = kit.backdrop(line.icon)
+        val textFont = backdrop?.let { raisedFont(slot.textTop, it.raise, kit) } ?: font
+        val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, slot.lift, textFont, animatedPhase)
         if (backdrop != null) {
             val box = LineGeometry.span(region, backdrop.width).boxLeft
             val cursor = Cursor()
             cursor.moveTo(box)
             cursor.draw(glyph(backdrop.char, font, AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)), backdrop.advance)
             cursor.moveTo(box + LineGeometry.BACKDROP_TEXT_X)
-            cursor.draw(Component.text().font(font).append(text.component).build(), text.width)
+            cursor.draw(Component.text().font(textFont).append(text.component).build(), text.width)
             cursor.moveTo(0)
             return cursor.build()
         }
@@ -95,6 +96,9 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
         cursor.moveTo(0)
         return cursor.build()
     }
+
+    private fun raisedFont(top: Int, raise: Int, kit: NotificationKit): Key? =
+        (top - raise).takeIf { raise > 0 && it in kit.textTops }?.let(NotificationFonts::key)
 
     private fun glyph(char: String, font: Key, color: net.kyori.adventure.text.format.TextColor): Component =
         Component.text(char).font(font).color(color).shadowColor(ShadowColor.none())

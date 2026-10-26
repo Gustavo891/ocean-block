@@ -116,7 +116,7 @@ class MarkerAndParserTest : StringSpec({
               direcao: lado
             """.trimIndent(),
         )
-        regions.single() shouldBe NotificationRegion("a", ScreenAnchor.MIDDLE_LEFT, 0, 0, 15, 0, true, StackDirection.DOWN)
+        regions.single() shouldBe NotificationRegion("a", ScreenAnchor.MIDDLE_LEFT, 0, 0, 15, -2, true, StackDirection.DOWN)
         warnings shouldHaveSize 6
     }
 

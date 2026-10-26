@@ -11,6 +11,7 @@ internal object RegionConfigParser {
 
     const val MIN_LINES = 1
     const val MAX_LINES = 15
+    const val MIN_SPACING = -2
     const val MAX_SPACING = 32
     const val MAX_OFFSET = 4096
     const val DEFAULT_LINES = 3
@@ -32,7 +33,7 @@ internal object RegionConfigParser {
         NotificationRegion("coleta", ScreenAnchor.MIDDLE_RIGHT, 0, 70, 6, DEFAULT_SPACING, true, StackDirection.DOWN),
         NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 4, 4, 3, DEFAULT_SPACING, true, StackDirection.DOWN),
         NotificationRegion("xp", ScreenAnchor.CENTER, 8, 28, 1, DEFAULT_SPACING, false, StackDirection.DOWN, animated = true),
-        NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, 0, 0, 6, 3, false, StackDirection.DOWN),
+        NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, -2, 3, 6, -1, false, StackDirection.DOWN),
     )
 
     fun load(file: File, warn: Consumer<String>): List<NotificationRegion> {
@@ -77,7 +78,7 @@ internal object RegionConfigParser {
         val x = int(section, id, "x", 0, -MAX_OFFSET, MAX_OFFSET, warn)
         val y = int(section, id, "y", 0, -MAX_OFFSET, MAX_OFFSET, warn)
         val lines = int(section, id, "linhas", DEFAULT_LINES, MIN_LINES, MAX_LINES, warn)
-        val spacing = int(section, id, "espacamento", DEFAULT_SPACING, 0, MAX_SPACING, warn)
+        val spacing = int(section, id, "espacamento", DEFAULT_SPACING, MIN_SPACING, MAX_SPACING, warn)
         val background = bool(section, id, "fundo", true, warn)
         val direction = direction(section, id, anchor, warn)
         val animated = bool(section, id, "animacao", false, warn)

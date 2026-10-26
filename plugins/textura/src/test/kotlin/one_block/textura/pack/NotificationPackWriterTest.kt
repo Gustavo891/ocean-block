@@ -35,7 +35,7 @@ class NotificationPackWriterTest : StringSpec({
             Logger.getLogger("NotificationPackWriterTest"),
         ).write(builder)
 
-        kit.textTops.toList() shouldBe listOf(0, 4, 16, 18, 28, 32, 48, 64, 70, 80, 84, 98, 112, 126, 140)
+        kit.textTops.toList() shouldBe listOf(3, 4, 15, 18, 27, 28, 32, 39, 51, 63, 70, 84, 98, 112, 126, 140)
         kit.icons.keys shouldBe setOf("item:oak_planks")
         kit.icons.getValue("item:oak_planks").advance shouldBe 7
         kit.plaque shouldNotBe null
@@ -56,7 +56,7 @@ class NotificationPackWriterTest : StringSpec({
         }
     }
 
-    "glyph toast_ vira fundo no tamanho real, ancorado 3 px acima do texto da linha" {
+    "glyph toast_ vira fundo no tamanho real, ancorado 2 px acima do texto da linha" {
         val card = Files.createTempFile("toast_card", ".png").toFile().apply { deleteOnExit() }
         javax.imageio.ImageIO.write(BufferedImage(132, 28, BufferedImage.TYPE_INT_ARGB).apply { setRGB(0, 0, 0xFF212121.toInt()) }, "png", card)
         val builder = PackBuilder()
@@ -82,7 +82,25 @@ class NotificationPackWriterTest : StringSpec({
             val backdrop = json.getAsJsonArray("providers").map { it.asJsonObject }
                 .single { it.get("type").asString == "bitmap" && it.get("file").asString == "textura:notify/toast/toast_card.png" }
             backdrop.get("height").asInt shouldBe 28
-            backdrop.get("ascent").asInt shouldBe 10 - 70
+            backdrop.get("ascent").asInt shouldBe 9 - 70
         }
+    }
+
+    "fundo com subida gera as fontes das linhas deslocadas e guarda a subida no kit" {
+        val linha = Files.createTempFile("toast_linha", ".png").toFile().apply { deleteOnExit() }
+        javax.imageio.ImageIO.write(BufferedImage(136, 10, BufferedImage.TYPE_INT_ARGB), "png", linha)
+        val kit = NotificationPackWriter(
+            RegionConfigParser.DEFAULTS,
+            textFont,
+            emptySet(),
+            { null },
+            mapOf("toast_linha" to linha),
+            null,
+            Logger.getLogger("NotificationPackWriterTest"),
+            mapOf("toast_linha" to 2),
+        ).write(PackBuilder())
+
+        kit.backdrop("glyph:toast_linha")?.raise shouldBe 2
+        kit.textTops.containsAll(listOf(3, 15, 27, 13, 25)) shouldBe true
     }
 })

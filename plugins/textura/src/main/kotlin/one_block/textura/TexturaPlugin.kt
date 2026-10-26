@@ -239,6 +239,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
             glyphFiles,
             File(assets.resourceRoot, HUD_PLAQUE),
             logger,
+            glyphRegistry.glyphs.values.filter { it.raise != 0 }.associate { it.id to it.raise },
         )
     }
 

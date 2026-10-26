@@ -219,11 +219,11 @@ class NotificationRendererTest : StringSpec({
         return out to x
     }
 
-    "linha com fundo de toast desenha o fundo na largura dele e o texto 36 px para dentro" {
+    "linha com fundo de toast desenha o fundo na largura dele e o texto 28 px para dentro" {
         val (out, x) = toastLine(BackdropGlyph("T", 132, 133), 133)
 
         out.first() shouldBe ("T" to -132)
-        out.last().second shouldBe -132 + 36
+        out.last().second shouldBe -132 + 28
         x shouldBe 0
     }
 
@@ -231,7 +231,31 @@ class NotificationRendererTest : StringSpec({
         val (out, x) = toastLine(BackdropGlyph("L", 132, 1), 1)
 
         out.first() shouldBe ("L" to -132)
-        out.last().second shouldBe -132 + 36
+        out.last().second shouldBe -132 + 28
         x shouldBe 0
+    }
+
+    "linha com fundo que sobe usa a fonte de uma altura menor so no texto" {
+        val raised = NotificationKit(textFont, setOf(0, 10, 12), null, emptyMap(), mapOf(
+            "glyph:toast_x" to BackdropGlyph("T", 132, 133),
+            "glyph:toast_l" to BackdropGlyph("L", 132, 1, 2),
+        ))
+        val corner = NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, 0, 0, 6, -1, false, StackDirection.DOWN)
+        val component = renderer.render(listOf(corner), mapOf("toasts" to listOf(
+            NotificationLine("ab", "glyph:toast_x", 100),
+            NotificationLine("cd", "glyph:toast_l", 100),
+        )), raised) { null }
+
+        val fonts = mutableListOf<Pair<String, Key?>>()
+        fun walk(c: Component, font: Key?) {
+            val f = c.font() ?: font
+            if (c is TextComponent && c.content().isNotEmpty() && c.font() != SpacingFont.KEY) fonts += c.content() to f
+            c.children().forEach { walk(it, f) }
+        }
+        walk(component, null)
+
+        fonts.first { it.first == "L" }.second shouldBe NotificationFonts.key(12)
+        fonts.first { it.first == "cd" }.second shouldBe NotificationFonts.key(10)
+        fonts.first { it.first == "ab" }.second shouldBe NotificationFonts.key(0)
     }
 })

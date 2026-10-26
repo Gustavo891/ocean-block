@@ -206,4 +206,30 @@ class GlyphRegistrySheetTest : StringSpec({
 
         registry.glyphs.getValue("tardio").unicode shouldBe "\\uE002"
     }
+
+    "glyph simples le a subida do texto e fica em 0 sem ela" {
+        val dir = pasta(
+            """
+            linha:
+              id: toast_linha
+              caminho: mouse_clicks.png
+              unicode: 
+              ascent: 0
+              height: 10
+              subida: 2
+            outro:
+              id: toast_card
+              caminho: mouse_clicks.png
+              unicode: 
+              ascent: 0
+              height: 10
+            """.trimIndent()
+        )
+
+        val registry = GlyphRegistry(logger)
+        registry.load(dir)
+
+        registry.glyphs.getValue("toast_linha").raise shouldBe 2
+        registry.glyphs.getValue("toast_card").raise shouldBe 0
+    }
 })
