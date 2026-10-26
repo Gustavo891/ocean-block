@@ -32,7 +32,8 @@ internal object RegionConfigParser {
         NotificationRegion("coleta", ScreenAnchor.MIDDLE_RIGHT, 0, 70, 6, DEFAULT_SPACING, true, StackDirection.DOWN),
         NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 4, 4, 3, DEFAULT_SPACING, true, StackDirection.DOWN),
         NotificationRegion("xp", ScreenAnchor.CENTER, 8, 28, 1, DEFAULT_SPACING, false, StackDirection.DOWN, animated = true),
-        NotificationRegion("nivel", ScreenAnchor.CENTER, 0, 74, 2, 0, false, StackDirection.DOWN, animated = true),
+        NotificationRegion("nivel", ScreenAnchor.TOP_RIGHT, 0, 4, 3, 0, false, StackDirection.DOWN),
+        NotificationRegion("tempo", ScreenAnchor.CENTER, 0, 44, 2, 0, false, StackDirection.DOWN, animated = true),
     )
 
     fun load(file: File, warn: Consumer<String>): List<NotificationRegion> {

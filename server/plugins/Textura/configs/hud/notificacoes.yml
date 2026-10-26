@@ -31,14 +31,13 @@ xp:
 
 nivel:
   id: nivel
-  ancora: CENTRO
+  ancora: TOPO_DIREITA
   x: 0
-  y: 74
-  linhas: 2
+  y: 4
+  linhas: 3
   espacamento: 0
   fundo: false
   direcao: baixo
-  animacao: true
 
 tempo:
   id: tempo

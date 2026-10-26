@@ -151,7 +151,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Detrito que cai na Rede de Detritos não dá XP; blocos que o Minerador quebra não dão XP.
 - [ ] Quebrar à mão pedra/minério formado pelo gerador dá XP (minério raro vale mais); colocar um pedregulho no lugar e quebrar não dá XP.
 - [ ] Fabricar uma receita no `/receitas` dá XP (`10 + 3 × nível da receita`).
-- [ ] Ao subir de nível: faixa dourada `SUBIU DE NÍVEL!` acima da mira, o número em dígitos dourados com brilhos piscando abaixo, e embaixo dele `+N Coins` (100 × nível, depositado no saldo) e, se abriu receita, `Liberado: ...` em verde; som de level-up e de conquista; sem aviso no canto.
+- [ ] Ao subir de nível: só o som de level-up e um cartão no tema oceano no canto superior direito (borda água-marinha, ondas, ícone de gota) com `Nível N!`, `+N Coins` (100 × nível, depositado no saldo) e, se abriu receita, `Liberado: ...`; o texto não sai do cartão e some em 5 s; nada no centro da tela.
 - [ ] `/nivel dar <você> 100000` (admin): um título só com o nível final e o aviso lista todas as receitas abertas no caminho. `/nivel definir <você> 50`: barra cheia, `/nivel` mostra `Nível máximo` e XP novo não soma mais.
 - [ ] Modo criativo não ganha XP de coleta nem de receita.
 - [ ] `/nivel` (e `/level`, `/niveis`) abre o baú com o fundo `NIVEIS` (slots desenhados só no caminho, alinhados com as casas) na página do seu nível: os níveis 1–25 em caminho de serpente (casa verde = alcançado, dourada = atual, cinza = bloqueado, número = quantidade do item), nível que libera receita mostra o item da receita, lore com o estado e `Libera: ...`; setas trocam para 26–50; o frasco de XP mostra nível, XP e como ganhar XP; a barreira fecha.
