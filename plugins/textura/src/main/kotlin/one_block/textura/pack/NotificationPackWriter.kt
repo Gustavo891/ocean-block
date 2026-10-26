@@ -54,10 +54,10 @@ internal class NotificationPackWriter(
             }
             icons[NotificationIcons.item(material)] = bake(builder, "item/$material", image, nextChar(), ICON_OFFSET) to GlyphAdvance.of(image)
         }
-        val backdrops = linkedMapOf<String, Pair<Baked, Int>>()
+        val backdrops = linkedMapOf<String, Pair<Baked, BufferedImage>>()
         glyphFiles.toSortedMap().filterKeys(NotificationIcons::isBackdrop).forEach { (id, file) ->
             val image = runCatching { ImageIO.read(file) }.getOrNull() ?: return@forEach
-            backdrops[NotificationIcons.glyph(id)] = bake(builder, "toast/${slug(id)}", image, nextChar(), BACKDROP_OFFSET) to image.width
+            backdrops[NotificationIcons.glyph(id)] = bake(builder, "toast/${slug(id)}", image, nextChar(), BACKDROP_OFFSET) to image
         }
         glyphFiles.toSortedMap().filterKeys { !NotificationIcons.isBackdrop(it) }.forEach { (id, file) ->
             val image = runCatching { ImageIO.read(file) }.getOrNull()?.let(::scaled) ?: return@forEach
@@ -78,7 +78,7 @@ internal class NotificationPackWriter(
             textTops = tops,
             plaque = PlaqueGlyphs(left.char, right.char, bodies.mapValues { it.value.char }),
             icons = icons.mapValues { (_, baked) -> IconGlyph(baked.first.char, baked.second) },
-            backdrops = backdrops.mapValues { (_, baked) -> BackdropGlyph(baked.first.char, baked.second) },
+            backdrops = backdrops.mapValues { (_, baked) -> BackdropGlyph(baked.first.char, baked.second.width, GlyphAdvance.of(baked.second)) },
         )
     }
 

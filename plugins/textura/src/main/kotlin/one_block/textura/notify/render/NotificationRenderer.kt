@@ -62,7 +62,7 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
             val box = LineGeometry.span(region, backdrop.width).boxLeft
             val cursor = Cursor()
             cursor.moveTo(box)
-            cursor.draw(glyph(backdrop.char, font, AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)), backdrop.width + 1)
+            cursor.draw(glyph(backdrop.char, font, AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)), backdrop.advance)
             cursor.moveTo(box + LineGeometry.BACKDROP_TEXT_X)
             cursor.draw(Component.text().font(font).append(text.component).build(), text.width)
             cursor.moveTo(0)

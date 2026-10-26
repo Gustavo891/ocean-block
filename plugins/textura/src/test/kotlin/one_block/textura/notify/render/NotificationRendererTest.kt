@@ -201,8 +201,8 @@ class NotificationRendererTest : StringSpec({
         }
     }
 
-    "linha com fundo de toast desenha o fundo na largura dele e o texto 26 px para dentro" {
-        val toastKit = NotificationKit(textFont, setOf(0), null, emptyMap(), mapOf("glyph:toast_x" to BackdropGlyph("T", 132)))
+    fun toastLine(backdrop: BackdropGlyph, advance: Int): Pair<List<Pair<String, Int>>, Int> {
+        val toastKit = NotificationKit(textFont, setOf(0), null, emptyMap(), mapOf("glyph:toast_x" to backdrop))
         val corner = NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, 0, 0, 6, 1, false, StackDirection.DOWN)
         val component = renderer.render(listOf(corner), mapOf("toasts" to listOf(NotificationLine("ab", "glyph:toast_x", 100))), toastKit) { null }
 
@@ -211,13 +211,26 @@ class NotificationRendererTest : StringSpec({
         fun walk(c: Component) {
             if (c is TextComponent && c.content().isNotEmpty()) {
                 if (c.font() == SpacingFont.KEY) x += c.content().sumOf { SpacingFont.ADVANCES.getValue(it.toString()) }
-                else { out += c.content() to x; x += if (c.content() == "T") 133 else c.content().codePoints().toArray().sumOf { textFont.advance(it) } }
+                else { out += c.content() to x; x += if (c.content() == backdrop.char) advance else c.content().codePoints().toArray().sumOf { textFont.advance(it) } }
             }
             c.children().forEach(::walk)
         }
         walk(component)
+        return out to x
+    }
+
+    "linha com fundo de toast desenha o fundo na largura dele e o texto 26 px para dentro" {
+        val (out, x) = toastLine(BackdropGlyph("T", 132, 133), 133)
 
         out.first() shouldBe ("T" to -132)
+        out.last().second shouldBe -132 + 26
+        x shouldBe 0
+    }
+
+    "fundo de toast transparente avança só o que o cliente mede e o texto fica no mesmo recuo" {
+        val (out, x) = toastLine(BackdropGlyph("L", 132, 1), 1)
+
+        out.first() shouldBe ("L" to -132)
         out.last().second shouldBe -132 + 26
         x shouldBe 0
     }

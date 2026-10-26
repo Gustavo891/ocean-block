@@ -71,6 +71,7 @@ class NotificationPackWriterTest : StringSpec({
         ).write(builder)
 
         kit.backdrop("glyph:toast_card")?.width shouldBe 132
+        kit.backdrop("glyph:toast_card")?.advance shouldBe 2
         kit.icons.containsKey("glyph:toast_card") shouldBe false
 
         val zip = Files.createTempFile("notify", ".zip").toFile().apply { deleteOnExit() }

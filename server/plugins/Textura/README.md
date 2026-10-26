@@ -487,7 +487,10 @@ NotificationApi.clear(player, "coleta")
   dentro dele, com o topo do fundo 3 px acima do texto. Com passo 14, duas
   linhas cobrem um fundo de 28 px; a segunda usa um fundo transparente
   (`toast_linha`) só para ter o mesmo recuo. O fundo precisa ter pelo menos
-  10 px de altura, senão as fontes de notificação não são geradas.
+  10 px de altura, senão as fontes de notificação não são geradas. O avanço
+  do fundo é medido como o cliente mede (até a última coluna visível), então
+  a posição só usa a largura da imagem e um fundo transparente não desloca a
+  barra.
 - Cores: só existem as 16 cores legadas. Uma cor hex (`<#ff8800>`, gradiente)
   vira a mais próxima delas. O negrito soma 1 px por caractere, espaço
   incluído.
