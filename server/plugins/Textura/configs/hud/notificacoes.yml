@@ -43,7 +43,7 @@ tempo:
   id: tempo
   ancora: TOPO_DIREITA
   x: 0
-  y: 4
+  y: 58
   linhas: 2
   espacamento: 0
   fundo: false

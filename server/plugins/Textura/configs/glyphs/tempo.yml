@@ -1,45 +1,50 @@
 tempo_cartao_110:
   id: tempo_cartao_110
   caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_110.png
-  ascent: 9
+  ascent: -45
   height: 37
   size: 110
   default: true
   show_in_gui: false
+  unicode: \uE021
 
 tempo_cartao_140:
   id: tempo_cartao_140
   caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_140.png
-  ascent: 9
+  ascent: -45
   height: 37
   size: 140
   default: true
   show_in_gui: false
+  unicode: \uE022
 
 tempo_cartao_170:
   id: tempo_cartao_170
   caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_170.png
-  ascent: 9
+  ascent: -45
   height: 37
   size: 170
   default: true
   show_in_gui: false
+  unicode: \uE023
 
 tempo_cartao_200:
   id: tempo_cartao_200
   caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_200.png
-  ascent: 9
+  ascent: -45
   height: 37
   size: 200
   default: true
   show_in_gui: false
+  unicode: \uE024
 
 tempo_cartao_240:
   id: tempo_cartao_240
   caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_240.png
-  ascent: 9
+  ascent: -45
   height: 37
   size: 240
   default: true
   show_in_gui: false
+  unicode: \uE025
 
