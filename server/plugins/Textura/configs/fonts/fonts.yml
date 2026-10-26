@@ -20,3 +20,13 @@ oneblock_level:
   id: oneblock_level
   caminho: fonts/oneblock-level.json
   ascent: 7
+nivel_linha_1:
+  id: nivel_linha_1
+  namespace: oneblock
+  caminho: fonts/nivel-linha-1.json
+  ascent: 7
+nivel_linha_2:
+  id: nivel_linha_2
+  namespace: oneblock
+  caminho: fonts/nivel-linha-2.json
+  ascent: 7

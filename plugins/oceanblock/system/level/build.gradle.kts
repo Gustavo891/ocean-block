@@ -11,6 +11,7 @@ dependencies {
     compileOnly(projects.lib.itemBuilder)
 
     compileOnly(projects.plugins.oceanblock.system.craft)
+    compileOnly(projects.plugins.oceanblock.system.currencies)
     compileOnly(projects.plugins.oceanblock.system.drift)
     compileOnly(projects.plugins.oceanblock.system.islands)
     compileOnly(projects.plugins.oceanblock.system.scoreboard)

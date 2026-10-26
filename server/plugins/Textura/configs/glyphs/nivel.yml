@@ -1,0 +1,169 @@
+nivel_faixa:
+  id: nivel_faixa
+  caminho: assets/oneblock/textures/icons/nivel/nivel_faixa.png
+  unicode: \uE300
+  ascent: 3
+  height: 3
+  size: 26
+  default: true
+  show_in_gui: false
+
+nivel_num_0:
+  id: nivel_num_0
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_0.png
+  unicode: \uE301
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_1:
+  id: nivel_num_1
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_1.png
+  unicode: \uE302
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_2:
+  id: nivel_num_2
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_2.png
+  unicode: \uE303
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_3:
+  id: nivel_num_3
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_3.png
+  unicode: \uE304
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_4:
+  id: nivel_num_4
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_4.png
+  unicode: \uE305
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_5:
+  id: nivel_num_5
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_5.png
+  unicode: \uE306
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_6:
+  id: nivel_num_6
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_6.png
+  unicode: \uE307
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_7:
+  id: nivel_num_7
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_7.png
+  unicode: \uE308
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_8:
+  id: nivel_num_8
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_8.png
+  unicode: \uE309
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_num_9:
+  id: nivel_num_9
+  caminho: assets/oneblock/textures/icons/nivel/nivel_num_9.png
+  unicode: \uE30A
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_brilho_e_0:
+  id: nivel_brilho_e_0
+  caminho: assets/oneblock/textures/icons/nivel/nivel_brilho_e_0.png
+  unicode: \uE30B
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_brilho_d_0:
+  id: nivel_brilho_d_0
+  caminho: assets/oneblock/textures/icons/nivel/nivel_brilho_d_0.png
+  unicode: \uE30C
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_brilho_e_1:
+  id: nivel_brilho_e_1
+  caminho: assets/oneblock/textures/icons/nivel/nivel_brilho_e_1.png
+  unicode: \uE30D
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_brilho_d_1:
+  id: nivel_brilho_d_1
+  caminho: assets/oneblock/textures/icons/nivel/nivel_brilho_d_1.png
+  unicode: \uE30E
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_brilho_e_2:
+  id: nivel_brilho_e_2
+  caminho: assets/oneblock/textures/icons/nivel/nivel_brilho_e_2.png
+  unicode: \uE30F
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false
+
+nivel_brilho_d_2:
+  id: nivel_brilho_d_2
+  caminho: assets/oneblock/textures/icons/nivel/nivel_brilho_d_2.png
+  unicode: \uE310
+  ascent: 7
+  height: 7
+  size: 5
+  default: true
+  show_in_gui: false

@@ -3,7 +3,9 @@ package ocean_block.system.level
 import ocean_block.system.craft.recipe.Recipes
 import ocean_block.system.level.config.LevelConfig
 import ocean_block.system.level.curve.LevelCurve
+import ocean_block.system.currencies.Currencies
 import ocean_block.system.level.curve.LevelUps
+import ocean_block.system.level.levelup.LevelUpRewards
 import ocean_block.system.level.data.LevelManager
 import ocean_block.system.level.notify.LevelNotifier
 import org.bukkit.Bukkit
@@ -35,7 +37,9 @@ object PlayerLevels {
 
     private fun changed(player: Player, from: Int, to: Int) {
         if (to <= from) return
-        LevelNotifier.levelUp(player, to, LevelUps.unlocked(from, to, Recipes.all()))
+        val coins = LevelUpRewards.coins(from, to)
+        Currencies.deposit(player.uniqueId, "coins", coins)
+        LevelNotifier.levelUp(player, to, coins, LevelUps.unlocked(from, to, Recipes.all()).map { it.name })
         Bukkit.getPluginManager().callEvent(PlayerLevelUpEvent(player, from, to))
     }
 }
