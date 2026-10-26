@@ -21,9 +21,10 @@ object PlayerFigure {
     private const val LIMB_INFLATE = 0.25
     private const val AMBIENT = 0.45
     private const val DIFFUSE = 0.6
-    const val BUST_WIDTH = 70
-    const val BUST_HEIGHT = 100
-    private const val BUST_UNIT = 4.4
+    const val BUST_WIDTH = 80
+    const val BUST_HEIGHT = 112
+    private const val BUST_UNIT = 4.8
+    private const val SUPERSAMPLE = 3
     private const val BUST_CENTER_Y = 25.0
     private const val BUST_YAW = 32.0
     private const val BUST_PITCH = 22.0
@@ -43,7 +44,9 @@ object PlayerFigure {
 
     private val light = Vec(-0.5, 0.7, 0.5).let { it * (1 / sqrt(it.dot(it))) }
 
-    private class Frame(val width: Int, val height: Int, val unit: Double, val centerY: Double, val yaw: Double, val pitch: Double)
+    private class Frame(val width: Int, val height: Int, val unit: Double, val centerY: Double, val yaw: Double, val pitch: Double) {
+        fun scaled(factor: Int) = Frame(width * factor, height * factor, unit * factor, centerY, yaw, pitch)
+    }
 
     private val fullBody = Frame(WIDTH, HEIGHT, UNIT, CENTER_Y, YAW, PITCH)
     private val bustFrame = Frame(BUST_WIDTH, BUST_HEIGHT, BUST_UNIT, BUST_CENTER_Y, BUST_YAW, BUST_PITCH)
@@ -51,7 +54,35 @@ object PlayerFigure {
     fun render(skin: BufferedImage, slim: Boolean, yaw: Double = YAW): BufferedImage =
         draw(skin, slim, Frame(fullBody.width, fullBody.height, fullBody.unit, fullBody.centerY, yaw, fullBody.pitch))
 
-    fun bust(skin: BufferedImage, slim: Boolean): BufferedImage = draw(skin, slim, bustFrame)
+    fun bust(skin: BufferedImage, slim: Boolean, background: Int): BufferedImage {
+        val fine = draw(skin, slim, bustFrame.scaled(SUPERSAMPLE))
+        return downsample(fine, SUPERSAMPLE, background)
+    }
+
+    private fun downsample(fine: BufferedImage, factor: Int, background: Int): BufferedImage {
+        val image = BufferedImage(fine.width / factor, fine.height / factor, BufferedImage.TYPE_INT_ARGB)
+        val samples = factor * factor
+        for (x in 0 until image.width) {
+            for (y in 0 until image.height) {
+                var covered = 0
+                var r = 0
+                var g = 0
+                var b = 0
+                for (dx in 0 until factor) {
+                    for (dy in 0 until factor) {
+                        val argb = fine.getRGB(x * factor + dx, y * factor + dy)
+                        val sample = if ((argb ushr 24) == 0) background else argb.also { covered++ }
+                        r += (sample shr 16) and 0xFF
+                        g += (sample shr 8) and 0xFF
+                        b += sample and 0xFF
+                    }
+                }
+                if (covered == 0) continue
+                image.setRGB(x, y, (0xFF shl 24) or ((r / samples) shl 16) or ((g / samples) shl 8) or (b / samples))
+            }
+        }
+        return image
+    }
 
     private fun draw(skin: BufferedImage, slim: Boolean, frame: Frame): BufferedImage {
         val boxes = boxes(slim, legacy = skin.height < skin.width)

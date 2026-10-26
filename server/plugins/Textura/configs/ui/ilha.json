@@ -7,11 +7,21 @@
       "row": [
         {
           "column": [
-            { "pixels": "jogador", "w": 140, "h": 200, "scale": 2 },
-            { "space": 8 },
-            { "text": "{dono}", "style": "muted" }
+            { "pixels": "jogador", "w": 80, "h": 112, "scale": 1 },
+            { "space": 6 },
+            { "text": "{dono}", "style": "body" },
+            { "space": 22 },
+            { "text": "{membros_titulo}", "style": "muted" },
+            { "space": 4 },
+            {
+              "box": [
+                { "slots": [6, 1], "hideEmpty": true, "align": "center", "bind": "abrir_membros", "items": [ { "at": 0, "item": "{vaga0}", "name": "<white>{membro0}" }, { "at": 1, "item": "{vaga1}", "name": "<white>{membro1}" }, { "at": 2, "item": "{vaga2}", "name": "<white>{membro2}" }, { "at": 3, "item": "{vaga3}", "name": "<white>{membro3}" }, { "at": 4, "item": "{vaga4}", "name": "<white>{membro4}" }, { "at": 5, "item": "{vaga5}", "name": "<white>{membro5}" } ] },
+                { "pixels": "cabecas", "w": 108, "h": 18, "scale": 1 }
+              ],
+              "name": "Membros"
+            }
           ],
-          "w": 146, "h": 226, "align": "center", "cross": "center", "surface": "palco", "name": "Palco"
+          "w": 118, "h": 226, "pad": 5, "align": "center", "cross": "center", "surface": "palco", "name": "Palco"
         },
         {
           "column": [
@@ -73,13 +83,7 @@
               "gap": 5, "pad": 6, "surface": "painel", "w": "grow", "name": "Resumo"
             },
             { "button": "IR PARA A ILHA", "look": "acao", "bind": "abrir_ilha", "w": "grow" },
-            {
-              "row": [
-                { "button": "MEMBROS", "bind": "abrir_membros", "w": "grow" },
-                { "button": "VISITAS", "bind": "abrir_visitas", "w": "grow" }
-              ],
-              "gap": 4, "w": "grow"
-            }
+            { "button": "VISITAS", "bind": "abrir_visitas", "w": "grow" }
           ],
           "gap": 5, "w": "grow", "name": "Lado"
         }

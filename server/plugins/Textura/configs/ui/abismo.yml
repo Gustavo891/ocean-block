@@ -58,10 +58,12 @@ abismo:
     fill: ui:stone/slider_fill
     text-style: body
   slots:
-    art: ui:mare/slot
+    art: ui:abismo/slot
     missing-art: ui:mare/slot_missing
     text-style: count
   chip:
     art: ui:mare/chip
     text-style: body
     height: 20
+  icons:
+    vazio: "ui:abismo/vazio"

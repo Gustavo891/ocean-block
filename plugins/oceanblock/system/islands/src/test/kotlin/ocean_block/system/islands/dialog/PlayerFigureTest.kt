@@ -10,6 +10,7 @@ private const val GREEN = 0xFF32C832.toInt()
 private const val BLUE = 0xFF3232C8.toInt()
 private const val YELLOW = 0xFFC8C832.toInt()
 private const val CYAN = 0xFF32C8C8.toInt()
+private const val BACKGROUND = 0xFF1F2124.toInt()
 
 private fun canvas(width: Int = 64, height: Int = 64, build: BufferedImage.(fill: (Int, Int, Int, Int, Int) -> Unit) -> Unit = {}) =
     BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB).apply {
@@ -101,13 +102,21 @@ class PlayerFigureTest : StringSpec({
             fill(0, 8, 8, 8, BLUE)
         }
 
-        val image = PlayerFigure.bust(bust, slim = false)
+        val image = PlayerFigure.bust(bust, slim = false, background = BACKGROUND)
 
         image.width shouldBe PlayerFigure.BUST_WIDTH
         image.height shouldBe PlayerFigure.BUST_HEIGHT
         image.has(redLike) shouldBe true
         image.has(greenLike) shouldBe true
         image.has(blueLike) shouldBe true
+    }
+
+    "a borda do busto mistura com o fundo em vez de serrilhar" {
+        val image = PlayerFigure.bust(canvas { fill -> fill(0, 0, 64, 64, RED) }, slim = false, background = BACKGROUND)
+
+        val reds = image.pixels().filter { (it ushr 24) == 0xFF }.map { it.r() }.toSet()
+        reds.any { it in 60 until 150 } shouldBe true
+        (image.getRGB(0, 0) ushr 24) shouldBe 0
     }
 
     "skin antiga de 64x32 também desenha" {
