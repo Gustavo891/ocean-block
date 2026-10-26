@@ -1,0 +1,54 @@
+marcos:
+  30m:
+    minutos: 30
+    coins: 2000
+    xp: 100
+  1h:
+    minutos: 60
+    coins: 5000
+    xp: 200
+  2h:
+    minutos: 120
+    coins: 10000
+    xp: 400
+  4h:
+    minutos: 240
+    coins: 20000
+    xp: 700
+    perolas: 1
+  8h:
+    minutos: 480
+    coins: 35000
+    xp: 1000
+    perolas: 2
+    itens: ["IRON_INGOT:16"]
+  12h:
+    minutos: 720
+    coins: 50000
+    xp: 1500
+    perolas: 3
+    itens: ["GOLD_INGOT:8"]
+  24h:
+    minutos: 1440
+    coins: 100000
+    xp: 2500
+    perolas: 5
+    itens: ["DIAMOND:4"]
+  48h:
+    minutos: 2880
+    coins: 150000
+    xp: 3500
+    perolas: 10
+    itens: ["DIAMOND:8"]
+  72h:
+    minutos: 4320
+    coins: 200000
+    xp: 4000
+    perolas: 15
+    itens: ["IRON_BLOCK:4"]
+  100h:
+    minutos: 6000
+    coins: 300000
+    xp: 5000
+    perolas: 25
+    itens: ["DIAMOND_BLOCK:2"]

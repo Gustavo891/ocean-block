@@ -288,3 +288,17 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Na bancada de trabalho, machado, picareta e pá de ferro na linha de cima e dois gravetos na coluna do meio dão o Paxel de Ferro; o mesmo com diamante e netherita dá o Paxel de Diamante e o de Netherita. Ferramentas gastas também servem.
 - [ ] Trocar a picareta de ferro pela Picareta fundidora (ou por um paxel) na grade não mostra resultado.
 - [ ] O paxel feito na bancada quebra pedra, madeira e terra como o de `/citem give`.
+
+### Recompensas por tempo online
+
+- [ ] `/recompensas` (e `/recompensa`, `/tempo`) abre a tela Maré `Recompensas por tempo` com `Jogado: X` no cabeçalho (o mesmo tempo da sidebar), 3 marcos por página e setas `<` `>`; abre na página do primeiro marco ainda não resgatado.
+- [ ] Cada marco mostra o nome (`30 min`, `1 h`, ...), os prêmios (`2.000 Coins · 100 XP`, pérolas e itens com nome em português) e a situação: `Faltam X` com a barra parcial e o botão `Resgatar` apagado, `Liberado!` com o botão ativo, ou `Resgatado` em verde.
+- [ ] Resgatar um marco liberado paga coins, pérolas (`/perolas`), XP (aparece o `+N XP`) e itens (sobra cai no chão), toca som e diz `Recompensa de X resgatada!`; o botão apaga na hora. Clicar de novo não paga nada.
+- [ ] `Resgatar tudo` paga todos os liberados de uma vez com uma mensagem só; sem pendentes fica apagado.
+- [ ] Em criativo o XP do marco também entra (o nível sobe em `/nivel`).
+- [ ] Ao passar de um marco jogando (teste com `resetar` e um marco de poucos minutos no yml), em até 20 s aparece no topo esquerdo `Recompensa de X liberada! Use /recompensas` com ícone de relógio e som de sino.
+- [ ] Entrar com recompensas pendentes mostra `Você tem N recompensas por tempo para resgatar! Use /recompensas` uns 3 s depois do login.
+- [ ] Sair e voltar (ou reiniciar o servidor depois de 30 s): marcos resgatados continuam resgatados.
+- [ ] `/recompensas resetar <jogador>` (admin) volta todos os marcos a não resgatados.
+- [ ] Sem o pack, `/recompensas` lista os marcos no chat com `[RESGATAR]` clicável nos liberados.
+- [ ] Um marco inválido em `recompensas.yml` (minutos 0, item que não existe) aparece no log como `[recompensas]` e o resto carrega.

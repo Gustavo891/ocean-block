@@ -1,0 +1,53 @@
+{
+  "title": "Recompensas",
+  "close": "Fechar",
+  "theme": "mare",
+  "column": [
+    {
+      "row": [
+        { "space": 4 },
+        { "text": "Recompensas por tempo", "style": "heading", "align": "left", "icon": "item:clock", "w": "grow" },
+        { "text": "{tempo}", "style": "accent", "align": "right", "w": "fit" },
+        { "space": 4 }
+      ],
+      "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
+    },
+    {
+      "column": [
+        {
+          "repeat": "marcos", "perPage": 3,
+          "row": [
+            { "icon": "{icone}", "size": 16, "frame": true, "name": "Icone" },
+            {
+              "column": [
+                {
+                  "row": [
+                    { "text": "{nome}", "style": "body", "align": "left", "w": "grow" },
+                    { "text": "{situacao}", "style": "{situacao_estilo}", "align": "right", "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
+                },
+                { "text": "{premios}", "style": "muted", "align": "left", "w": "grow" },
+                { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 160 }
+              ],
+              "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
+            },
+            { "button": "Resgatar", "bind": "resgatar", "look": "light", "disabled": "{bloqueado}", "w": 56, "tooltip": "{dica}" }
+          ],
+          "w": "grow", "h": "fit", "gap": 5, "pad": 4, "align": "start", "cross": "center", "surface": "well", "name": "Marco"
+        },
+        {
+          "row": [
+            { "button": "<", "bind": "anterior", "look": "light", "disabled": "{sem_anterior}", "w": 20 },
+            { "text": "{pagina}", "style": "muted", "align": "center", "w": "grow" },
+            { "button": ">", "bind": "proxima", "look": "light", "disabled": "{sem_proxima}", "w": 20 },
+            { "button": "Resgatar tudo", "bind": "resgatar_tudo", "look": "light", "disabled": "{sem_pendentes}", "w": 90, "tooltip": "Resgatar tudo\n\nResgata todas as recompensas liberadas." }
+          ],
+          "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center", "name": "Rodape"
+        }
+      ],
+      "w": "grow", "h": "fit", "gap": 4, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
+    }
+  ],
+  "w": 270, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet"
+}
