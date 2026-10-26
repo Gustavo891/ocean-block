@@ -60,6 +60,7 @@ object MachinesSystem {
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyEffects.drawRadii() }, 20L, RADIUS_TICKS)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { EnergyBeams.refresh() }, 20L, EnergyBeams.REFRESH_TICKS)
         plugin.server.scheduler.runTaskTimer(plugin, Runnable { MinerCracks.refresh() }, 20L, MinerCracks.REFRESH_TICKS)
+        plugin.server.scheduler.runTaskTimer(plugin, Runnable { FurnaceDialog.refresh() }, 20L, FurnaceDialog.REFRESH_TICKS)
     }
 
     fun onDisable() {

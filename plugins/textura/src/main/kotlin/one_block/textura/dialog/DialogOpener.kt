@@ -83,6 +83,11 @@ class DialogOpener(
         current.remove(id)
     }
 
+    fun refresh(player: Player, screenId: String): Boolean {
+        val state = current[player.uniqueId]?.takeIf { it.session.screenId == screenId } ?: return false
+        return show(player, state.session) == DialogOpenResult.Shown
+    }
+
     private fun show(player: Player, session: DialogSession): DialogOpenResult {
         val definition = screens.screens[session.screenId] ?: run {
             plugin.logger.warning("[ui] Tela '${session.screenId}' não existe")

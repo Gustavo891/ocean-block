@@ -83,3 +83,5 @@ maquina:
     bateria_10: ui:stone/icons/bateria_10
     fornalha_item: ui:stone/icons/fornalha_item
     bloqueado: ui:maquina/bloqueado
+    seta: ui:maquina/seta
+    cancelar: ui:maquina/bloqueado

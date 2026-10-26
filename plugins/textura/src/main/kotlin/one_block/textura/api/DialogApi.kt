@@ -41,6 +41,8 @@ object DialogApi {
         opener?.setSetting(player, key, value)
     }
 
+    fun refresh(player: Player, screenId: String): Boolean = opener?.refresh(player, screenId) ?: false
+
     fun close(player: Player) {
         opener?.close(player)
     }

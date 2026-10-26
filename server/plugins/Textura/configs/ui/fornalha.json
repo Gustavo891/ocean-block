@@ -2,99 +2,120 @@
   "title": "Fornalha elétrica",
   "close": "Fechar",
   "theme": "maquina",
-  "column": [
+  "row": [
     {
       "column": [
-        {
-          "row": [
-            { "space": 4 },
-            { "text": "Fornalha Elétrica", "style": "heading", "align": "left", "icon": "ui:fornalha_item", "w": "grow" },
-            { "text": "{estado}", "style": "{estado_estilo}", "align": "right", "w": "fit" },
-            { "space": 4 }
-          ],
-          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
-        },
         {
           "column": [
             {
               "row": [
-                { "text": "{status}", "style": "body", "align": "left", "w": "grow" },
-                { "text": "{gasto}", "style": "muted", "align": "right", "w": "fit" }
+                { "space": 4 },
+                { "text": "Fornalha Elétrica", "style": "heading", "align": "left", "icon": "ui:fornalha_item", "w": "grow" },
+                { "text": "{estado}", "style": "{estado_estilo}", "align": "right", "w": "fit" },
+                { "space": 4 }
               ],
-              "w": "grow", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "center", "name": "Resumo"
+              "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
             },
             {
               "column": [
                 {
-                  "repeat": "fila", "perPage": 4,
                   "row": [
+                    { "text": "{status}", "style": "muted", "align": "left", "w": "grow" },
+                    { "text": "{gasto}", "style": "muted", "align": "right", "w": "fit" }
+                  ],
+                  "w": "grow", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "center", "name": "Resumo"
+                },
+                {
+                  "column": [
                     {
-                      "slots": [1, 1], "bind": "devolver",
-                      "items": [{ "at": 0, "item": "{in}", "count": "{in_qtd}", "name": "{in_nome}", "lore": ["{info}", "Clique para devolver."] }]
-                    },
-                    {
-                      "column": [
-                        { "text": "{nome}", "style": "body", "align": "left", "w": 190 },
-                        { "progress": "{prog}", "max": "50", "track": "ui:maquina/progress_track", "fill": "ui:maquina/progress_fill", "w": 190 }
+                      "repeat": "fila", "perPage": 4,
+                      "row": [
+                        {
+                          "slots": [1, 1],
+                          "items": [{ "at": 0, "item": "{in}", "count": "{in_qtd}", "name": "{in_nome}", "lore": ["Na fila para derreter."] }]
+                        },
+                        { "icon": "ui:seta", "size": 12 },
+                        {
+                          "slots": [1, 1], "bind": "recolher",
+                          "items": [{ "at": 0, "item": "{out}", "count": "{out_qtd}", "name": "{out_nome}", "lore": ["Pronto.", "Clique para recolher."] }]
+                        },
+                        {
+                          "column": [
+                            {
+                              "row": [
+                                { "text": "{nome}", "style": "body", "align": "left", "w": "grow" },
+                                { "text": "{info}", "style": "muted", "align": "right", "w": "fit" }
+                              ],
+                              "w": 136, "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
+                            },
+                            { "progress": "{prog}", "max": "50", "track": "ui:maquina/progress_track", "fill": "ui:maquina/progress_fill", "w": 136 }
+                          ],
+                          "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
+                        },
+                        { "button": "", "icon": "ui:cancelar", "bind": "cancelar", "look": "light", "disabled": "{vazio}", "tooltip": "Cancelar\n\nDevolve o que ainda não derreteu." }
                       ],
-                      "w": "grow", "h": "fit", "gap": 2, "pad": 0, "align": "start", "cross": "start"
-                    },
-                    {
-                      "slots": [1, 1], "bind": "recolher",
-                      "items": [{ "at": 0, "item": "{out}", "count": "{out_qtd}", "name": "{out_nome}", "lore": ["Pronto.", "Clique para recolher."] }]
+                      "w": "grow", "h": "fit", "gap": 4, "pad": 2, "align": "start", "cross": "center", "surface": "well", "name": "Vaga"
                     }
                   ],
-                  "w": "grow", "h": "fit", "gap": 6, "pad": 2, "align": "start", "cross": "center", "surface": "well", "name": "Linha"
+                  "w": "grow", "h": "fit", "gap": 2, "pad": 0, "align": "start", "cross": "start", "name": "Fila"
                 }
               ],
-              "w": "grow", "h": "fit", "gap": 2, "pad": 0, "align": "start", "cross": "start", "name": "Fila"
-            },
-            { "button": "Recolher tudo", "bind": "recolher_tudo", "look": "light", "w": "grow", "disabled": "{sem_saida}", "tooltip": "Recolher tudo\n\nOs itens prontos vão para o seu inventário." }
+              "w": "grow", "h": "fit", "gap": 4, "pad": 4, "align": "start", "cross": "start", "name": "Corpo"
+            }
           ],
-          "w": "grow", "h": "fit", "gap": 5, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
+          "w": 262, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Fornalha"
+        },
+        {
+          "row": [
+            {
+              "column": [
+                { "text": "{prontos} prontos", "style": "heading", "align": "left", "w": "fit" },
+                { "text": "Itens derretidos esperando", "style": "muted", "align": "left", "w": "fit" }
+              ],
+              "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
+            },
+            { "button": "Recolher tudo", "bind": "recolher_tudo", "look": "light", "disabled": "{sem_saida}", "tooltip": "Recolher tudo\n\nOs itens prontos vão para o seu inventário." }
+          ],
+          "w": 262, "h": "fit", "gap": 6, "pad": 5, "align": "start", "cross": "center", "surface": "sheet", "name": "Prontos"
         }
       ],
-      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Fornalha"
+      "w": "fit", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "start", "name": "Esquerda"
     },
     {
       "column": [
         {
-          "row": [
-            { "space": 4 },
-            { "text": "Seu inventário", "style": "heading", "align": "left", "w": "grow" },
-            { "text": "Clique para derreter", "style": "muted", "align": "right", "w": "fit" },
-            { "space": 4 }
-          ],
-          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
-        },
-        {
           "column": [
             {
-              "grid": [
-                {
-                  "repeat": "inventario", "perPage": 27,
-                  "slots": [1, 1], "bind": "colocar",
-                  "items": [{ "at": 0, "item": "{item}", "count": "{qtd}", "name": "{nome}", "lore": ["{dica}"], "missing": "{nao}" }]
-                }
+              "row": [
+                { "space": 4 },
+                { "text": "Inventário", "style": "heading", "align": "left", "w": "grow" },
+                { "space": 4 }
               ],
-              "columns": 9, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Mochila"
+              "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
             },
             {
-              "grid": [
+              "column": [
                 {
-                  "repeat": "hotbar", "perPage": 9,
-                  "slots": [1, 1], "bind": "colocar_barra",
-                  "items": [{ "at": 0, "item": "{item}", "count": "{qtd}", "name": "{nome}", "lore": ["{dica}"], "missing": "{nao}" }]
-                }
+                  "grid": [
+                    {
+                      "repeat": "derretiveis", "perPage": 24,
+                      "slots": [1, 1], "bind": "colocar",
+                      "items": [{ "at": 0, "item": "{item}", "count": "{qtd}", "name": "{nome}", "lore": ["{dica}"] }]
+                    }
+                  ],
+                  "columns": 6, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Derretiveis"
+                },
+                { "text": "{inv_info}", "style": "muted", "align": "left", "w": "fit" }
               ],
-              "columns": 9, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Barra"
+              "w": "grow", "h": "fit", "gap": 3, "pad": 4, "align": "start", "cross": "center", "name": "Corpo"
             }
           ],
-          "w": "grow", "h": "fit", "gap": 4, "pad": 5, "align": "start", "cross": "center", "name": "Corpo"
-        }
+          "w": 130, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Inventario"
+        },
+        { "button": "Colocar tudo", "bind": "colocar_tudo", "look": "light", "w": "grow", "disabled": "{sem_derretiveis}", "tooltip": "Colocar tudo\n\nPõe na fila tudo do seu inventário que dá para derreter." }
       ],
-      "w": 260, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Inventario"
+      "w": 130, "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "start", "name": "Direita"
     }
   ],
-  "w": "fit", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "start"
+  "w": "fit", "h": "fit", "gap": 6, "pad": 0, "align": "start", "cross": "start"
 }
