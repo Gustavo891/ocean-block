@@ -53,7 +53,7 @@ object IslandDialog {
         binds.text("status") { if (island.isPublic) "PÚBLICA" else "PRIVADA" }
         binds.text("status_estilo") { if (island.isPublic) "good" else "bad" }
         binds.text("membros") { "${island.members.size}/${island.maxMembers()} membros" }
-        binds.text("borda") { "Borda ${island.size}x${island.size}" }
+        binds.text("borda") { "Borda ${island.borderSize()}x${island.borderSize()}" }
         binds.text("gerador") { "Gerador nível ${island.getUpgradeLevel(IslandUpgrade.Generator)}" }
         binds.text("moedas") { NumberFormatter.format(Currencies.findCurrency(COINS)?.find(player.uniqueId)?.balance ?: 0.0) }
         binds.text("configuracoes") { "${IslandSetting.entries.count(island::isSettingEnabled)} de ${IslandSetting.entries.size} ligadas" }

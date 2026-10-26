@@ -23,7 +23,7 @@ class IslandRepository {
             "upgrades" to emptyMap<String, Any>(),
             "pendingRewardPhases" to emptyList<String>(),
             "currentPhaseId" to "planicie",
-            "size" to 30,
+            "size" to Island.BORDER_SIZE.first(),
             "isPublic" to false,
         )
 

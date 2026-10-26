@@ -125,7 +125,7 @@ Se a técnica do `continents` falhar, alternativa a avaliar: datapack com `noise
 
 ### 4.3 Lote
 
-- Reusa `Position` (grade em espiral, `GRID_SPACING = 1000`) e a borda pessoal de `Island` (`BORDER_SIZE` 30 → 50 → 70 → 100 por upgrade).
+- Reusa `Position` (grade em espiral, `GRID_SPACING = 1000`) e a borda pessoal de `Island` (`BORDER_SIZE` 50 → 70 → 100 → 150 por upgrade; tamanho exibido e proteção leem `borderSize()` do nível, não o `size` salvo).
 - Centro do lote na superfície do mar: o raft substitui a camada de água do topo (Y 62 com `sea_level` vanilla 63), ficando rente à água.
 - Dentro da borda, o fundo vanilla é livre para minerar e construir.
 

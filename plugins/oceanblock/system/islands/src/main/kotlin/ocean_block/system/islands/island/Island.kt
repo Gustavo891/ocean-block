@@ -22,13 +22,13 @@ data class Island(
     val upgrades: MutableMap<String, Int> = mutableMapOf(),
     var currentPhaseId: String = "planicie",
     val pendingRewardPhases: MutableList<String> = mutableListOf(),
-    var size: Int = 30,
+    var size: Int = 50,
     var isPublic: Boolean,
     var settings: MutableMap<String, Boolean>? = null,
 ) {
 
     companion object {
-        val BORDER_SIZE = listOf(30, 50, 70, 100)
+        val BORDER_SIZE = listOf(50, 70, 100, 150)
 
         const val MEMBERS_PER_LEVEL = 3
     }
@@ -49,10 +49,12 @@ data class Island(
         val bukkitCenter = center.toBukkit() ?: return null
 
         borderInstance.center = bukkitCenter
-        borderInstance.size = BORDER_SIZE[borderLevel()].toDouble()
+        borderInstance.size = borderSize().toDouble()
         borderInstance.warningDistance = -1
         return borderInstance
     }
+
+    fun borderSize(): Int = BORDER_SIZE[borderLevel()]
 
     private fun borderLevel(): Int =
         getUpgradeLevel(IslandUpgrade.Size).coerceIn(BORDER_SIZE.indices)

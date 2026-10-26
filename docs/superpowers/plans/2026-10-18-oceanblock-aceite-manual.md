@@ -21,6 +21,7 @@ Verificações que precisam de jogador no jogo; os agentes não conseguiram roda
 - [ ] Mensagens, menus e scoreboard dizem "ilha" com concordância certa ("sua ilha", "Sua ilha:").
 
 ## 4. Construção e membros
+- [ ] Ilha nova (e ilha antiga sem upgrade) tem borda 50x50; com o upgrade de Borda passa a 70x70. `/ilha` mostra `Borda 50x50`.
 - [ ] Construir para fora a partir da borda da ilha com terra, pedregulho e tábua; fora da borda é bloqueado.
 - [ ] `/ilha convidar <outro>` (ou `/ilha member`) e o outro clica `[ACEITAR]`: o outro constrói; sem membro/trust, não.
 - [ ] `/ilha sethome` fora da própria ilha é recusado; dentro funciona e sobrevive a reinício.

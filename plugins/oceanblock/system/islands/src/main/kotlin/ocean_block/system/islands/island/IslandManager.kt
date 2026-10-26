@@ -166,7 +166,7 @@ object IslandManager {
         val gz = (location.z / Position.GRID_SPACING).roundToInt()
         val island = islandsByGrid[gx to gz] ?: return null
 
-        val dist = island.size / 2.0
+        val dist = island.borderSize() / 2.0
         val centerX = island.position.originX
         val centerZ = island.position.originZ
 

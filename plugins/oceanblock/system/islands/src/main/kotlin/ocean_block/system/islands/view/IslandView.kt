@@ -85,7 +85,7 @@ class IslandView : View() {
         setLore {
             +"<gray>Dono: <white>${island.ownerName}"
             +"<gray>Membros: <white>${island.members.size}/${island.maxMembers()}"
-            +"<gray>Borda: <white>${island.size} blocos"
+            +"<gray>Borda: <white>${island.borderSize()} blocos"
             +"<gray>Gerador: <white>nível ${island.getUpgradeLevel(IslandUpgrade.Generator)}"
             +"<gray>Visitas: ${if (island.isPublic) "<green>Pública" else "<red>Privada"}"
         }
