@@ -171,6 +171,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
         commandManager.registerCommand(TexturaCommand(this))
         commandManager.registerCommand(HudCommand())
         commandManager.commandCompletions.registerCompletion("uiscreens") { uiScreenRegistry.screens.keys }
+        commandManager.commandCompletions.registerCompletion("notificacoes") { NotificationApi.sampleIds() }
 
         Bukkit.getPluginManager().registerEvents(this, this)
         Bukkit.getPluginManager().registerEvents(ChatListener(this), this)

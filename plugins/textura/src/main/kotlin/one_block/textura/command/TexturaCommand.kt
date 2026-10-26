@@ -9,6 +9,7 @@ import co.aikar.commands.annotation.Optional
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogOpenResult
+import one_block.textura.api.NotificationApi
 import io.papermc.paper.dialog.Dialog
 import io.papermc.paper.registry.data.dialog.DialogBase
 import io.papermc.paper.registry.data.dialog.body.DialogBody
@@ -66,6 +67,23 @@ class TexturaCommand(private val plugin: TexturaPlugin) : BaseCommand() {
             DialogOpenResult.MissingScreen -> sender.sendMessage("§cTela '$id' não existe em configs/ui.")
             DialogOpenResult.Failed -> sender.sendMessage("§cTela '$id' não abriu: tema inexistente ou erro ao montar. Veja o console.")
         }
+    }
+
+    @Subcommand("notificacoes send")
+    @CommandCompletion("@notificacoes @players")
+    fun sendNotification(sender: CommandSender, tipo: String, @Optional target: OnlinePlayer?) {
+        val player = target?.player ?: sender as? Player ?: run {
+            sender.sendMessage("§cUso: /textura notificacoes send <tipo> <jogador>")
+            return
+        }
+        if (!NotificationApi.sendSample(player, tipo)) {
+            sender.sendMessage("§cTipo '$tipo' não existe. Tipos: ${NotificationApi.sampleIds().joinToString().ifEmpty { "nenhum" }}")
+        }
+    }
+
+    @Subcommand("notificacoes list")
+    fun listNotifications(sender: CommandSender) {
+        sender.sendMessage("§eTipos de notificação: §f${NotificationApi.sampleIds().joinToString().ifEmpty { "nenhum" }}")
     }
 
     @Subcommand("hudtest")
