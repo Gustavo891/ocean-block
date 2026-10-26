@@ -7,13 +7,16 @@ object MemberCards {
     class Card(val face: BufferedImage?, val owner: Boolean, val online: Boolean)
 
     const val SLOTS = 6
-    const val CARD_WIDTH = 34
-    const val CARD_HEIGHT = 34
-    const val GAP = 3
-    const val FACE_Y = 4
-    const val CROWN_X = 2
-    const val CROWN_Y = 2
-    const val PLUS_Y = 12
+    const val CARD_WIDTH = 18
+    const val CARD_HEIGHT = 18
+    const val GAP = 2
+    const val FACE_X = 1
+    const val FACE_Y = 1
+    const val CROWN_X = 1
+    const val CROWN_Y = 1
+    const val DOT_X = 14
+    const val DOT_Y = 1
+    const val PLUS_Y = 9
 
     const val FILL = 0xFF46494F.toInt()
     const val BORDER = 0xFF6A6D72.toInt()
@@ -24,7 +27,8 @@ object MemberCards {
 
     private const val FACE = 8
     private const val ZOOM = 2
-    private const val PLUS_ARM = 4
+    private const val PLUS_ARM = 3
+    private const val DOT = 3
     private const val OPAQUE = 128
     private const val OPAQUE_MASK = 0xFF000000.toInt()
     private val CROWN_SHAPE = listOf("#.#.#", "#####", "#####")
@@ -58,8 +62,7 @@ object MemberCards {
             }
         }
         card.face?.let { face ->
-            val ox = left + (CARD_WIDTH - FACE * ZOOM) / 2
-            for (x in 0 until FACE * ZOOM) for (y in 0 until FACE * ZOOM) image.setRGB(ox + x, FACE_Y + y, face.getRGB(x / ZOOM, y / ZOOM))
+            for (x in 0 until FACE * ZOOM) for (y in 0 until FACE * ZOOM) image.setRGB(left + FACE_X + x, FACE_Y + y, face.getRGB(x / ZOOM, y / ZOOM))
         }
         if (card.owner) {
             CROWN_SHAPE.forEachIndexed { row, line ->
@@ -67,7 +70,7 @@ object MemberCards {
             }
         }
         val dot = if (card.online) ONLINE else OFFLINE
-        for (x in CARD_WIDTH - 5 until CARD_WIDTH - 2) for (y in 2 until 5) image.setRGB(left + x, y, dot)
+        for (x in DOT_X until DOT_X + DOT) for (y in DOT_Y until DOT_Y + DOT) image.setRGB(left + x, y, dot)
     }
 
     private fun plus(image: BufferedImage, left: Int) {

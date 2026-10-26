@@ -33,13 +33,13 @@ class MemberCardsTest : StringSpec({
 
     "cartão do dono pinta o fundo, a coroa, o ponto de online e o rosto em 2x" {
         val image = MemberCards.render(listOf(MemberCards.Card(MemberCards.face(skin(hat = false)), owner = true, online = true)))
-        val faceLeft = (MemberCards.CARD_WIDTH - 16) / 2
+        val faceLeft = MemberCards.FACE_X
 
-        image.getRGB(MemberCards.CARD_WIDTH / 2, MemberCards.CARD_HEIGHT - 3) shouldBe MemberCards.FILL
+        image.getRGB(MemberCards.CARD_WIDTH - 1, MemberCards.CARD_HEIGHT / 2) shouldBe MemberCards.BORDER
         image.getRGB(0, 0) shouldBe MemberCards.BORDER
         image.getRGB(MemberCards.CROWN_X + 1, MemberCards.CROWN_Y + 1) shouldBe MemberCards.CROWN
-        image.getRGB(MemberCards.CARD_WIDTH - 4, 3) shouldBe MemberCards.ONLINE
-        image.getRGB(faceLeft, MemberCards.FACE_Y) shouldBe FACE
+        image.getRGB(MemberCards.DOT_X, MemberCards.DOT_Y) shouldBe MemberCards.ONLINE
+        image.getRGB(faceLeft + 8, MemberCards.FACE_Y + 8) shouldBe FACE
         image.getRGB(faceLeft + 15, MemberCards.FACE_Y + 15) shouldBe FACE
     }
 
@@ -48,15 +48,16 @@ class MemberCardsTest : StringSpec({
         val left = MemberCards.CARD_WIDTH + MemberCards.GAP
 
         image.getRGB(left + MemberCards.CROWN_X + 1, MemberCards.CROWN_Y + 1) shouldNotBe MemberCards.CROWN
-        image.getRGB(left + MemberCards.CARD_WIDTH - 4, 3) shouldBe MemberCards.OFFLINE
+        image.getRGB(left + MemberCards.DOT_X, MemberCards.DOT_Y) shouldBe MemberCards.OFFLINE
     }
 
     "vaga livre deixa o fundo transparente para a borda tracejada e desenha o mais" {
         val image = MemberCards.render(listOf(null))
         val center = MemberCards.CARD_WIDTH / 2
 
-        (image.getRGB(3, MemberCards.CARD_HEIGHT - 3) ushr 24) shouldBe 0
+        (image.getRGB(2, MemberCards.CARD_HEIGHT - 3) ushr 24) shouldBe 0
         image.getRGB(center, MemberCards.PLUS_Y) shouldBe MemberCards.PLUS
-        image.getRGB(center - 4, MemberCards.PLUS_Y) shouldBe MemberCards.PLUS
+        image.getRGB(center - 3, MemberCards.PLUS_Y) shouldBe MemberCards.PLUS
+        MemberCards.CARD_HEIGHT shouldBe 18
     }
 })

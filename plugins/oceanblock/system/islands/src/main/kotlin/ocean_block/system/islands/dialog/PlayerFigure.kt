@@ -22,7 +22,7 @@ object PlayerFigure {
     private const val AMBIENT = 0.45
     private const val DIFFUSE = 0.6
     const val BUST_WIDTH = 120
-    const val BUST_HEIGHT = 144
+    const val BUST_HEIGHT = 147
     const val BUST_DETAIL = 3
     private const val BUST_UNIT = 7.25
     private const val SUPERSAMPLE = 3

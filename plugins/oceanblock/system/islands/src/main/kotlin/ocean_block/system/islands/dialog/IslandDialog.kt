@@ -30,7 +30,6 @@ object IslandDialog {
     private const val WAIT_SECONDS = 4L
     private const val COINS = "coins"
     private const val MAX_SLOTS = MemberCards.SLOTS
-    private const val NAME_CHARS = 7
 
     fun open(player: Player, island: Island, viewFrame: ViewFrame) {
         val members = listOf(island.ownerName) + memberNames(island).take(MAX_SLOTS - 1)
@@ -52,6 +51,12 @@ object IslandDialog {
 
     private fun memberNames(island: Island): List<String> = island.members.values.map { it.name }.sortedBy { it.lowercase() }
 
+    private fun cardTooltip(name: String?, index: Int): String = when {
+        name == null -> "Convidar jogador"
+        index == 0 -> "Dono: $name"
+        else -> name
+    }
+
     private fun show(player: Player, island: Island, viewFrame: ViewFrame, portraits: Portraits) {
         val result = DialogApi.openResult(player, SCREEN) { binds -> bind(binds, player, island, viewFrame, portraits) }
         if (result == DialogOpenResult.MissingScreen || result == DialogOpenResult.Failed) {
@@ -64,8 +69,7 @@ object IslandDialog {
         binds.pixels("cartoes") { portraits.cards }
         (0 until MAX_SLOTS).forEach { index ->
             val name = portraits.members.getOrNull(index)
-            binds.text("cartao$index") { name?.uppercase()?.take(NAME_CHARS) ?: "CONVITE" }
-            binds.text("cartao${index}_estilo") { if (name == null) "muted" else "body" }
+            binds.text("cartao$index") { cardTooltip(name, index) }
         }
         binds.text("titulo") { if (island.ownerUuid == player.uniqueId) "SUA ILHA" else "ILHA DE ${island.ownerName.uppercase()}" }
         binds.text("status") { if (island.isPublic) "PÚBLICA" else "PRIVADA" }

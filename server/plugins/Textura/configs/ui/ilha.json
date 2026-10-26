@@ -5,7 +5,7 @@
   "column": [
     {
       "row": [
-        { "pixels": "jogador", "w": 40, "h": 48, "detail": 3 },
+        { "pixels": "jogador", "w": 40, "h": 49, "detail": 3 },
         {
           "column": [
             {
@@ -19,27 +19,16 @@
               "box": [
                 {
                   "row": [
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "w": 34 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "w": 34 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "w": 34 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "w": 34 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "w": 34 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "w": 34 }
+                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao0}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao1}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao2}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao3}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao4}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao5}", "w": 18 }
                   ],
-                  "gap": 3
+                  "gap": 2
                 },
-                { "pixels": "cartoes", "w": 219, "h": 34, "scale": 1 },
-                {
-                  "row": [
-                    { "column": [ { "space": 22 }, { "text": "{cartao0}", "style": "{cartao0_estilo}", "align": "center", "w": "grow" } ], "w": 34 },
-                    { "column": [ { "space": 22 }, { "text": "{cartao1}", "style": "{cartao1_estilo}", "align": "center", "w": "grow" } ], "w": 34 },
-                    { "column": [ { "space": 22 }, { "text": "{cartao2}", "style": "{cartao2_estilo}", "align": "center", "w": "grow" } ], "w": 34 },
-                    { "column": [ { "space": 22 }, { "text": "{cartao3}", "style": "{cartao3_estilo}", "align": "center", "w": "grow" } ], "w": 34 },
-                    { "column": [ { "space": 22 }, { "text": "{cartao4}", "style": "{cartao4_estilo}", "align": "center", "w": "grow" } ], "w": 34 },
-                    { "column": [ { "space": 22 }, { "text": "{cartao5}", "style": "{cartao5_estilo}", "align": "center", "w": "grow" } ], "w": 34 }
-                  ],
-                  "gap": 3
-                }
+                { "pixels": "cartoes", "w": 118, "h": 18, "scale": 1 }
               ],
               "name": "Membros"
             },
@@ -54,7 +43,7 @@
               "gap": 4, "w": "grow"
             }
           ],
-          "gap": 4, "w": "grow"
+          "gap": 2, "w": "grow"
         }
       ],
       "gap": 6, "w": "grow", "cross": "start", "name": "Cabecalho"
