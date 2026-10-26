@@ -10,6 +10,7 @@ import ocean_block.system.custom_items.block.CustomBlockRegistry
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.custom_items.content.multitool.MultiToolItem
 import ocean_block.system.custom_items.content.paxel.PaxelItem
+import ocean_block.system.custom_items.content.paxel.PaxelRecipes
 import ocean_block.system.custom_items.item.CustomItemListener
 import ocean_block.system.custom_items.item.CustomItemRegistry
 import ocean_block.system.custom_items.reset.CustomBlockResetHook
@@ -73,7 +74,12 @@ object CustomItemSystem {
     private fun registerBuiltInItems() {
         CustomItemRegistry.register(MultiToolItem())
 
-        PaxelItem.all().forEach { CustomItemRegistry.register(it) }
+        val paxels = PaxelItem.all()
+        paxels.forEach { CustomItemRegistry.register(it) }
+
+        val paxelRecipes = PaxelRecipes(plugin)
+        paxelRecipes.register(paxels)
+        plugin.server.pluginManager.registerEvents(paxelRecipes, plugin)
     }
 
     private fun registerBuiltInBlocks(commandManager: PaperCommandManager) {
