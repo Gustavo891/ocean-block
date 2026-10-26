@@ -19,7 +19,7 @@ object PlayerSkins {
 
     class Skin(val image: BufferedImage, val slim: Boolean)
 
-    const val STAGE = 0xFF1F2124.toInt()
+    const val STAGE = 0xFF3B3D41.toInt()
 
     private const val MAX_CACHED = 128
     private val TIMEOUT: Duration = Duration.ofSeconds(4)

@@ -33,14 +33,14 @@ object IslandDialog {
     private const val EMPTY_ICON = "ui:vazio"
 
     fun open(player: Player, island: Island, viewFrame: ViewFrame) {
-        val members = memberNames(island)
+        val members = listOf(island.ownerName) + memberNames(island).take(MAX_SLOTS - 1)
         val bust = PlayerSkins.bust(player.playerProfile).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS)
         val faces = members.map { PlayerSkins.face(it).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS) }
         CompletableFuture.allOf(bust, *faces.toTypedArray()).whenComplete { _, error ->
             Bukkit.getScheduler().runTask(Instance, Runnable {
                 if (!player.isOnline) return@Runnable
                 if (error != null) Instance.logger.warning("[ilha] menu da ilha sem skin: ${error.message}")
-                val heads = MemberSlots.row(faces.map { it.getNow(null) }, slots(island), MAX_SLOTS)
+                val heads = MemberSlots.row(faces.map { it.getNow(null) }, MAX_SLOTS)
                 show(player, island, viewFrame, Portraits(bust.getNow(null), heads, members))
             })
         }
@@ -50,7 +50,11 @@ object IslandDialog {
 
     private fun memberNames(island: Island): List<String> = island.members.values.map { it.name }.sortedBy { it.lowercase() }
 
-    private fun slots(island: Island): Int = island.maxMembers().coerceIn(1, MAX_SLOTS)
+    private fun slotName(members: List<String>, index: Int): String = when {
+        index == 0 -> "Dono: ${members.first()}"
+        index < members.size -> members[index]
+        else -> "Convidar membro"
+    }
 
     private fun show(player: Player, island: Island, viewFrame: ViewFrame, portraits: Portraits) {
         val result = DialogApi.openResult(player, SCREEN) { binds -> bind(binds, player, island, viewFrame, portraits) }
@@ -63,15 +67,13 @@ object IslandDialog {
         portraits.bust?.let { image -> binds.pixels("jogador") { image } }
         binds.pixels("cabecas") { portraits.heads }
         (0 until MAX_SLOTS).forEach { index ->
-            binds.text("vaga$index") { if (index < slots(island)) EMPTY_ICON else "" }
-            binds.text("membro$index") { portraits.members.getOrNull(index) ?: "Vaga livre" }
+            binds.text("vaga$index") { EMPTY_ICON }
+            binds.text("membro$index") { slotName(portraits.members, index) }
         }
         binds.text("titulo") { if (island.ownerUuid == player.uniqueId) "SUA ILHA" else "ILHA DE ${island.ownerName.uppercase()}" }
-        binds.text("dono") { island.ownerName.uppercase() }
         binds.text("status") { if (island.isPublic) "PÚBLICA" else "PRIVADA" }
         binds.text("status_estilo") { if (island.isPublic) "good" else "bad" }
         binds.text("membros") { "${island.members.size}/${island.maxMembers()} MEMBROS" }
-        binds.text("membros_titulo") { "MEMBROS ${island.members.size}/${island.maxMembers()}" }
         binds.text("borda") { "BORDA ${island.borderSize()}x${island.borderSize()}" }
         binds.text("gerador") { "NÍVEL ${island.getUpgradeLevel(IslandUpgrade.Generator)}" }
         binds.text("moedas") { NumberFormatter.format(Currencies.findCurrency(COINS)?.find(player.uniqueId)?.balance ?: 0.0) }

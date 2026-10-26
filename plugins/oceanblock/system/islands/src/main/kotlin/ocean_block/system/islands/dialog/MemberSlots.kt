@@ -5,10 +5,12 @@ import java.awt.image.BufferedImage
 object MemberSlots {
 
     const val SLOT = 18
+    const val PLUS = 0xFF8E9196.toInt()
 
     private const val FACE = 8
     private const val ZOOM = 2
     private const val INSET = 1
+    private const val PLUS_ARM = 3
 
     fun face(skin: BufferedImage): BufferedImage {
         val face = BufferedImage(FACE, FACE, BufferedImage.TYPE_INT_ARGB)
@@ -21,18 +23,29 @@ object MemberSlots {
         return face
     }
 
-    fun row(faces: List<BufferedImage?>, capacity: Int, total: Int): BufferedImage {
+    fun row(faces: List<BufferedImage?>, total: Int): BufferedImage {
         val image = BufferedImage(total * SLOT, SLOT, BufferedImage.TYPE_INT_ARGB)
-        val start = (total - capacity) * SLOT / 2
-        faces.take(capacity).forEachIndexed { index, face ->
-            if (face == null) return@forEachIndexed
-            for (x in 0 until FACE * ZOOM) {
-                for (y in 0 until FACE * ZOOM) {
-                    image.setRGB(start + index * SLOT + INSET + x, INSET + y, face.getRGB(x / ZOOM, y / ZOOM))
-                }
-            }
+        (0 until total).forEach { index ->
+            val face = faces.getOrNull(index)
+            if (face == null) plus(image, index * SLOT) else head(image, index * SLOT, face)
         }
         return image
+    }
+
+    private fun head(image: BufferedImage, left: Int, face: BufferedImage) {
+        for (x in 0 until FACE * ZOOM) {
+            for (y in 0 until FACE * ZOOM) {
+                image.setRGB(left + INSET + x, INSET + y, face.getRGB(x / ZOOM, y / ZOOM))
+            }
+        }
+    }
+
+    private fun plus(image: BufferedImage, left: Int) {
+        val center = SLOT / 2
+        for (d in -PLUS_ARM..PLUS_ARM) {
+            image.setRGB(left + center + d, center, PLUS)
+            image.setRGB(left + center, center + d, PLUS)
+        }
     }
 
     private const val OPAQUE = 128

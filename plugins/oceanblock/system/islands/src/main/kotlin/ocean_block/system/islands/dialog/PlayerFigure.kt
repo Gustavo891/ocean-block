@@ -21,9 +21,9 @@ object PlayerFigure {
     private const val LIMB_INFLATE = 0.25
     private const val AMBIENT = 0.45
     private const val DIFFUSE = 0.6
-    const val BUST_WIDTH = 80
-    const val BUST_HEIGHT = 112
-    private const val BUST_UNIT = 4.8
+    const val BUST_WIDTH = 48
+    const val BUST_HEIGHT = 60
+    private const val BUST_UNIT = 2.9
     private const val SUPERSAMPLE = 3
     private const val BUST_CENTER_Y = 25.0
     private const val BUST_YAW = 32.0

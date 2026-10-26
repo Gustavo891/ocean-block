@@ -23,18 +23,25 @@ class MemberSlotsTest : StringSpec({
         face.getRGB(3, 6) shouldBe FACE
     }
 
-    "as vagas ficam centralizadas na largura total e só as ocupadas ganham cabeça" {
+    "vaga com jogador mostra a cabeça em 2x e vaga livre mostra um mais" {
         val face = MemberSlots.face(skin(hat = false))
 
-        val image = MemberSlots.row(listOf(face, null), capacity = 3, total = 6)
-        val start = (6 - 3) * MemberSlots.SLOT / 2
+        val image = MemberSlots.row(listOf(face, null), total = 2)
 
-        image.width shouldBe 6 * MemberSlots.SLOT
+        image.width shouldBe 2 * MemberSlots.SLOT
         image.height shouldBe MemberSlots.SLOT
-        image.getRGB(start + 1, 1) shouldBe FACE
-        image.getRGB(start + 16, 16) shouldBe FACE
-        (image.getRGB(start, 0) ushr 24) shouldBe 0
-        (image.getRGB(1, 1) ushr 24) shouldBe 0
-        (image.getRGB(start + MemberSlots.SLOT + 5, 5) ushr 24) shouldBe 0
+        image.getRGB(1, 1) shouldBe FACE
+        image.getRGB(16, 16) shouldBe FACE
+        (image.getRGB(0, 0) ushr 24) shouldBe 0
+        val center = MemberSlots.SLOT + MemberSlots.SLOT / 2
+        image.getRGB(center, MemberSlots.SLOT / 2) shouldBe MemberSlots.PLUS
+        image.getRGB(center - 3, MemberSlots.SLOT / 2) shouldBe MemberSlots.PLUS
+        (image.getRGB(MemberSlots.SLOT + 3, 3) ushr 24) shouldBe 0
+    }
+
+    "faltando rostos na lista as vagas restantes também ganham mais" {
+        val image = MemberSlots.row(emptyList(), total = 3)
+
+        image.getRGB(2 * MemberSlots.SLOT + MemberSlots.SLOT / 2, MemberSlots.SLOT / 2) shouldBe MemberSlots.PLUS
     }
 })
