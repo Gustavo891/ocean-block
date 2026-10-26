@@ -17,7 +17,7 @@ object RewardDialog {
     private const val PER_PAGE = 3
 
     fun registerIcons() {
-        DialogApi.registerItemIcons((PlaytimeRewards.ladder.map { it.icon } + RewardNotifier.ICON_MATERIAL).distinct())
+        DialogApi.registerItemIcons((PlaytimeRewards.ladder.map { RewardRows.iconTexture(it.icon) } + RewardNotifier.ICON_MATERIAL).distinct())
     }
 
     fun open(player: Player): Boolean {

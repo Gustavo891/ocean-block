@@ -2,6 +2,7 @@ package ocean_block.system.playtime_rewards.dialog
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.maps.shouldContainAll
+import io.kotest.matchers.shouldBe
 import ocean_block.system.playtime_rewards.model.Milestone
 
 private val hour = Milestone("1h", 60, coins = 5000, pearls = 0, xp = 200)
@@ -10,7 +11,7 @@ class RewardRowsTest : StringSpec({
 
     "marco liberado tem botão ativo e barra cheia" {
         RewardRows.row(hour, 4000, emptySet()) { it } shouldContainAll mapOf(
-            "icone" to "item:clock",
+            "icone" to "item:clock_00",
             "nome" to "1 h",
             "premios" to "5.000 Coins · 200 XP",
             "situacao" to "Liberado!",
@@ -18,6 +19,12 @@ class RewardRowsTest : StringSpec({
             "barra" to "100",
             "bloqueado" to "false",
         )
+    }
+
+    "ícone de textura animada usa o primeiro quadro e os outros ficam iguais" {
+        RewardRows.iconTexture("clock") shouldBe "clock_00"
+        RewardRows.iconTexture("compass") shouldBe "compass_00"
+        RewardRows.iconTexture("diamond") shouldBe "diamond"
     }
 
     "marco bloqueado mostra o que falta e trava o botão" {

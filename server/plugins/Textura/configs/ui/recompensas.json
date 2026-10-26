@@ -6,7 +6,7 @@
     {
       "row": [
         { "space": 4 },
-        { "text": "Recompensas por tempo", "style": "heading", "align": "left", "icon": "item:clock", "w": "grow" },
+        { "text": "Recompensas por tempo", "style": "heading", "align": "left", "icon": "item:clock_00", "w": "grow" },
         { "text": "{tempo}", "style": "accent", "align": "right", "w": "fit" },
         { "space": 4 }
       ],

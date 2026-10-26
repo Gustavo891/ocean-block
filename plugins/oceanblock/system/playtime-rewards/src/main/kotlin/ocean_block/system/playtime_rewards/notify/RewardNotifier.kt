@@ -23,7 +23,7 @@ import java.util.UUID
 
 object RewardNotifier : Listener {
 
-    const val ICON_MATERIAL = "clock"
+    const val ICON_MATERIAL = "clock_00"
 
     private const val REGION = "avisos"
     private const val DURATION_TICKS = 100
