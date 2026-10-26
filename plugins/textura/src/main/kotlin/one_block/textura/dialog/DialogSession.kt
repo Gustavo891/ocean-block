@@ -55,9 +55,12 @@ class DialogSession(
 
     fun carried(): Map<String, String> = values.toMap()
 
-    fun press(key: String, player: Player): UiOutcome {
+    fun press(key: String, player: Player): UiOutcome = press(key, player, emptyMap())
+
+    fun press(key: String, player: Player, inputs: Map<String, String>): UiOutcome {
+        inputs.forEach { (name, value) -> set(name, value) }
         val handler = binds.buttons[key] ?: return UiOutcome.Refresh
-        val click = DialogClick(player)
+        val click = DialogClick(player, inputs)
         handler.run(click)
         return click.outcome
     }

@@ -192,6 +192,10 @@ sealed interface DefStep {
 
 data class DefClick(val steps: List<DefStep>)
 
+data class DefInput(val key: String, val label: String, val maxLength: Int, val width: Int)
+
+data class DefSubmit(val label: String, val bind: String)
+
 data class ScreenDefinition(
     val id: String,
     val theme: String,
@@ -206,6 +210,8 @@ data class ScreenDefinition(
     val pause: Boolean = false,
     val defaults: Map<String, String> = emptyMap(),
     val choices: Map<String, List<String>> = emptyMap(),
+    val input: DefInput? = null,
+    val submit: DefSubmit? = null,
 ) {
     fun page(id: String?): DefContainer = id?.let { pages[it] } ?: root
 

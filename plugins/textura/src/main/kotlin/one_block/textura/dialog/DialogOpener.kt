@@ -2,11 +2,13 @@ package one_block.textura.dialog
 
 import io.papermc.paper.connection.PlayerGameConnection
 import io.papermc.paper.dialog.Dialog
+import io.papermc.paper.dialog.DialogResponseView
 import io.papermc.paper.event.player.PlayerCustomClickEvent
 import io.papermc.paper.registry.data.dialog.ActionButton
 import io.papermc.paper.registry.data.dialog.DialogBase
 import io.papermc.paper.registry.data.dialog.action.DialogAction
 import io.papermc.paper.registry.data.dialog.body.DialogBody
+import io.papermc.paper.registry.data.dialog.input.DialogInput
 import io.papermc.paper.registry.data.dialog.type.DialogType
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.api.BinaryTagHolder
@@ -50,6 +52,7 @@ class DialogOpener(
     private val counter = AtomicLong()
     private val current = ConcurrentHashMap<UUID, RenderState>()
     private val warned = ConcurrentHashMap.newKeySet<String>()
+    private val inputs = ConcurrentHashMap<UUID, Map<String, String>>()
 
     @Volatile
     private var warnedKit: UiKit? = null
@@ -124,7 +127,11 @@ class DialogOpener(
             val renderer = UiRenderer(snapshot, { action -> actions += action; click("$token:${actions.lastIndex}") }, warn)
             val lines = renderer.render(UiLayout(snapshot).layout(screen))
             val body = DialogBody.plainMessage(Component.join(JoinConfiguration.newlines(), lines), UiRenderer.dialogWidth(screen.width))
-            dialog(definition, compiler.title(definition, session), body)
+            val submit = definition.submit?.let { submit ->
+                actions += UiAction { clicker -> session.press(submit.bind, clicker, inputs.getOrDefault(clicker.uniqueId, emptyMap())) }
+                "$token:${actions.lastIndex}"
+            }
+            dialog(definition, compiler.title(definition, session), body, session, submit)
         }.getOrElse {
             plugin.logger.log(Level.SEVERE, "[ui:${definition.id}] Falha ao montar a tela", it)
             return DialogOpenResult.Failed
@@ -139,10 +146,23 @@ class DialogOpener(
     fun onCustomClick(event: PlayerCustomClickEvent) {
         if (event.identifier != CLICK_KEY) return
         val player = (event.commonConnection as? PlayerGameConnection)?.player ?: return
-        val payload = event.tag?.string().orEmpty()
+        val response = event.dialogResponseView
+        val submitted = response?.let { view -> runCatching { view.getText(SUBMIT_FIELD) }.getOrNull() }
+        val typed = submitted?.let { typedInputs(player, response) }.orEmpty()
+        val payload = submitted ?: event.tag?.string().orEmpty()
 
         Bukkit.getScheduler().runTask(plugin, Runnable {
-            if (player.isOnline) handle(player, payload)
+            if (!player.isOnline) return@Runnable
+            if (submitted != null) {
+                inputs[player.uniqueId] = typed
+                try {
+                    handleAction(player, payload)
+                } finally {
+                    inputs.remove(player.uniqueId)
+                }
+            } else {
+                handle(player, payload)
+            }
         })
     }
 
@@ -150,16 +170,24 @@ class DialogOpener(
         when {
             CLOSE in payload -> close(player)
             APPLY in payload -> applyPack(player)
-            else -> {
-                val match = ACTION.find(payload) ?: return
-                val token = match.groupValues[1].toLongOrNull() ?: return
-                val index = match.groupValues[2].toIntOrNull() ?: return
-                val state = current[player.uniqueId] ?: return
-                val action = state.actions(token)?.getOrNull(index) ?: return
-                if (!current.remove(player.uniqueId, state)) return
-                run(player, state.session, action)
-            }
+            else -> handleAction(player, payload)
         }
+    }
+
+    private fun typedInputs(player: Player, response: DialogResponseView): Map<String, String> {
+        val input = current[player.uniqueId]?.session?.screenId?.let { screens.screens[it] }?.input ?: return emptyMap()
+        val text = runCatching { response.getText(input.key) }.getOrNull() ?: return emptyMap()
+        return mapOf(input.key to text)
+    }
+
+    private fun handleAction(player: Player, payload: String) {
+        val match = ACTION.find(payload) ?: return
+        val token = match.groupValues[1].toLongOrNull() ?: return
+        val index = match.groupValues[2].toIntOrNull() ?: return
+        val state = current[player.uniqueId] ?: return
+        val action = state.actions(token)?.getOrNull(index) ?: return
+        if (!current.remove(player.uniqueId, state)) return
+        run(player, state.session, action)
     }
 
     private fun run(player: Player, session: DialogSession, action: UiAction) {
@@ -199,19 +227,34 @@ class DialogOpener(
 
     private fun click(payload: String): ClickEvent<*> = ClickEvent.custom(CLICK_KEY, BinaryTagHolder.binaryTagHolder("\"$payload\""))
 
-    private fun dialog(definition: ScreenDefinition, title: Component?, body: DialogBody): Dialog = Dialog.create { factory ->
+    private fun dialog(definition: ScreenDefinition, title: Component?, body: DialogBody, session: DialogSession, submit: String?): Dialog = Dialog.create { factory ->
+        val fields = listOfNotNull(definition.input?.let { input ->
+            DialogInput.text(input.key, TexturaTags.miniMessage.deserialize(input.label))
+                .labelVisible(input.label.isNotEmpty())
+                .width(input.width)
+                .maxLength(input.maxLength)
+                .initial(session.value(input.key).orEmpty().take(input.maxLength))
+                .build()
+        })
         val base = DialogBase.builder(title ?: Component.empty())
             .canCloseWithEscape(definition.escape || definition.close == null)
             .pause(definition.pause)
             .afterAction(DialogBase.DialogAfterAction.NONE)
             .body(listOf(body))
+            .inputs(fields)
             .build()
         val label = definition.close?.let(TexturaTags.miniMessage::deserialize) ?: Component.translatable(DEFAULT_BUTTON)
         val close = ActionButton.builder(label)
             .width(BUTTON_WIDTH)
             .action(DialogAction.staticAction(click(CLOSE)))
             .build()
-        factory.empty().base(base).type(DialogType.notice(close))
+        val send = definition.submit?.takeIf { submit != null }?.let {
+            ActionButton.builder(TexturaTags.miniMessage.deserialize(it.label))
+                .width(BUTTON_WIDTH)
+                .action(DialogAction.customClick(CLICK_KEY, BinaryTagHolder.binaryTagHolder("{$SUBMIT_FIELD:\"$submit\"}")))
+                .build()
+        }
+        factory.empty().base(base).type(if (send != null) DialogType.confirmation(send, close) else DialogType.notice(close))
     }
 
     private fun fallback(): Dialog = Dialog.create { factory ->
@@ -231,6 +274,7 @@ class DialogOpener(
         const val CLOSE = "close"
         const val DEFAULT_BUTTON = "gui.ok"
         const val APPLY = "apply"
+        const val SUBMIT_FIELD = "textura_enviar"
         val CLICK_KEY: Key = Key.key("textura", "ui")
         val ACTION = Regex("""(\d+):(\d+)""")
     }

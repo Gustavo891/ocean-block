@@ -70,6 +70,10 @@ object IslandDialog {
         (0 until MAX_SLOTS).forEach { index ->
             val name = portraits.members.getOrNull(index)
             binds.text("cartao$index") { cardTooltip(name, index) }
+            binds.button("clicar_cartao$index") { click ->
+                if (name == null && island.ownerUuid == player.uniqueId) InviteDialog.open(click, island, viewFrame)
+                else openView(click, viewFrame, MembersView::class.java, island)
+            }
         }
         binds.text("titulo") { if (island.ownerUuid == player.uniqueId) "SUA ILHA" else "ILHA DE ${island.ownerName.uppercase()}" }
         binds.text("status") { if (island.isPublic) "PÚBLICA" else "PRIVADA" }
@@ -86,7 +90,6 @@ object IslandDialog {
             click.close()
             later(click) { island.teleportTo(it) }
         }
-        binds.button("abrir_membros") { click -> openView(click, viewFrame, MembersView::class.java, island) }
         binds.button("abrir_melhorias") { click -> openView(click, viewFrame, UpgradeView::class.java, island) }
         binds.button("abrir_configuracoes") { click -> openView(click, viewFrame, SettingsView::class.java, island) }
         binds.button("abrir_visitas") { click -> openView(click, viewFrame, VisitsView::class.java, island) }

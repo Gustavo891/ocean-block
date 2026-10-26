@@ -3,7 +3,12 @@ package one_block.textura.api
 import one_block.textura.dialog.node.UiOutcome
 import org.bukkit.entity.Player
 
-class DialogClick internal constructor(val player: Player) {
+class DialogClick internal constructor(val player: Player, private val inputs: Map<String, String>) {
+
+    internal constructor(player: Player) : this(player, emptyMap())
+
+    fun input(key: String): String? = inputs[key]
+
 
     internal var outcome: UiOutcome = UiOutcome.Refresh
         private set

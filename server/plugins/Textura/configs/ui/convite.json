@@ -1,0 +1,27 @@
+{
+  "title": "Convidar jogador",
+  "close": "Fechar",
+  "theme": "abismo",
+  "input": { "key": "jogador", "label": "Nome do jogador", "max": 16, "w": 200 },
+  "submit": { "label": "Convidar", "bind": "convidar" },
+  "column": [
+    {
+      "row": [
+        { "text": "CONVIDAR JOGADOR", "style": "titulo", "w": "grow" },
+        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "bind": "voltar", "tooltip": "Voltar", "w": 18 }
+      ],
+      "w": "grow", "cross": "center"
+    },
+    {
+      "column": [
+        { "text": "DIGITE O NOME DE UM JOGADOR ONLINE", "style": "muted", "w": "grow" },
+        { "text": "E CLIQUE EM CONVIDAR. O CONVITE VALE 60 S.", "style": "muted", "w": "grow" },
+        { "image": "ui:abismo/linha", "w": "grow" },
+        { "row": [ { "text": "MEMBROS", "style": "muted", "w": "grow" }, { "text": "{vagas}", "style": "body" } ], "w": "grow" },
+        { "text": "{aviso}", "style": "{aviso_estilo}", "w": "grow" }
+      ],
+      "gap": 4, "pad": 6, "surface": "painel", "w": "grow"
+    }
+  ],
+  "gap": 5, "pad": 7, "surface": "moldura", "w": 240
+}

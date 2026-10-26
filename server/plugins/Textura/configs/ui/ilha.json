@@ -13,18 +13,18 @@
                 { "text": "{titulo}", "style": "titulo", "w": "grow" },
                 { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "bind": "fechar", "w": 18 }
               ],
-              "w": "grow", "cross": "start"
+              "w": "grow", "cross": "center"
             },
             {
               "box": [
                 {
                   "row": [
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao0}", "w": 18 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao1}", "w": 18 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao2}", "w": 18 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao3}", "w": 18 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao4}", "w": 18 },
-                    { "button": "", "look": "cartao", "bind": "abrir_membros", "tooltip": "{cartao5}", "w": 18 }
+                    { "button": "", "look": "cartao", "bind": "clicar_cartao0", "tooltip": "{cartao0}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "clicar_cartao1", "tooltip": "{cartao1}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "clicar_cartao2", "tooltip": "{cartao2}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "clicar_cartao3", "tooltip": "{cartao3}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "clicar_cartao4", "tooltip": "{cartao4}", "w": 18 },
+                    { "button": "", "look": "cartao", "bind": "clicar_cartao5", "tooltip": "{cartao5}", "w": 18 }
                   ],
                   "gap": 2
                 },

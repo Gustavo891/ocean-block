@@ -64,6 +64,8 @@ class ScreenParser(private val logger: Logger) {
             else -> obj.string("close") ?: DEFAULT_CLOSE
         }
         val containers = (listOf(root) + pages.values).distinct()
+        val input = obj.get("input")?.takeIf { it.isJsonObject }?.asJsonObject?.let { input(id, it) }
+        val submit = obj.get("submit")?.takeIf { it.isJsonObject }?.asJsonObject?.let { submit(id, it) }
 
         return ScreenDefinition(
             id = id,
@@ -71,7 +73,7 @@ class ScreenParser(private val logger: Logger) {
             title = title,
             close = close,
             root = root,
-            keys = keysOf(containers, title),
+            keys = keysOf(containers, title) + listOfNotNull(input?.key, submit?.bind),
             controlBinds = controlBindsOf(id, containers),
             pages = pages,
             firstPage = firstPage,
@@ -79,7 +81,27 @@ class ScreenParser(private val logger: Logger) {
             pause = obj.get("pause")?.let { runCatching { it.asBoolean }.getOrNull() } ?: false,
             defaults = defaultsOf(containers),
             choices = choicesOf(containers),
+            input = input,
+            submit = submit,
         )
+    }
+
+    private fun input(id: String, obj: JsonObject): DefInput? {
+        val key = obj.string("key") ?: run {
+            logger.warning("[ui:$id] input sem key, ignorado")
+            return null
+        }
+        val max = obj.get("max")?.let { runCatching { it.asInt }.getOrNull() } ?: DEFAULT_INPUT_MAX
+        val width = obj.get("w")?.let { runCatching { it.asInt }.getOrNull() } ?: DEFAULT_INPUT_WIDTH
+        return DefInput(key, obj.string("label").orEmpty(), max.coerceIn(1, MAX_INPUT_LENGTH), width.coerceIn(1, MAX_INPUT_WIDTH))
+    }
+
+    private fun submit(id: String, obj: JsonObject): DefSubmit? {
+        val bind = obj.string("bind") ?: run {
+            logger.warning("[ui:$id] submit sem bind, ignorado")
+            return null
+        }
+        return DefSubmit(obj.string("label") ?: DEFAULT_SUBMIT, bind)
     }
 
     private fun controls(containers: List<DefContainer>): List<DefNode> {
@@ -626,6 +648,11 @@ class ScreenParser(private val logger: Logger) {
 
     companion object {
         const val DEFAULT_CLOSE = "Fechar"
+        const val DEFAULT_SUBMIT = "Enviar"
+        private const val DEFAULT_INPUT_MAX = 32
+        private const val DEFAULT_INPUT_WIDTH = 200
+        private const val MAX_INPUT_LENGTH = 256
+        private const val MAX_INPUT_WIDTH = 1024
         const val DEFAULT_ICON_SIZE = 8
         const val MAX_ICON_SIZE = 256
         const val MAX_SLOT_COLUMNS = 21
@@ -645,8 +672,8 @@ class ScreenParser(private val logger: Logger) {
         )
         private val LEAVES = listOf("text", "button", "nav", "dropdown", "slider", "progress", "segmented", "switch", "chip", "pair", "slots", "image", "pixels", "icon", "space")
         private val COMMON = setOf("name", REPEAT)
-        private val ROOT = setOf("theme", "title", "close")
-        private val WRAPPER = setOf("title", "theme", "document", "pages", "hideFooter", "canCloseWithEscape", "pause", "close")
+        private val ROOT = setOf("theme", "title", "close", "input", "submit")
+        private val WRAPPER = setOf("title", "theme", "document", "pages", "hideFooter", "canCloseWithEscape", "pause", "close", "input", "submit")
         private val IGNORED = setOf(
             "nudge", "drawButtons", "contentWidth", "showWarning", "look", "compact", "accent", "face", "frame",
             "style", "buttons", "inputs", "afterAction", "command", "commandPermission", "perPage", "scale", "columns",

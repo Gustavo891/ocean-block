@@ -171,8 +171,14 @@ existe ou se falhou). A API pública só usa tipos Java/Bukkit/Adventure/Textura
 próprio Kotlin, e um `kotlin.*` na assinatura quebra com `LinkageError`.
 
 O arquivo JSON é o nó raiz, que precisa ser um container e ter `theme`. Opcionais
-no raiz: `title` (MiniMessage) e `close` (rótulo do botão de fechar; `null`
-remove o botão).
+no raiz: `title` (MiniMessage), `close` (rótulo do botão de fechar; `null`
+remove o botão), `input` (`{"key", "label", "max" 1..256 (32), "w" 1..1024 (200)}`:
+um campo de texto vanilla abaixo do corpo; não dá para estilizar nem pôr dentro da
+moldura, o cliente desenha) e `submit` (`{"label", "bind"}`: um botão vanilla no
+rodapé ao lado do de fechar; o clique chama `binds.button(bind)` e `click.input(key)`
+devolve o texto digitado, que também vai para `binds.value(key, get, set)` e volta
+como valor inicial do campo no próximo redesenho). Cliques dentro do corpo não
+levam o texto: só o `submit` lê o campo.
 
 Containers têm uma chave `column`, `row`, `box` ou `grid` com a lista de filhos:
 

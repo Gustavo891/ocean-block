@@ -22,8 +22,11 @@ object IslandMembership {
         player.name,
     )
 
+    fun checkInvite(owner: Player, island: Island, target: Player): InviteCheck =
+        MemberRules.checkInvite(island, owner.uniqueId, target.uniqueId, target.name)
+
     fun invite(owner: Player, island: Island, target: Player): Boolean {
-        val check = MemberRules.checkInvite(island, owner.uniqueId, target.uniqueId, target.name)
+        val check = checkInvite(owner, island, target)
         if (check != InviteCheck.Allowed) return deny(owner, check.message)
 
         invites.add(target.uniqueId, island.uuid, island.ownerName, System.currentTimeMillis())
