@@ -200,7 +200,7 @@ class VanillaAssets(private val folder: File, private val version: String, priva
         val LOCALE = Regex("[a-z]{2,3}_[a-z]{2,3}")
         val NAME = Regex("[a-z0-9_]+")
         val TINTED_POTIONS = setOf("potion", "splash_potion", "lingering_potion")
-        private const val BLOCK_ICON_SIZE = 64
+        private const val BLOCK_ICON_SIZE = 48
         private val TINTED_TOPS = mapOf("grass_block" to 0x7CBD6B)
         const val WATER_COLOR = 0x385DC6
     }

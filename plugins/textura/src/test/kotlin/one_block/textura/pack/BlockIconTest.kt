@@ -24,13 +24,21 @@ class BlockIconTest : StringSpec({
     }
 
     "em alta resolucao o cubo mantem as mesmas faces nas mesmas proporcoes" {
-        val icon = BlockIcon.render(BlockFaces(solid(0xFFFF0000.toInt()), solid(0xFF00FF00.toInt()), solid(0xFF0000FF.toInt())), 64)
+        val icon = BlockIcon.render(BlockFaces(solid(0xFFFF0000.toInt()), solid(0xFF00FF00.toInt()), solid(0xFF0000FF.toInt())), 48)
 
-        icon.width shouldBe 64
-        icon.getRGB(32, 12) shouldBe 0xFFFF0000.toInt()
-        icon.getRGB(12, 40) shouldBe 0xFF00CC00.toInt()
-        icon.getRGB(48, 40) shouldBe 0xFF000099.toInt()
+        icon.width shouldBe 48
+        icon.getRGB(24, 9) shouldBe 0xFFFF0000.toInt()
+        icon.getRGB(9, 30) shouldBe 0xFF00CC00.toInt()
+        icon.getRGB(36, 30) shouldBe 0xFF000099.toInt()
         alpha(icon.getRGB(0, 0)) shouldBe 0
+    }
+
+    "o cubo tem o tamanho do inventario vanilla e deixa margem dos lados" {
+        val icon = BlockIcon.render(BlockFaces(solid(-1), solid(-1), solid(-1)), 48)
+        val opaque = (0 until 48).filter { x -> (0 until 48).any { y -> alpha(icon.getRGB(x, y)) != 0 } }
+
+        opaque.first() shouldBe 3
+        opaque.last() shouldBe 44
     }
 
     "os cantos fora do cubo ficam transparentes" {

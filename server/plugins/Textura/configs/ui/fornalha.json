@@ -10,7 +10,7 @@
             {
               "row": [
                 { "space": 4 },
-                { "text": "Fornalha Elétrica", "style": "heading", "align": "left", "icon": "ui:fornalha_item", "w": "grow" },
+                { "text": "Fornalha Elétrica", "style": "heading", "align": "left", "w": "grow" },
                 { "text": "{estado}", "style": "{estado_estilo}", "align": "right", "w": "fit" },
                 { "space": 4 }
               ],
@@ -52,7 +52,7 @@
                           ],
                           "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
                         },
-                        { "button": "", "icon": "ui:cancelar", "bind": "cancelar", "look": "light", "disabled": "{vazio}", "tooltip": "Cancelar\n\nDevolve o que ainda não derreteu." }
+                        { "button": "", "icon": "ui:cancelar", "bind": "cancelar", "look": "light", "w": 16, "disabled": "{vazio}", "tooltip": "Cancelar\n\nDevolve o que ainda não derreteu." }
                       ],
                       "w": "grow", "h": "fit", "gap": 4, "pad": 2, "align": "start", "cross": "center", "surface": "well", "name": "Vaga"
                     }
@@ -98,12 +98,12 @@
                 {
                   "grid": [
                     {
-                      "repeat": "derretiveis", "perPage": 24,
+                      "repeat": "inventario", "perPage": 36,
                       "slots": [1, 1], "bind": "colocar",
                       "items": [{ "at": 0, "item": "{item}", "count": "{qtd}", "name": "{nome}", "lore": ["{dica}"] }]
                     }
                   ],
-                  "columns": 6, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Derretiveis"
+                  "columns": 6, "w": "fit", "h": "fit", "gap": 0, "pad": 0, "align": "start", "cross": "start", "name": "Grade"
                 },
                 { "text": "{inv_info}", "style": "muted", "align": "left", "w": "fit" }
               ],

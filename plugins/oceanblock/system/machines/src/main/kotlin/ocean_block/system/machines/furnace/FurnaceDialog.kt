@@ -20,7 +20,6 @@ object FurnaceDialog {
     const val REFRESH_TICKS = 10L
     private const val SCREEN = "fornalha"
     private const val ENERGY_PER_SECOND = 20
-    private const val INVENTORY_CELLS = 24
     private val INVENTORY_SLOTS = (9..35) + (0..8)
     private val EMPTY_CELL = mapOf("item" to "", "qtd" to "1", "nome" to "", "dica" to "")
 
@@ -68,8 +67,8 @@ object FurnaceDialog {
         binds.listPage("fila") { 0 }
         binds.text("prontos") { state(placed).slots.sumOf { it.outputCount }.toString() }
         binds.text("sem_saida") { state(placed).slots.none { it.outputCount > 0 }.toString() }
-        binds.list("derretiveis") { padded(smeltable(player).take(INVENTORY_CELLS).map { inventoryEntry(player.inventory.getItem(it)) }) }
-        binds.listPage("derretiveis") { 0 }
+        binds.list("inventario") { padded(smeltable(player).map { inventoryEntry(player.inventory.getItem(it)) }) }
+        binds.listPage("inventario") { 0 }
         binds.text("inv_info") { if (smeltable(player).isEmpty()) "Nada para derreter." else "" }
         binds.text("sem_derretiveis") { smeltable(player).isEmpty().toString() }
         binds.listButton("cancelar") { click, index -> take(click.player, placed, index, output = false) }
@@ -81,10 +80,10 @@ object FurnaceDialog {
         binds.button("colocar_tudo") { click -> smeltable(click.player).forEach { insert(click.player, placed, it, quiet = true) } }
     }
 
-    private fun smeltable(player: Player): List<Int> = INVENTORY_SLOTS.filter { slot ->
-        val stack = player.inventory.getItem(slot)
+    private fun smeltable(player: Player): List<Int> = INVENTORY_SLOTS.filter { isSmeltable(player.inventory.getItem(it)) }
+
+    private fun isSmeltable(stack: ItemStack?): Boolean =
         stack != null && MachineItems.isVanilla(stack) && stack.type.name in FurnaceRecipes.results
-    }
 
     private fun take(player: Player, placed: PlacedBlock, index: Int, output: Boolean) {
         if (!MachineItems.canUse(player, placed)) return DialogApi.close(player)
@@ -98,7 +97,11 @@ object FurnaceDialog {
 
     private fun insert(player: Player, placed: PlacedBlock, slot: Int, quiet: Boolean = false) {
         if (!MachineItems.canUse(player, placed)) return DialogApi.close(player)
-        val stack = player.inventory.getItem(slot)?.takeIf(MachineItems::isVanilla) ?: return
+        val stack = player.inventory.getItem(slot) ?: return
+        if (!isSmeltable(stack)) {
+            if (!quiet) player.playSound(player, Sound.BLOCK_NOTE_BLOCK_BASS, 0.7f, 1f)
+            return
+        }
         val taken = FurnaceBlock.insert(placed, stack.type.name, stack.amount)
         if (taken <= 0) {
             if (!quiet) player.playSound(player, Sound.BLOCK_NOTE_BLOCK_BASS, 0.7f, 1f)
@@ -110,7 +113,7 @@ object FurnaceDialog {
     }
 
     private fun padded(entries: List<Map<String, String>>): List<Map<String, String>> =
-        entries + List((INVENTORY_CELLS - entries.size).coerceAtLeast(0)) { EMPTY_CELL }
+        entries.take(INVENTORY_SLOTS.size) + List((INVENTORY_SLOTS.size - entries.size).coerceAtLeast(0)) { EMPTY_CELL }
 
     private fun inventoryEntry(stack: ItemStack?): Map<String, String> {
         val material = stack?.type?.name ?: return EMPTY_CELL

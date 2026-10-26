@@ -84,4 +84,4 @@ maquina:
     fornalha_item: ui:stone/icons/fornalha_item
     bloqueado: ui:maquina/bloqueado
     seta: ui:maquina/seta
-    cancelar: ui:maquina/bloqueado
+    cancelar: ui:maquina/cancelar
