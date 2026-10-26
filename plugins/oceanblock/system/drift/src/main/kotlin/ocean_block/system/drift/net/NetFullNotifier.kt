@@ -5,6 +5,7 @@ import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.islands.island.IslandManager
 import one_block.textura.api.NotificationApi
 import one_block.textura.notify.NotificationLine
+import org.bukkit.entity.Player
 
 internal object NetFullNotifier {
 
@@ -21,6 +22,10 @@ internal object NetFullNotifier {
         placed.notifiedFull = full
         PlacedBlockManager.markDirty(placed)
         if (full) announce(placed)
+    }
+
+    fun preview(player: Player) {
+        NotificationApi.push(player, REGION, NotificationLine(TEXT, ICON, DURATION_TICKS, "rede-cheia:exemplo"))
     }
 
     private fun announce(placed: PlacedBlock) {

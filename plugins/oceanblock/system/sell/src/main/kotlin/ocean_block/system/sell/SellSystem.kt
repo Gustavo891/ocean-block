@@ -10,12 +10,16 @@ import org.bukkit.plugin.java.JavaPlugin
 
 object SellSystem {
 
+    private const val SAMPLE_TOTAL = 1500.0
+    private const val SAMPLE_AMOUNT = 32
+
     lateinit var plugin: JavaPlugin
 
     fun init(plugin: JavaPlugin, viewFrame: ViewFrame) {
         this.plugin = plugin
         SellManager.load()
         NotificationApi.registerItemIcons(listOf(SaleNotifier.ICON_MATERIAL))
+        NotificationApi.registerSample("venda") { SaleNotifier.notify(it, SAMPLE_TOTAL, SAMPLE_AMOUNT) }
         viewFrame.with(SellView())
         viewFrame.with(SellItemsView())
     }

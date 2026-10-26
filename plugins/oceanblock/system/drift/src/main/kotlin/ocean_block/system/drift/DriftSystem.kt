@@ -13,15 +13,18 @@ import ocean_block.system.drift.hook.GanchoItem
 import ocean_block.system.drift.loot.ConfigDebrisPool
 import ocean_block.system.drift.net.NetBlock
 import ocean_block.system.drift.net.NetDisplay
+import ocean_block.system.drift.net.NetFullNotifier
 import ocean_block.system.drift.net.NetListener
 import ocean_block.system.drift.net.view.NetStorageView
 import ocean_block.system.drift.recipe.DriftRecipes
 import one_block.textura.api.NotificationApi
+import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
 
 object DriftSystem {
 
     private const val DISPLAY_CLEANUP_TICKS = 100L
+    private const val SAMPLE_AMOUNT = 3
 
     var config: DriftConfig? = null
         private set
@@ -50,6 +53,8 @@ object DriftSystem {
         val materials = config?.types.orEmpty().flatMap { type -> type.drops.map { it.material } }.toSet()
         val icons = materials.map { CollectNotifier.iconOf(it).removePrefix("item:") }
         NotificationApi.registerItemIcons(icons.distinct())
+        NotificationApi.registerSample("coleta") { CollectNotifier.notify(it, materials.firstOrNull() ?: Material.KELP, SAMPLE_AMOUNT) }
+        NotificationApi.registerSample("rede_cheia") { NetFullNotifier.preview(it) }
     }
 
     private fun registerNet(plugin: JavaPlugin, viewFrame: ViewFrame) {

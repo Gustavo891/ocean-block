@@ -20,6 +20,8 @@ import org.bukkit.plugin.java.JavaPlugin
 object LevelSystem {
 
     private const val OLD_RESEARCH_COLLECTION = "island_research"
+    private const val SAMPLE_COINS = 700.0
+    private const val SAMPLE_XP = 100
 
     fun init(plugin: JavaPlugin, viewFrame: ViewFrame, paperCommandManager: PaperCommandManager) {
         PlayerLevels.config = LevelFile.load(plugin)
@@ -27,6 +29,8 @@ object LevelSystem {
         RecipeLocks.install { PlayerLevels.levelOf(it) }
         AccountLevel.source = { LevelCurve.progress(LevelManager.xp(it.uniqueId)) }
         NotificationApi.registerItemIcons(listOf(LevelNotifier.ICON_MATERIAL))
+        NotificationApi.registerSample("nivel") { LevelNotifier.levelUp(it, PlayerLevels.levelOf(it) + 1, SAMPLE_COINS, emptyList()) }
+        NotificationApi.registerSample("xp") { LevelNotifier.xp(it, SAMPLE_XP) }
         viewFrame.with(LevelMenu())
         plugin.server.pluginManager.registerEvents(XpListener(), plugin)
         plugin.server.pluginManager.registerEvents(LevelNotifier, plugin)
