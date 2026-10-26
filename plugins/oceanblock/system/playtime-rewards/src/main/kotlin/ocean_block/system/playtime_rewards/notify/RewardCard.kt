@@ -14,8 +14,8 @@ object RewardCard {
         val title = "${RewardText.duration(minutes.toLong())} online!"
         return listOf(
             "<shadow:#00000000><white><glyph:toast_tempo></white><shift:-$room>" +
-                "<dark_purple>$title</dark_purple><shift:${room - LineText.width(title)}></shadow>",
-            "<shadow:#00000000><shift:$TEXT_X><black>$HINT</black><shift:${room - LineText.width(HINT)}></shadow>",
+                "<yellow>$title</yellow><shift:${room - LineText.width(title)}></shadow>",
+            "<shadow:#00000000><shift:$TEXT_X><white>$HINT</white><shift:${room - LineText.width(HINT)}></shadow>",
         )
     }
 }

@@ -13,9 +13,9 @@ object LevelUpCard {
         val room = WIDTH - TEXT_X
         val title = "Nível $level!"
         val first = "<shadow:#00000000><white><glyph:toast_nivel></white><shift:-$room>" +
-            "<dark_purple>$title</dark_purple><shift:${room - RewardText.width(title)}></shadow>"
+            "<yellow>$title</yellow><shift:${room - RewardText.width(title)}></shadow>"
         if (coins <= 0) return listOf(first)
         val reward = "+${NumberFormat.getIntegerInstance(LOCALE).format(coins.toLong())} Coins"
-        return listOf(first, "<shadow:#00000000><shift:$TEXT_X><black>$reward</black><shift:${room - RewardText.width(reward)}></shadow>")
+        return listOf(first, "<shadow:#00000000><shift:$TEXT_X><white>$reward</white><shift:${room - RewardText.width(reward)}></shadow>")
     }
 }

@@ -18,14 +18,14 @@ class LevelUpScreenTest : StringSpec({
         RewardText.width("a b") shouldBe 16
     }
 
-    "o toast de nivel tem o fundo na primeira linha, titulo roxo e as coins em preto" {
+    "o toast de nivel tem o fundo na primeira linha, titulo amarelo e as coins em branco" {
         val title = "Nível 7!"
         val coins = "+700 Coins"
 
         LevelUpCard.lines(7, 700.0) shouldContainExactly listOf(
-            "<shadow:#00000000><white><glyph:toast_nivel></white><shift:-130><dark_purple>$title</dark_purple>" +
+            "<shadow:#00000000><white><glyph:toast_nivel></white><shift:-130><yellow>$title</yellow>" +
                 "<shift:${130 - RewardText.width(title)}></shadow>",
-            "<shadow:#00000000><shift:30><black>$coins</black><shift:${130 - RewardText.width(coins)}></shadow>",
+            "<shadow:#00000000><shift:30><white>$coins</white><shift:${130 - RewardText.width(coins)}></shadow>",
         )
     }
 
