@@ -35,6 +35,6 @@ toasts:
   x: 0
   y: 0
   linhas: 6
-  espacamento: 1
+  espacamento: 3
   fundo: false
   direcao: baixo

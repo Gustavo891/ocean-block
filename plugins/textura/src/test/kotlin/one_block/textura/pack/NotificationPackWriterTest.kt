@@ -35,7 +35,7 @@ class NotificationPackWriterTest : StringSpec({
             Logger.getLogger("NotificationPackWriterTest"),
         ).write(builder)
 
-        kit.textTops.toList() shouldBe listOf(0, 4, 14, 18, 28, 32, 42, 56, 70, 84, 98, 112, 126, 140)
+        kit.textTops.toList() shouldBe listOf(0, 4, 16, 18, 28, 32, 48, 64, 70, 80, 84, 98, 112, 126, 140)
         kit.icons.keys shouldBe setOf("item:oak_planks")
         kit.icons.getValue("item:oak_planks").advance shouldBe 7
         kit.plaque shouldNotBe null

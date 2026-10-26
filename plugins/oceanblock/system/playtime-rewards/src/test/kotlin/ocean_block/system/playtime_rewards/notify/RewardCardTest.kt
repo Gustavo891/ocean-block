@@ -6,15 +6,15 @@ import io.kotest.matchers.shouldBe
 
 class RewardCardTest : StringSpec({
 
-    "o toast de tempo tem titulo amarelo sobre o fundo e a dica em branco na linha de baixo" {
+    "o toast de tempo tem titulo laranja ao lado do selo e a dica em branco na linha de baixo" {
         RewardCard.lines(240) shouldContainExactly listOf(
-            ToastLine("<shadow:#00000000><yellow>4 h online!</yellow></shadow>", "glyph:toast_tempo"),
-            ToastLine("<shadow:#00000000><white>Use /recompensas</white></shadow>", "glyph:toast_linha"),
+            ToastLine("<gold>4 h online!</gold>", "glyph:toast_tempo"),
+            ToastLine("<white>Use /recompensas</white>", "glyph:toast_linha"),
         )
     }
 
-    "a dica cabe no toast menor" {
-        (LineText.width(RewardCard.HINT) <= 106) shouldBe true
+    "a dica cabe no corpo do toast" {
+        (LineText.width(RewardCard.HINT) <= 96) shouldBe true
     }
 
     "largura segue a fonte vanilla" {

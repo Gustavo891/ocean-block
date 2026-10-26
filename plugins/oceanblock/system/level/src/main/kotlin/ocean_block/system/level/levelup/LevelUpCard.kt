@@ -12,9 +12,9 @@ object LevelUpCard {
     private val LOCALE: Locale = Locale.forLanguageTag("pt-BR")
 
     fun lines(level: Int, coins: Double): List<ToastLine> {
-        val title = ToastLine("<shadow:#00000000><yellow>Nível $level!</yellow></shadow>", BACKDROP)
+        val title = ToastLine("<yellow>Nível $level!</yellow>", BACKDROP)
         if (coins <= 0) return listOf(title)
         val reward = "+${NumberFormat.getIntegerInstance(LOCALE).format(coins.toLong())} Coins"
-        return listOf(title, ToastLine("<shadow:#00000000><white>$reward</white></shadow>", LINE))
+        return listOf(title, ToastLine("<white>$reward</white>", LINE))
     }
 }

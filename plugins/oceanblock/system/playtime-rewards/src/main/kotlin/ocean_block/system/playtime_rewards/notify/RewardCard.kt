@@ -12,7 +12,7 @@ object RewardCard {
     private const val LINE = "glyph:toast_linha"
 
     fun lines(minutes: Int): List<ToastLine> = listOf(
-        ToastLine("<shadow:#00000000><yellow>${RewardText.duration(minutes.toLong())} online!</yellow></shadow>", BACKDROP),
-        ToastLine("<shadow:#00000000><white>$HINT</white></shadow>", LINE),
+        ToastLine("<gold>${RewardText.duration(minutes.toLong())} online!</gold>", BACKDROP),
+        ToastLine("<white>$HINT</white>", LINE),
     )
 }

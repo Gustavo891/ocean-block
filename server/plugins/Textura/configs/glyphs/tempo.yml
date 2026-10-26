@@ -3,7 +3,7 @@ toast_tempo:
   caminho: assets/oneblock/textures/icons/tempo/toast_tempo.png
   unicode: 
   ascent: 7
-  height: 28
-  size: 132
+  height: 30
+  size: 136
   default: true
   show_in_gui: false

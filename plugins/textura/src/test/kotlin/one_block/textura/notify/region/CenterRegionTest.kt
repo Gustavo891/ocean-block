@@ -52,7 +52,7 @@ class CenterRegionTest : StringSpec({
 
     "os toasts de nivel e tempo dividem uma pilha no canto superior direito" {
         RegionConfigParser.DEFAULTS.first { it.id == "toasts" } shouldBe
-            NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, 0, 0, 6, 1, false, StackDirection.DOWN)
+            NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, 0, 0, 6, 3, false, StackDirection.DOWN)
         RegionConfigParser.DEFAULTS.none { it.id == "nivel" || it.id == "tempo" } shouldBe true
     }
 
