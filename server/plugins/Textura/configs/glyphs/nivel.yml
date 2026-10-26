@@ -12,7 +12,7 @@ toast_linha:
   caminho: assets/oneblock/textures/icons/nivel/toast_linha.png
   unicode: 
   ascent: 0
-  height: 1
+  height: 10
   size: 132
   default: true
   show_in_gui: false

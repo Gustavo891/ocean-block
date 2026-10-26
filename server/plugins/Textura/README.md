@@ -486,7 +486,8 @@ NotificationApi.clear(player, "coleta")
   linha e empilha). A linha desenha o fundo alinhado à âncora e o texto 26 px
   dentro dele, com o topo do fundo 3 px acima do texto. Com passo 14, duas
   linhas cobrem um fundo de 28 px; a segunda usa um fundo transparente
-  (`toast_linha`) só para ter o mesmo recuo.
+  (`toast_linha`) só para ter o mesmo recuo. O fundo precisa ter pelo menos
+  10 px de altura, senão as fontes de notificação não são geradas.
 - Cores: só existem as 16 cores legadas. Uma cor hex (`<#ff8800>`, gradiente)
   vira a mais próxima delas. O negrito soma 1 px por caractere, espaço
   incluído.
