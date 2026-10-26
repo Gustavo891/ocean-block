@@ -54,7 +54,7 @@ class UiLayout(private val kit: UiKit) {
             is IconNode -> node.size
             is TextNode -> measurer.width(node.text, node.bold, node.font)
             is HotspotNode -> 0
-            is PixelsNode -> (node.w as? UiSize.Px)?.value ?: (node.image.width * node.scale)
+            is PixelsNode -> (node.w as? UiSize.Px)?.value ?: (node.image.width * node.scale / node.detail)
             is ContainerNode -> {
                 val flow = node.children.filter { it.position == null }.map(::intrinsicWidth)
                 node.pad * 2 + when (node.kind) {
@@ -118,8 +118,8 @@ class UiLayout(private val kit: UiKit) {
     }
 
     private fun placePixels(node: PixelsNode, x: Int, y: Int, width: Int, sink: Sink): Int {
-        val height = (node.h as? UiSize.Px)?.value ?: (node.image.height * node.scale)
-        sink.pixels += PlacedPixels(node.image, x, y, width, height, node.scale)
+        val height = (node.h as? UiSize.Px)?.value ?: (node.image.height * node.scale / node.detail)
+        sink.pixels += PlacedPixels(node.image, x, y, width, height, node.scale, node.detail)
         return height
     }
 

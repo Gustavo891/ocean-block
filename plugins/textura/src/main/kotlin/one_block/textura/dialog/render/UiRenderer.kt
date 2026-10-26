@@ -71,28 +71,35 @@ class UiRenderer(
         }
     }
 
-    private class PixelRow(val y: Int, val x: Int, val scale: Int, val runs: List<PixelRun>)
+    private class PixelRow(val y: Int, val x: Int, val scale: Int, val detail: Int, val subRow: Int, val runs: List<PixelRun>)
 
     private fun pixelRows(laid: LaidOut): List<PixelRow> = laid.pixels.flatMap { placed ->
         val scale = placed.scale
-        val columns = minOf(placed.image.width, placed.width / scale, (laid.width - placed.x) / scale)
-        val rows = minOf(placed.image.height, placed.height / scale)
+        val detail = placed.detail
+        val columns = minOf(placed.image.width, placed.width * detail / scale, (laid.width - placed.x) * detail / scale)
+        val rows = minOf(placed.image.height, placed.height * detail / scale)
         if (columns <= 0 || rows <= 0) return@flatMap emptyList()
-        if (kit.pixel(scale, 1) == null) {
-            warn("Pixels em escala $scale não estão no pack — rode /textura gerar")
+        val available = if (detail > 1) kit.detailPixel(detail, 1, 0, 0) else kit.pixel(scale, 1)
+        if (available == null) {
+            warn("Pixels em escala $scale e detalhe $detail não estão no pack — rode /textura gerar")
             return@flatMap emptyList()
         }
         (0 until rows).map { row ->
             val argb = placed.image.getRGB(0, row, columns, 1, null, 0, columns)
-            PixelRow(placed.y + row * scale, placed.x, scale, PixelRuns.of(argb))
+            val y = placed.y + row * scale / detail
+            PixelRow(y, placed.x, scale, detail, row % detail, PixelRuns.of(argb))
         }
     }
 
     private fun pixelRow(line: Line, margin: Int, row: PixelRow) {
         val font = kit.imageFont(row.y % LINE)
         row.runs.flatMap { PixelRuns.pieces(it, UiPixels.MAX_WIDTH) }.forEach { piece ->
-            val glyph = kit.pixel(row.scale, piece.width) ?: return@forEach
-            line.moveTo(margin + row.x + piece.x * row.scale)
+            val glyph = if (row.detail > 1) {
+                kit.detailPixel(row.detail, piece.width, piece.x % row.detail, row.subRow)
+            } else {
+                kit.pixel(row.scale, piece.width)
+            } ?: return@forEach
+            line.moveTo(margin + row.x + piece.x * row.scale / row.detail)
             line.append(Component.text(glyph.char).font(font).color(TextColor.color(piece.rgb)).shadowColor(NO_SHADOW), glyph.advance)
         }
     }

@@ -319,7 +319,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         private fun pixels(def: DefPixels): UiNode {
             val image = session.pixels(def.bind)
                 ?: return ContainerNode(ContainerKind.Box, emptyList(), w = UiSize.Px(def.w), h = UiSize.Px(def.h), position = def.position)
-            return PixelsNode(image, def.scale, UiSize.Px(def.w), UiSize.Px(def.h), def.position)
+            return PixelsNode(image, def.scale, UiSize.Px(def.w), UiSize.Px(def.h), def.position, detail = def.detail)
         }
 
         private fun progress(def: DefProgress): UiNode {

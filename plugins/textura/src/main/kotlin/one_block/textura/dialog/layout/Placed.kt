@@ -15,7 +15,7 @@ data class PlacedImage(val id: String, val x: Int, val y: Int, val width: Int, v
 
 data class PlacedText(val text: String, val color: TextColor?, val bold: Boolean, val x: Int, val y: Int, val maxWidth: Int, val shadow: Boolean = true, val font: String? = null)
 
-class PlacedPixels(val image: BufferedImage, val x: Int, val y: Int, val width: Int, val height: Int, val scale: Int)
+class PlacedPixels(val image: BufferedImage, val x: Int, val y: Int, val width: Int, val height: Int, val scale: Int, val detail: Int = 1)
 
 data class PlacedHotspot(val x: Int, val y: Int, val w: Int, val h: Int, val action: UiAction?, val tooltip: HoverEventSource<*>?)
 

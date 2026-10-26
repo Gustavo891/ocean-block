@@ -73,6 +73,28 @@ class PixelsTest : StringSpec({
         lines[1].toString() shouldContain "image_2"
     }
 
+    "com detalhe 3 cada pixel da GUI recebe 3x3 pontos e o deslocamento vai no glifo" {
+        val json = """
+            {"theme": "stone", "column": [
+              {"pixels": "busto", "w": 2, "h": 1, "detail": 3}
+            ]}
+        """.trimIndent()
+        val (definition, warnings) = DialogFixtures.parse(json)
+        warnings.shouldBeEmpty()
+        val image = BufferedImage(6, 3, BufferedImage.TYPE_INT_ARGB).apply {
+            setRGB(4, 2, BLUE)
+        }
+        val binds = DialogBinds().apply { pixels("busto") { image } }
+        val session = DialogSession(definition!!.id, binds, player = DialogFixtures.player())
+        val kit = DialogFixtures.pixelKit
+        val laid = UiLayout(kit).layout(ScreenCompiler(kit) { }.compile(definition, DialogFixtures.theme, session))
+
+        laid.pixels.single().detail shouldBe 3
+        laid.height shouldBe 1
+        val line = UiRenderer(kit, { ClickEvent.runCommand("/x") }) { }.render(laid).first().toString()
+        line shouldContain "d3:1:1:2"
+    }
+
     "sem imagem do código o nó só ocupa o espaço" {
         val (definition, _) = DialogFixtures.parse(json)
         val session = DialogSession(definition!!.id, DialogBinds(), player = DialogFixtures.player())
@@ -92,5 +114,6 @@ class PixelsTest : StringSpec({
 private val DialogFixtures.pixelKit
     get() = object : one_block.textura.dialog.kit.UiKit by DialogFixtures.kit {
         override fun pixel(scale: Int, width: Int): UiPiece = UiPiece("p$width", width * scale + 1)
+        override fun detailPixel(detail: Int, width: Int, dx: Int, dy: Int): UiPiece = UiPiece("d$detail:$width:$dx:$dy", 1)
         override fun spaceChar(amount: Int): String = "s"
     }

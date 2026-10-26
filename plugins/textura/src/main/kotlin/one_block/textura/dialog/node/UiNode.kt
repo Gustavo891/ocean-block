@@ -83,6 +83,7 @@ data class PixelsNode(
     override val h: UiSize,
     override val position: UiPosition? = null,
     override val tag: String? = null,
+    val detail: Int = 1,
 ) : UiNode
 
 data class HotspotNode(

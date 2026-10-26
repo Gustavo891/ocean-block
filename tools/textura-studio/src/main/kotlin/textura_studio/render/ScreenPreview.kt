@@ -242,7 +242,7 @@ class ScreenPreview(private val assets: StudioAssets) {
         for (line in 0 until lines) {
             imagesByLine[line].orEmpty().forEach { art.draw(it, originX, originY, laid.width) }
             pixelsByLine[line].orEmpty().forEach { placed ->
-                PixelSamples.scaled(placed)?.let { canvas.draw(it, originX + placed.x, originY + placed.y) }
+                PixelSamples.draw(canvas, placed, originX + placed.x, originY + placed.y)
             }
             textsByLine[line].orEmpty().sortedBy { it.x }.forEach { placed ->
                 val room = minOf(placed.maxWidth, laid.width - placed.x)

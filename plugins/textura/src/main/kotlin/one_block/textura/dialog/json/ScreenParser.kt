@@ -432,9 +432,12 @@ class ScreenParser(private val logger: Logger) {
             val w = obj.int("w", 0, path)
             val h = obj.int("h", 0, path)
             if (w !in 1..MAX_PIXELS || h !in 1..MAX_PIXELS) warn(path, "pixels precisa de 'w' e 'h' entre 1 e $MAX_PIXELS")
+            val detail = obj.int("detail", 1, path)
+            if (detail != 1 && detail !in UiPixels.DETAILS) warn(path, "pixels com detail $detail fora de 1, ${UiPixels.DETAILS.joinToString()}")
             return DefPixels(
                 bind, w.coerceIn(1, MAX_PIXELS), h.coerceIn(1, MAX_PIXELS),
                 scale.coerceIn(UiPixels.SCALES.first, UiPixels.SCALES.last), position(obj, path), path,
+                detail.takeIf { it in UiPixels.DETAILS } ?: 1,
             )
         }
 
@@ -655,7 +658,7 @@ class ScreenParser(private val logger: Logger) {
             "text" to setOf("text", "style", "align", "w", "icon", "color", "bold", "scale", "tooltip", "x", "y"),
             "icon" to setOf("icon", "size", "x", "y", "bind", "states", "frame"),
             "image" to setOf("image", "w", "x", "y"),
-            "pixels" to setOf("pixels", "w", "h", "scale", "x", "y"),
+            "pixels" to setOf("pixels", "w", "h", "scale", "detail", "x", "y"),
             "switch" to setOf("switch", "bind", "tooltip"),
             "segmented" to setOf("segmented", "selected", "bind", "w", "tooltip"),
             "button" to setOf("button", "bind", "w", "icon", "tooltip", "onClick", "look", "selected", "disabled"),

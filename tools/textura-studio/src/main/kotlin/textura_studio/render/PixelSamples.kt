@@ -16,7 +16,23 @@ object PixelSamples {
     private const val CHECKER = 4
 
     fun of(definition: ScreenDefinition): Map<String, BufferedImage> =
-        definition.containers().flatMap(::collect).associate { it.bind to checker(it.w / it.scale, it.h / it.scale) }
+        definition.containers().flatMap(::collect).associate { it.bind to checker(it.w * it.detail / it.scale, it.h * it.detail / it.scale) }
+
+    fun draw(canvas: Canvas, placed: PlacedPixels, x: Int, y: Int) {
+        if (placed.detail <= 1) {
+            scaled(placed)?.let { canvas.draw(it, x, y) }
+            return
+        }
+        val columns = minOf(placed.image.width, placed.width * placed.detail)
+        val rows = minOf(placed.image.height, placed.height * placed.detail)
+        if (columns <= 0 || rows <= 0) return
+        val cropped = BufferedImage(columns, rows, BufferedImage.TYPE_INT_ARGB)
+        for (cx in 0 until columns) for (cy in 0 until rows) {
+            val argb = placed.image.getRGB(cx, cy)
+            if ((argb ushr 24) >= OPAQUE) cropped.setRGB(cx, cy, argb or OPAQUE_MASK)
+        }
+        canvas.draw(cropped, x.toDouble(), y.toDouble(), columns.toDouble() / placed.detail, rows.toDouble() / placed.detail)
+    }
 
     fun scaled(placed: PlacedPixels): BufferedImage? {
         val columns = minOf(placed.image.width, placed.width / placed.scale)

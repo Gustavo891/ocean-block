@@ -77,6 +77,16 @@ class UiPackWriter(
             for (x in 0 until image.width) for (y in 0 until image.height) image.setRGB(x, y, WHITE)
             UiPieceSource(UiPixels.name(scale, width), image)
         }
+    } + UiPixels.DETAILS.flatMap { detail ->
+        UiPixels.WIDTHS.flatMap { width ->
+            (0 until detail).flatMap { dx ->
+                (0 until detail).map { dy ->
+                    val image = BufferedImage(dx + width, UiFonts.BASE_ASCENT.inc() * detail, BufferedImage.TYPE_INT_ARGB)
+                    for (x in dx until dx + width) image.setRGB(x, dy, WHITE)
+                    UiPieceSource(UiPixels.detailName(detail, width, dx, dy), image, detail)
+                }
+            }
+        }
     }
 
     private fun plain(packed: Packed, width: Int, height: Int): UiImage =

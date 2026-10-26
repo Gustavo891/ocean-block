@@ -13,6 +13,8 @@ class PackedUiKit(
 
     override fun pixel(scale: Int, width: Int): UiPiece? = pixels[UiPixels.name(scale, width)]
 
+    override fun detailPixel(detail: Int, width: Int, dx: Int, dy: Int): UiPiece? = pixels[UiPixels.detailName(detail, width, dx, dy)]
+
     private val spaces = UiFonts.spaceChars()
     private val known: Set<String> = images.keys + icons.keys.map { it.id } + surfaces.keys.map { it.id }
 

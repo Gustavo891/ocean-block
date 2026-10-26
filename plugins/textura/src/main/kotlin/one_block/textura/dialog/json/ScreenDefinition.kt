@@ -149,6 +149,7 @@ data class DefPixels(
     val scale: Int,
     val position: UiPosition?,
     override val path: String,
+    val detail: Int = 1,
 ) : DefNode
 
 data class DefRepeat(val list: String, val perPage: Int?, val node: DefNode, override val path: String) : DefNode

@@ -6,6 +6,7 @@ import ocean_block.libs.formatter.NumberFormatter
 import ocean_block.libs.instance.Instance
 import ocean_block.system.currencies.Currencies
 import ocean_block.system.islands.island.Island
+import ocean_block.system.islands.island.IslandSetting
 import ocean_block.system.islands.island.IslandUpgrade
 import ocean_block.system.islands.view.IslandView
 import ocean_block.system.islands.view.MembersView
@@ -29,18 +30,18 @@ object IslandDialog {
     private const val WAIT_SECONDS = 4L
     private const val COINS = "coins"
     private const val MAX_SLOTS = MemberCards.SLOTS
-    private const val NAME_CHARS = 9
+    private const val NAME_CHARS = 7
 
     fun open(player: Player, island: Island, viewFrame: ViewFrame) {
         val members = listOf(island.ownerName) + memberNames(island).take(MAX_SLOTS - 1)
         val bust = PlayerSkins.bust(player.playerProfile).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS)
-        val portraits = members.map { PlayerSkins.portrait(it).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS) }
-        CompletableFuture.allOf(bust, *portraits.toTypedArray()).whenComplete { _, error ->
+        val faces = members.map { PlayerSkins.face(it).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS) }
+        CompletableFuture.allOf(bust, *faces.toTypedArray()).whenComplete { _, error ->
             Bukkit.getScheduler().runTask(Instance, Runnable {
                 if (!player.isOnline) return@Runnable
                 if (error != null) Instance.logger.warning("[ilha] menu da ilha sem skin: ${error.message}")
                 val cards = members.mapIndexed { index, name ->
-                    MemberCards.Card(portraits[index].getNow(null), owner = index == 0, online = Bukkit.getPlayerExact(name) != null)
+                    MemberCards.Card(faces[index].getNow(null), owner = index == 0, online = Bukkit.getPlayerExact(name) != null)
                 }
                 show(player, island, viewFrame, Portraits(bust.getNow(null), MemberCards.render(cards), members))
             })
@@ -63,8 +64,8 @@ object IslandDialog {
         binds.pixels("cartoes") { portraits.cards }
         (0 until MAX_SLOTS).forEach { index ->
             val name = portraits.members.getOrNull(index)
-            binds.text("cartao${index}_a") { if (name == null) "CONVIDAR" else "" }
-            binds.text("cartao${index}_b") { name?.uppercase()?.take(NAME_CHARS) ?: "JOGADOR" }
+            binds.text("cartao$index") { name?.uppercase()?.take(NAME_CHARS) ?: "CONVITE" }
+            binds.text("cartao${index}_estilo") { if (name == null) "muted" else "body" }
         }
         binds.text("titulo") { if (island.ownerUuid == player.uniqueId) "SUA ILHA" else "ILHA DE ${island.ownerName.uppercase()}" }
         binds.text("status") { if (island.isPublic) "PÚBLICA" else "PRIVADA" }
@@ -72,6 +73,8 @@ object IslandDialog {
         binds.text("membros") { "${island.members.size}/${island.maxMembers()} MEMBROS" }
         binds.text("borda") { "BORDA ${island.borderSize()}x${island.borderSize()}" }
         binds.text("gerador") { "NÍVEL ${island.getUpgradeLevel(IslandUpgrade.Generator)}" }
+        binds.text("configuracoes") { "${IslandSetting.entries.count(island::isSettingEnabled)} DE ${IslandSetting.entries.size} LIGADAS" }
+        binds.text("visitas") { "${if (island.isPublic) "PÚBLICA" else "PRIVADA"} | ${island.blackListNames().size} BLOQ." }
         binds.text("moedas") { NumberFormatter.format(Currencies.findCurrency(COINS)?.find(player.uniqueId)?.balance ?: 0.0) }
 
         binds.button("fechar") { click -> click.close() }

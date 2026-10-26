@@ -34,6 +34,7 @@ interface UiKit {
     fun charAdvance(codePoint: Int, font: String?): Int = charAdvance(codePoint)
     val hit: UiPiece?
     fun pixel(scale: Int, width: Int): UiPiece? = null
+    fun detailPixel(detail: Int, width: Int, dx: Int, dy: Int): UiPiece? = null
 }
 
 object UiPixels {
@@ -42,7 +43,11 @@ object UiPixels {
     val WIDTHS: List<Int> = (0..6).map { 1 shl it }
     val MAX_WIDTH: Int = WIDTHS.last()
 
+    val DETAILS: IntRange = 2..3
+
     fun name(scale: Int, width: Int): String = "pixel:$scale:$width"
+
+    fun detailName(detail: Int, width: Int, dx: Int, dy: Int): String = "pixel:d$detail:$width:$dx:$dy"
 }
 
 object UiFonts {

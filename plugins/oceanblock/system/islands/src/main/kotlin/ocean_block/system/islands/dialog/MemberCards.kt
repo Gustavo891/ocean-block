@@ -4,18 +4,16 @@ import java.awt.image.BufferedImage
 
 object MemberCards {
 
-    class Card(val portrait: BufferedImage?, val owner: Boolean, val online: Boolean)
+    class Card(val face: BufferedImage?, val owner: Boolean, val online: Boolean)
 
     const val SLOTS = 6
-    const val CARD_WIDTH = 42
-    const val CARD_HEIGHT = 48
-    const val GAP = 4
-    const val PORTRAIT_WIDTH = 30
-    const val PORTRAIT_HEIGHT = 30
-    const val PORTRAIT_Y = 6
-    const val CROWN_X = 3
-    const val CROWN_Y = 3
-    const val PLUS_Y = 16
+    const val CARD_WIDTH = 34
+    const val CARD_HEIGHT = 34
+    const val GAP = 3
+    const val FACE_Y = 4
+    const val CROWN_X = 2
+    const val CROWN_Y = 2
+    const val PLUS_Y = 12
 
     const val FILL = 0xFF46494F.toInt()
     const val BORDER = 0xFF6A6D72.toInt()
@@ -24,8 +22,23 @@ object MemberCards {
     const val OFFLINE = 0xFF6A6D72.toInt()
     const val PLUS = 0xFF8E9196.toInt()
 
-    private const val PLUS_ARM = 5
-    private val CROWN_SHAPE = listOf("#..#..#", "##.#.##", "#######", "#######")
+    private const val FACE = 8
+    private const val ZOOM = 2
+    private const val PLUS_ARM = 4
+    private const val OPAQUE = 128
+    private const val OPAQUE_MASK = 0xFF000000.toInt()
+    private val CROWN_SHAPE = listOf("#.#.#", "#####", "#####")
+
+    fun face(skin: BufferedImage): BufferedImage {
+        val face = BufferedImage(FACE, FACE, BufferedImage.TYPE_INT_ARGB)
+        for (x in 0 until FACE) {
+            for (y in 0 until FACE) {
+                val hat = skin.getRGB(40 + x, 8 + y)
+                face.setRGB(x, y, if ((hat ushr 24) >= OPAQUE) hat or OPAQUE_MASK else skin.getRGB(8 + x, 8 + y) or OPAQUE_MASK)
+            }
+        }
+        return face
+    }
 
     fun render(cards: List<Card?>): BufferedImage {
         val image = BufferedImage(SLOTS * CARD_WIDTH + (SLOTS - 1) * GAP, CARD_HEIGHT, BufferedImage.TYPE_INT_ARGB)
@@ -44,14 +57,9 @@ object MemberCards {
                 image.setRGB(left + x, y, if (edge) BORDER else FILL)
             }
         }
-        card.portrait?.let { portrait ->
-            val ox = left + (CARD_WIDTH - portrait.width) / 2
-            for (x in 0 until portrait.width) {
-                for (y in 0 until portrait.height) {
-                    val argb = portrait.getRGB(x, y)
-                    if ((argb ushr 24) != 0) image.setRGB(ox + x, PORTRAIT_Y + y, argb)
-                }
-            }
+        card.face?.let { face ->
+            val ox = left + (CARD_WIDTH - FACE * ZOOM) / 2
+            for (x in 0 until FACE * ZOOM) for (y in 0 until FACE * ZOOM) image.setRGB(ox + x, FACE_Y + y, face.getRGB(x / ZOOM, y / ZOOM))
         }
         if (card.owner) {
             CROWN_SHAPE.forEachIndexed { row, line ->
