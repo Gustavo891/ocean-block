@@ -19,13 +19,11 @@ object PlayerSkins {
     private const val MAX_CACHED = 128
     private val TIMEOUT: Duration = Duration.ofSeconds(4)
 
-    private const val FRAMES = 12
-
     private val client: HttpClient = HttpClient.newBuilder().connectTimeout(TIMEOUT).followRedirects(HttpClient.Redirect.NORMAL).build()
 
-    private val figures = ConcurrentHashMap<String, List<BufferedImage>>()
+    private val figures = ConcurrentHashMap<String, BufferedImage>()
 
-    fun frames(player: Player): CompletableFuture<List<BufferedImage>> {
+    fun bust(player: Player): CompletableFuture<BufferedImage> {
         val textures = player.playerProfile.textures
         val url = textures.skin ?: return CompletableFuture.completedFuture(fallback())
         val slim = textures.skinModel == PlayerTextures.SkinModel.SLIM
@@ -37,7 +35,7 @@ object PlayerSkins {
             .thenApply { response ->
                 val skin = response.takeIf { it.statusCode() == 200 }?.body()?.let { ImageIO.read(ByteArrayInputStream(it)) }
                     ?: error("skin ${response.statusCode()}")
-                PlayerFigure.frames(skin, slim, FRAMES).also { remember(key, it) }
+                PlayerFigure.bust(skin, slim).also { remember(key, it) }
             }
             .exceptionally { error ->
                 Instance.logger.warning("[ilha] skin de ${player.name} indisponível: ${error.message}")
@@ -45,12 +43,12 @@ object PlayerSkins {
             }
     }
 
-    private fun remember(key: String, figure: List<BufferedImage>) {
+    private fun remember(key: String, figure: BufferedImage) {
         if (figures.size >= MAX_CACHED) figures.clear()
         figures[key] = figure
     }
 
-    private val fallbackFrames: List<BufferedImage> by lazy { PlayerFigure.frames(DefaultSkin.image(), slim = false, count = FRAMES) }
+    private val fallbackBust: BufferedImage by lazy { PlayerFigure.bust(DefaultSkin.image(), slim = false) }
 
-    private fun fallback(): List<BufferedImage> = fallbackFrames
+    private fun fallback(): BufferedImage = fallbackBust
 }

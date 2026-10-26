@@ -21,7 +21,12 @@ object PlayerFigure {
     private const val LIMB_INFLATE = 0.25
     private const val AMBIENT = 0.45
     private const val DIFFUSE = 0.6
-    private const val FULL_TURN = 360.0
+    const val BUST_WIDTH = 70
+    const val BUST_HEIGHT = 100
+    private const val BUST_UNIT = 4.4
+    private const val BUST_CENTER_Y = 25.0
+    private const val BUST_YAW = 32.0
+    private const val BUST_PITCH = 22.0
 
     private data class Vec(val x: Double, val y: Double, val z: Double) {
         operator fun plus(o: Vec) = Vec(x + o.x, y + o.y, z + o.z)
@@ -38,18 +43,25 @@ object PlayerFigure {
 
     private val light = Vec(-0.5, 0.7, 0.5).let { it * (1 / sqrt(it.dot(it))) }
 
-    fun frames(skin: BufferedImage, slim: Boolean, count: Int): List<BufferedImage> =
-        (0 until count).map { render(skin, slim, YAW + FULL_TURN * it / count) }
+    private class Frame(val width: Int, val height: Int, val unit: Double, val centerY: Double, val yaw: Double, val pitch: Double)
 
-    fun render(skin: BufferedImage, slim: Boolean, yaw: Double = YAW): BufferedImage {
+    private val fullBody = Frame(WIDTH, HEIGHT, UNIT, CENTER_Y, YAW, PITCH)
+    private val bustFrame = Frame(BUST_WIDTH, BUST_HEIGHT, BUST_UNIT, BUST_CENTER_Y, BUST_YAW, BUST_PITCH)
+
+    fun render(skin: BufferedImage, slim: Boolean, yaw: Double = YAW): BufferedImage =
+        draw(skin, slim, Frame(fullBody.width, fullBody.height, fullBody.unit, fullBody.centerY, yaw, fullBody.pitch))
+
+    fun bust(skin: BufferedImage, slim: Boolean): BufferedImage = draw(skin, slim, bustFrame)
+
+    private fun draw(skin: BufferedImage, slim: Boolean, frame: Frame): BufferedImage {
         val boxes = boxes(slim, legacy = skin.height < skin.width)
-        val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
-        val camera = Camera(Math.toRadians(yaw), Math.toRadians(PITCH))
+        val image = BufferedImage(frame.width, frame.height, BufferedImage.TYPE_INT_ARGB)
+        val camera = Camera(Math.toRadians(frame.yaw), Math.toRadians(frame.pitch))
         val direction = camera.toModel(Vec(0.0, 0.0, -1.0))
-        for (py in 0 until HEIGHT) {
-            for (px in 0 until WIDTH) {
-                val view = Vec((px + 0.5 - WIDTH / 2.0) / UNIT, (HEIGHT / 2.0 - (py + 0.5)) / UNIT, FAR)
-                val origin = camera.toModel(view) + Vec(0.0, CENTER_Y, 0.0)
+        for (py in 0 until frame.height) {
+            for (px in 0 until frame.width) {
+                val view = Vec((px + 0.5 - frame.width / 2.0) / frame.unit, (frame.height / 2.0 - (py + 0.5)) / frame.unit, FAR)
+                val origin = camera.toModel(view) + Vec(0.0, frame.centerY, 0.0)
                 val hit = boxes.mapNotNull { trace(skin, it, origin, direction) }.minByOrNull { it.t } ?: continue
                 image.setRGB(px, py, lit(hit, camera))
             }

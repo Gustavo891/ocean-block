@@ -7,7 +7,7 @@
       "row": [
         {
           "column": [
-            { "pixels": "jogador", "w": 88, "h": 152, "scale": 2 },
+            { "pixels": "jogador", "w": 140, "h": 200, "scale": 2 },
             { "space": 8 },
             { "text": "{dono}", "style": "muted" }
           ],

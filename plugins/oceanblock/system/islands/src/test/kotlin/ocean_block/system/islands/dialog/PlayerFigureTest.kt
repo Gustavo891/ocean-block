@@ -94,12 +94,20 @@ class PlayerFigureTest : StringSpec({
         image.has(redLike) shouldBe false
     }
 
-    "os quadros da rotação dão a volta completa" {
-        val frames = PlayerFigure.frames(skin(), slim = false, count = 12)
+    "o busto mostra rosto, topo e o lado direito da cabeça no tamanho do palco" {
+        val bust = canvas { fill ->
+            fill(8, 8, 8, 8, RED)
+            fill(8, 0, 8, 8, GREEN)
+            fill(0, 8, 8, 8, BLUE)
+        }
 
-        frames.size shouldBe 12
-        frames.first().has(redLike) shouldBe true
-        frames[6].has(redLike) shouldBe false
+        val image = PlayerFigure.bust(bust, slim = false)
+
+        image.width shouldBe PlayerFigure.BUST_WIDTH
+        image.height shouldBe PlayerFigure.BUST_HEIGHT
+        image.has(redLike) shouldBe true
+        image.has(greenLike) shouldBe true
+        image.has(blueLike) shouldBe true
     }
 
     "skin antiga de 64x32 também desenha" {

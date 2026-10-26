@@ -236,7 +236,7 @@ fecha o dialog e `click.open("outra") { ... }` troca de tela. Os nomes de `bind`
 que o código passa e os que a tela declara são conferidos na abertura; diferenças
 viram aviso no console.
 
-Um estilo de texto pode usar uma fonte bitmap própria com `font: <nome>`, que lê `configs/fonts/<nome>.json` (providers `bitmap`/`space`, texturas em `resource/`); o texto é medido com as larguras dessa fonte. Para espaçar as letras, deixe uma coluna com alfa 1 à direita de cada glifo. O tema `abismo` usa `pequena` (caixa alta 5 px) e `titulo` (a mesma em 2x).
+Um estilo de texto pode usar uma fonte bitmap própria com `font: <nome>`, que lê `configs/fonts/<nome>.json` (providers `bitmap`/`space`, texturas em `resource/`); o texto é medido com as larguras dessa fonte. Para espaçar as letras, deixe uma coluna com alfa 1 à direita de cada glifo. O tema `abismo` usa `pequena` (os glifos da fonte de texto só em caixa alta, com 1 px a mais entre as letras) e `titulo` (a mesma em 2x e negrito).
 
 Tema:
 
