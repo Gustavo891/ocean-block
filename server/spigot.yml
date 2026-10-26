@@ -153,7 +153,7 @@ world-settings:
     ticks-per:
       hopper-transfer: 8
       hopper-check: 1
-    hopper-amount: 1
+    hopper-amount: 8
     hopper-can-load-chunks: false
     wither-spawn-sound-radius: 0
     hanging-tick-frequency: 100
