@@ -89,7 +89,7 @@ internal class NotificationService(private val plugin: Plugin, initialKit: Notif
                 plugin.logger.warning("[notificacoes] Ícone '${line.icon}' não está no pack; registre com NotificationApi.registerItemIcons antes do build")
             }
             val viewer = viewer(player)
-            viewer.regions.getOrPut(region.id) { RegionLines(region.maxLines) }.push(line, now(), NotificationAnimation.phase(player.world.gameTime))
+            viewer.regions.getOrPut(region.id) { RegionLines(region.maxLines) }.push(NotificationAnimation.lifetime(region, line), now(), NotificationAnimation.phase(player.world.gameTime))
             refresh(viewer)
         }
     }

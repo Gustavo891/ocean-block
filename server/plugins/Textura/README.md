@@ -446,7 +446,7 @@ coleta:
 | `espacamento` | px entre uma linha e a próxima (-2..32). O passo é 13 + espaçamento | 1 |
 | `fundo` | placa escura semitransparente na largura do conteúdo | true |
 | `direcao` | `baixo` ou `cima` | `cima` nas âncoras `BASE_*`, `baixo` nas outras |
-| `animacao` | `true`: a linha fica parada 2 s e depois some aos poucos em 1,5 s, no mesmo lugar, animada pelo próprio cliente; precisa de `y >= 0` | false |
+| `animacao` | `true`, animada pelo próprio cliente; precisa de `y >= 0`. No `CENTRO` a linha fica parada 2 s e depois some aos poucos em 1,5 s, no mesmo lugar. Nas outras âncoras ela entra deslizando da borda da âncora em 8 ticks, fica parada e sai deslizando, com fade, nos últimos 8 ticks; a linha passa a durar sempre 100 ticks (`NotificationAnimation.SLIDE_LIFE`), seja qual for a duração pedida | false |
 
 `CENTRO` alinha pela esquerda a partir do centro da tela, e `y: 0` fica 32 px acima do centro (a região `xp`, com `x: 8` e `y: 28`, põe o texto logo à direita da mira). Numa região animada o marcador leva a fase de início (tempo do mundo no ciclo de 200 ticks, que divide os 24000 do dia) nos 4 bits baixos do G e no lift do B; o shader (âncora 8) calcula a idade pelo `GameTime` do cliente e anima liso, sem o servidor redesenhar (constantes `TEXTURA_HUD_ANIM_*` no `text.vsh`; a duração da linha deve cobrir parada + sumiço, 70 ticks).
 
@@ -524,7 +524,10 @@ Texto de GUI com cor exatamente `R=254`, `G = âncora × 16` (1 TOPO_ESQUERDA,
 - o `lift` (0..15) sobe a linha `lift × 12` px. É assim que linhas sobem a partir
   da base: as fontes só conseguem descer o texto;
 - a sombra vai como `shadow_color` explícita com `R=253` e o mesmo G/B, e o
-  shader escurece a paleta como a sombra vanilla (×0,25).
+  shader escurece a paleta como a sombra vanilla (×0,25);
+- numa região animada fora do `CENTRO`, `G = (âncora + 8) × 16 + fase >> 4` e o
+  lift leva os 4 bits baixos da fase: as âncoras 9..14 deslizam pela borda da
+  âncora base (constantes `TEXTURA_HUD_SLIDE_*` no `text.vsh`).
 
 Qualquer outra cor fica vanilla. Não use essas cores em outros textos (chat,
 scoreboard, nomes de item): o shader também os moveria. O `/textura hudtest

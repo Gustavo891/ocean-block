@@ -33,7 +33,7 @@ const int TEXTURA_HUD_GLYPH_RED = 254;
 const int TEXTURA_HUD_SHADOW_RED = 253;
 const int TEXTURA_HUD_QUARTER_RED = 63;
 const int TEXTURA_HUD_STEP = 16;
-const int TEXTURA_HUD_ANCHORS = 8;
+const int TEXTURA_HUD_ANCHORS = 14;
 const int TEXTURA_HUD_PALETTE_SIZE = 16;
 
 const float TEXTURA_HUD_BAR_TEXT_TOP = 3.0;
@@ -46,6 +46,10 @@ const float TEXTURA_HUD_CENTER_TOP = 32.0;
 const float TEXTURA_HUD_ANIM_PERIOD = 200.0;
 const float TEXTURA_HUD_ANIM_HOLD = 40.0;
 const float TEXTURA_HUD_ANIM_FADE = 30.0;
+const float TEXTURA_HUD_SLIDE_LIFE = 100.0;
+const float TEXTURA_HUD_SLIDE_IN = 8.0;
+const float TEXTURA_HUD_SLIDE_OUT = 8.0;
+const float TEXTURA_HUD_SLIDE_DISTANCE = 160.0;
 
 const vec3 TEXTURA_HUD_PALETTE[16] = vec3[16](
     vec3(0.0, 0.0, 0.0),
@@ -89,7 +93,7 @@ int texturaHudDecode(vec4 color, out int palette, out int lift, out bool shadow,
 
     int anchor = c.g / step;
     int extra = c.g % step;
-    if (extra != 0 && (anchor != 8 || step != TEXTURA_HUD_STEP)) return 0;
+    if (extra != 0 && (anchor < 8 || step != TEXTURA_HUD_STEP)) return 0;
     int blue = c.b * (TEXTURA_HUD_STEP / step);
     int index = blue / TEXTURA_HUD_STEP;
     if (anchor < 1 || anchor > TEXTURA_HUD_ANCHORS || index >= TEXTURA_HUD_PALETTE_SIZE) return 0;
@@ -149,6 +153,12 @@ void main() {
             float k = smoothstep(0.0, 1.0, clamp((age - TEXTURA_HUD_ANIM_HOLD) / TEXTURA_HUD_ANIM_FADE, 0.0, 1.0));
             offset = texturaHudOffset(hudAnchor);
             fade = 1.0 - k;
+        } else if (hudAnchor > 8) {
+            float age = mod(GameTime * 24000.0 - float(hudPhase), TEXTURA_HUD_ANIM_PERIOD);
+            float shown = smoothstep(0.0, TEXTURA_HUD_SLIDE_IN, age) * (1.0 - smoothstep(TEXTURA_HUD_SLIDE_LIFE - TEXTURA_HUD_SLIDE_OUT, TEXTURA_HUD_SLIDE_LIFE, age));
+            float side = (hudAnchor - 9) % 2 == 0 ? -1.0 : 1.0;
+            offset = texturaHudOffset(hudAnchor - 8) + vec2(side * (1.0 - shown) * TEXTURA_HUD_SLIDE_DISTANCE, 0.0);
+            fade = shown;
         } else {
             offset = texturaHudOffset(hudAnchor) - vec2(0.0, float(hudLift) * TEXTURA_HUD_LIFT_STEP);
         }

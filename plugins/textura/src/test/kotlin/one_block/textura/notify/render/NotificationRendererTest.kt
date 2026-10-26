@@ -258,4 +258,28 @@ class NotificationRendererTest : StringSpec({
         fonts.first { it.first == "cd" }.second shouldBe NotificationFonts.key(10)
         fonts.first { it.first == "ab" }.second shouldBe NotificationFonts.key(0)
     }
+
+    "toast numa regiao animada fora do centro leva a fase no fundo e no texto pela ancora de deslizar" {
+        val toastKit = NotificationKit(textFont, setOf(0), null, emptyMap(), mapOf("glyph:toast_x" to BackdropGlyph("T", 132, 133)))
+        val corner = NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, 0, 0, 6, 1, false, StackDirection.DOWN, animated = true)
+        val component = renderer.render(
+            listOf(corner),
+            mapOf("toasts" to listOf(NotificationLine("ab", "glyph:toast_x", 100))),
+            toastKit,
+            mapOf("toasts" to listOf(37)),
+        ) { null }
+
+        val colors = mutableListOf<TextColor?>()
+        fun walk(c: Component) {
+            if (c is TextComponent && c.content().isNotEmpty() && c.font() != SpacingFont.KEY) colors += c.color()
+            c.children().forEach(::walk)
+        }
+        walk(component)
+
+        colors.size shouldBe 2
+        colors.forEach { color ->
+            color?.green() shouldBe (ScreenAnchor.TOP_RIGHT.id + 8) * AnchorMarker.STEP + 2
+            color?.blue()?.rem(AnchorMarker.STEP) shouldBe 5
+        }
+    }
 })

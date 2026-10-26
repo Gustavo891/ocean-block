@@ -52,13 +52,13 @@ class CenterRegionTest : StringSpec({
 
     "os toasts de nivel e tempo dividem uma pilha no canto superior direito" {
         RegionConfigParser.DEFAULTS.first { it.id == "toasts" } shouldBe
-            NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, -2, 5, 6, 1, false, StackDirection.DOWN)
+            NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, -2, 5, 6, 1, false, StackDirection.DOWN, animated = true)
         RegionConfigParser.DEFAULTS.none { it.id == "nivel" || it.id == "tempo" } shouldBe true
     }
 
     "os avisos ficam no canto superior esquerdo com espaco para o toast de venda" {
         RegionConfigParser.DEFAULTS.first { it.id == "avisos" } shouldBe
-            NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 2, 5, 5, 1, true, StackDirection.DOWN)
+            NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 2, 5, 5, 1, true, StackDirection.DOWN, animated = true)
     }
 
     "a linha guarda quando comecou e a fase, e a troca pela mesma chave recomeca" {
@@ -79,5 +79,14 @@ class CenterRegionTest : StringSpec({
         NotificationAnimation.phase(23999) shouldBe 199
         NotificationAnimation.phase(24000) shouldBe 0
         NotificationAnimation.phase(24250) shouldBe 50
+    }
+
+    "toasts e avisos sao animados e a linha deles dura sempre o tempo da animacao" {
+        RegionConfigParser.DEFAULTS.filter { it.id == "toasts" || it.id == "avisos" }.all { it.animated } shouldBe true
+        val avisos = RegionConfigParser.DEFAULTS.first { it.id == "avisos" }
+        val xp = RegionConfigParser.DEFAULTS.first { it.id == "xp" }
+        NotificationAnimation.lifetime(avisos, NotificationLine("a", 80)).durationTicks shouldBe NotificationAnimation.SLIDE_LIFE
+        NotificationAnimation.lifetime(xp, NotificationLine("a", 70)).durationTicks shouldBe 70
+        NotificationAnimation.lifetime(RegionConfigParser.DEFAULTS.first { it.id == "coleta" }, NotificationLine("a", 60)).durationTicks shouldBe 60
     }
 })

@@ -17,6 +17,7 @@ avisos:
   espacamento: 1
   fundo: true
   direcao: baixo
+  animacao: true
 
 xp:
   id: xp
@@ -38,3 +39,4 @@ toasts:
   espacamento: 1
   fundo: false
   direcao: baixo
+  animacao: true

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 object SaleNotifier {
 
     private const val REGION = "avisos"
-    private const val DURATION_TICKS = 80
+    private const val DURATION_TICKS = 100
 
     fun notify(player: Player, total: Double, amount: Int) {
         SaleCard.lines(NumberFormatter.format(total), amount).forEachIndexed { index, line ->

@@ -36,10 +36,10 @@ internal class TextPainter(private val textFont: UiTextFont, private val transla
     private data class Marker(val anchor: ScreenAnchor, val lift: Int, val font: Key, val phase: Int?) {
 
         fun glyph(palette: AnchorPalette) =
-            if (phase != null) AnchorMarker.animatedGlyph(palette, phase) else AnchorMarker.glyph(anchor, palette, lift)
+            if (phase != null) AnchorMarker.animatedGlyph(anchor, palette, phase) else AnchorMarker.glyph(anchor, palette, lift)
 
         fun shadow(palette: AnchorPalette) =
-            if (phase != null) AnchorMarker.animatedShadow(palette, phase) else AnchorMarker.shadow(anchor, palette, lift)
+            if (phase != null) AnchorMarker.animatedShadow(anchor, palette, phase) else AnchorMarker.shadow(anchor, palette, lift)
     }
 
     private fun visit(component: Component, parent: Context, marker: Marker): PaintedText {

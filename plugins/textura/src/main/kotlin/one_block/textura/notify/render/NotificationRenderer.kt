@@ -59,11 +59,13 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
         val backdrop = kit.backdrop(line.icon)
         val textFont = backdrop?.let { raisedFont(slot.textTop, it.raise, kit) } ?: font
         val text = painter.paint(miniMessage.deserialize(line.text), region.anchor, slot.lift, textFont, animatedPhase)
+        val plain = animatedPhase?.let { AnchorMarker.animatedGlyph(region.anchor, AnchorPalette.WHITE, it) }
+            ?: AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)
         if (backdrop != null) {
             val box = LineGeometry.span(region, backdrop.width).boxLeft
             val cursor = Cursor()
             cursor.moveTo(box)
-            cursor.draw(glyph(backdrop.char, font, AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)), backdrop.advance)
+            cursor.draw(glyph(backdrop.char, font, plain), backdrop.advance)
             cursor.moveTo(box + LineGeometry.BACKDROP_TEXT_X)
             cursor.draw(Component.text().font(textFont).append(text.component).build(), text.width)
             cursor.moveTo(0)
@@ -72,8 +74,6 @@ internal class NotificationRenderer(private val miniMessage: MiniMessage) {
         val icon = kit.icon(line.icon)
         val span = LineGeometry.span(region, LineGeometry.contentWidth(text.width, icon != null))
         val cursor = Cursor()
-        val plain = animatedPhase?.let { AnchorMarker.animatedGlyph(AnchorPalette.WHITE, it) }
-            ?: AnchorMarker.glyph(region.anchor, AnchorPalette.WHITE, slot.lift)
 
         val plaque = kit.plaque
         if (region.background && plaque != null && span.boxWidth >= 2 * PlaquePieces.CAP_WIDTH) {
