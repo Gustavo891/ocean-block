@@ -9,6 +9,7 @@ import ocean_block.system.islands.generator.GeneratorBreakListener
 import ocean_block.system.islands.generator.GeneratorFile
 import ocean_block.system.islands.generator.GeneratorListener
 import ocean_block.system.islands.island.IslandManager
+import ocean_block.system.islands.dialog.IslandDialog
 import ocean_block.system.islands.member.InviteQuitListener
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.view.*
@@ -54,6 +55,7 @@ object IslandsSystem {
         plugin.server.pluginManager.registerEvents(GeneratorListener(GeneratorFile.load(plugin)), plugin)
         plugin.server.pluginManager.registerEvents(GeneratorBreakListener(), plugin)
         plugin.server.pluginManager.registerEvents(InviteQuitListener(), plugin)
+        plugin.server.scheduler.runTaskTimer(plugin, Runnable { IslandDialog.refresh() }, IslandDialog.REFRESH_TICKS, IslandDialog.REFRESH_TICKS)
 
         IslandExpansion().register()
     }

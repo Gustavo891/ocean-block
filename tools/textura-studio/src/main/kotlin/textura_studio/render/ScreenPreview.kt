@@ -246,11 +246,12 @@ class ScreenPreview(private val assets: StudioAssets) {
             }
             textsByLine[line].orEmpty().sortedBy { it.x }.forEach { placed ->
                 val room = minOf(placed.maxWidth, laid.width - placed.x)
-                val content = if (room > 0) measurer.fit(placed.text, placed.bold, room) else ""
+                val content = if (room > 0) measurer.fit(placed.text, placed.bold, room, placed.font) else ""
                 if (content.isEmpty() && placed.text.isNotEmpty()) log.add("Texto '${placed.text}' não cabe em $room px e foi descartado")
                 if (content.isNotEmpty() && content != placed.text) log.add("Texto '${placed.text}' cortado para caber em $room px")
                 val rgb = placed.color?.value() ?: TextPainter.WHITE
-                text.draw(content, originX + placed.x, originY + placed.y, rgb, placed.bold, placed.shadow) { assets.kit.charAdvance(it) }
+                val painter = placed.font?.let { assets.extraFonts[it] }?.let { TextPainter(canvas, it, assets.vanillaFont) } ?: text
+                painter.draw(content, originX + placed.x, originY + placed.y, rgb, placed.bold, placed.shadow) { assets.kit.charAdvance(it, placed.font) }
             }
         }
         canvas.unclip()

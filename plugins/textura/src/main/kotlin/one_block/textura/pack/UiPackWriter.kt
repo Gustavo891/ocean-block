@@ -174,6 +174,12 @@ class UiPackWriter(
                 UiFonts.text(k),
                 listOf<FontProvider>(textSpace) + textFont.providers.map { FontProvider.bitMap(it.file, it.height, it.ascent - k, it.chars) },
             )
+            textFont.extras.forEach { (name, extra) ->
+                builder.addFont(
+                    UiFonts.text(k, name),
+                    listOf<FontProvider>(textSpace) + extra.providers.map { FontProvider.bitMap(it.file, it.height, it.ascent - k, it.chars) },
+                )
+            }
         }
         builder.addFont(UiFonts.SPACE, listOf(FontProvider.space(UiFonts.spaceChars().entries.associate { (amount, char) -> char to amount })))
     }

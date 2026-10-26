@@ -67,6 +67,7 @@ data class TextNode(
     override val position: UiPosition? = null,
     val shadow: Boolean = true,
     override val tag: String? = null,
+    val font: String? = null,
 ) : UiNode {
     override val h: UiSize get() = UiSize.Px(LINE_HEIGHT)
 

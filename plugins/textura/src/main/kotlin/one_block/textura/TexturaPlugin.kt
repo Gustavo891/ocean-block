@@ -256,7 +256,9 @@ class TexturaPlugin : JavaPlugin(), Listener {
     fun uiTextFont(): UiTextFont {
         val assets = PackAssets(dataFolder)
         val json = File(assets.configFolder("fonts"), config.getString("ui.fonte-texto") ?: DEFAULT_UI_TEXT_FONT)
-        return UiTextFontLoader.load(json, assets.resourceRoot, logger)
+        val extras = uiThemeRegistry.themes.values.flatMap { theme -> theme.styles.values.mapNotNull { it.font } }.toSortedSet()
+            .associateWith { name -> UiTextFontLoader.load(File(assets.configFolder("fonts"), "$name.json"), assets.resourceRoot, logger) }
+        return UiTextFontLoader.load(json, assets.resourceRoot, logger).withExtras(extras)
     }
 
     private fun auditUi() {

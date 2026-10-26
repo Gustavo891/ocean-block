@@ -110,10 +110,16 @@ class UiThemeRegistry(private val logger: Logger) {
             val raw = section.getString("$name.color")
             val color = UiColors.parse(raw)
             if (raw != null && color == null) logger.warning("[ui] Tema '$themeId': cor '$raw' do estilo '$name' inválida")
-            UiTextStyle(color, section.getBoolean("$name.bold", false), section.getBoolean("$name.shadow", true))
+            val font = section.getString("$name.font")?.trim()?.takeIf { it.isNotEmpty() }
+            if (font != null && !FONT_NAME.matches(font)) logger.warning("[ui] Tema '$themeId': fonte '$font' do estilo '$name' fora de [a-z0-9_-]")
+            UiTextStyle(color, section.getBoolean("$name.bold", false), section.getBoolean("$name.shadow", true), font?.takeIf(FONT_NAME::matches))
         }
     }
 
     private fun strings(section: ConfigurationSection?): Map<String, String> =
         section?.getKeys(false)?.mapNotNull { key -> section.getString(key)?.let { key to it } }?.toMap().orEmpty()
+
+    private companion object {
+        val FONT_NAME = Regex("[a-z0-9_-]+")
+    }
 }

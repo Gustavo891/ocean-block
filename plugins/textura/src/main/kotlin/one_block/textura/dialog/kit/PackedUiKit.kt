@@ -34,4 +34,8 @@ class PackedUiKit(
     override fun spaceChar(amount: Int): String? = spaces[amount]
 
     override fun charAdvance(codePoint: Int): Int = textFont.advance(codePoint)
+
+    override fun charAdvance(codePoint: Int, font: String?): Int = textFont.of(font).advance(codePoint)
+
+    override fun textFont(offset: Int, font: String?): Key = UiFonts.text(offset, font.takeIf { it != null && it in textFont.extras })
 }

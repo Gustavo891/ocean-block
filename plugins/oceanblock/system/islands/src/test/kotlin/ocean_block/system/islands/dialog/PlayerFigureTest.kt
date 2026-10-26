@@ -82,6 +82,26 @@ class PlayerFigureTest : StringSpec({
         PlayerFigure.render(skin(), slim = true).pixels().size shouldBeLessThanSize PlayerFigure.render(skin(), slim = false).pixels().size
     }
 
+    "virado de costas mostra a nuca e esconde o rosto" {
+        val back = canvas { fill ->
+            fill(8, 8, 8, 8, RED)
+            fill(24, 8, 8, 8, CYAN)
+        }
+
+        val image = PlayerFigure.render(back, slim = false, yaw = 180.0)
+
+        image.has(cyanLike) shouldBe true
+        image.has(redLike) shouldBe false
+    }
+
+    "os quadros da rotação dão a volta completa" {
+        val frames = PlayerFigure.frames(skin(), slim = false, count = 12)
+
+        frames.size shouldBe 12
+        frames.first().has(redLike) shouldBe true
+        frames[6].has(redLike) shouldBe false
+    }
+
     "skin antiga de 64x32 também desenha" {
         PlayerFigure.render(canvas(height = 32), slim = false).pixels().isNotEmpty() shouldBe true
     }

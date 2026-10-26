@@ -220,20 +220,20 @@ class UiRenderer(
             return
         }
 
-        val content = measurer.fit(placed.text, placed.bold, room)
+        val content = measurer.fit(placed.text, placed.bold, room, placed.font)
         if (content.isEmpty()) {
             if (placed.text.isNotEmpty()) warn("Texto '${placed.text}' não cabe em $room px e foi descartado")
             return
         }
         if (content != placed.text) warn("Texto '${placed.text}' cortado para caber em $room px")
 
-        var part = Component.text(content).font(kit.textFont(placed.y % LINE))
+        var part = Component.text(content).font(kit.textFont(placed.y % LINE, placed.font))
         placed.color?.let { part = part.color(it) }
         if (placed.bold) part = part.decoration(TextDecoration.BOLD, true)
         if (!placed.shadow) part = part.shadowColor(NO_SHADOW)
 
         line.moveTo(margin + placed.x)
-        line.append(part, measurer.width(content, placed.bold))
+        line.append(part, measurer.width(content, placed.bold, placed.font))
     }
 
     companion object {

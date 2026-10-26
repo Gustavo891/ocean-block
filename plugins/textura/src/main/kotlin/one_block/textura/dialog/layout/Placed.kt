@@ -13,7 +13,7 @@ sealed interface ImageVariant {
 
 data class PlacedImage(val id: String, val x: Int, val y: Int, val width: Int, val height: Int, val variant: ImageVariant)
 
-data class PlacedText(val text: String, val color: TextColor?, val bold: Boolean, val x: Int, val y: Int, val maxWidth: Int, val shadow: Boolean = true)
+data class PlacedText(val text: String, val color: TextColor?, val bold: Boolean, val x: Int, val y: Int, val maxWidth: Int, val shadow: Boolean = true, val font: String? = null)
 
 class PlacedPixels(val image: BufferedImage, val x: Int, val y: Int, val width: Int, val height: Int, val scale: Int)
 

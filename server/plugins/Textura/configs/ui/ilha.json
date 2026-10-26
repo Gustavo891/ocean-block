@@ -7,13 +7,22 @@
       "row": [
         {
           "column": [
-            { "box": [ { "image": "ui:abismo/ilha_capa" } ], "pad": 2, "surface": "well", "name": "Capa" }
+            { "pixels": "jogador", "w": 88, "h": 152, "scale": 2 },
+            { "space": 8 },
+            { "text": "{dono}", "style": "muted" }
           ],
-          "pad": 5, "surface": "sheet", "name": "PainelCapa"
+          "w": 146, "h": 226, "align": "center", "cross": "center", "surface": "palco", "name": "Palco"
         },
         {
           "column": [
-            { "text": "{nome}", "style": "heading", "w": "grow" },
+            {
+              "row": [
+                { "text": "{titulo}", "style": "titulo", "w": "grow" },
+                { "button": "X", "look": "fechar", "bind": "fechar", "w": 18 }
+              ],
+              "w": "grow", "cross": "start"
+            },
+            { "space": 2 },
             {
               "row": [
                 { "text": "{status}", "style": "{status_estilo}" },
@@ -25,125 +34,58 @@
               "gap": 4, "w": "grow"
             },
             {
-              "row": [
-                { "box": [ { "pixels": "jogador", "w": 44, "h": 76, "scale": 1 } ], "pad": 2, "surface": "well", "name": "Jogador" },
+              "column": [
+                { "text": "RESUMO DA ILHA", "style": "heading", "w": "grow" },
+                { "image": "ui:abismo/linha", "w": "grow" },
                 {
-                  "column": [
-                    { "text": "{dono}", "style": "heading", "w": "grow" },
-                    { "text": "Sua casa no meio do mar.", "style": "muted", "w": "grow" },
-                    { "space": 6 },
-                    { "text": "{gerador}", "style": "body", "w": "grow" },
-                    { "text": "{configuracoes}", "style": "body", "w": "grow" },
-                    { "space": 6 },
-                    {
-                      "row": [
-                        { "text": "Moedas", "style": "muted", "w": "grow" },
-                        { "text": "{moedas}", "style": "good", "icon": "item:gold_nugget" }
-                      ],
-                      "w": "grow", "cross": "center"
-                    }
+                  "row": [ { "text": "GERADOR", "style": "muted", "w": "grow" }, { "text": "{gerador}", "style": "body" } ],
+                  "w": "grow"
+                },
+                {
+                  "row": [ { "text": "CONFIGURAÇÕES", "style": "muted", "w": "grow" }, { "text": "{configuracoes}", "style": "body" } ],
+                  "w": "grow"
+                },
+                {
+                  "row": [ { "text": "VISITAS", "style": "muted", "w": "grow" }, { "text": "{visitas}", "style": "body" } ],
+                  "w": "grow"
+                },
+                {
+                  "row": [ { "text": "MOEDAS", "style": "muted", "w": "grow" }, { "text": "{moedas}", "style": "good" } ],
+                  "w": "grow"
+                },
+                { "image": "ui:abismo/linha", "w": "grow" },
+                {
+                  "row": [
+                    { "button": "MELHORIAS", "bind": "abrir_melhorias", "w": "grow" },
+                    { "button": "CONFIGURAÇÕES", "bind": "abrir_configuracoes", "w": "grow" }
                   ],
-                  "gap": 3, "w": "grow"
+                  "gap": 4, "w": "grow"
+                },
+                {
+                  "row": [
+                    { "button": "NÍVEL", "bind": "abrir_nivel", "w": "grow" },
+                    { "button": "MISSÕES", "bind": "abrir_missoes", "w": "grow" },
+                    { "button": "RECEITAS", "bind": "abrir_receitas", "w": "grow" }
+                  ],
+                  "gap": 4, "w": "grow"
                 }
               ],
-              "gap": 6, "pad": 5, "surface": "card", "w": "grow", "name": "Resumo"
+              "gap": 5, "pad": 6, "surface": "painel", "w": "grow", "name": "Resumo"
             },
+            { "button": "IR PARA A ILHA", "look": "acao", "bind": "abrir_ilha", "w": "grow" },
             {
               "row": [
-                { "button": "Ir para a ilha", "look": "acao", "bind": "abrir_ilha", "w": "grow" },
-                { "button": "Receitas", "bind": "abrir_receitas", "w": 70 }
+                { "button": "MEMBROS", "bind": "abrir_membros", "w": "grow" },
+                { "button": "VISITAS", "bind": "abrir_visitas", "w": "grow" }
               ],
               "gap": 4, "w": "grow"
             }
           ],
-          "gap": 5, "pad": 5, "surface": "sheet", "w": "grow", "name": "PainelIlha"
+          "gap": 5, "w": "grow", "name": "Lado"
         }
       ],
-      "gap": 4, "w": 395
-    },
-    {
-      "grid": [
-        {
-          "column": [
-            {
-              "row": [
-                { "icon": "item:name_tag", "size": 16 },
-                { "column": [ { "text": "Membros", "style": "heading", "w": "grow" }, { "text": "{membros}", "style": "muted", "w": "grow" } ], "gap": 2, "w": "grow" }
-              ],
-              "gap": 5, "cross": "center", "w": "grow"
-            },
-            { "button": "Membros", "bind": "abrir_membros", "w": "grow" }
-          ],
-          "gap": 4, "pad": 5, "surface": "card", "w": 129, "name": "CardMembros"
-        },
-        {
-          "column": [
-            {
-              "row": [
-                { "icon": "item:diamond_pickaxe", "size": 16 },
-                { "column": [ { "text": "Melhorias", "style": "heading", "w": "grow" }, { "text": "{gerador}", "style": "muted", "w": "grow" } ], "gap": 2, "w": "grow" }
-              ],
-              "gap": 5, "cross": "center", "w": "grow"
-            },
-            { "button": "Melhorias", "bind": "abrir_melhorias", "w": "grow" }
-          ],
-          "gap": 4, "pad": 5, "surface": "card", "w": 129, "name": "CardMelhorias"
-        },
-        {
-          "column": [
-            {
-              "row": [
-                { "icon": "item:comparator", "size": 16 },
-                { "column": [ { "text": "Configurações", "style": "heading", "w": "grow" }, { "text": "{configuracoes}", "style": "muted", "w": "grow" } ], "gap": 2, "w": "grow" }
-              ],
-              "gap": 5, "cross": "center", "w": "grow"
-            },
-            { "button": "Configurações", "bind": "abrir_configuracoes", "w": "grow" }
-          ],
-          "gap": 4, "pad": 5, "surface": "card", "w": 129, "name": "CardConfiguracoes"
-        },
-        {
-          "column": [
-            {
-              "row": [
-                { "icon": "item:oak_door", "size": 16 },
-                { "column": [ { "text": "Visitas", "style": "heading", "w": "grow" }, { "text": "{visitas}", "style": "muted", "w": "grow" } ], "gap": 2, "w": "grow" }
-              ],
-              "gap": 5, "cross": "center", "w": "grow"
-            },
-            { "button": "Visitas", "bind": "abrir_visitas", "w": "grow" }
-          ],
-          "gap": 4, "pad": 5, "surface": "card", "w": 129, "name": "CardVisitas"
-        },
-        {
-          "column": [
-            {
-              "row": [
-                { "icon": "item:experience_bottle", "size": 16 },
-                { "column": [ { "text": "Nível", "style": "heading", "w": "grow" }, { "text": "Níveis e prêmios", "style": "muted", "w": "grow" } ], "gap": 2, "w": "grow" }
-              ],
-              "gap": 5, "cross": "center", "w": "grow"
-            },
-            { "button": "Nível", "bind": "abrir_nivel", "w": "grow" }
-          ],
-          "gap": 4, "pad": 5, "surface": "card", "w": 129, "name": "CardNivel"
-        },
-        {
-          "column": [
-            {
-              "row": [
-                { "icon": "item:map", "size": 16 },
-                { "column": [ { "text": "Missões", "style": "heading", "w": "grow" }, { "text": "Missão e diárias", "style": "muted", "w": "grow" } ], "gap": 2, "w": "grow" }
-              ],
-              "gap": 5, "cross": "center", "w": "grow"
-            },
-            { "button": "Missões", "bind": "abrir_missoes", "w": "grow" }
-          ],
-          "gap": 4, "pad": 5, "surface": "card", "w": 129, "name": "CardMissoes"
-        }
-      ],
-      "columns": 3, "gap": 4, "w": 395
+      "gap": 6, "w": "grow"
     }
   ],
-  "gap": 4
+  "pad": 6, "surface": "moldura", "w": 395
 }

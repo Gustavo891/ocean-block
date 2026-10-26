@@ -2,23 +2,24 @@ abismo:
   icon-gap: 4
   icon-size: 9
   text:
-    heading: { color: "#ffffff", bold: true }
-    body: { color: "#dadbe0" }
-    muted: { color: "#9a9ca4" }
-    good: { color: "#72d655" }
-    bad: { color: "#ff6f61" }
-    accent: { color: "#5fd6e8" }
-    selected: { color: "#ffffa0" }
+    titulo: { color: "#ffffff", font: titulo }
+    heading: { color: "#ffffff", font: pequena }
+    body: { color: "#e2e2e2", font: pequena }
+    muted: { color: "#a7a9ad", font: pequena }
+    good: { color: "#6fdc5a", font: pequena }
+    bad: { color: "#ff6a5c", font: pequena }
+    accent: { color: "#5fd6e8", font: pequena }
+    selected: { color: "#ffffa0", font: pequena }
     count: { color: "#ffffff" }
-    disabled: { color: "#8b8b8b", shadow: false }
-    button: { color: "#2a2c31", shadow: false }
-    button-light: { color: "#ffffff" }
+    disabled: { color: "#8b8b8b", shadow: false, font: pequena }
+    button: { color: "#2f3034", shadow: false, font: pequena }
+    button-light: { color: "#ffffff", font: pequena }
     tooltip: { color: "#a8a8b3" }
   surfaces:
-    sheet: ui:abismo/sheet
-    card: ui:abismo/card
-    well: ui:abismo/well
-    frame: ui:abismo/well
+    moldura: ui:abismo/moldura
+    painel: ui:abismo/painel
+    palco: ui:abismo/palco
+    frame: ui:abismo/palco
   switch:
     labels: { on: "Ligado", off: "Desligado" }
   segmented:
@@ -29,16 +30,19 @@ abismo:
     pad: 8
     frame: ui:stone/segment_frame
   button:
-    art: ui:abismo/button
+    art: ui:abismo/botao
     text-style: button
     looks:
       acao:
-        art: ui:abismo/button_green
+        art: ui:abismo/botao_verde
         text-style: button-light
-        selected-art: ui:abismo/button_green_selected
+        selected-art: ui:abismo/botao_verde_hover
         selected-text-style: button-light
-        disabled-art: ui:abismo/button_disabled
+        disabled-art: ui:abismo/botao_off
         disabled-text-style: disabled
+      fechar:
+        art: ui:abismo/botao_fechar
+        text-style: button-light
   nav:
     art: ui:stone/nav
     active-art: ui:stone/nav_active

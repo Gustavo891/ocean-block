@@ -11,9 +11,13 @@ import javax.imageio.ImageIO
 
 data class TextProvider(val file: Key, val height: Int, val ascent: Int, val chars: List<String>)
 
-class UiTextFont(val providers: List<TextProvider>, private val widths: Map<Int, Int>) {
+class UiTextFont(val providers: List<TextProvider>, private val widths: Map<Int, Int>, val extras: Map<String, UiTextFont> = emptyMap()) {
 
     fun advance(codePoint: Int): Int = widths[codePoint] ?: DEFAULT_ADVANCE
+
+    fun of(font: String?): UiTextFont = font?.let { extras[it] } ?: this
+
+    fun withExtras(extras: Map<String, UiTextFont>): UiTextFont = UiTextFont(providers, widths, extras)
 
     companion object {
         const val DEFAULT_ADVANCE = 6

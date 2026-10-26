@@ -11,7 +11,7 @@ object UiColors {
     }
 }
 
-data class UiTextStyle(val color: TextColor?, val bold: Boolean, val shadow: Boolean = true)
+data class UiTextStyle(val color: TextColor?, val bold: Boolean, val shadow: Boolean = true, val font: String? = null)
 
 data class SwitchTheme(val on: String, val off: String, val onLabel: String, val offLabel: String)
 

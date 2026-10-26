@@ -173,11 +173,12 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 ## 11. Menu da ilha
 
 ### Dialog da ilha (`/ilha`)
-- [ ] Com ilha, `/ilha` abre o dialog `Sua Ilha` no tema escuro: a arte do OceanBlock (ilha isométrica, sem título) à esquerda, card com o seu personagem de corpo inteiro com a sua skin (3/4, frente, topo e lado), nome, status pública/privada, membros, borda, gerador, configurações e moedas; botão verde Ir para a ilha, Receitas e 6 cards (Membros, Melhorias, Configurações, Visitas, Nível, Missões).
+- [ ] Com ilha, `/ilha` abre o dialog `Sua Ilha`: moldura cinza-escura única com borda clara; à esquerda o seu personagem de corpo inteiro com a sua skin girando devagar (uma volta a cada ~3 s) e o seu nome embaixo; à direita o título grande `SUA ILHA` (ou `ILHA DE <DONO>` na ilha de um amigo), um X no canto, a linha de status em caixa alta (pública/privada colorida, membros, borda), o painel `RESUMO DA ILHA` com gerador, configurações, visitas e moedas separados por linhas, os botões MELHORIAS, CONFIGURAÇÕES, NÍVEL, MISSÕES, RECEITAS, o verde IR PARA A ILHA e MEMBROS e VISITAS.
+- [ ] As letras usam a fonte pixelada própria em caixa alta e com espaço entre as letras; acentos (Ç, Õ, Í, Ú) aparecem certos.
+- [ ] Clicar em qualquer botão com o personagem girando funciona de primeira (o redesenho não engole o clique).
+- [ ] X, Esc ou o botão Fechar fecham e o dialog não reabre sozinho. Abrir outro menu pelos botões também para a rotação.
 - [ ] Trocar de skin (SkinsRestorer) e reabrir: o personagem usa a skin nova; skin slim mostra braços finos. Sem skin ou com a Mojang fora do ar, aparece o personagem padrão e o log tem `[ilha] skin de <nome> indisponível`.
-- [ ] Cada card fecha o dialog e abre o menu de baú correspondente (Membros, Melhorias, Configurações, Visitas) ou roda `/nivel`, `/missoes`, `/receitas`. Ir para a ilha teleporta.
 - [ ] Membro parado na ilha do amigo: o dialog mostra a ilha do amigo. `/ilha menu` continua abrindo o menu de baú abaixo.
-- [ ] O dialog abre em até ~4 s mesmo com a Mojang lenta, sem travar o servidor.
 
 ### Hub de baú (`/ilha menu`)
 - [ ] `/ilha menu` abre o menu `Ilha de <dono>` (fundo `ilha_menu`, sem vidro): cabeça do dono no topo com membros `n/max`, borda, nível do gerador e visitas; embaixo Ir para a ilha, Membros, Melhorias, Configurações, Visitas, Receitas, Nível e Missões. Não existe mais botão de Fases.

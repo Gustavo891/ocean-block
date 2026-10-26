@@ -47,10 +47,8 @@ class DialogOpener(
     private val settings: PlayerSettings,
 ) : Listener {
 
-    private class Current(val token: Long, val session: DialogSession, val actions: List<UiAction>)
-
     private val counter = AtomicLong()
-    private val current = ConcurrentHashMap<UUID, Current>()
+    private val current = ConcurrentHashMap<UUID, RenderState>()
     private val warned = ConcurrentHashMap.newKeySet<String>()
 
     @Volatile
@@ -132,7 +130,7 @@ class DialogOpener(
             return DialogOpenResult.Failed
         }
 
-        current[player.uniqueId] = Current(token, session, actions.toList())
+        current[player.uniqueId] = RenderState.next(current[player.uniqueId], token, session, actions.toList())
         player.showDialog(rendered)
         return DialogOpenResult.Shown
     }
@@ -156,8 +154,8 @@ class DialogOpener(
                 val match = ACTION.find(payload) ?: return
                 val token = match.groupValues[1].toLongOrNull() ?: return
                 val index = match.groupValues[2].toIntOrNull() ?: return
-                val state = current[player.uniqueId]?.takeIf { it.token == token } ?: return
-                val action = state.actions.getOrNull(index) ?: return
+                val state = current[player.uniqueId] ?: return
+                val action = state.actions(token)?.getOrNull(index) ?: return
                 if (!current.remove(player.uniqueId, state)) return
                 run(player, state.session, action)
             }
@@ -208,13 +206,12 @@ class DialogOpener(
             .afterAction(DialogBase.DialogAfterAction.NONE)
             .body(listOf(body))
             .build()
-        val close = definition.close?.let { label ->
-            ActionButton.builder(TexturaTags.miniMessage.deserialize(label))
-                .width(BUTTON_WIDTH)
-                .action(DialogAction.staticAction(click(CLOSE)))
-                .build()
-        }
-        factory.empty().base(base).type(if (close != null) DialogType.notice(close) else DialogType.notice())
+        val label = definition.close?.let(TexturaTags.miniMessage::deserialize) ?: Component.translatable(DEFAULT_BUTTON)
+        val close = ActionButton.builder(label)
+            .width(BUTTON_WIDTH)
+            .action(DialogAction.staticAction(click(CLOSE)))
+            .build()
+        factory.empty().base(base).type(DialogType.notice(close))
     }
 
     private fun fallback(): Dialog = Dialog.create { factory ->
@@ -232,6 +229,7 @@ class DialogOpener(
     private companion object {
         const val BUTTON_WIDTH = 150
         const val CLOSE = "close"
+        const val DEFAULT_BUTTON = "gui.ok"
         const val APPLY = "apply"
         val CLICK_KEY: Key = Key.key("textura", "ui")
         val ACTION = Regex("""(\d+):(\d+)""")

@@ -4,20 +4,20 @@ import one_block.textura.dialog.kit.UiKit
 
 class TextMeasurer(private val kit: UiKit) {
 
-    fun width(text: String, bold: Boolean): Int =
-        text.codePoints().toArray().sumOf { advance(it, bold) }
+    fun width(text: String, bold: Boolean, font: String? = null): Int =
+        text.codePoints().toArray().sumOf { advance(it, bold, font) }
 
-    fun fit(text: String, bold: Boolean, max: Int): String {
-        if (width(text, bold) <= max) return text
+    fun fit(text: String, bold: Boolean, max: Int, font: String? = null): String {
+        if (width(text, bold, font) <= max) return text
 
-        val ellipsis = width(ELLIPSIS, bold)
+        val ellipsis = width(ELLIPSIS, bold, font)
         if (ellipsis > max) return ""
 
         val codePoints = text.codePoints().toArray()
         var used = ellipsis
         var count = 0
         while (count < codePoints.size) {
-            val next = advance(codePoints[count], bold)
+            val next = advance(codePoints[count], bold, font)
             if (used + next > max) break
             used += next
             count++
@@ -25,7 +25,7 @@ class TextMeasurer(private val kit: UiKit) {
         return String(codePoints, 0, count).trimEnd() + ELLIPSIS
     }
 
-    private fun advance(codePoint: Int, bold: Boolean): Int = kit.charAdvance(codePoint) + if (bold) 1 else 0
+    private fun advance(codePoint: Int, bold: Boolean, font: String?): Int = kit.charAdvance(codePoint, font) + if (bold) 1 else 0
 
     companion object {
         const val ELLIPSIS = "..."

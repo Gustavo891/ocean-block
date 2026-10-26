@@ -170,7 +170,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val style = theme.style(if (active) theme.nav.activeTextStyle else theme.nav.textStyle)
             val label = listOfNotNull(
                 ContainerNode.space(theme.nav.pad),
-                *labelParts(def.icon, TextNode(placeholders.plain(def.label), style.color, style.bold, shadow = style.shadow)),
+                *labelParts(def.icon, TextNode(placeholders.plain(def.label), style.color, style.bold, shadow = style.shadow, font = style.font)),
             )
             return ContainerNode(
                 ContainerKind.Box,
@@ -216,7 +216,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                 if (item.count > 1) {
                     ContainerNode(
                         ContainerKind.Box,
-                        listOf(TextNode(item.count.toString(), style.color, style.bold, shadow = style.shadow)),
+                        listOf(TextNode(item.count.toString(), style.color, style.bold, shadow = style.shadow, font = style.font)),
                         pad = 1,
                         align = UiAlign.End,
                         cross = UiAlign.End,
@@ -267,7 +267,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                         ContainerKind.Row,
                         listOf(
                             ContainerNode.space(3),
-                            TextNode(placeholders.plain(label), style.color, style.bold, w = UiSize.Grow, shadow = style.shadow),
+                            TextNode(placeholders.plain(label), style.color, style.bold, w = UiSize.Grow, shadow = style.shadow, font = style.font),
                             ImageNode(theme.dropdown.arrow),
                             ContainerNode.space(3),
                         ),
@@ -305,7 +305,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val children = listOfNotNull(
                 ImageNode(theme.slider.track, w = UiSize.Grow),
                 if (fillWidth >= maxOf(minimumFill, 1)) ImageNode(theme.slider.fill, w = UiSize.Px(fillWidth)) else null,
-                TextNode(label, style.color, style.bold, UiTextAlign.Center, UiSize.Grow, shadow = style.shadow),
+                TextNode(label, style.color, style.bold, UiTextAlign.Center, UiSize.Grow, shadow = style.shadow, font = style.font),
                 ContainerNode(
                     ContainerKind.Row,
                     listOf(HotspotNode(move(-def.step), tooltip), HotspotNode(move(def.step), tooltip)),
@@ -369,9 +369,9 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val bold = def.bold ?: style.bold
             val value = placeholders.plain(def.text)
             val iconNode = def.icon?.let(::labelIcon)
-            if (iconNode == null) return TextNode(value, color, bold, def.align, def.w, position, style.shadow)
+            if (iconNode == null) return TextNode(value, color, bold, def.align, def.w, position, style.shadow, font = style.font)
 
-            val label = TextNode(value, color, bold, def.align, if (def.w == UiSize.Grow) UiSize.Grow else UiSize.Fit, shadow = style.shadow)
+            val label = TextNode(value, color, bold, def.align, if (def.w == UiSize.Grow) UiSize.Grow else UiSize.Fit, shadow = style.shadow, font = style.font)
             return ContainerNode(
                 ContainerKind.Row,
                 listOf(iconNode, lowered(label)),
@@ -414,7 +414,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val segments = def.options.mapIndexed { index, option ->
                 val chosen = index == selected
                 val style = if (chosen) active else normal
-                val width = maxOf(measurer.width(option, normal.bold), measurer.width(option, active.bold)) + theme.segmented.pad * 2
+                val width = maxOf(measurer.width(option, normal.bold, normal.font), measurer.width(option, active.bold, active.font)) + theme.segmented.pad * 2
                 val action = UiAction {
                     session.choose(key, def.options, index)
                     UiOutcome.Refresh
@@ -423,7 +423,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
                     ContainerKind.Box,
                     listOf(
                         ImageNode(if (chosen) theme.segmented.selectedArt else theme.segmented.art, w = UiSize.Grow),
-                        TextNode(option, style.color, style.bold, shadow = style.shadow),
+                        TextNode(option, style.color, style.bold, shadow = style.shadow, font = style.font),
                         HotspotNode(action, tooltip),
                     ),
                     align = UiAlign.Center,
@@ -452,7 +452,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val style = theme.style(theme.chip.textStyle)
             val content = listOfNotNull(
                 ContainerNode.space(theme.chip.pad),
-                *labelParts(def.icon, TextNode(placeholders.plain(def.label), style.color, style.bold, shadow = style.shadow)),
+                *labelParts(def.icon, TextNode(placeholders.plain(def.label), style.color, style.bold, shadow = style.shadow, font = style.font)),
                 ContainerNode.space(theme.chip.pad),
             )
             return ContainerNode(
@@ -472,8 +472,8 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             return ContainerNode(
                 ContainerKind.Row,
                 listOf(
-                    TextNode(placeholders.plain(def.label), label.color, label.bold, w = UiSize.Grow, shadow = label.shadow),
-                    TextNode(placeholders.plain(def.value), value.color, value.bold, UiTextAlign.Right, shadow = value.shadow),
+                    TextNode(placeholders.plain(def.label), label.color, label.bold, w = UiSize.Grow, shadow = label.shadow, font = label.font),
+                    TextNode(placeholders.plain(def.value), value.color, value.bold, UiTextAlign.Right, shadow = value.shadow, font = value.font),
                 ),
                 gap = theme.iconGap,
                 w = def.w,
@@ -499,7 +499,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             )
             val label = listOfNotNull(
                 ContainerNode.space(1),
-                *labelParts(def.icon, TextNode(placeholders.plain(def.label), style.color, style.bold, shadow = style.shadow)),
+                *labelParts(def.icon, TextNode(placeholders.plain(def.label), style.color, style.bold, shadow = style.shadow, font = style.font)),
                 ContainerNode.space(1),
             )
             val action = when {

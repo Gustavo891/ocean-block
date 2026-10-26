@@ -52,7 +52,7 @@ class UiLayout(private val kit: UiKit) {
         return when (node) {
             is ImageNode -> kit.image(node.id)?.let { image -> image.slice?.let { it.left + it.right } ?: image.width } ?: 0
             is IconNode -> node.size
-            is TextNode -> measurer.width(node.text, node.bold)
+            is TextNode -> measurer.width(node.text, node.bold, node.font)
             is HotspotNode -> 0
             is PixelsNode -> (node.w as? UiSize.Px)?.value ?: (node.image.width * node.scale)
             is ContainerNode -> {
@@ -107,13 +107,13 @@ class UiLayout(private val kit: UiKit) {
     }
 
     private fun placeText(node: TextNode, x: Int, y: Int, width: Int, sink: Sink): Int {
-        val textWidth = measurer.width(node.text, node.bold)
+        val textWidth = measurer.width(node.text, node.bold, node.font)
         val offset = when (node.align) {
             UiTextAlign.Left -> 0
             UiTextAlign.Center -> ((width - textWidth + 1) / 2).coerceAtLeast(0)
             UiTextAlign.Right -> (width - textWidth).coerceAtLeast(0)
         }
-        sink.texts += PlacedText(node.text, node.color, node.bold, x + offset, y, width - offset, node.shadow)
+        sink.texts += PlacedText(node.text, node.color, node.bold, x + offset, y, width - offset, node.shadow, node.font)
         return TextNode.LINE_HEIGHT
     }
 

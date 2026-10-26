@@ -19,10 +19,13 @@ object PlayerSkins {
     private const val MAX_CACHED = 128
     private val TIMEOUT: Duration = Duration.ofSeconds(4)
 
-    private val client: HttpClient = HttpClient.newBuilder().connectTimeout(TIMEOUT).followRedirects(HttpClient.Redirect.NORMAL).build()
-    private val figures = ConcurrentHashMap<String, BufferedImage>()
+    private const val FRAMES = 12
 
-    fun figure(player: Player): CompletableFuture<BufferedImage> {
+    private val client: HttpClient = HttpClient.newBuilder().connectTimeout(TIMEOUT).followRedirects(HttpClient.Redirect.NORMAL).build()
+
+    private val figures = ConcurrentHashMap<String, List<BufferedImage>>()
+
+    fun frames(player: Player): CompletableFuture<List<BufferedImage>> {
         val textures = player.playerProfile.textures
         val url = textures.skin ?: return CompletableFuture.completedFuture(fallback())
         val slim = textures.skinModel == PlayerTextures.SkinModel.SLIM
@@ -34,7 +37,7 @@ object PlayerSkins {
             .thenApply { response ->
                 val skin = response.takeIf { it.statusCode() == 200 }?.body()?.let { ImageIO.read(ByteArrayInputStream(it)) }
                     ?: error("skin ${response.statusCode()}")
-                PlayerFigure.render(skin, slim).also { remember(key, it) }
+                PlayerFigure.frames(skin, slim, FRAMES).also { remember(key, it) }
             }
             .exceptionally { error ->
                 Instance.logger.warning("[ilha] skin de ${player.name} indisponível: ${error.message}")
@@ -42,12 +45,12 @@ object PlayerSkins {
             }
     }
 
-    private fun remember(key: String, figure: BufferedImage) {
+    private fun remember(key: String, figure: List<BufferedImage>) {
         if (figures.size >= MAX_CACHED) figures.clear()
         figures[key] = figure
     }
 
-    private val fallbackFigure: BufferedImage by lazy { PlayerFigure.render(DefaultSkin.image(), slim = false) }
+    private val fallbackFrames: List<BufferedImage> by lazy { PlayerFigure.frames(DefaultSkin.image(), slim = false, count = FRAMES) }
 
-    private fun fallback(): BufferedImage = fallbackFigure
+    private fun fallback(): List<BufferedImage> = fallbackFrames
 }

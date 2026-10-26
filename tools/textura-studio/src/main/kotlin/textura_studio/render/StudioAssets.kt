@@ -31,6 +31,7 @@ class StudioAssets(
     val uiArt: List<String> = emptyList(),
     val glyphs: Map<String, GlyphMeta> = emptyMap(),
     val bossbarFont: McFont = McFont.EMPTY,
+    val extraFonts: Map<String, McFont> = emptyMap(),
 ) {
 
     fun translate(key: String, fallback: String): String = lang[key] ?: fallback
@@ -59,7 +60,9 @@ class StudioAssets(
                 vanilla?.itemTexture(name, false)
             }
             val textFont = UiTextFontLoader.load(File(data, TEXT_FONT), packAssets.resourceRoot, log.logger)
-            val kit = BaseUiKit(catalog, textFont)
+            val extraNames = themes.values.flatMap { theme -> theme.styles.values.mapNotNull { it.font } }.toSortedSet()
+            val extraText = extraNames.associateWith { UiTextFontLoader.load(File(data, "configs/fonts/$it.json"), packAssets.resourceRoot, log.logger) }
+            val kit = BaseUiKit(catalog, textFont.withExtras(extraText))
 
             val files = GameFiles(packAssets.resourceRoot, jar)
             val loader = McFontLoader(files::fontJson, files::fontTexture) { log.add(it) }
@@ -81,7 +84,8 @@ class StudioAssets(
                 .map { "ui:" + it.relativeTo(uiRoot).invariantSeparatorsPath.removeSuffix(".png") }
                 .sorted()
                 .toList()
-            return StudioAssets(themes, catalog, kit, bodyFont, vanillaFont, files, lang, log.all(), glyphs.keys.sorted(), uiArt, glyphs, bossbarFont)
+            val extraFonts = extraNames.mapNotNull { name -> File(data, "configs/fonts/$name.json").takeIf { it.isFile }?.let { name to loader.loadText(it.readText(), "configs/fonts/$name.json") } }.toMap()
+            return StudioAssets(themes, catalog, kit, bodyFont, vanillaFont, files, lang, log.all(), glyphs.keys.sorted(), uiArt, glyphs, bossbarFont, extraFonts)
         }
 
         /** Mesmo mapeamento id -> arquivo do GlyphRegistry, só que somente leitura. */

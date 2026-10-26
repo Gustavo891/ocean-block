@@ -27,9 +27,11 @@ interface UiKit {
     fun icon(size: IconSize): UiImage?
     fun imageFont(offset: Int): Key
     fun textFont(offset: Int): Key
+    fun textFont(offset: Int, font: String?): Key = textFont(offset)
     val spaceFont: Key
     fun spaceChar(amount: Int): String?
     fun charAdvance(codePoint: Int): Int
+    fun charAdvance(codePoint: Int, font: String?): Int = charAdvance(codePoint)
     val hit: UiPiece?
     fun pixel(scale: Int, width: Int): UiPiece? = null
 }
@@ -55,6 +57,8 @@ object UiFonts {
     fun image(offset: Int): Key = Key.key(NAMESPACE, "ui/image_$offset")
 
     fun text(offset: Int): Key = Key.key(NAMESPACE, "ui/text_$offset")
+
+    fun text(offset: Int, font: String?): Key = if (font == null) text(offset) else Key.key(NAMESPACE, "ui/text_${font}_$offset")
 
     fun spaceChars(): Map<Int, String> = buildMap {
         SPACE_STEPS.forEachIndexed { index, step ->

@@ -21,6 +21,7 @@ object PlayerFigure {
     private const val LIMB_INFLATE = 0.25
     private const val AMBIENT = 0.45
     private const val DIFFUSE = 0.6
+    private const val FULL_TURN = 360.0
 
     private data class Vec(val x: Double, val y: Double, val z: Double) {
         operator fun plus(o: Vec) = Vec(x + o.x, y + o.y, z + o.z)
@@ -37,16 +38,20 @@ object PlayerFigure {
 
     private val light = Vec(-0.5, 0.7, 0.5).let { it * (1 / sqrt(it.dot(it))) }
 
-    fun render(skin: BufferedImage, slim: Boolean): BufferedImage {
+    fun frames(skin: BufferedImage, slim: Boolean, count: Int): List<BufferedImage> =
+        (0 until count).map { render(skin, slim, YAW + FULL_TURN * it / count) }
+
+    fun render(skin: BufferedImage, slim: Boolean, yaw: Double = YAW): BufferedImage {
         val boxes = boxes(slim, legacy = skin.height < skin.width)
         val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
-        val direction = toModel(Vec(0.0, 0.0, -1.0))
+        val camera = Camera(Math.toRadians(yaw), Math.toRadians(PITCH))
+        val direction = camera.toModel(Vec(0.0, 0.0, -1.0))
         for (py in 0 until HEIGHT) {
             for (px in 0 until WIDTH) {
                 val view = Vec((px + 0.5 - WIDTH / 2.0) / UNIT, (HEIGHT / 2.0 - (py + 0.5)) / UNIT, FAR)
-                val origin = toModel(view) + Vec(0.0, CENTER_Y, 0.0)
+                val origin = camera.toModel(view) + Vec(0.0, CENTER_Y, 0.0)
                 val hit = boxes.mapNotNull { trace(skin, it, origin, direction) }.minByOrNull { it.t } ?: continue
-                image.setRGB(px, py, lit(hit))
+                image.setRGB(px, py, lit(hit, camera))
             }
         }
         return image
@@ -130,24 +135,28 @@ object PlayerFigure {
 
     private fun cell(fraction: Double, size: Int): Int = floor(fraction.coerceIn(0.0, 0.9999) * size).toInt()
 
-    private fun lit(hit: Hit): Int {
-        val factor = AMBIENT + DIFFUSE * maxOf(0.0, toView(hit.normal).dot(light))
+    private fun lit(hit: Hit, camera: Camera): Int {
+        val factor = AMBIENT + DIFFUSE * maxOf(0.0, camera.toView(hit.normal).dot(light))
         val r = (((hit.argb shr 16) and 0xFF) * factor).toInt().coerceIn(0, 255)
         val g = (((hit.argb shr 8) and 0xFF) * factor).toInt().coerceIn(0, 255)
         val b = ((hit.argb and 0xFF) * factor).toInt().coerceIn(0, 255)
         return (0xFF shl 24) or (r shl 16) or (g shl 8) or b
     }
 
-    private val yaw = Math.toRadians(YAW)
-    private val pitch = Math.toRadians(PITCH)
+    private class Camera(yaw: Double, pitch: Double) {
+        private val cy = cos(yaw)
+        private val sy = sin(yaw)
+        private val cp = cos(pitch)
+        private val sp = sin(pitch)
 
-    private fun toView(p: Vec): Vec {
-        val y1 = Vec(p.x * cos(yaw) + p.z * sin(yaw), p.y, -p.x * sin(yaw) + p.z * cos(yaw))
-        return Vec(y1.x, y1.y * cos(pitch) - y1.z * sin(pitch), y1.y * sin(pitch) + y1.z * cos(pitch))
-    }
+        fun toView(p: Vec): Vec {
+            val y1 = Vec(p.x * cy + p.z * sy, p.y, -p.x * sy + p.z * cy)
+            return Vec(y1.x, y1.y * cp - y1.z * sp, y1.y * sp + y1.z * cp)
+        }
 
-    private fun toModel(v: Vec): Vec {
-        val x1 = Vec(v.x, v.y * cos(pitch) + v.z * sin(pitch), -v.y * sin(pitch) + v.z * cos(pitch))
-        return Vec(x1.x * cos(yaw) - x1.z * sin(yaw), x1.y, x1.x * sin(yaw) + x1.z * cos(yaw))
+        fun toModel(v: Vec): Vec {
+            val x1 = Vec(v.x, v.y * cp + v.z * sp, -v.y * sp + v.z * cp)
+            return Vec(x1.x * cy - x1.z * sy, x1.y, x1.x * sy + x1.z * cy)
+        }
     }
 }
