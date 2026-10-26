@@ -1,153 +1,45 @@
-tempo_faixa_30:
-  id: tempo_faixa_30
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_30.png
-  ascent: 6
-  height: 6
-  size: 35
+tempo_cartao_110:
+  id: tempo_cartao_110
+  caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_110.png
+  ascent: 9
+  height: 37
+  size: 110
   default: true
   show_in_gui: false
 
-tempo_faixa_60:
-  id: tempo_faixa_60
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_60.png
-  ascent: 6
-  height: 6
-  size: 27
+tempo_cartao_140:
+  id: tempo_cartao_140
+  caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_140.png
+  ascent: 9
+  height: 37
+  size: 140
   default: true
   show_in_gui: false
 
-tempo_faixa_120:
-  id: tempo_faixa_120
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_120.png
-  ascent: 6
-  height: 6
-  size: 29
+tempo_cartao_170:
+  id: tempo_cartao_170
+  caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_170.png
+  ascent: 9
+  height: 37
+  size: 170
   default: true
   show_in_gui: false
 
-tempo_faixa_240:
-  id: tempo_faixa_240
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_240.png
-  ascent: 6
-  height: 6
-  size: 29
+tempo_cartao_200:
+  id: tempo_cartao_200
+  caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_200.png
+  ascent: 9
+  height: 37
+  size: 200
   default: true
   show_in_gui: false
 
-tempo_faixa_480:
-  id: tempo_faixa_480
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_480.png
-  ascent: 6
-  height: 6
-  size: 29
-  default: true
-  show_in_gui: false
-
-tempo_faixa_720:
-  id: tempo_faixa_720
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_720.png
-  ascent: 6
-  height: 6
-  size: 31
-  default: true
-  show_in_gui: false
-
-tempo_faixa_1440:
-  id: tempo_faixa_1440
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_1440.png
-  ascent: 6
-  height: 6
-  size: 31
-  default: true
-  show_in_gui: false
-
-tempo_faixa_2880:
-  id: tempo_faixa_2880
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_2880.png
-  ascent: 6
-  height: 6
-  size: 31
-  default: true
-  show_in_gui: false
-
-tempo_faixa_4320:
-  id: tempo_faixa_4320
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_4320.png
-  ascent: 6
-  height: 6
-  size: 31
-  default: true
-  show_in_gui: false
-
-tempo_faixa_6000:
-  id: tempo_faixa_6000
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_6000.png
-  ascent: 6
-  height: 6
-  size: 33
-  default: true
-  show_in_gui: false
-
-tempo_faixa_generico:
-  id: tempo_faixa_generico
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_generico.png
-  ascent: 6
-  height: 6
-  size: 26
-  default: true
-  show_in_gui: false
-
-tempo_faixa_esq_0:
-  id: tempo_faixa_esq_0
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_esq_0.png
-  ascent: 6
-  height: 6
-  size: 9
-  default: true
-  show_in_gui: false
-
-tempo_faixa_dir_0:
-  id: tempo_faixa_dir_0
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_dir_0.png
-  ascent: 6
-  height: 6
-  size: 9
-  default: true
-  show_in_gui: false
-
-tempo_faixa_esq_1:
-  id: tempo_faixa_esq_1
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_esq_1.png
-  ascent: 6
-  height: 6
-  size: 9
-  default: true
-  show_in_gui: false
-
-tempo_faixa_dir_1:
-  id: tempo_faixa_dir_1
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_dir_1.png
-  ascent: 6
-  height: 6
-  size: 9
-  default: true
-  show_in_gui: false
-
-tempo_faixa_esq_2:
-  id: tempo_faixa_esq_2
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_esq_2.png
-  ascent: 6
-  height: 6
-  size: 9
-  default: true
-  show_in_gui: false
-
-tempo_faixa_dir_2:
-  id: tempo_faixa_dir_2
-  caminho: assets/oneblock/textures/icons/tempo/tempo_faixa_dir_2.png
-  ascent: 6
-  height: 6
-  size: 9
+tempo_cartao_240:
+  id: tempo_cartao_240
+  caminho: assets/oneblock/textures/icons/tempo/tempo_cartao_240.png
+  ascent: 9
+  height: 37
+  size: 240
   default: true
   show_in_gui: false
 

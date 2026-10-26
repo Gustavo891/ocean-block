@@ -41,11 +41,10 @@ nivel:
 
 tempo:
   id: tempo
-  ancora: CENTRO
+  ancora: TOPO_DIREITA
   x: 0
-  y: 44
+  y: 4
   linhas: 2
   espacamento: 0
   fundo: false
   direcao: baixo
-  animacao: true
