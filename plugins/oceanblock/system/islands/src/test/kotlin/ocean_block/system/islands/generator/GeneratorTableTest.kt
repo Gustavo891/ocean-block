@@ -80,14 +80,28 @@ class GeneratorTableTest : StringSpec({
         GeneratorRoller.roll(table, 0, FixedRandom(90)) shouldBe "COAL_ORE"
     }
 
-    "tabela padrao tem 5 niveis e so libera diamante no ultimo" {
+    "tabela padrao libera os minerios por nivel" {
         val warnings = mutableListOf<String>()
         val table = parse(bundled(), warnings)
+        val ores = { level: Int -> table.weights(level).map { it.block }.toSet() }
+        val base = setOf("COBBLESTONE", "STONE", "COAL_ORE", "COPPER_ORE", "IRON_ORE")
 
         warnings shouldHaveSize 0
         table.maxLevel shouldBe 4
-        (0..3).forEach { level -> table.weights(level).none { it.block == "DIAMOND_ORE" } shouldBe true }
-        table.weights(4).any { it.block == "DIAMOND_ORE" } shouldBe true
-        table.weights(0).map { it.block } shouldContainExactly listOf("COBBLESTONE", "STONE", "COAL_ORE")
+        ores(0) shouldBe base
+        ores(1) shouldBe base + setOf("LAPIS_ORE", "REDSTONE_ORE")
+        ores(2) shouldBe ores(1) + setOf("GOLD_ORE", "EMERALD_ORE")
+        ores(3) shouldBe ores(2) + "DIAMOND_ORE"
+        ores(4) shouldBe ores(3)
+    }
+
+    "o nivel 4 aumenta a chance de diamante sobre o nivel 3" {
+        val table = parse(bundled())
+        val chance = { level: Int ->
+            val weights = table.weights(level)
+            weights.first { it.block == "DIAMOND_ORE" }.weight.toDouble() / weights.sumOf { it.weight }
+        }
+
+        (chance(4) > chance(3)) shouldBe true
     }
 })

@@ -129,10 +129,10 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Depois de reiniciar e rodar `/textura gerar`, o pack sobe com as telas `nivel` e `missoes` e o tema `mare` sem aviso; a coleção `island_research` sumiu do Mongo.
 
 ### Gerador
-- [ ] Ilha nova (Gerador nível 0): um gerador de pedra (lava + água) forma pedregulho, pedra e às vezes minério de carvão.
-- [ ] No `/ilha` → upgrades aparece `Gerador` com preço 25.000; comprar sobe para o nível 1 (`Gerador evoluído com sucesso!`) e o gerador passa a formar também cobre e ferro.
+- [ ] Ilha nova (Gerador nível 0): um gerador de pedra (lava + água) forma pedregulho, pedra e às vezes minério de carvão, cobre e ferro.
+- [ ] No `/ilha` → upgrades aparece `Gerador` com preço 25.000; comprar sobe para o nível 1 (`Gerador evoluído com sucesso!`) e o gerador passa a formar também lápis e redstone; no nível 2 entram ouro e esmeralda.
 - [ ] Comprar Membros ou Borda não mexe no nível nem no preço do Gerador, e vice-versa.
-- [ ] No nível 4 aparece minério de diamante de vez em quando; antes disso nunca.
+- [ ] No nível 3 aparece minério de diamante de vez em quando; antes disso nunca. No nível 4 os minérios (diamante inclusive) saem com mais frequência.
 - [ ] Um gerador fora de qualquer ilha (mundo do spawn) continua formando pedregulho vanilla.
 - [ ] Editar `gerador.yml` com um bloco inválido e reiniciar: aviso `[gerador]` no console e o resto da tabela vale.
 
