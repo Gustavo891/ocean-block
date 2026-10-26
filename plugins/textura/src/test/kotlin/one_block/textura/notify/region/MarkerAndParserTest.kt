@@ -70,7 +70,7 @@ class MarkerAndParserTest : StringSpec({
     "padrões do spec" {
         val (coleta, avisos) = RegionConfigParser.DEFAULTS
         coleta shouldBe NotificationRegion("coleta", ScreenAnchor.MIDDLE_RIGHT, 0, 70, 6, 1, true, StackDirection.DOWN)
-        avisos shouldBe NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 4, 4, 3, 1, true, StackDirection.DOWN)
+        avisos shouldBe NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 2, 5, 5, 1, true, StackDirection.DOWN)
     }
 
     "arquivo ausente usa os padrões e avisa" {

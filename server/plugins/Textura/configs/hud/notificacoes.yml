@@ -11,9 +11,9 @@ coleta:
 avisos:
   id: avisos
   ancora: TOPO_ESQUERDA
-  x: 4
-  y: 4
-  linhas: 3
+  x: 2
+  y: 5
+  linhas: 5
   espacamento: 1
   fundo: true
   direcao: baixo

@@ -35,6 +35,7 @@ Verificações que precisam de jogador no jogo; os agentes não conseguiram roda
 - [ ] Sair e entrar de novo: volta para a ilha.
 - [ ] `/locate structure minecraft:shipwreck` não encontra nada.
 - [ ] `/oceanblock reload`, `/shop`, `/sell`, `/tops` respondem.
+- [ ] Vender itens mostra no topo esquerdo, a uns 4 px do canto, o toast de venda: selo verde com a esmeralda, `+$<total>` em verde e `<n> itens vendidos` em branco; some em 4 s. Outra venda logo em seguida troca o toast no lugar. Um aviso (rede cheia, recompensas pendentes) empilha acima ou abaixo dele, nunca por baixo. `/textura notificacoes send venda` mostra o toast.
 
 ## 7. Deriva e gancho
 Pré-requisito: ilha criada e o servidor com o plugin novo. A config fica em `server/plugins/ocean-block/drift.yml`.

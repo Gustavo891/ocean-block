@@ -7,18 +7,12 @@ import org.bukkit.entity.Player
 
 object SaleNotifier {
 
-    const val ICON_MATERIAL = "emerald"
-
     private const val REGION = "avisos"
     private const val DURATION_TICKS = 80
 
     fun notify(player: Player, total: Double, amount: Int) {
-        val line = NotificationLine(
-            SaleText.line(NumberFormatter.format(total), amount),
-            "item:$ICON_MATERIAL",
-            DURATION_TICKS,
-            "venda",
-        )
-        NotificationApi.push(player, REGION, line)
+        SaleCard.lines(NumberFormatter.format(total), amount).forEachIndexed { index, line ->
+            NotificationApi.push(player, REGION, NotificationLine(line.text, line.icon, DURATION_TICKS, "venda_$index"))
+        }
     }
 }

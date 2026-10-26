@@ -56,6 +56,11 @@ class CenterRegionTest : StringSpec({
         RegionConfigParser.DEFAULTS.none { it.id == "nivel" || it.id == "tempo" } shouldBe true
     }
 
+    "os avisos ficam no canto superior esquerdo com espaco para o toast de venda" {
+        RegionConfigParser.DEFAULTS.first { it.id == "avisos" } shouldBe
+            NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 2, 5, 5, 1, true, StackDirection.DOWN)
+    }
+
     "a linha guarda quando comecou e a fase, e a troca pela mesma chave recomeca" {
         val lines = RegionLines(1)
         lines.push(NotificationLine("+1", null, 70, "xp"), 10, 37)

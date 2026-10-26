@@ -18,7 +18,6 @@ object SellSystem {
     fun init(plugin: JavaPlugin, viewFrame: ViewFrame) {
         this.plugin = plugin
         SellManager.load()
-        NotificationApi.registerItemIcons(listOf(SaleNotifier.ICON_MATERIAL))
         NotificationApi.registerSample("venda") { SaleNotifier.notify(it, SAMPLE_TOTAL, SAMPLE_AMOUNT) }
         viewFrame.with(SellView())
         viewFrame.with(SellItemsView())

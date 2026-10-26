@@ -35,7 +35,7 @@ class NotificationPackWriterTest : StringSpec({
             Logger.getLogger("NotificationPackWriterTest"),
         ).write(builder)
 
-        kit.textTops.toList() shouldBe listOf(4, 5, 18, 19, 28, 32, 33, 47, 61, 70, 75, 84, 98, 112, 126, 140)
+        kit.textTops.toList() shouldBe listOf(5, 19, 28, 33, 47, 61, 70, 75, 84, 98, 112, 126, 140)
         kit.icons.keys shouldBe setOf("item:oak_planks")
         kit.icons.getValue("item:oak_planks").advance shouldBe 7
         kit.plaque shouldNotBe null
@@ -101,6 +101,6 @@ class NotificationPackWriterTest : StringSpec({
         ).write(PackBuilder())
 
         kit.backdrop("glyph:toast_linha")?.raise shouldBe 4
-        kit.textTops.containsAll(listOf(5, 19, 33, 1, 15, 29, 0)) shouldBe true
+        kit.textTops.containsAll(listOf(5, 19, 33, 1, 15, 29)) shouldBe true
     }
 })

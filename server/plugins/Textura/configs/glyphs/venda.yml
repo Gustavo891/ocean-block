@@ -1,0 +1,9 @@
+toast_venda:
+  id: toast_venda
+  caminho: assets/oneblock/textures/icons/venda/toast_venda.png
+  unicode: 
+  ascent: 7
+  height: 26
+  size: 145
+  default: true
+  show_in_gui: false
