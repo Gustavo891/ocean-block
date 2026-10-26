@@ -28,3 +28,14 @@ xp:
   fundo: false
   direcao: baixo
   animacao: true
+
+nivel:
+  id: nivel
+  ancora: CENTRO
+  x: 0
+  y: 74
+  linhas: 2
+  espacamento: 0
+  fundo: false
+  direcao: baixo
+  animacao: true

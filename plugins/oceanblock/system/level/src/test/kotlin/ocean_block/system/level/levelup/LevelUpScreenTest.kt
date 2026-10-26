@@ -1,6 +1,7 @@
 package ocean_block.system.level.levelup
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 
 class LevelUpScreenTest : StringSpec({
@@ -11,43 +12,32 @@ class LevelUpScreenTest : StringSpec({
         LevelUpRewards.coins(5, 5) shouldBe 0.0
     }
 
-    "texto pequeno mede pela metade da fonte vanilla" {
-        SmallText.width("i") shouldBe 2
-        SmallText.width("Coins") shouldBe 18
-        SmallText.width("a b") shouldBe 10
+    "texto normal mede pela fonte vanilla" {
+        RewardText.width("i") shouldBe 2
+        RewardText.width("Coins") shouldBe 26
+        RewardText.width("a b") shouldBe 16
     }
 
     "o titulo e a faixa dourada" {
         LevelUpScreen.title() shouldBe "<white><glyph:nivel_faixa>"
     }
 
-    "o numero fica entre os brilhos do quadro" {
-        LevelUpScreen.number(12, 1) shouldBe
-            "<glyph:nivel_brilho_e_1><glyph:nivel_num_1><glyph:nivel_num_2><glyph:nivel_brilho_d_1>"
+    "o subtitulo e o numero entre os brilhos do quadro" {
+        LevelUpScreen.subtitle(12, 1) shouldBe
+            "<white><glyph:nivel_brilho_e_1><glyph:nivel_num_1><glyph:nivel_num_2><glyph:nivel_brilho_d_1>"
     }
 
-    "as linhas de recompensa ficam centradas embaixo do numero e devolvem o cursor" {
-        val coins = "+200 Coins"
-        val r1 = SmallText.width(coins)
-        val n = LevelUpScreen.numberWidth(2)
-        val s1 = (n + r1) / 2
+    "as recompensas viram linhas centradas pela metade da largura" {
+        val coins = "+1.200 Coins"
+        val unlocked = "Liberado: Rede de Detritos"
 
-        LevelUpScreen.subtitle(2, 0, 200.0, emptyList()) shouldBe
-            "<white>" + LevelUpScreen.number(2, 0) +
-            "<shift:-$s1><font:oneblock:nivel_linha_1><gold>$coins</gold></font><shift:${s1 - r1}>"
+        LevelUpScreen.rewardLines(1200.0, listOf("Rede de Detritos")) shouldContainExactly listOf(
+            "<shift:-${RewardText.width(coins) / 2}><gold>$coins",
+            "<shift:-${RewardText.width(unlocked) / 2}><green>$unlocked",
+        )
     }
 
-    "receitas liberadas entram na segunda linha" {
-        val subtitle = LevelUpScreen.subtitle(3, 2, 300.0, listOf("Rede de Detritos"))
-        val line = "Liberado: Rede de Detritos"
-        val r2 = SmallText.width(line)
-        val s2 = (LevelUpScreen.numberWidth(3) + r2) / 2
-
-        subtitle.endsWith("<shift:-$s2><font:oneblock:nivel_linha_2><green>$line</green></font><shift:${s2 - r2}>") shouldBe true
-    }
-
-    "a largura do numero conta digitos e os dois brilhos" {
-        LevelUpScreen.numberWidth(7) shouldBe 18
-        LevelUpScreen.numberWidth(42) shouldBe 24
+    "sem coins e sem receita nao ha linhas" {
+        LevelUpScreen.rewardLines(0.0, emptyList()) shouldBe emptyList()
     }
 })

@@ -1,5 +1,7 @@
 package ocean_block.system.level.notify
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.ShadowColor
 import net.kyori.adventure.title.Title
 import net.kyori.adventure.title.TitlePart
 import ocean_block.libs.formatter.Mini
@@ -22,6 +24,8 @@ object LevelNotifier : Listener {
     const val ICON_MATERIAL = "experience_bottle"
 
     private const val XP_DURATION_TICKS = 70
+    private const val REWARD_REGION = "nivel"
+    private const val REWARD_TICKS = 70
     private const val FRAME_TICKS = 3L
     private const val FRAME_STEPS = 10
     private val TIMES = Title.Times.times(Duration.ofMillis(250), Duration.ofMillis(3000), Duration.ofMillis(1000))
@@ -37,8 +41,11 @@ object LevelNotifier : Listener {
     }
 
     fun levelUp(player: Player, level: Int, coins: Double, unlocked: List<String>) {
-        fun subtitle(frame: Int) = Mini.mm.deserialize(LevelUpScreen.subtitle(level, frame, coins, unlocked))
-        player.showTitle(Title.title(Mini.mm.deserialize(LevelUpScreen.title()), subtitle(0), TIMES))
+        fun subtitle(frame: Int) = flat(LevelUpScreen.subtitle(level, frame))
+        player.showTitle(Title.title(flat(LevelUpScreen.title()), subtitle(0), TIMES))
+        LevelUpScreen.rewardLines(coins, unlocked).forEachIndexed { index, line ->
+            NotificationApi.push(player, REWARD_REGION, NotificationLine(line, null, REWARD_TICKS, "nivel_$index"))
+        }
         player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
         player.playSound(player.location, Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.6f, 1.3f)
 
@@ -53,6 +60,8 @@ object LevelNotifier : Listener {
             step++
         }, FRAME_TICKS, FRAME_TICKS)
     }
+
+    private fun flat(text: String): Component = Mini.mm.deserialize(text).shadowColor(ShadowColor.none())
 
     @EventHandler
     fun onQuit(event: PlayerQuitEvent) {

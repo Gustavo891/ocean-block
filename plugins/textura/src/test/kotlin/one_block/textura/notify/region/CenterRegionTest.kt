@@ -50,6 +50,11 @@ class CenterRegionTest : StringSpec({
             NotificationRegion("xp", ScreenAnchor.CENTER, 8, 28, 1, 1, false, StackDirection.DOWN, animated = true)
     }
 
+    "a regiao nivel e padrao, no centro, com duas linhas animadas" {
+        RegionConfigParser.DEFAULTS.first { it.id == "nivel" } shouldBe
+            NotificationRegion("nivel", ScreenAnchor.CENTER, 0, 74, 2, 0, false, StackDirection.DOWN, animated = true)
+    }
+
     "a linha guarda quando comecou e a fase, e a troca pela mesma chave recomeca" {
         val lines = RegionLines(1)
         lines.push(NotificationLine("+1", null, 70, "xp"), 10, 37)
