@@ -85,7 +85,6 @@ class IslandRowsTest : StringSpec({
         rows.size shouldBe IslandSetting.entries.size
         val fire = rows[IslandSetting.FireSpread.ordinal]
         fire["nome"] shouldBe "PROPAGAÇÃO DE FOGO"
-        fire["estado"] shouldBe "DESLIGADO"
         fire["ligado"] shouldBe "false"
         fire["descricao"] shouldBe IslandSetting.FireSpread.disabledLore
     }

@@ -1,5 +1,4 @@
 {
-  "title": "Membros",
   "close": "Fechar",
   "theme": "abismo",
   "column": [
@@ -32,7 +31,7 @@
         { "row": [ { "text": "VAGAS", "style": "muted", "w": "grow" }, { "text": "{vagas}", "style": "body" } ], "w": "grow" },
         { "image": "ui:abismo/linha", "w": "grow" },
         {
-          "repeat": "membros",
+          "repeat": "membros", "perPage": 6,
           "row": [
             { "text": "{nome}", "style": "body", "w": "grow" },
             { "text": "{cargo}", "style": "{cargo_estilo}", "w": 44 },

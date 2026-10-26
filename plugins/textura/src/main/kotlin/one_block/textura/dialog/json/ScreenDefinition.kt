@@ -54,7 +54,13 @@ data class DefIcon(
 
 data class DefImage(val id: String, val w: UiSize, val position: UiPosition?, override val path: String) : DefNode
 
-data class DefSwitch(val value: Boolean, val bind: String?, val tooltip: String?, override val path: String) : DefNode
+data class DefSwitch(
+    val value: Boolean,
+    val bind: String?,
+    val tooltip: String?,
+    override val path: String,
+    val state: DefFlag? = null,
+) : DefNode
 
 data class DefSegmented(
     val options: List<String>,

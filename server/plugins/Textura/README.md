@@ -202,7 +202,7 @@ Folhas:
 | `{"icon": "ui:x"}` | `size` (px, default 8); `"frame": true` desenha a surface `frame` do tema (no `stone`, o `well`, fundo de slot do inventário) em volta, com 4 px de folga |
 | `{"image": "ui:x"}` | `w` (estica se a imagem tiver `.slice`) |
 | `{"pixels": "chave"}` | `w`, `h` (px, 1..399, obrigatórios), `scale` (1..4, px de tela por pixel da imagem), `detail` (2 ou 3: cada px da GUI recebe N×N pixels da imagem, para desenhos mais finos que a grade da GUI; `w`/`h` continuam em px da GUI e a imagem tem `w×N` por `h×N`). Desenha a imagem que o código passa em `binds.pixels("chave") { bufferedImage }`, gerada na hora (mapa, skin); sem imagem, o nó só ocupa o espaço |
-| `{"switch": true}` | `bind`, `tooltip` |
+| `{"switch": true}` | `bind`, `tooltip`. Com `"switch": "{campo}"` o estado vem do placeholder (num `repeat`, do campo da entrada) e o clique chama `listButton(bind)` com o índice (ou `button(bind)` fora de lista); esse bind não é salvo no jogador |
 | `{"segmented": ["A","B"]}` | `selected`, `bind`, `w`, `tooltip` |
 | `{"button": "rótulo"}` | `bind`, `w`, `icon`, `tooltip` |
 

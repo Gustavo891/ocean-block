@@ -384,9 +384,10 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
 
         private fun switch(def: DefSwitch): UiNode {
             val key = def.bind ?: def.path
-            val value = session.value(key)?.let { it == "true" } ?: def.value
+            val state = def.state
+            val value = state?.resolve(placeholders::plain) ?: session.value(key)?.let { it == "true" } ?: def.value
             val label = if (value) theme.switch.onLabel else theme.switch.offLabel
-            val action = UiAction {
+            val action = if (state != null) pressAction(key) else UiAction {
                 val now = session.value(key)?.let { it == "true" } ?: def.value
                 session.set(key, (!now).toString())
                 UiOutcome.Refresh

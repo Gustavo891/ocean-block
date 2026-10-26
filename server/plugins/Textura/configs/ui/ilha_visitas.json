@@ -1,5 +1,4 @@
 {
-  "title": "Visitas",
   "close": "Fechar",
   "theme": "abismo",
   "column": [
@@ -36,9 +35,9 @@
           ],
           "w": "grow", "cross": "center"
         },
-        { "repeat": "vazio", "text": "NENHUM JOGADOR BLOQUEADO.", "style": "muted", "w": "grow" },
+        { "repeat": "vazio", "perPage": 1, "text": "NENHUM JOGADOR BLOQUEADO.", "style": "muted", "w": "grow" },
         {
-          "repeat": "paginador",
+          "repeat": "paginador", "perPage": 1,
           "row": [
             { "button": "ANTERIOR", "look": "neutro", "bind": "anterior", "disabled": "{sem_anterior}", "w": 70 },
             { "text": "{pagina}", "style": "muted", "align": "center", "w": "grow" },

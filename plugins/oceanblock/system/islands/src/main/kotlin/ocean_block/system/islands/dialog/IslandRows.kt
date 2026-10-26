@@ -59,7 +59,6 @@ object IslandRows {
             mapOf(
                 "nome" to setting.displayName.uppercase(),
                 "descricao" to if (enabled) setting.enabledLore else setting.disabledLore,
-                "estado" to if (enabled) "LIGADO" else "DESLIGADO",
                 "ligado" to enabled.toString(),
             )
         }

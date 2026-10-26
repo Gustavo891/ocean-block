@@ -21,7 +21,7 @@ object SettingsDialog {
     private fun bind(binds: DialogBinds, island: Island, viewFrame: ViewFrame) {
         var notice = ""
         binds.text("ligadas") { "${IslandSetting.entries.count(island::isSettingEnabled)} DE ${IslandSetting.entries.size} LIGADAS" }
-        binds.text("aviso") { notice }
+        binds.list("aviso") { if (notice.isEmpty()) emptyList() else listOf(mapOf("texto" to notice)) }
         binds.list("ajustes") { IslandRows.settings(island) }
         binds.listButton("alternar") { click, index ->
             val setting = IslandSetting.entries.getOrNull(index) ?: return@listButton

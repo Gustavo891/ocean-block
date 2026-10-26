@@ -122,7 +122,7 @@ class ScreenParser(private val logger: Logger) {
         val defaults = linkedMapOf<String, String>()
         controls(containers).forEach { node ->
             when (node) {
-                is DefSwitch -> node.bind?.let { defaults.putIfAbsent(it, node.value.toString()) }
+                is DefSwitch -> node.bind?.takeIf { node.state == null }?.let { defaults.putIfAbsent(it, node.value.toString()) }
                 is DefSegmented -> node.bind?.let { bind ->
                     node.options.getOrNull(node.selected.coerceIn(0, maxOf(0, node.options.lastIndex)))
                         ?.let { defaults.putIfAbsent(bind, DialogValues.optionId(it)) }
@@ -185,6 +185,7 @@ class ScreenParser(private val logger: Logger) {
                 is DefSwitch -> {
                     node.bind?.let(keys::add)
                     placeholders(node.tooltip)
+                    node.state?.let(::flag)
                 }
                 is DefSegmented -> {
                     node.bind?.let(keys::add)
@@ -269,7 +270,7 @@ class ScreenParser(private val logger: Logger) {
                 is DefContainer -> node.children.forEach(::walk)
                 is DefRepeat -> walk(node.node)
                 is DefScoped -> walk(node.node)
-                is DefSwitch -> node.bind?.let(binds::add)
+                is DefSwitch -> node.bind?.takeIf { node.state == null }?.let(binds::add)
                 is DefSegmented -> node.bind?.let(binds::add)
                 is DefDropdown -> node.bind?.let(binds::add)
                 is DefSlider -> node.bind?.let(binds::add)
@@ -303,7 +304,7 @@ class ScreenParser(private val logger: Logger) {
                 "icon" -> icon(obj, path)
                 "image" -> DefImage(obj.string("image").orEmpty(), size(obj, "w", path), position(obj, path), path)
                 "pixels" -> pixels(obj, path)
-                "switch" -> DefSwitch(obj.bool("switch", path), obj.string("bind"), obj.string("tooltip"), path)
+                "switch" -> switch(obj, path)
                 "segmented" -> segmented(obj, path)
                 "button" -> DefButton(
                     singleLine(obj.string("button").orEmpty(), path), obj.string("bind"), size(obj, "w", path),
@@ -347,6 +348,14 @@ class ScreenParser(private val logger: Logger) {
             }
             if (value > MAX_PER_PAGE) warn(path, "'$PER_PAGE' $value passa de $MAX_PER_PAGE, usando $MAX_PER_PAGE")
             return value.coerceAtMost(MAX_PER_PAGE)
+        }
+
+        private fun switch(obj: JsonObject, path: String): DefSwitch {
+            val raw = obj.get("switch")?.takeIf { it.isJsonPrimitive && it.asJsonPrimitive.isString }?.asString
+            if (raw != null && PLACEHOLDER.containsMatchIn(raw)) {
+                return DefSwitch(false, obj.string("bind"), obj.string("tooltip"), path, DefFlag.Bound(raw))
+            }
+            return DefSwitch(obj.bool("switch", path), obj.string("bind"), obj.string("tooltip"), path)
         }
 
         private fun flag(obj: JsonObject, key: String, path: String): DefFlag {

@@ -1,5 +1,4 @@
 {
-  "title": "Melhorias",
   "close": "Fechar",
   "theme": "abismo",
   "column": [
@@ -12,7 +11,7 @@
     },
     { "row": [ { "text": "SUAS MOEDAS", "style": "muted", "w": "grow" }, { "text": "{moedas}", "style": "good" } ], "w": "grow" },
     {
-      "repeat": "melhorias",
+      "repeat": "melhorias", "perPage": 3,
       "column": [
         { "row": [ { "text": "{nome}", "style": "heading", "w": "grow" }, { "text": "{nivel}", "style": "body" } ], "w": "grow" },
         { "text": "{descricao}", "style": "muted", "w": "grow" },

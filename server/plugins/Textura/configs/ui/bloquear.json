@@ -1,5 +1,4 @@
 {
-  "title": "Bloquear jogador",
   "close": "Fechar",
   "theme": "abismo",
   "input": { "key": "jogador", "label": "Nome do jogador", "max": 16, "w": 200 },
