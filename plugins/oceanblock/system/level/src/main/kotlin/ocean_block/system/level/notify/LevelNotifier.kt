@@ -30,7 +30,7 @@ object LevelNotifier : Listener {
 
     fun levelUp(player: Player, level: Int, coins: Double, unlocked: List<String>) {
         NotificationApi.clear(player, CARD_REGION)
-        LevelUpCard.lines(level, coins, unlocked).forEachIndexed { index, line ->
+        LevelUpCard.lines(level, coins).forEachIndexed { index, line ->
             NotificationApi.push(player, CARD_REGION, NotificationLine(line, null, CARD_TICKS, "nivel_$index"))
         }
         player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)

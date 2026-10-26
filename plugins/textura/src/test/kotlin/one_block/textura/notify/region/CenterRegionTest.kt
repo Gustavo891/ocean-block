@@ -50,9 +50,11 @@ class CenterRegionTest : StringSpec({
             NotificationRegion("xp", ScreenAnchor.CENTER, 8, 28, 1, 1, false, StackDirection.DOWN, animated = true)
     }
 
-    "a regiao nivel e padrao, no canto superior direito, com tres linhas sem fundo" {
+    "nivel e tempo ficam empilhados no canto superior direito como toasts" {
         RegionConfigParser.DEFAULTS.first { it.id == "nivel" } shouldBe
-            NotificationRegion("nivel", ScreenAnchor.TOP_RIGHT, 0, 4, 3, 0, false, StackDirection.DOWN)
+            NotificationRegion("nivel", ScreenAnchor.TOP_RIGHT, 0, 4, 2, 0, false, StackDirection.DOWN)
+        RegionConfigParser.DEFAULTS.first { it.id == "tempo" } shouldBe
+            NotificationRegion("tempo", ScreenAnchor.TOP_RIGHT, 0, 38, 2, 0, false, StackDirection.DOWN)
     }
 
     "a linha guarda quando comecou e a fase, e a troca pela mesma chave recomeca" {

@@ -18,33 +18,18 @@ class LevelUpScreenTest : StringSpec({
         RewardText.width("a b") shouldBe 16
     }
 
-    "o cartao usa a menor largura em que o texto cabe" {
-        LevelUpCard.width(listOf("Nível 7!", "+700 Coins")) shouldBe 110
-        LevelUpCard.width(listOf("Nível 12!", "+1.200 Coins", "Liberado: Rede de Detritos")) shouldBe 170
-        LevelUpCard.width(listOf("x".repeat(80))) shouldBe 240
-    }
+    "o toast de nivel tem o fundo na primeira linha, titulo roxo e as coins em preto" {
+        val title = "Nível 7!"
+        val coins = "+700 Coins"
 
-    "sem receita o cartao tem duas linhas e o fundo vai na primeira" {
-        val texts = listOf("Nível 7!", "+700 Coins")
-        val w = 110
-        val pad = LevelUpCard.PADDING
-
-        LevelUpCard.lines(7, 700.0, emptyList()) shouldContainExactly listOf(
-            "<shadow:#00000000><white><glyph:nivel_cartao_2_$w></white></shadow><shift:-${w - pad}>" +
-                "<aqua>${texts[0]}</aqua><shift:${w - pad - RewardText.width(texts[0])}>",
-            "<shift:$pad><yellow>${texts[1]}</yellow><shift:${w - pad - RewardText.width(texts[1])}>",
+        LevelUpCard.lines(7, 700.0) shouldContainExactly listOf(
+            "<shadow:#00000000><white><glyph:toast_nivel></white><shift:-130><dark_purple>$title</dark_purple>" +
+                "<shift:${130 - RewardText.width(title)}></shadow>",
+            "<shadow:#00000000><shift:30><black>$coins</black><shift:${130 - RewardText.width(coins)}></shadow>",
         )
     }
 
-    "receita liberada vira a terceira linha e o cartao de tres linhas" {
-        val lines = LevelUpCard.lines(12, 1200.0, listOf("Rede de Detritos"))
-
-        lines.size shouldBe 3
-        lines[0].startsWith("<shadow:#00000000><white><glyph:nivel_cartao_3_170>") shouldBe true
-        lines[2].contains("<green>Liberado: Rede de Detritos</green>") shouldBe true
-    }
-
-    "todas as larguras e alturas tem glyph" {
-        LevelUpCard.glyphIds() shouldBe LevelUpCard.WIDTHS.flatMap { w -> listOf("nivel_cartao_2_$w", "nivel_cartao_3_$w") }
+    "sem coins o toast fica so com o titulo" {
+        LevelUpCard.lines(50, 0.0).size shouldBe 1
     }
 })

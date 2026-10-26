@@ -4,24 +4,18 @@ import ocean_block.system.playtime_rewards.text.RewardText
 
 object RewardCard {
 
-    const val HINT = "Resgate em /recompensas"
+    const val HINT = "Resgate: /recompensas"
 
-    private const val PADDING = 22
-    private const val RIGHT_PADDING = 8
-    private val WIDTHS: List<Int> = listOf(110, 140, 170, 200, 240)
+    private const val WIDTH = 160
+    private const val TEXT_X = 30
 
     fun lines(minutes: Int): List<String> {
-        val texts = listOf("aqua" to "Recompensa de ${RewardText.duration(minutes)}!", "green" to HINT)
-        val width = width(texts.map { it.second })
-        return texts.mapIndexed { index, (color, text) ->
-            val lead = if (index == 0) "<shadow:#00000000><white><glyph:tempo_cartao_$width></white></shadow><shift:-${width - PADDING}>"
-            else "<shift:$PADDING>"
-            "$lead<$color>$text</$color><shift:${width - PADDING - LineText.width(text)}>"
-        }
-    }
-
-    fun width(texts: List<String>): Int {
-        val needed = PADDING + (texts.maxOfOrNull(LineText::width) ?: 0) + RIGHT_PADDING
-        return WIDTHS.firstOrNull { it >= needed } ?: WIDTHS.last()
+        val room = WIDTH - TEXT_X
+        val title = "${RewardText.duration(minutes.toLong())} online!"
+        return listOf(
+            "<shadow:#00000000><white><glyph:toast_tempo></white><shift:-$room>" +
+                "<dark_purple>$title</dark_purple><shift:${room - LineText.width(title)}></shadow>",
+            "<shadow:#00000000><shift:$TEXT_X><black>$HINT</black><shift:${room - LineText.width(HINT)}></shadow>",
+        )
     }
 }
