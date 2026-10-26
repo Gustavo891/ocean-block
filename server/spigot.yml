@@ -55,7 +55,7 @@ world-settings:
     arrow-despawn-rate: 1200
     trident-despawn-rate: 1200
     unload-frozen-chunks: false
-    mob-spawn-range: 8
+    mob-spawn-range: 5
     growth:
       cactus-modifier: 500
       cane-modifier: 500
