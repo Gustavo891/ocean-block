@@ -3,8 +3,8 @@ toast_nivel:
   caminho: assets/oneblock/textures/icons/nivel/toast_nivel.png
   unicode: 
   ascent: 7
-  height: 22
-  size: 136
+  height: 26
+  size: 145
   default: true
   show_in_gui: false
 toast_linha:
@@ -12,8 +12,8 @@ toast_linha:
   caminho: assets/oneblock/textures/icons/nivel/toast_linha.png
   unicode: 
   ascent: 0
-  height: 10
-  size: 136
+  height: 12
+  size: 145
   default: true
   show_in_gui: false
-  subida: 2
+  subida: 4

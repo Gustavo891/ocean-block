@@ -219,11 +219,11 @@ class NotificationRendererTest : StringSpec({
         return out to x
     }
 
-    "linha com fundo de toast desenha o fundo na largura dele e o texto 28 px para dentro" {
+    "linha com fundo de toast desenha o fundo na largura dele e o texto 34 px para dentro" {
         val (out, x) = toastLine(BackdropGlyph("T", 132, 133), 133)
 
         out.first() shouldBe ("T" to -132)
-        out.last().second shouldBe -132 + 28
+        out.last().second shouldBe -132 + 34
         x shouldBe 0
     }
 
@@ -231,7 +231,7 @@ class NotificationRendererTest : StringSpec({
         val (out, x) = toastLine(BackdropGlyph("L", 132, 1), 1)
 
         out.first() shouldBe ("L" to -132)
-        out.last().second shouldBe -132 + 28
+        out.last().second shouldBe -132 + 34
         x shouldBe 0
     }
 

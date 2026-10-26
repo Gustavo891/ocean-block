@@ -33,8 +33,8 @@ toasts:
   id: toasts
   ancora: TOPO_DIREITA
   x: -2
-  y: 3
+  y: 5
   linhas: 6
-  espacamento: -1
+  espacamento: 1
   fundo: false
   direcao: baixo

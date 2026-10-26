@@ -483,14 +483,14 @@ NotificationApi.clear(player, "coleta")
   ausente e é medido com 6 px.
 - Fundo de toast: um glyph de `configs/glyphs` com id começando em `toast_`
   vira fundo, assado no tamanho nativo na fonte da linha (segue a posição da
-  linha e empilha). A linha desenha o fundo alinhado à âncora e o texto 28 px
-  dentro dele, com o topo do fundo 2 px acima do texto. `subida: N` no yml
+  linha e empilha). A linha desenha o fundo alinhado à âncora e o texto 34 px
+  dentro dele, com o topo do fundo 4 px acima do texto. `subida: N` no yml
   do glyph faz o texto da linha subir N px dentro do passo (o `/textura
-  gerar` assa as fontes dessas alturas). Na região `toasts` (passo 12), duas
-  linhas avançam 24 px: o fundo de 22 px deixa 2 px até o próximo toast. A
+  gerar` assa as fontes dessas alturas). Na região `toasts` (passo 14), duas
+  linhas avançam 28 px: o fundo de 26 px deixa 2 px até o próximo toast. A
   segunda linha usa um fundo transparente da mesma largura (`toast_linha`,
-  `subida: 2`), que dá o recuo e aproxima o texto do título. O fundo precisa ter pelo menos
-  10 px de altura, senão as fontes de notificação não são geradas. O avanço
+  `subida: 4`), que dá o recuo e aproxima o texto do título. O fundo precisa ter pelo menos
+  11 px de altura (7 + os 4 px acima do texto), senão as fontes de notificação não são geradas. O avanço
   do fundo é medido como o cliente mede (até a última coluna visível), então
   a posição só usa a largura da imagem e um fundo transparente não desloca a
   barra.

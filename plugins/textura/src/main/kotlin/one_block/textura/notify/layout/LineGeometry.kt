@@ -18,8 +18,8 @@ internal object LineGeometry {
     const val ICON_GAP = 2
     const val ICON_BOX = ICON_SIZE + ICON_GAP
     const val PADDING_X = 5
-    const val BACKDROP_TEXT_X = 28
-    const val BACKDROP_TEXT_TOP = 2
+    const val BACKDROP_TEXT_X = 34
+    const val BACKDROP_TEXT_TOP = 4
 
     fun pitch(region: NotificationRegion): Int = LINE_HEIGHT + region.spacing
 

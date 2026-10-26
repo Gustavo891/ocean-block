@@ -33,7 +33,7 @@ internal object RegionConfigParser {
         NotificationRegion("coleta", ScreenAnchor.MIDDLE_RIGHT, 0, 70, 6, DEFAULT_SPACING, true, StackDirection.DOWN),
         NotificationRegion("avisos", ScreenAnchor.TOP_LEFT, 4, 4, 3, DEFAULT_SPACING, true, StackDirection.DOWN),
         NotificationRegion("xp", ScreenAnchor.CENTER, 8, 28, 1, DEFAULT_SPACING, false, StackDirection.DOWN, animated = true),
-        NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, -2, 3, 6, -1, false, StackDirection.DOWN),
+        NotificationRegion("toasts", ScreenAnchor.TOP_RIGHT, -2, 5, 6, 1, false, StackDirection.DOWN),
     )
 
     fun load(file: File, warn: Consumer<String>): List<NotificationRegion> {
