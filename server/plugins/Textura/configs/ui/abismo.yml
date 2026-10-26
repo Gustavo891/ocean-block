@@ -43,6 +43,9 @@ abismo:
       fechar:
         art: ui:abismo/botao_fechar
         text-style: button-light
+      cartao:
+        art: ui:abismo/cartao
+        text-style: muted
   nav:
     art: ui:stone/nav
     active-art: ui:stone/nav_active
@@ -65,5 +68,3 @@ abismo:
     art: ui:mare/chip
     text-style: body
     height: 20
-  icons:
-    vazio: "ui:abismo/vazio"

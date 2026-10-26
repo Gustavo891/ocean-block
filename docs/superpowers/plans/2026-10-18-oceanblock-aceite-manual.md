@@ -173,9 +173,9 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 ## 11. Menu da ilha
 
 ### Dialog da ilha (`/ilha`)
-- [ ] Com ilha, `/ilha` abre o dialog `Sua Ilha`: moldura cinza-escura com borda clara; no topo o busto pequeno do seu personagem (3/4, bordas suaves) à esquerda do título `SUA ILHA` (ou `ILHA DE <DONO>`), o X no canto, e embaixo do título 6 quadrados: o primeiro com o rosto do dono, depois o rosto de cada membro e um `+` nas vagas livres; em seguida a linha de status, o painel `RESUMO DA ILHA` com gerador, configurações, visitas e moedas, os botões MELHORIAS, CONFIGURAÇÕES, NÍVEL, MISSÕES, RECEITAS, o verde IR PARA A ILHA e VISITAS ao lado.
+- [ ] Com ilha, `/ilha` abre o dialog `Sua Ilha`: moldura cinza-escura com borda clara; no topo o busto pequeno do seu personagem (3/4, bordas suaves) à esquerda do título `SUA ILHA` (ou `ILHA DE <DONO>`), o X no canto e a linha de status; embaixo 6 cards: o do dono com coroa, depois um por membro (busto pequeno, ponto verde se online ou cinza se offline, nome embaixo) e um card tracejado com `+` e `CONVIDAR JOGADOR` em cada vaga livre; em seguida o painel `RESUMO DA ILHA` com gerador e moedas, os botões MELHORIAS, CONFIGURAÇÕES, NÍVEL, MISSÕES, RECEITAS, o verde IR PARA A ILHA e VISITAS ao lado.
 - [ ] O título e os cabeçalhos usam a Minecraft Ten (blocada, grossa) e o resto uma caixa alta fina e espaçada, sem sombra; acentos (Ç, Õ, Í, Ú) aparecem certos; o X do canto é um ícone de traço fino.
-- [ ] Passar o mouse num quadrado mostra `Dono: <nome>`, o nome do membro ou `Convidar membro`; clicar em qualquer um abre o menu de membros. Membro offline também aparece com o rosto da skin.
+- [ ] Clicar em qualquer card abre o menu de membros. Membro offline também aparece com a própria skin e o ponto cinza.
 - [ ] X, Esc ou o botão Fechar fecham o dialog.
 - [ ] Trocar de skin (SkinsRestorer) e reabrir: o personagem usa a skin nova; skin slim mostra braços finos. Sem skin ou com a Mojang fora do ar, aparece o personagem padrão e o log tem `[ilha] skin de <nome> indisponível`.
 - [ ] Membro parado na ilha do amigo: o dialog mostra a ilha do amigo. `/ilha menu` continua abrindo o menu de baú abaixo.

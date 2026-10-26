@@ -630,7 +630,7 @@ class ScreenParser(private val logger: Logger) {
         const val REPEAT = "repeat"
         const val PER_PAGE = "perPage"
         const val MAX_PER_PAGE = 64
-        private const val MAX_PIXELS = 256
+        private const val MAX_PIXELS = 399
         private const val DEFAULT_COUNT = "1"
         val PLACEHOLDER = Regex("""\{([A-Za-z0-9_.-]+)""")
 

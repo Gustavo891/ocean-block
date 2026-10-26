@@ -39,14 +39,14 @@ object PlayerSkins {
         }
     }
 
-    fun face(name: String): CompletableFuture<BufferedImage> {
+    fun portrait(name: String): CompletableFuture<BufferedImage> {
         val online = Bukkit.getPlayerExact(name)?.playerProfile
         val profile = online ?: Bukkit.createProfile(null, name)
         val complete = if (profile.hasTextures()) CompletableFuture.completedFuture(profile) else profile.update()
         return complete
             .thenCompose { skin(it) }
-            .thenApply { MemberSlots.face(it.image) }
-            .exceptionally { MemberSlots.face(fallbackSkin.image) }
+            .exceptionally { fallbackSkin }
+            .thenApply { PlayerFigure.bust(it.image, it.slim, MemberCards.FILL, MemberCards.PORTRAIT_WIDTH, MemberCards.PORTRAIT_HEIGHT) }
     }
 
     private fun skin(profile: PlayerProfile): CompletableFuture<Skin> {

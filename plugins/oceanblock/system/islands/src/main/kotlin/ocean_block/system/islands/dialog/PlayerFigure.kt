@@ -22,7 +22,7 @@ object PlayerFigure {
     private const val AMBIENT = 0.45
     private const val DIFFUSE = 0.6
     const val BUST_WIDTH = 48
-    const val BUST_HEIGHT = 60
+    const val BUST_HEIGHT = 56
     private const val BUST_UNIT = 2.9
     private const val SUPERSAMPLE = 3
     private const val BUST_CENTER_Y = 25.0
@@ -49,13 +49,13 @@ object PlayerFigure {
     }
 
     private val fullBody = Frame(WIDTH, HEIGHT, UNIT, CENTER_Y, YAW, PITCH)
-    private val bustFrame = Frame(BUST_WIDTH, BUST_HEIGHT, BUST_UNIT, BUST_CENTER_Y, BUST_YAW, BUST_PITCH)
 
     fun render(skin: BufferedImage, slim: Boolean, yaw: Double = YAW): BufferedImage =
         draw(skin, slim, Frame(fullBody.width, fullBody.height, fullBody.unit, fullBody.centerY, yaw, fullBody.pitch))
 
-    fun bust(skin: BufferedImage, slim: Boolean, background: Int): BufferedImage {
-        val fine = draw(skin, slim, bustFrame.scaled(SUPERSAMPLE))
+    fun bust(skin: BufferedImage, slim: Boolean, background: Int, width: Int = BUST_WIDTH, height: Int = BUST_HEIGHT): BufferedImage {
+        val frame = Frame(width, height, BUST_UNIT * width / BUST_WIDTH, BUST_CENTER_Y, BUST_YAW, BUST_PITCH)
+        val fine = draw(skin, slim, frame.scaled(SUPERSAMPLE))
         return downsample(fine, SUPERSAMPLE, background)
     }
 
