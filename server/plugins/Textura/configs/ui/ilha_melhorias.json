@@ -1,0 +1,31 @@
+{
+  "title": "Melhorias",
+  "close": "Fechar",
+  "theme": "abismo",
+  "column": [
+    {
+      "row": [
+        { "text": "MELHORIAS", "style": "titulo", "w": "grow" },
+        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "bind": "voltar", "tooltip": "Voltar", "w": 18 }
+      ],
+      "w": "grow", "cross": "center"
+    },
+    { "row": [ { "text": "SUAS MOEDAS", "style": "muted", "w": "grow" }, { "text": "{moedas}", "style": "good" } ], "w": "grow" },
+    {
+      "repeat": "melhorias",
+      "column": [
+        { "row": [ { "text": "{nome}", "style": "heading", "w": "grow" }, { "text": "{nivel}", "style": "body" } ], "w": "grow" },
+        { "text": "{descricao}", "style": "muted", "w": "grow" },
+        {
+          "row": [
+            { "text": "{preco}", "style": "{preco_estilo}", "w": "grow" },
+            { "button": "{botao}", "look": "acao", "bind": "melhorar", "disabled": "{bloqueado}", "w": 84 }
+          ],
+          "w": "grow", "cross": "center"
+        }
+      ],
+      "gap": 3, "pad": 6, "surface": "painel", "w": "grow"
+    }
+  ],
+  "gap": 5, "pad": 7, "surface": "moldura", "w": 290
+}

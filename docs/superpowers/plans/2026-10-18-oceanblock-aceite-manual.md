@@ -177,7 +177,12 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] O título e os cabeçalhos usam a Minecraft Ten (blocada, grossa) e o resto uma caixa alta fina e espaçada, sem sombra; acentos (Ç, Õ, Í, Ú) aparecem certos; o X do canto é um ícone de traço fino.
 - [ ] Clicar no card do dono ou de um membro abre o menu de membros. Membro offline também aparece com a própria skin e o ponto cinza.
 - [ ] Como dono, clicar num card `+` abre o dialog `CONVIDAR JOGADOR` na mesma moldura, com o campo `Nome do jogador` embaixo e os botões `Convidar` e `Fechar` no rodapé. Campo vazio, nome inválido (`ab`, com espaço) ou jogador offline mostram o aviso em vermelho na moldura e mantêm o texto. Nome de um jogador online: aviso verde `CONVITE ENVIADO PARA <NOME>.`, o campo limpa e o convidado recebe o `[ACEITAR]` no chat. Membro, bloqueado ou ilha cheia: aviso vermelho e nada é enviado. O X volta para o dialog da ilha.
-- [ ] Quem não é dono clica num card `+`: abre o menu de membros, sem convite.
+- [ ] Quem não é dono clica num card `+`: abre o dialog de membros, sem convite.
+- [ ] MELHORIAS, CONFIGURAÇÕES, VISITAS e os cards de membro abrem dialogs na mesma moldura, cada um com o X que volta para `Sua Ilha`.
+- [ ] Membros: cards no topo, `VAGAS n/3`, uma linha por pessoa (dono em amarelo, ONLINE verde / OFFLINE cinza) e `REMOVER` só ativo para o dono e nunca na própria linha; remover atualiza os cards. `CONVIDAR JOGADOR` abre a tela de convite; para quem não é dono fica cinza.
+- [ ] Melhorias: moedas no topo, um painel por melhoria (Membros, Borda, Gerador) com nível, preço verde se dá para pagar, vermelho se não, e `MELHORAR` verde só quando dá; no máximo mostra `NÍVEL MÁXIMO`. Comprar desconta as moedas e o nível sobe na hora.
+- [ ] Configurações: 7 ajustes com botão verde `LIGADO` ou cinza `DESLIGADO`, a descrição aparece ao passar o mouse; o dono alterna; outro jogador vê `SÓ O DONO DA ILHA PODE ALTERAR.` em vermelho.
+- [ ] Visitas: status PÚBLICA/PRIVADA, botão para abrir/fechar a ilha, `BLOQUEAR JOGADOR` abre a tela de nome (como o convite, botão `Bloquear`), a lista de bloqueados mostra 4 por página com `ANTERIOR`/`PRÓXIMA` só quando há mais de 4, e `DESBLOQUEAR` tira da lista. Sem bloqueados: `NENHUM JOGADOR BLOQUEADO.`
 - [ ] X, Esc ou o botão Fechar fecham o dialog.
 - [ ] Trocar de skin (SkinsRestorer) e reabrir: o personagem usa a skin nova; skin slim mostra braços finos. Sem skin ou com a Mojang fora do ar, aparece o personagem padrão e o log tem `[ilha] skin de <nome> indisponível`.
 - [ ] Membro parado na ilha do amigo: o dialog mostra a ilha do amigo. `/ilha menu` continua abrindo o menu de baú abaixo.

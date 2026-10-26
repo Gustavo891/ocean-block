@@ -3,6 +3,7 @@ package ocean_block.system.islands.dialog
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
+import ocean_block.system.islands.member.BlockCheck
 import ocean_block.system.islands.member.InviteCheck
 
 class InviteFormTest : StringSpec({
@@ -40,5 +41,13 @@ class InviteFormTest : StringSpec({
 
     "convite enviado avisa o nome" {
         InviteForm.sent("Steve") shouldBe "CONVITE ENVIADO PARA STEVE."
+    }
+
+    "cada recusa de bloqueio vira um aviso e o sucesso diz o nome" {
+        InviteForm.message(BlockCheck.NotOwner) shouldBe "SÓ O DONO DA ILHA PODE BLOQUEAR."
+        InviteForm.message(BlockCheck.Self) shouldBe "VOCÊ NÃO PODE SE BLOQUEAR."
+        InviteForm.message(BlockCheck.Member) shouldBe "REMOVA O MEMBRO OU CONFIÁVEL ANTES."
+        InviteForm.message(BlockCheck.AlreadyBlocked) shouldBe "ESSE JOGADOR JÁ ESTÁ BLOQUEADO."
+        InviteForm.blocked("Steve") shouldBe "STEVE FOI BLOQUEADO."
     }
 })

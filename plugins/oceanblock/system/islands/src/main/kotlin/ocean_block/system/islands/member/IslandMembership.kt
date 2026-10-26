@@ -86,13 +86,12 @@ object IslandMembership {
         return true
     }
 
+    fun checkBlock(owner: Player, island: Island, target: Player): BlockCheck =
+        MemberRules.checkBlock(island, owner.uniqueId, target.uniqueId, target.name)
+
     fun block(owner: Player, island: Island, target: Player): Boolean {
-        if (island.ownerUuid != owner.uniqueId) return deny(owner, "<red>Apenas o dono da ilha pode bloquear jogadores.")
-        if (island.ownerUuid == target.uniqueId) return deny(owner, "<red>Você não pode bloquear você mesmo.")
-        if (island.isMember(target.name) || island.isTrustedMember(target.name)) {
-            return deny(owner, "<red>Você não pode bloquear um membro/confiável de sua ilha. Remova-o primeiro!")
-        }
-        if (island.isBlocked(target.name)) return deny(owner, "<red>Esse jogador já está bloqueado de acessar sua ilha.")
+        val check = checkBlock(owner, island, target)
+        if (check != BlockCheck.Allowed) return deny(owner, check.message)
 
         island.addBlacklist(target)
         island.markDirty()

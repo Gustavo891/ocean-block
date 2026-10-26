@@ -1,5 +1,6 @@
 package ocean_block.system.islands.dialog
 
+import ocean_block.system.islands.member.BlockCheck
 import ocean_block.system.islands.member.InviteCheck
 
 object InviteForm {
@@ -24,5 +25,15 @@ object InviteForm {
         InviteCheck.Blocked -> "ESSE JOGADOR ESTÁ BLOQUEADO NAS VISITAS."
     }
 
+    fun message(check: BlockCheck): String = when (check) {
+        BlockCheck.Allowed -> ""
+        BlockCheck.NotOwner -> "SÓ O DONO DA ILHA PODE BLOQUEAR."
+        BlockCheck.Self -> "VOCÊ NÃO PODE SE BLOQUEAR."
+        BlockCheck.Member -> "REMOVA O MEMBRO OU CONFIÁVEL ANTES."
+        BlockCheck.AlreadyBlocked -> "ESSE JOGADOR JÁ ESTÁ BLOQUEADO."
+    }
+
     fun sent(name: String): String = "CONVITE ENVIADO PARA ${name.uppercase()}."
+
+    fun blocked(name: String): String = "${name.uppercase()} FOI BLOQUEADO."
 }

@@ -1,0 +1,31 @@
+{
+  "title": "Configurações",
+  "close": "Fechar",
+  "theme": "abismo",
+  "column": [
+    {
+      "row": [
+        { "text": "CONFIGURAÇÕES", "style": "titulo", "w": "grow" },
+        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "bind": "voltar", "tooltip": "Voltar", "w": 18 }
+      ],
+      "w": "grow", "cross": "center"
+    },
+    {
+      "column": [
+        { "row": [ { "text": "AJUSTES DA ILHA", "style": "heading", "w": "grow" }, { "text": "{ligadas}", "style": "muted" } ], "w": "grow" },
+        { "image": "ui:abismo/linha", "w": "grow" },
+        {
+          "repeat": "ajustes",
+          "row": [
+            { "text": "{nome}", "style": "body", "w": "grow", "tooltip": "{descricao}" },
+            { "button": "{estado}", "look": "chave", "bind": "alternar", "selected": "{ligado}", "tooltip": "{descricao}", "w": 74 }
+          ],
+          "w": "grow", "cross": "center"
+        },
+        { "text": "{aviso}", "style": "bad", "w": "grow" }
+      ],
+      "gap": 3, "pad": 6, "surface": "painel", "w": "grow"
+    }
+  ],
+  "gap": 5, "pad": 7, "surface": "moldura", "w": 290
+}

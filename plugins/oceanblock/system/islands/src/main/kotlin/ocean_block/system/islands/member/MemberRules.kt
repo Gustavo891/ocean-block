@@ -12,7 +12,23 @@ enum class InviteCheck(val message: String) {
     Blocked("<red>Esse jogador está bloqueado. Desbloqueie em Visitas antes de convidar."),
 }
 
+enum class BlockCheck(val message: String) {
+    Allowed(""),
+    NotOwner("<red>Apenas o dono da ilha pode bloquear jogadores."),
+    Self("<red>Você não pode bloquear você mesmo."),
+    Member("<red>Você não pode bloquear um membro/confiável de sua ilha. Remova-o primeiro!"),
+    AlreadyBlocked("<red>Esse jogador já está bloqueado de acessar sua ilha."),
+}
+
 object MemberRules {
+
+    fun checkBlock(island: Island, owner: UUID, target: UUID, targetName: String): BlockCheck = when {
+        island.ownerUuid != owner -> BlockCheck.NotOwner
+        island.ownerUuid == target -> BlockCheck.Self
+        island.isMember(targetName) || island.isTrustedMember(targetName) -> BlockCheck.Member
+        island.isBlocked(targetName) -> BlockCheck.AlreadyBlocked
+        else -> BlockCheck.Allowed
+    }
 
     fun checkInvite(island: Island, inviter: UUID, target: UUID, targetName: String): InviteCheck = when {
         island.ownerUuid != inviter -> InviteCheck.NotOwner

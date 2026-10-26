@@ -1,6 +1,5 @@
 package ocean_block.system.islands.dialog
 
-import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.libs.formatter.NumberFormatter
 import ocean_block.libs.instance.Instance
@@ -9,10 +8,6 @@ import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandSetting
 import ocean_block.system.islands.island.IslandUpgrade
 import ocean_block.system.islands.view.IslandView
-import ocean_block.system.islands.view.MembersView
-import ocean_block.system.islands.view.SettingsView
-import ocean_block.system.islands.view.UpgradeView
-import ocean_block.system.islands.view.VisitsView
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
 import one_block.textura.api.DialogClick
@@ -22,40 +17,25 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import java.awt.image.BufferedImage
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.TimeUnit
 
 object IslandDialog {
 
     private const val SCREEN = "ilha"
-    private const val WAIT_SECONDS = 4L
     private const val COINS = "coins"
     private const val MAX_SLOTS = MemberCards.SLOTS
 
     fun open(player: Player, island: Island, viewFrame: ViewFrame) {
-        val members = listOf(island.ownerName) + memberNames(island).take(MAX_SLOTS - 1)
-        val bust = PlayerSkins.bust(player.playerProfile).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS)
-        val faces = members.map { PlayerSkins.face(it).completeOnTimeout(null, WAIT_SECONDS, TimeUnit.SECONDS) }
-        CompletableFuture.allOf(bust, *faces.toTypedArray()).whenComplete { _, error ->
-            Bukkit.getScheduler().runTask(Instance, Runnable {
-                if (!player.isOnline) return@Runnable
-                if (error != null) Instance.logger.warning("[ilha] menu da ilha sem skin: ${error.message}")
-                val cards = members.mapIndexed { index, name ->
-                    MemberCards.Card(faces[index].getNow(null), owner = index == 0, online = Bukkit.getPlayerExact(name) != null)
-                }
-                show(player, island, viewFrame, Portraits(bust.getNow(null), MemberCards.render(cards), members))
-            })
+        val bust = IslandPortraits.bust(player.playerProfile)
+        val cards = IslandPortraits.cards(island)
+        CompletableFuture.allOf(bust, cards).whenComplete { _, error ->
+            if (error != null) Instance.logger.warning("[ilha] menu da ilha sem skin: ${error.message}")
+            IslandScreens.later(player) {
+                show(it, island, viewFrame, Portraits(bust.getNow(null), cards.getNow(null)))
+            }
         }
     }
 
-    private class Portraits(val bust: BufferedImage?, val cards: BufferedImage, val members: List<String>)
-
-    private fun memberNames(island: Island): List<String> = island.members.values.map { it.name }.sortedBy { it.lowercase() }
-
-    private fun cardTooltip(name: String?, index: Int): String = when {
-        name == null -> "Convidar jogador"
-        index == 0 -> "Dono: $name"
-        else -> name
-    }
+    private class Portraits(val bust: BufferedImage?, val cards: IslandPortraits.Cards?)
 
     private fun show(player: Player, island: Island, viewFrame: ViewFrame, portraits: Portraits) {
         val result = DialogApi.openResult(player, SCREEN) { binds -> bind(binds, player, island, viewFrame, portraits) }
@@ -66,13 +46,13 @@ object IslandDialog {
 
     private fun bind(binds: DialogBinds, player: Player, island: Island, viewFrame: ViewFrame, portraits: Portraits) {
         portraits.bust?.let { image -> binds.pixels("jogador") { image } }
-        binds.pixels("cartoes") { portraits.cards }
+        portraits.cards?.let { cards -> binds.pixels("cartoes") { cards.image } }
         (0 until MAX_SLOTS).forEach { index ->
-            val name = portraits.members.getOrNull(index)
-            binds.text("cartao$index") { cardTooltip(name, index) }
+            val name = portraits.cards?.members?.getOrNull(index)
+            binds.text("cartao$index") { IslandPortraits.tooltip(name, index) }
             binds.button("clicar_cartao$index") { click ->
-                if (name == null && island.ownerUuid == player.uniqueId) InviteDialog.open(click, island, viewFrame)
-                else openView(click, viewFrame, MembersView::class.java, island)
+                if (name == null && island.ownerUuid == player.uniqueId) NameDialog.invite(click, island) { open(it, island, viewFrame) }
+                else dialog(click) { MembersDialog.open(it, island, viewFrame) }
             }
         }
         binds.text("titulo") { if (island.ownerUuid == player.uniqueId) "SUA ILHA" else "ILHA DE ${island.ownerName.uppercase()}" }
@@ -90,19 +70,18 @@ object IslandDialog {
             click.close()
             later(click) { island.teleportTo(it) }
         }
-        binds.button("abrir_melhorias") { click -> openView(click, viewFrame, UpgradeView::class.java, island) }
-        binds.button("abrir_configuracoes") { click -> openView(click, viewFrame, SettingsView::class.java, island) }
-        binds.button("abrir_visitas") { click -> openView(click, viewFrame, VisitsView::class.java, island) }
+        binds.button("abrir_melhorias") { click -> dialog(click) { UpgradesDialog.open(it, island, viewFrame) } }
+        binds.button("abrir_configuracoes") { click -> dialog(click) { SettingsDialog.open(it, island, viewFrame) } }
+        binds.button("abrir_visitas") { click -> dialog(click) { VisitsDialog.open(it, island, viewFrame) } }
         binds.button("abrir_nivel") { click -> command(click, "nivel") }
         binds.button("abrir_missoes") { click -> command(click, "missoes") }
         binds.button("abrir_receitas") { click -> command(click, "receitas") }
     }
 
-    private fun openView(click: DialogClick, viewFrame: ViewFrame, view: Class<out View>, island: Island) {
-        click.close()
-        later(click) {
+    private fun dialog(click: DialogClick, open: (Player) -> Unit) {
+        IslandScreens.later(click.player) {
             it.playSound(it, Sound.UI_BUTTON_CLICK, 0.6f, 1.2f)
-            viewFrame.open(view, it, island)
+            open(it)
         }
     }
 

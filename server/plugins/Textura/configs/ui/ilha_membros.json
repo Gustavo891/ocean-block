@@ -1,0 +1,50 @@
+{
+  "title": "Membros",
+  "close": "Fechar",
+  "theme": "abismo",
+  "column": [
+    {
+      "row": [
+        { "text": "MEMBROS", "style": "titulo", "w": "grow" },
+        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "bind": "voltar", "tooltip": "Voltar", "w": 18 }
+      ],
+      "w": "grow", "cross": "center"
+    },
+    {
+      "box": [
+        {
+          "row": [
+            { "button": "", "look": "cartao", "bind": "clicar_cartao0", "tooltip": "{cartao0}", "w": 18 },
+            { "button": "", "look": "cartao", "bind": "clicar_cartao1", "tooltip": "{cartao1}", "w": 18 },
+            { "button": "", "look": "cartao", "bind": "clicar_cartao2", "tooltip": "{cartao2}", "w": 18 },
+            { "button": "", "look": "cartao", "bind": "clicar_cartao3", "tooltip": "{cartao3}", "w": 18 },
+            { "button": "", "look": "cartao", "bind": "clicar_cartao4", "tooltip": "{cartao4}", "w": 18 },
+            { "button": "", "look": "cartao", "bind": "clicar_cartao5", "tooltip": "{cartao5}", "w": 18 }
+          ],
+          "gap": 2
+        },
+        { "pixels": "cartoes", "w": 118, "h": 18, "scale": 1 }
+      ],
+      "name": "Cartoes"
+    },
+    {
+      "column": [
+        { "row": [ { "text": "VAGAS", "style": "muted", "w": "grow" }, { "text": "{vagas}", "style": "body" } ], "w": "grow" },
+        { "image": "ui:abismo/linha", "w": "grow" },
+        {
+          "repeat": "membros",
+          "row": [
+            { "text": "{nome}", "style": "body", "w": "grow" },
+            { "text": "{cargo}", "style": "{cargo_estilo}", "w": 44 },
+            { "text": "{status}", "style": "{status_estilo}", "w": 48 },
+            { "button": "REMOVER", "look": "neutro", "bind": "remover", "disabled": "{fixo}", "w": 64 }
+          ],
+          "gap": 4, "w": "grow", "cross": "center"
+        }
+      ],
+      "gap": 4, "pad": 6, "surface": "painel", "w": "grow", "name": "Lista"
+    },
+    { "button": "CONVIDAR JOGADOR", "look": "acao", "bind": "convidar", "disabled": "{nao_dono}", "w": "grow" }
+  ],
+  "gap": 5, "pad": 7, "surface": "moldura", "w": 290
+}

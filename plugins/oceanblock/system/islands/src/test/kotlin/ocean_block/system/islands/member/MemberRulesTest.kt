@@ -86,4 +86,15 @@ class MemberRulesTest : StringSpec({
         MemberRules.menuIsland(null, owned, TARGET, "Alvo") shouldBe owned
         MemberRules.menuIsland(here, null, TARGET, "Alvo") shouldBe null
     }
+
+    "bloquear: só o dono, nunca a si mesmo, membro, confiável ou já bloqueado" {
+        val island = island().withMembers(1).apply { addTrustedMember("Amigo"); blackList = mutableSetOf("chato") }
+
+        MemberRules.checkBlock(island, OWNER, TARGET, "Alvo") shouldBe BlockCheck.Allowed
+        MemberRules.checkBlock(island, TARGET, UUID.randomUUID(), "Alvo") shouldBe BlockCheck.NotOwner
+        MemberRules.checkBlock(island, OWNER, OWNER, "Dono") shouldBe BlockCheck.Self
+        MemberRules.checkBlock(island, OWNER, TARGET, "Membro0") shouldBe BlockCheck.Member
+        MemberRules.checkBlock(island, OWNER, TARGET, "amigo") shouldBe BlockCheck.Member
+        MemberRules.checkBlock(island, OWNER, TARGET, "Chato") shouldBe BlockCheck.AlreadyBlocked
+    }
 })

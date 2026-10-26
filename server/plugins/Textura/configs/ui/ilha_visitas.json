@@ -1,0 +1,54 @@
+{
+  "title": "Visitas",
+  "close": "Fechar",
+  "theme": "abismo",
+  "column": [
+    {
+      "row": [
+        { "text": "VISITAS", "style": "titulo", "w": "grow" },
+        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "bind": "voltar", "tooltip": "Voltar", "w": 18 }
+      ],
+      "w": "grow", "cross": "center"
+    },
+    {
+      "column": [
+        { "row": [ { "text": "SUA ILHA ESTÁ", "style": "muted", "w": "grow" }, { "text": "{status}", "style": "{status_estilo}" } ], "w": "grow" },
+        { "text": "{status_texto}", "style": "muted", "w": "grow" },
+        {
+          "row": [
+            { "button": "{alternar_rotulo}", "look": "acao", "bind": "alternar", "disabled": "{nao_dono}", "w": "grow" },
+            { "button": "BLOQUEAR JOGADOR", "look": "neutro", "bind": "bloquear", "disabled": "{nao_dono}", "w": "grow" }
+          ],
+          "gap": 4, "w": "grow"
+        }
+      ],
+      "gap": 4, "pad": 6, "surface": "painel", "w": "grow", "name": "Acesso"
+    },
+    {
+      "column": [
+        { "row": [ { "text": "BLOQUEADOS", "style": "heading", "w": "grow" }, { "text": "{total}", "style": "muted" } ], "w": "grow" },
+        { "image": "ui:abismo/linha", "w": "grow" },
+        {
+          "repeat": "bloqueados", "perPage": 4,
+          "row": [
+            { "text": "{nome}", "style": "body", "w": "grow" },
+            { "button": "DESBLOQUEAR", "look": "neutro", "bind": "desbloquear", "disabled": "{fixo}", "w": 84 }
+          ],
+          "w": "grow", "cross": "center"
+        },
+        { "repeat": "vazio", "text": "NENHUM JOGADOR BLOQUEADO.", "style": "muted", "w": "grow" },
+        {
+          "repeat": "paginador",
+          "row": [
+            { "button": "ANTERIOR", "look": "neutro", "bind": "anterior", "disabled": "{sem_anterior}", "w": 70 },
+            { "text": "{pagina}", "style": "muted", "align": "center", "w": "grow" },
+            { "button": "PRÓXIMA", "look": "neutro", "bind": "proxima", "disabled": "{sem_proxima}", "w": 70 }
+          ],
+          "w": "grow", "cross": "center"
+        }
+      ],
+      "gap": 4, "pad": 6, "surface": "painel", "w": "grow", "name": "Bloqueados"
+    }
+  ],
+  "gap": 5, "pad": 7, "surface": "moldura", "w": 290
+}

@@ -12,12 +12,10 @@ import ocean_block.libs.item_builder.meta
 import ocean_block.libs.item_builder.name
 import ocean_block.system.currencies.Currencies
 import ocean_block.system.islands.island.Island
-import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
-import ocean_block.system.islands.island.IslandUpgradeEvent
+import ocean_block.system.islands.island.UpgradePurchase
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.meta.SkullMeta
@@ -78,26 +76,6 @@ class UpgradeView : View() {
     }
 
     private fun buy(click: SlotClickContext, island: Island, upgrade: IslandUpgrade) {
-        val player = click.player
-        val level = island.getUpgradeLevel(upgrade)
-
-        if (level >= upgrade.maxLevel) {
-            player.sendRichMessage("<red>Você já chegou ao nível máximo.")
-            return
-        }
-
-        val price = upgrade.getPrice(level)
-        if (!Currencies.has(player.uniqueId, "coins", price)) {
-            player.sendRichMessage("<red>Você não possui coins suficientes para melhorar.")
-            player.playSound(player, Sound.ENTITY_VILLAGER_NO, 1f, 1f)
-            return
-        }
-
-        Currencies.withdraw(player.uniqueId, "coins", price)
-        upgrade.execute(player, island)
-        IslandManager.markDirty(island.uuid)
-        Bukkit.getPluginManager().callEvent(IslandUpgradeEvent(island, upgrade, island.getUpgradeLevel(upgrade)))
-        player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
-        click.update()
+        if (UpgradePurchase.buy(click.player, island, upgrade)) click.update()
     }
 }

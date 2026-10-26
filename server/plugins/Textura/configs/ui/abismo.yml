@@ -46,6 +46,16 @@ abismo:
       cartao:
         art: ui:abismo/cartao
         text-style: muted
+      neutro:
+        art: ui:abismo/botao
+        text-style: button
+        disabled-art: ui:abismo/botao_off
+        disabled-text-style: disabled
+      chave:
+        art: ui:abismo/botao_off
+        text-style: disabled
+        selected-art: ui:abismo/botao_verde
+        selected-text-style: button-light
   nav:
     art: ui:stone/nav
     active-art: ui:stone/nav_active
