@@ -18,7 +18,7 @@
             {
               "row": [
                 { "text": "{titulo}", "style": "titulo", "w": "grow" },
-                { "button": "X", "look": "fechar", "bind": "fechar", "w": 18 }
+                { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "bind": "fechar", "w": 18 }
               ],
               "w": "grow", "cross": "start"
             },

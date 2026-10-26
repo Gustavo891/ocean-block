@@ -174,7 +174,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 
 ### Dialog da ilha (`/ilha`)
 - [ ] Com ilha, `/ilha` abre o dialog `Sua Ilha`: moldura cinza-escura única com borda clara; à esquerda o busto do seu personagem com a sua skin, parado em 3/4 (cabeça e ombros, visto um pouco de cima), e o seu nome embaixo; à direita o título grande `SUA ILHA` (ou `ILHA DE <DONO>` na ilha de um amigo), um X no canto, a linha de status em caixa alta (pública/privada colorida, membros, borda), o painel `RESUMO DA ILHA` com gerador, configurações, visitas e moedas separados por linhas, os botões MELHORIAS, CONFIGURAÇÕES, NÍVEL, MISSÕES, RECEITAS, o verde IR PARA A ILHA e MEMBROS e VISITAS.
-- [ ] As letras usam a fonte do jogo em caixa alta com espaço entre as letras e o título em negrito grande; acentos (Ç, Õ, Í, Ú) aparecem certos.
+- [ ] O título e os cabeçalhos usam a Minecraft Ten (blocada, grossa) e o resto uma caixa alta fina e espaçada, sem sombra; acentos (Ç, Õ, Í, Ú) aparecem certos; o X do canto é um ícone de traço fino.
 - [ ] X, Esc ou o botão Fechar fecham o dialog.
 - [ ] Trocar de skin (SkinsRestorer) e reabrir: o personagem usa a skin nova; skin slim mostra braços finos. Sem skin ou com a Mojang fora do ar, aparece o personagem padrão e o log tem `[ilha] skin de <nome> indisponível`.
 - [ ] Membro parado na ilha do amigo: o dialog mostra a ilha do amigo. `/ilha menu` continua abrindo o menu de baú abaixo.

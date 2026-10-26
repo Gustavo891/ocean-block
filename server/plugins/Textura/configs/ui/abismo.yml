@@ -2,18 +2,18 @@ abismo:
   icon-gap: 4
   icon-size: 9
   text:
-    titulo: { color: "#ffffff", font: titulo }
-    heading: { color: "#ffffff", font: pequena }
-    body: { color: "#e2e2e2", font: pequena }
-    muted: { color: "#a7a9ad", font: pequena }
-    good: { color: "#6fdc5a", font: pequena }
-    bad: { color: "#ff6a5c", font: pequena }
-    accent: { color: "#5fd6e8", font: pequena }
-    selected: { color: "#ffffa0", font: pequena }
+    titulo: { color: "#ffffff", font: titulo, shadow: false }
+    heading: { color: "#ffffff", font: cabecalho, shadow: false }
+    body: { color: "#e2e2e2", font: pequena, shadow: false }
+    muted: { color: "#a7a9ad", font: pequena, shadow: false }
+    good: { color: "#6fdc5a", font: pequena, shadow: false }
+    bad: { color: "#ff6a5c", font: pequena, shadow: false }
+    accent: { color: "#5fd6e8", font: pequena, shadow: false }
+    selected: { color: "#ffffa0", font: pequena, shadow: false }
     count: { color: "#ffffff" }
     disabled: { color: "#8b8b8b", shadow: false, font: pequena }
     button: { color: "#2f3034", shadow: false, font: pequena }
-    button-light: { color: "#ffffff", font: pequena }
+    button-light: { color: "#ffffff", font: pequena, shadow: false }
     tooltip: { color: "#a8a8b3" }
   surfaces:
     moldura: ui:abismo/moldura

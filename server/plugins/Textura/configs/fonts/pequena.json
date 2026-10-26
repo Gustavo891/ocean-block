@@ -1,11 +1,11 @@
 {
   "providers": [
-    {"type": "space", "advances": {" ": 5}},
+    {"type": "space", "advances": {" ": 3}},
     {
       "type": "bitmap",
       "file": "oneblock:font/pequena.png",
-      "height": 12,
-      "ascent": 10,
+      "height": 8,
+      "ascent": 7,
       "chars": [
         "\u0021\u0022\u0023\u0024\u0025\u0026\u0027\u0028\u0029\u002a\u002b\u002c\u002d\u002e\u002f\u0030",
         "\u0031\u0032\u0033\u0034\u0035\u0036\u0037\u0038\u0039\u003a\u003b\u003c\u003d\u003e\u003f\u0040",
