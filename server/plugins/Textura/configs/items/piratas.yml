@@ -1,0 +1,13 @@
+moeda_pirata:
+  material: GOLD_NUGGET
+  item_model: oneblock:moeda_pirata
+  type: flat
+  texture: assets/oneblock/textures/item/piratas/moeda_pirata.png
+  name: "<gold>Moeda pirata"
+
+perola_pirata:
+  material: PRISMARINE_CRYSTALS
+  item_model: oneblock:perola_pirata
+  type: flat
+  texture: assets/oneblock/textures/item/piratas/perola.png
+  name: "<aqua>Pérola"

@@ -1,0 +1,24 @@
+toast_pirata:
+  id: toast_pirata
+  caminho: assets/oneblock/textures/icons/piratas/toast_pirata.png
+  ascent: 7
+  height: 26
+  size: 145
+  default: true
+  show_in_gui: false
+moeda_pirata_icone:
+  id: moeda_pirata_icone
+  caminho: assets/oneblock/textures/item/piratas/moeda_pirata.png
+  ascent: 8
+  size: 16
+  height: 16
+  default: true
+  show_in_gui: true
+perola_icone:
+  id: perola_icone
+  caminho: assets/oneblock/textures/item/piratas/perola.png
+  ascent: 8
+  size: 16
+  height: 16
+  default: true
+  show_in_gui: true

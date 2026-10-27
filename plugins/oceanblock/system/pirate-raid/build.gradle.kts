@@ -6,6 +6,7 @@ dependencies {
     compileOnly(projects.plugins.textura)
     compileOnly(libs.mongodb)
     compileOnly(projects.lib.connection)
+    compileOnly(projects.lib.coordinate)
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.instance)
 
