@@ -304,3 +304,17 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] `/recompensas resetar <jogador>` (admin) volta todos os marcos a não resgatados.
 - [ ] Sem o pack, `/recompensas` lista os marcos no chat com `[RESGATAR]` clicável nos liberados.
 - [ ] Um marco inválido em `recompensas.yml` (minutos 0, item que não existe) aparece no log como `[recompensas]` e o resto carrega.
+
+### Raid de piratas
+
+- [ ] `/textura gerar` depois do deploy; `/piratas iniciar` dentro da própria ilha começa a raid: toast `Piratas à vista!` com o selo vermelho de caveira, corneta e o HUD `Invasão pirata · Onda 1/3 · N piratas · 4:59` no lugar da missão.
+- [ ] Barcos de carvalho escuro nascem na água dentro da borda da ilha, navegam até a costa e soltam os piratas; o barco some uns 5 s depois.
+- [ ] Piratas brilham em vermelho; na onda 3 chega um `Super Pirata` com brilho dourado, armadura de ferro e machado de diamante, que dropa um Totem da Imortalidade.
+- [ ] Piratas não quebram portas nem blocos e não se atacam entre si (flechas de besta em vindicators não dão dano).
+- [ ] Cada pirata dropa a moeda pirata (brilhando); pegar dá coins e mostra `+N Coins` com o ícone da moeda; a pérola dá pérolas. Visitante e mobs não conseguem pegar; funil não puxa. Moeda some em 2 min.
+- [ ] Matar todos da onda chama a próxima na hora com a corneta; matar a onda 3 dá `Raid vencida!` / `+N Coins`, XP de nível e o som de level up; o HUD da missão volta.
+- [ ] Deixar o tempo acabar: `Os piratas fugiram`, piratas somem com fumaça, HUD da missão volta.
+- [ ] Sair da ilha durante a raid esconde o HUD de invasão e volta o da missão; voltar mostra de novo. Ficar 30 s fora com todos os membros encerra a raid sem aviso.
+- [ ] `/piratas parar` encerra como fuga; `/piratas iniciar` numa ilha já atacada recusa.
+- [ ] Reiniciar o servidor no meio da raid não deixa piratas, barcos nem moedas no mundo.
+- [ ] Sorteio natural: com `sorteio.chance: 1` e `intervalo-ticks: 200` em `piratas.yml`, uma ilha com membro nível 10+ sofre raid em 10 s e não sofre outra no mesmo dia (coleção `pirate_raids`).

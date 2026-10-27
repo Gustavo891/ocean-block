@@ -40,7 +40,7 @@ Um evento raro e empolgante na ilha: de vez em quando, sem aviso prévio, barcos
 
 1. **Sorteio** (`RaidRoll`, puro): elegível se a ilha não tem raid ativa, `ultimoDia != hoje` (data em `America/Sao_Paulo`), algum membro online no lote tem nível ≥ `nivel-minimo` (10). Então `random < chance` (0.03).
 2. **Início**: grava `ultimoDia = hoje` (write-through), monta a onda 1, toca a corneta, mostra o toast `Piratas à vista!` / `Defenda sua ilha` e o HUD, suspende o HUD de missão de cada membro no lote.
-3. **Onda**: os barcos nascem em ângulos aleatórios num círculo de raio `barcos.distancia` (32) em torno do centro da ilha, na superfície do mar (Y da água, `IslandPlacement.GROUND_Y - 1` como referência, procurando a água na coluna). Só nascem em chunk carregado; sem chunk carregado no círculo, o raio cai até 16. Cada barco leva 2 piratas.
+3. **Onda**: os barcos nascem em ângulos aleatórios num círculo de raio `min(barcos.distancia, borda/2 - 3)` (32, ou 22 com a borda inicial de 50, para os barcos nascerem dentro da borda da ilha) em torno do centro da ilha, na superfície do mar (Y da água, `IslandPlacement.GROUND_Y - 1` como referência, procurando a água na coluna). Só nascem em chunk carregado; sem chunk carregado no círculo, o raio cai até 16. Cada barco leva 2 piratas.
 4. **Navegação**: a cada tick o barco recebe velocidade horizontal `barcos.velocidade` (0.25 bloco/tick) em direção ao centro (`BoatPath`, puro). Ao encostar (bloco sólido à frente na altura da água, ou dentro de `barcos.desembarque` = 8 blocos do centro, ou parado por 3 s), os piratas desembarcam e o barco é removido 5 s depois com partículas de splash.
 5. **Combate**: piratas têm `FOLLOW_RANGE` 48, alvo inicial = membro mais próximo no lote; IA vanilla depois. Um pirata que se afasta mais que `limite` (64 blocos) do centro por 10 s volta (teleporte) para um ponto da costa.
 6. **Onda limpa**: quando os piratas vivos da onda chegam a 0, a próxima onda nasce na hora (corneta de novo). Depois da onda 3: **vitória**.
@@ -89,7 +89,7 @@ Vindicator rola a tabela duas vezes (só a moeda não dobra). O Super Pirata (`s
 
 ## Moeda e pérola físicas
 
-- Itens Textura planos `oneblock:moeda_pirata` e `oneblock:perola` (`configs/items/piratas.yml`, PNGs originais 16×16 em `textures/item/piratas/`), base `GOLD_NUGGET` / `PRISMARINE_CRYSTALS` com `item_model`; o valor vai no PDC (`oceanblock:raid_moeda` = coins, `oceanblock:raid_perola` = pérolas). Nome `Moeda pirata` / `Pérola`, item brilhando.
+- Itens Textura planos `oneblock:moeda_pirata` e `oneblock:perola_pirata` (`configs/items/piratas.yml`, PNGs originais 16×16 em `textures/item/piratas/`), base `GOLD_NUGGET` / `PRISMARINE_CRYSTALS` com `item_model`; o valor vai no PDC (`oceanblock:raid_moeda` = coins, `oceanblock:raid_perola` = pérolas). Nome `Moeda pirata` / `Pérola`, item brilhando.
 - `EntityPickupItemEvent`: jogador membro da ilha do item (uuid da ilha também no PDC) → cancela, remove a entidade, deposita (`Currencies.deposit`), som de pickup e linha `+N Coins` / `+N Pérolas` na região `coleta` (mesmo estilo do `CollectNotifier`). Não membro ou mob → cancela.
 - `InventoryPickupItemEvent` (funil) cancelado para esses itens.
 - Some em 2 min (`ticksLived` ajustado para faltar 2.400 ticks).
