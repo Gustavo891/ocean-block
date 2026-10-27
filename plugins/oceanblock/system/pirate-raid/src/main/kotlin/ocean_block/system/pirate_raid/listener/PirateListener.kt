@@ -1,10 +1,12 @@
 package ocean_block.system.pirate_raid.listener
 
+import ocean_block.libs.instance.Instance
 import ocean_block.system.pirate_raid.crew.PirateFactory
 import ocean_block.system.pirate_raid.crew.PirateKeys
 import ocean_block.system.pirate_raid.loot.RaidLoot
 import ocean_block.system.pirate_raid.raid.RaidDirector
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -12,7 +14,9 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityBreakDoorEvent
 import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.event.entity.EntityRegainHealthEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import kotlin.random.Random
 
@@ -29,6 +33,12 @@ class PirateListener : Listener {
         RaidLoot.drop(pirate.location, kind, island, raid?.level ?: RaidDirector.config.minLevel, RaidDirector.config, Random.Default)
         RaidDirector.pirateDied(island, pirate.uniqueId)
     }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onDamage(event: EntityDamageEvent) = refreshHealth(event.entity)
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onHeal(event: EntityRegainHealthEvent) = refreshHealth(event.entity)
 
     @EventHandler(ignoreCancelled = true)
     fun onChangeBlock(event: EntityChangeBlockEvent) {
@@ -50,6 +60,14 @@ class PirateListener : Listener {
     fun onTarget(event: EntityTargetLivingEntityEvent) {
         val target = event.target ?: return
         if (PirateKeys.isPirate(event.entity) && PirateKeys.isPirate(target)) event.isCancelled = true
+    }
+
+    private fun refreshHealth(entity: Entity) {
+        val pirate = entity as? LivingEntity ?: return
+        if (!PirateKeys.isPirate(pirate)) return
+        Instance.server.scheduler.runTask(Instance, Runnable {
+            if (pirate.isValid && !pirate.isDead) PirateFactory.showHealth(pirate)
+        })
     }
 
     private fun shooter(damager: Entity): Entity? =

@@ -65,7 +65,7 @@ Faixas por nível mínimo; vale a maior faixa ≤ nível da raid:
 
 ## Piratas
 
-- Pillager: nome `Pirata` (vermelho), besta na mão. Vindicator: nome `Pirata Brutamontes`, machado de ferro.
+- Pillager com besta, Vindicator com machado de ferro. O nome mostra só a vida (`❤ 18/24`, coração dourado no Super Pirata), atualizado a cada dano ou cura (pedido do usuário no teste).
 - `isGlowing = true`, `removeWhenFarAway = false`, `isPersistent = false`, `isPatrolLeader = false`, `canJoinRaid = false`, chance de drop de equipamento 0.
 - Marcados no PDC com `oceanblock:pirata` = uuid da ilha e no mapa em memória da raid.
 - Sem griefing: `EntityChangeBlockEvent` e `EntityBreakDoorEvent` cancelados para piratas.

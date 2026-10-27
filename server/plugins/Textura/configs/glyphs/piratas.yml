@@ -6,6 +6,7 @@ toast_pirata:
   size: 145
   default: true
   show_in_gui: false
+  unicode: \uE022
 moeda_pirata_icone:
   id: moeda_pirata_icone
   caminho: assets/oneblock/textures/item/piratas/moeda_pirata.png
@@ -14,6 +15,7 @@ moeda_pirata_icone:
   height: 16
   default: true
   show_in_gui: true
+  unicode: \uE023
 perola_icone:
   id: perola_icone
   caminho: assets/oneblock/textures/item/piratas/perola.png
@@ -22,3 +24,4 @@ perola_icone:
   height: 16
   default: true
   show_in_gui: true
+  unicode: \uE024

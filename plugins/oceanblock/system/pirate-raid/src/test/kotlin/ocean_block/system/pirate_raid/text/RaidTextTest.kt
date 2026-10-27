@@ -7,16 +7,27 @@ import ocean_block.system.pirate_raid.notify.ToastLine
 
 class RaidTextTest : FunSpec({
 
+    val sep = " <gray>-</gray> "
+
     test("linha do HUD") {
-        RaidHudText.line(2, 3, 5, 192) shouldBe "Invasão pirata · Onda 2/3 · 5 piratas · 3:12"
+        RaidHudText.line(2, 3, 5, 192) shouldBe
+            "<red>Invasão pirata</red>$sep<white>Onda 2/3</white>$sep<white>5 piratas</white>$sep<yellow>3:12</yellow>"
     }
 
     test("singular e segundos com zero") {
-        RaidHudText.line(3, 3, 1, 5) shouldBe "Invasão pirata · Onda 3/3 · 1 pirata · 0:05"
+        RaidHudText.line(3, 3, 1, 5) shouldBe
+            "<red>Invasão pirata</red>$sep<white>Onda 3/3</white>$sep<white>1 pirata</white>$sep<yellow>0:05</yellow>"
     }
 
     test("tempo negativo vira zero") {
-        RaidHudText.line(1, 3, 4, -3) shouldBe "Invasão pirata · Onda 1/3 · 4 piratas · 0:00"
+        RaidHudText.line(1, 3, 4, -3) shouldBe
+            "<red>Invasão pirata</red>$sep<white>Onda 1/3</white>$sep<white>4 piratas</white>$sep<yellow>0:00</yellow>"
+    }
+
+    test("vida no nome arredonda para cima e não fica negativa") {
+        RaidHudText.health(17.2, 24.0, false) shouldBe "<red>❤</red> <white>18/24</white>"
+        RaidHudText.health(80.0, 80.0, true) shouldBe "<gold>❤</gold> <white>80/80</white>"
+        RaidHudText.health(-1.0, 24.0, false) shouldBe "<red>❤</red> <white>0/24</white>"
     }
 
     test("cartões de início, vitória e fuga") {

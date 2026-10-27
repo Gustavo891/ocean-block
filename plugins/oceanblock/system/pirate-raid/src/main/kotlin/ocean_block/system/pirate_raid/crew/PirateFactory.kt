@@ -3,12 +3,14 @@ package ocean_block.system.pirate_raid.crew
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import ocean_block.libs.formatter.Mini
+import ocean_block.system.pirate_raid.text.RaidHudText
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Illager
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Pillager
 import org.bukkit.entity.Vindicator
 import org.bukkit.inventory.EquipmentSlot
@@ -23,16 +25,9 @@ object PirateFactory {
     private const val RED_TEAM = "oceanblock_piratas"
     private const val GOLD_TEAM = "oceanblock_superpirata"
 
-    private val NAMES = mapOf(
-        PirateKind.PILLAGER to "<red>Pirata</red>",
-        PirateKind.BRUTE to "<red>Pirata Brutamontes</red>",
-        PirateKind.SUPER to "<gold><bold>Super Pirata</bold></gold>",
-    )
-
     fun spawn(location: Location, kind: PirateKind, island: UUID, superHealth: Double): Illager {
         val type = if (kind == PirateKind.PILLAGER) Pillager::class.java else Vindicator::class.java
         return location.world.spawn(location, type) { pirate ->
-            pirate.customName(Mini.deserialize(NAMES.getValue(kind)).decoration(TextDecoration.ITALIC, false))
             pirate.isCustomNameVisible = true
             pirate.isGlowing = true
             pirate.removeWhenFarAway = false
@@ -49,7 +44,14 @@ object PirateFactory {
             pirate.persistentDataContainer.set(PirateKeys.ISLAND, PersistentDataType.STRING, island.toString())
             pirate.persistentDataContainer.set(PirateKeys.KIND, PersistentDataType.STRING, kind.name)
             team(if (kind == PirateKind.SUPER) GOLD_TEAM else RED_TEAM).addEntity(pirate)
+            showHealth(pirate)
         }
+    }
+
+    fun showHealth(pirate: LivingEntity) {
+        val max = pirate.getAttribute(Attribute.MAX_HEALTH)?.value ?: pirate.health
+        val text = RaidHudText.health(pirate.health, max, PirateKeys.kindOf(pirate) == PirateKind.SUPER)
+        pirate.customName(Mini.deserialize(text).decoration(TextDecoration.ITALIC, false))
     }
 
     fun forget(entity: Entity) {
