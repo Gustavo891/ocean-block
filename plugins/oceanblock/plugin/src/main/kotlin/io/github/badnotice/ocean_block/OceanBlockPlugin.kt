@@ -12,6 +12,7 @@ import ocean_block.system.coin_flip.CoinFlipSystem
 import ocean_block.system.coin_flip.coin_flip.CoinFlipManager
 import ocean_block.system.coin_flip.command.CoinFlipCommand
 import ocean_block.system.collections.CollectionsSystem
+import ocean_block.system.chest_sort.ChestSortSystem
 import ocean_block.system.custom_items.CustomItemSystem
 import ocean_block.system.custom_items.block.PlacedBlockManager
 import ocean_block.system.custom_items.item.CustomItemCommand
@@ -83,6 +84,7 @@ class OceanBlockPlugin : JavaPlugin() {
     private fun setupSystems() {
         val systems = listOf(
             { CustomItemSystem.init(this, viewFrame, paperCommandManager) },
+            { ChestSortSystem.init(this) },
             { AuctionHouseSystem.init(this, viewFrame) },
             { CoinFlipSystem.init(this, viewFrame) },
             { CraftSystem.init(this, viewFrame, paperCommandManager) },

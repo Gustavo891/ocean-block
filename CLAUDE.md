@@ -55,7 +55,7 @@ Three paths are wired as file dependencies and must exist on disk or the build f
 
 ### Tests
 
-Tests use **Kotest 5.9 on the JUnit 5 platform**. `paper-common` does *not* wire testing — a module that wants tests must add `testImplementation(libs.kotest.runner)` + `libs.kotest.assertions` (plus `libs.paperApi` when the code under test touches Bukkit types) and `tasks.test { useJUnitPlatform() }` to its own `build.gradle.kts`. Only `plugins/textura`, `system/custom-items`, `system/islands`, `system/drift`, `system/craft`, `system/machines`, `system/preferences`, `system/level`, `system/missions`, `system/playtime-rewards`, `system/scoreboard` and `system/sell` have tests today; `system/level`, `system/missions` and `system/playtime-rewards` depend on `lib:connection`, so they also have a `localTest` alias. Tests live under `src/test/kotlin`.
+Tests use **Kotest 5.9 on the JUnit 5 platform**. `paper-common` does *not* wire testing — a module that wants tests must add `testImplementation(libs.kotest.runner)` + `libs.kotest.assertions` (plus `libs.paperApi` when the code under test touches Bukkit types) and `tasks.test { useJUnitPlatform() }` to its own `build.gradle.kts`. Only `plugins/textura`, `system/custom-items`, `system/islands`, `system/drift`, `system/craft`, `system/machines`, `system/preferences`, `system/chest-sort`, `system/level`, `system/missions`, `system/playtime-rewards`, `system/scoreboard` and `system/sell` have tests today; `system/level`, `system/missions` and `system/playtime-rewards` depend on `lib:connection`, so they also have a `localTest` alias. Tests live under `src/test/kotlin`.
 
 ```bash
 ./gradlew :plugins:oceanblock:system:custom-items:test
@@ -150,6 +150,10 @@ Energy machines and the Picareta fundidora (spec `docs/superpowers/specs/2026-10
 #### Preferences (`system/preferences`)
 
 `/pref` (aliases `/prefs`, `/preferencias`) opens `PreferencesMenu`, a plain chest with one toggle per `Preference` entry (today only `ENERGY_TRAIL`). Values live in the player's PDC under `oceanblock:pref_<key>` as a byte; `Preferences.isEnabled(player, preference)` falls back to the entry's `default` (pure `PreferenceRules`, Kotest-covered). `PreferencesSystem.init(viewFrame, paperCommandManager)` runs before `MachinesSystem`. Add a preference by adding an enum entry; systems read it through `Preferences`.
+
+#### Chest sort (`system/chest-sort`)
+
+With a chest, trapped chest, double chest, barrel or shulker box open, pressing F (swap to offhand) with the mouse over a slot of the container sorts it (the user asked on 2026-10-27). `ChestSortListener` takes the `InventoryClickEvent` with `ClickType.SWAP_OFFHAND` whose clicked inventory is the top one and whose holder (`getHolder(false)`) is a `Chest`, `DoubleChest`, `Barrel` or `ShulkerBox`, so inventory-framework views, dialogs and every other container (ender chest, hopper, dispenser, minecart chest) keep the vanilla F; F over the player's own inventory also stays vanilla, on the user's choice (Shift cannot be read while a screen is open, so there is no Shift+F). It cancels the event, checks `Island.isTrustAllowed` for the island at the container (owner, member, trusted with the owner online, `screen.dev`; outside an island anyone who opened it may sort), rewrites `contents` and plays `ITEM_BUNDLE_INSERT`. The pure `ChestSortRules.sort` (generic over a `StackKind<T>`, because `ItemStack` cannot be built in a plain JVM test; `ItemStackKind` is the Bukkit side, `isSimilar` + `asQuantity`) merges similar stacks (custom items only with identical NBT), orders the groups by total amount descending, then material name, then first appearance, splits them at the max stack size (an overstacked stack keeps its size, so the result never needs more slots) and pads with empty slots; Kotest-covered, including no loss or duplication on a full mixed chest. `ChestSortSystem.init(plugin)` only registers the listener.
 
 #### Level (`system/level`)
 

@@ -23,6 +23,7 @@ include(
     ":lib:translation",
 
     ":plugins:oceanblock:system:custom-items",
+    ":plugins:oceanblock:system:chest-sort",
     ":plugins:oceanblock:system:auction-house",
     ":plugins:oceanblock:system:coinflip",
     ":plugins:oceanblock:system:collections",
