@@ -1,7 +1,7 @@
 package ocean_block.system.drift.debris
 
-import ocean_block.system.drift.config.DebrisType
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.entity.ItemDisplay
 import org.bukkit.inventory.ItemStack
@@ -18,12 +18,12 @@ internal object DebrisEntities {
     fun isLoaded(world: World, blockX: Int, blockZ: Int): Boolean =
         world.isChunkLoaded(blockX shr CHUNK_SHIFT, blockZ shr CHUNK_SHIFT)
 
-    fun spawn(world: World, pose: Pose, type: DebrisType): ItemDisplay =
+    fun spawn(world: World, pose: Pose, shown: Material, scale: Float): ItemDisplay =
         world.spawn(Location(world, pose.point.x, pose.y, pose.point.z), ItemDisplay::class.java) {
-            it.setItemStack(ItemStack(type.display))
+            it.setItemStack(ItemStack(shown))
             it.isPersistent = false
             it.teleportDuration = TELEPORT_TICKS
-            it.transformation = posed(it.transformation, pose.rotation, Vector3f(type.scale, type.scale, type.scale))
+            it.transformation = posed(it.transformation, pose.rotation, Vector3f(scale, scale, scale))
         }
 
     fun place(entity: ItemDisplay, pose: Pose, scale: Float? = null) {

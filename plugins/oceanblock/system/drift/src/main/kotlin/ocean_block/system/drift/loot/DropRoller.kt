@@ -13,4 +13,9 @@ object DropRoller {
 
         return drops.ifEmpty { listOf(Material.STRING to 1) }
     }
+
+    fun shown(type: DebrisType, drops: List<Pair<Material, Int>>, random: Random): Material {
+        if (!type.showsDrop || drops.isEmpty()) return type.display
+        return drops[random.nextInt(drops.size)].first
+    }
 }

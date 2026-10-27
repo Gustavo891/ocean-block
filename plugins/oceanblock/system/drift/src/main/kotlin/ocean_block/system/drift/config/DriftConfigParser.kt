@@ -124,7 +124,8 @@ object DriftConfigParser {
 
         val scale = number(section.get("escala"), "detritos.$id.escala", DEFAULT_SCALE, MIN_SCALE, MAX_SCALE, warn).toFloat()
         val sink = number(section.get("afundamento"), "detritos.$id.afundamento", 0.0, 0.0, null, warn)
-        return DebrisType(id, weight, display, scale, drops, sink)
+        val showsDrop = section.getBoolean("mostrar-drop", false)
+        return DebrisType(id, weight, display, scale, drops, sink, showsDrop)
     }
 
     private fun parseDrop(typeId: String, raw: Map<*, *>, rules: MaterialRules, warn: (String) -> Unit): DropEntry? {

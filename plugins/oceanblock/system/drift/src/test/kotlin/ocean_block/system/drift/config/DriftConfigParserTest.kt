@@ -138,6 +138,33 @@ class DriftConfigParserTest : StringSpec({
         config.types.none { it.id == "tabua" || it.id == "folhas" } shouldBe true
     }
 
+    "so a sucata mostra o item sorteado no yaml padrao" {
+        val config = parse(defaultYaml())!!
+
+        config.types.filter { it.showsDrop }.map { it.id } shouldBe listOf("sucata")
+    }
+
+    "mostrar-drop ausente vale falso" {
+        val config = parse(
+            """
+            detritos:
+              caixa:
+                peso: 1
+                exibicao: CHEST
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+              monte:
+                peso: 1
+                exibicao: OAK_PLANKS
+                mostrar-drop: true
+                drops:
+                  - {material: STICK, min: 1, max: 1, chance: 1.0}
+            """.trimIndent(),
+        )!!
+
+        config.types.associate { it.id to it.showsDrop } shouldBe mapOf("caixa" to false, "monte" to true)
+    }
+
     "min maior que max e chance fora do intervalo geram aviso" {
         val warnings = mutableListOf<String>()
         val config = parse(

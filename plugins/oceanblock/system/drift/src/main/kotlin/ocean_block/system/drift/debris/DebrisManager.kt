@@ -6,6 +6,7 @@ import ocean_block.system.drift.config.DriftSettings
 import ocean_block.system.drift.lane.DriftLane
 import ocean_block.system.drift.loot.DebrisPicker
 import ocean_block.system.drift.loot.DebrisPool
+import ocean_block.system.drift.loot.DropRoller
 import ocean_block.system.drift.net.NetIndex
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
@@ -98,8 +99,9 @@ object DebrisManager {
         val pose = DebrisPose.along(point, 0, params, settings, levelY)
         if (!DebrisEntities.isLoaded(lot.world, floor(pose.point.x).toInt(), floor(pose.point.z).toInt())) return
 
-        val entity = DebrisEntities.spawn(lot.world, pose, type)
-        tracked += Debris(lot.island.uuid, type, entity, point, params, levelY)
+        val drops = DropRoller.roll(type, Random)
+        val entity = DebrisEntities.spawn(lot.world, pose, DropRoller.shown(type, drops, Random), type.scale)
+        tracked += Debris(lot.island.uuid, type, drops, entity, point, params, levelY)
     }
 
     private fun moveTick(settings: DriftSettings) {

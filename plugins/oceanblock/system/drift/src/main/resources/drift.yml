@@ -39,6 +39,7 @@ detritos:
   sucata:
     peso: 80
     exibicao: OAK_PLANKS
+    mostrar-drop: true
     escala: 0.6
     drops:
       - {material: STICK, min: 2, max: 4, chance: 0.85}

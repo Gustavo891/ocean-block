@@ -2,12 +2,14 @@ package ocean_block.system.drift.debris
 
 import ocean_block.system.drift.config.DebrisType
 import ocean_block.system.drift.lane.LanePoint
+import org.bukkit.Material
 import org.bukkit.entity.ItemDisplay
 import java.util.UUID
 
 class Debris(
     val islandId: UUID,
     val type: DebrisType,
+    val drops: List<Pair<Material, Int>>,
     val entity: ItemDisplay,
     var point: LanePoint,
     val float: FloatParams,

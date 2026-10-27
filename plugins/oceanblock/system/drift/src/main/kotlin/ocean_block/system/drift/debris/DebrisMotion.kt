@@ -6,7 +6,6 @@ import ocean_block.system.drift.collect.DebrisDelivery
 import ocean_block.system.drift.config.DriftSettings
 import ocean_block.system.drift.lane.DriftLane
 import ocean_block.system.drift.lane.LanePoint
-import ocean_block.system.drift.loot.DropRoller
 import ocean_block.system.drift.net.NetCatch
 import ocean_block.system.drift.net.NetDelivery
 import ocean_block.system.islands.island.Island
@@ -15,7 +14,6 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.UUID
-import kotlin.random.Random
 
 internal class MotionTick(val settings: DriftSettings, val activeLots: Set<UUID>, val nowMillis: Long)
 
@@ -71,7 +69,7 @@ internal object DebrisMotion {
         if (destination.world != debris.entity.world) return false
 
         if (stepToward(debris, destination)) return true
-        NetDelivery.deliver(placed, DropRoller.roll(debris.type, Random), destination)
+        NetDelivery.deliver(placed, debris.drops, destination)
         return false
     }
 
@@ -158,7 +156,7 @@ internal object DebrisMotion {
     }
 
     private fun deliver(debris: Debris, player: Player, byHook: Boolean) {
-        DebrisDelivery.deliver(player, DropRoller.roll(debris.type, Random))
+        DebrisDelivery.deliver(player, debris.drops)
         Bukkit.getPluginManager().callEvent(DebrisCollectedEvent(player, debris.type.id, byHook))
     }
 }
