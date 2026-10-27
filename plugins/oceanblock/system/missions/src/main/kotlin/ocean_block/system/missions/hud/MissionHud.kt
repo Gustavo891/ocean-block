@@ -16,8 +16,10 @@ object MissionHud {
     private const val BANNER_TICKS = 80L
 
     private val banners = mutableMapOf<UUID, CompletionBanner>()
+    private val suspended = mutableSetOf<UUID>()
 
     fun show(player: Player, state: PlayerMissions) {
+        if (player.uniqueId in suspended) return HudApi.hide(player, SLOT)
         val text = banners[player.uniqueId]?.current(now())
             ?: MissionText.hud(MissionRules.current(state), MissionRules.trailDone(state))
         if (text.isEmpty()) return HudApi.hide(player, SLOT)
@@ -36,8 +38,19 @@ object MissionHud {
         }
     }
 
+    fun suspend(player: Player) {
+        suspended.add(player.uniqueId)
+        HudApi.hide(player, SLOT)
+    }
+
+    fun resume(player: Player) {
+        if (!suspended.remove(player.uniqueId)) return
+        if (player.isOnline) show(player, MissionManager.get(player.uniqueId))
+    }
+
     fun hide(player: Player) {
         banners.remove(player.uniqueId)
+        suspended.remove(player.uniqueId)
         HudApi.hide(player, SLOT)
     }
 
