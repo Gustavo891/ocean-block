@@ -40,6 +40,7 @@ include(
     ":plugins:oceanblock:system:battle-pass",
     ":plugins:oceanblock:system:playtime",
     ":plugins:oceanblock:system:playtime-rewards",
+    ":plugins:oceanblock:system:pirate-raid",
     ":plugins:oceanblock:system:sell",
     ":plugins:oceanblock:system:shop",
     ":plugins:oceanblock:system:scoreboard",

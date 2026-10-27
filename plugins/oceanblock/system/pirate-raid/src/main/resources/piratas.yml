@@ -1,0 +1,47 @@
+sorteio:
+  chance: 0.03
+  intervalo-ticks: 12000
+  nivel-minimo: 10
+raid:
+  duracao-segundos: 300
+  ilha-vazia-segundos: 30
+  limite: 64
+barcos:
+  distancia: 32
+  distancia-minima: 16
+  velocidade: 0.25
+  desembarque: 8
+moeda:
+  min: 150
+  max: 400
+  fator-nivel: 0.05
+  some-segundos: 120
+vitoria:
+  coins: 3000
+  xp-fracao: 0.2
+brutamontes-rolagens: 2
+super-pirata:
+  vida: 80
+  rolagens: 3
+  moedas: 5
+faixas:
+  "10":
+    ondas: [3, 4, 5]
+    brutamontes: 0
+  "20":
+    ondas: [4, 5, 6]
+    brutamontes: 0.25
+  "30":
+    ondas: [5, 6, 8]
+    brutamontes: 0.35
+  "40":
+    ondas: [6, 8, 10]
+    brutamontes: 0.5
+drops:
+  moeda: { chance: 1.0, min: 1, max: 1 }
+  perola: { chance: 0.2, min: 1, max: 2 }
+  DIAMOND: { chance: 0.1, min: 1, max: 1 }
+  GOLDEN_APPLE: { chance: 0.08, min: 1, max: 1 }
+  IRON_INGOT: { chance: 0.3, min: 1, max: 3 }
+  GOLD_INGOT: { chance: 0.15, min: 1, max: 2 }
+  EMERALD: { chance: 0.1, min: 1, max: 2 }
