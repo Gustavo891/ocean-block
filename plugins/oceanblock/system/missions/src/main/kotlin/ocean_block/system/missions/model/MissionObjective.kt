@@ -39,4 +39,8 @@ sealed interface MissionObjective {
     data class IslandUpgrade(val upgrade: String, val level: Int) : MissionObjective {
         override val goal: Long get() = 1
     }
+
+    data class KillMobs(val amount: Int) : MissionObjective {
+        override val goal: Long get() = amount.toLong()
+    }
 }

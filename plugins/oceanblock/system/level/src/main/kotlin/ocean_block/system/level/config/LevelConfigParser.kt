@@ -12,6 +12,8 @@ object LevelConfigParser {
             generator = table(config, "gerador", defaults.generator, warn),
             recipeBase = number(config, "receitas.base", defaults.recipeBase, warn),
             recipePerLevel = number(config, "receitas.por-nivel", defaults.recipePerLevel, warn),
+            mobDefault = number(config, "mobs.padrao", defaults.mobDefault, warn),
+            mobs = table(config, "mobs.tipos", defaults.mobs, warn).mapKeys { it.key.uppercase() },
         )
     }
 

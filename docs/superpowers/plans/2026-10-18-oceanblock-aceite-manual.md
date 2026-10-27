@@ -152,6 +152,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Detrito que cai na Rede de Detritos não dá XP; blocos que o Minerador quebra não dão XP.
 - [ ] Quebrar à mão pedra/minério formado pelo gerador dá XP (minério raro vale mais); colocar um pedregulho no lugar e quebrar não dá XP.
 - [ ] Fabricar uma receita no `/receitas` dá XP (`10 + 3 × nível da receita`).
+- [ ] Matar um mob dá `+N XP` perto da mira: zumbi/esqueleto/aranha 3, creeper 5, enderman 8, animais 1 (mob de spawner, de ovo e de farm também contam). A diária `Mate 20 mobs` / `Mate 50 mobs` pode sair no sorteio e anda a cada mob morto.
 - [ ] Ao subir de nível: só o som de level-up e um toast no topo direito da tela com um selo amarelo quadrado à esquerda (frasco de XP) e corpo preto translúcido, `Nível N!` em amarelo e `+N Coins` em branco, com sombra (100 × nível, depositado no saldo); some em 5 s; nada no centro da tela. `/textura notificacoes send nivel` mostra o toast sem dar XP.
 - [ ] `/nivel dar <você> 100000` (admin): um título só com o nível final e o aviso lista todas as receitas abertas no caminho. `/nivel definir <você> 50`: barra cheia, `/nivel` mostra `Nível máximo` e XP novo não soma mais.
 - [ ] Modo criativo não ganha XP de coleta nem de receita.

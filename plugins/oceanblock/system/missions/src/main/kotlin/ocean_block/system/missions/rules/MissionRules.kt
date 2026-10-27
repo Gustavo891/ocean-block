@@ -76,6 +76,7 @@ object MissionRules {
         is MissionObjective.Sell -> if (signal is MissionSignal.Sold) max(0, signal.value) else 0
         is MissionObjective.IslandUpgrade ->
             if (signal is MissionSignal.State && (signal.upgrades?.get(objective.upgrade) ?: 0) >= objective.level) 1 else 0
+        is MissionObjective.KillMobs -> if (signal == MissionSignal.MobKilled) 1 else 0
     }
 
     private fun applyTrail(state: PlayerMissions, signal: MissionSignal): Pair<PlayerMissions, List<Completed>> {

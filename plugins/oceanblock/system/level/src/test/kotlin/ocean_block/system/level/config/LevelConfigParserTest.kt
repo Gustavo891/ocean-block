@@ -59,4 +59,29 @@ class LevelConfigParserTest : StringSpec({
         config.recipeBase shouldBe 10
         config.recipePerLevel shouldBe 3
     }
+
+    "mobs valem pela tabela e os que faltam caem no padrao" {
+        val config = parse(bundled())
+
+        config.mobXp("ZOMBIE") shouldBe 3
+        config.mobXp("CREEPER") shouldBe 5
+        config.mobXp("ENDERMAN") shouldBe 8
+        config.mobXp("WARDEN") shouldBe 10
+        config.mobXp("COW") shouldBe 1
+        config.mobXp("PIG") shouldBe 1
+    }
+
+    "arquivo sem a secao mobs usa a tabela padrao" {
+        val config = parse("receitas:\n  base: 10\n")
+
+        config.mobXp("SKELETON") shouldBe 3
+        config.mobXp("SHEEP") shouldBe 1
+    }
+
+    "nome do mob aceita minusculas no yml" {
+        val config = parse("mobs:\n  padrao: 2\n  tipos:\n    zombie: 7\n")
+
+        config.mobXp("ZOMBIE") shouldBe 7
+        config.mobXp("CHICKEN") shouldBe 2
+    }
 })

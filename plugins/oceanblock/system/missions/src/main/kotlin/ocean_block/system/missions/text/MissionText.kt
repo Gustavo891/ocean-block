@@ -37,6 +37,7 @@ object MissionText {
         is MissionObjective.ReachLevel -> "Chegue ao nível ${objective.level}"
         is MissionObjective.Sell -> "Venda $${number(objective.value)} em itens no /sell"
         is MissionObjective.IslandUpgrade -> "Compre o ${UPGRADES[objective.upgrade] ?: objective.upgrade} nível ${objective.level} em /ilha"
+        is MissionObjective.KillMobs -> "Mate ${objective.amount} mobs"
     }
 
     fun reward(xp: Int): String = "+${number(xp.toLong())} XP de nível"

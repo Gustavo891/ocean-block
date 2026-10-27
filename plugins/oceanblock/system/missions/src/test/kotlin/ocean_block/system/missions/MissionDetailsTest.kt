@@ -28,6 +28,7 @@ class MissionDetailsTest : StringSpec({
         requirement(MissionObjective.ReachLevel(3)) shouldBe "Chegue ao nível 3"
         requirement(MissionObjective.Sell(1000)) shouldBe "Venda $1.000 em itens no /sell"
         requirement(MissionObjective.IslandUpgrade("Generator", 1)) shouldBe "Compre o Gerador nível 1 em /ilha"
+        requirement(MissionObjective.KillMobs(20)) shouldBe "Mate 20 mobs"
     }
 
     "toda missao tem um icone proprio" {

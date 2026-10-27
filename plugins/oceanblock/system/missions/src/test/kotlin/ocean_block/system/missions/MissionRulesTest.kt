@@ -3,8 +3,10 @@ package ocean_block.system.missions
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
+import ocean_block.system.missions.catalog.DailyPool
 import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.model.DailyMission
+import ocean_block.system.missions.model.MissionObjective
 import ocean_block.system.missions.model.MissionSignal
 import ocean_block.system.missions.model.PlayerMissions
 import ocean_block.system.missions.rules.MissionRules
@@ -173,5 +175,15 @@ class MissionRulesTest : StringSpec({
 
         val dailies = PlayerMissions("u", trailDone, 0, "2026-10-25", listOf(DailyMission("receitas_3", 1, 40, false)))
         MissionRules.skip(dailies).dailies[0].done shouldBe true
+    }
+
+    "matar mobs conta um por morte so para o objetivo de mobs" {
+        MissionRules.credit(MissionObjective.KillMobs(20), MissionSignal.MobKilled) shouldBe 1
+        MissionRules.credit(MissionObjective.CraftAny(3), MissionSignal.MobKilled) shouldBe 0
+        MissionRules.credit(MissionObjective.KillMobs(20), MissionSignal.Smelted(3)) shouldBe 0
+    }
+
+    "as diarias incluem matar mobs" {
+        DailyPool.all.filter { it.objective is MissionObjective.KillMobs }.map { it.id } shouldBe listOf("mobs_20", "mobs_50")
     }
 })

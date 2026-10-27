@@ -20,3 +20,43 @@ gerador:
 receitas:
   base: 10
   por-nivel: 3
+mobs:
+  padrao: 1
+  tipos:
+    ZOMBIE: 3
+    HUSK: 3
+    DROWNED: 3
+    ZOMBIE_VILLAGER: 3
+    SKELETON: 3
+    STRAY: 3
+    BOGGED: 3
+    SPIDER: 3
+    SLIME: 3
+    MAGMA_CUBE: 3
+    SILVERFISH: 3
+    ENDERMITE: 3
+    VEX: 3
+    ZOMBIFIED_PIGLIN: 3
+    PIGLIN: 3
+    CAVE_SPIDER: 4
+    PHANTOM: 4
+    CREEPER: 5
+    WITCH: 5
+    PILLAGER: 5
+    VINDICATOR: 5
+    BLAZE: 5
+    GHAST: 5
+    BREEZE: 5
+    HOGLIN: 5
+    ZOGLIN: 5
+    SHULKER: 5
+    GUARDIAN: 6
+    PIGLIN_BRUTE: 6
+    ENDERMAN: 8
+    WITHER_SKELETON: 8
+    EVOKER: 8
+    ELDER_GUARDIAN: 10
+    RAVAGER: 10
+    WARDEN: 10
+    WITHER: 10
+    ENDER_DRAGON: 10

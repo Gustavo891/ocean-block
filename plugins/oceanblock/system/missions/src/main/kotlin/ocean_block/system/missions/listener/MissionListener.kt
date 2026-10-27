@@ -15,6 +15,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.Material
+import org.bukkit.entity.Mob
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.inventory.FurnaceExtractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -45,6 +47,12 @@ class MissionListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onSell(event: SellEvent) {
         MissionTracker.signal(event.player, MissionSignal.Sold(event.amount.roundToLong()))
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onMobKill(event: EntityDeathEvent) {
+        val killer = (event.entity as? Mob)?.killer ?: return
+        MissionTracker.signal(killer, MissionSignal.MobKilled)
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
