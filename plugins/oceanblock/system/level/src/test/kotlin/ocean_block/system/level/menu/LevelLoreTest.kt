@@ -46,7 +46,7 @@ class LevelLoreTest : StringSpec({
         val sources = LevelLore.sources(LevelConfig.DEFAULT, listOf(1, 3, 8, 40))
 
         sources.map { it["texto"] } shouldContainExactly listOf(
-            "Detritos: 3 a 10 XP",
+            "Detritos: 4 a 25 XP",
             "Gerador: 1 a 20 XP",
             "Receitas: 13 a 130 XP",
         )
@@ -54,7 +54,7 @@ class LevelLoreTest : StringSpec({
     }
 
     "faixa de um valor so mostra um numero" {
-        val config = LevelConfig.DEFAULT.copy(debrisDefault = 5, debris = mapOf("tabua" to 5))
+        val config = LevelConfig.DEFAULT.copy(debrisDefault = 5, debris = mapOf("sucata" to 5))
 
         LevelLore.sources(config, emptyList()).map { it["texto"] } shouldContainExactly listOf(
             "Detritos: 5 XP",

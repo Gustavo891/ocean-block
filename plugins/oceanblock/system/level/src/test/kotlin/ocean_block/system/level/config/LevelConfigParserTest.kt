@@ -21,7 +21,7 @@ class LevelConfigParserTest : StringSpec({
 
         config.debrisDefault shouldBe 4
         config.debris["barril"] shouldBe 10
-        config.debris["folhas"] shouldBe 3
+        config.debris["barril_ferro"] shouldBe 25
         config.generator["COBBLESTONE"] shouldBe 1
         config.generator["DIAMOND_ORE"] shouldBe 20
         config.recipeXp(8) shouldBe 34
@@ -54,7 +54,7 @@ class LevelConfigParserTest : StringSpec({
         val config = parse("")
 
         config.debrisDefault shouldBe 4
-        config.debris["sucata"] shouldBe 6
+        config.debris["sucata"] shouldBe 4
         config.generator["EMERALD_ORE"] shouldBe 15
         config.recipeBase shouldBe 10
         config.recipePerLevel shouldBe 3

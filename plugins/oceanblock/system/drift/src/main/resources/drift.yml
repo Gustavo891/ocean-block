@@ -36,28 +36,20 @@ rede:
   raio: 3.0
 
 detritos:
-  tabua:
-    peso: 50
+  sucata:
+    peso: 80
     exibicao: OAK_PLANKS
     escala: 0.6
     drops:
-      - {material: OAK_PLANKS, min: 1, max: 2, chance: 1.0}
-  folhas:
-    peso: 25
-    exibicao: OAK_LEAVES
-    escala: 0.6
-    drops:
-      - {material: OAK_LEAVES, min: 1, max: 2, chance: 1.0}
-      - {material: STICK, min: 1, max: 2, chance: 0.5}
-      - {material: OAK_SAPLING, min: 1, max: 1, chance: 0.1}
-      - {material: STRING, min: 1, max: 1, chance: 0.3}
-  sucata:
-    peso: 17
-    exibicao: IRON_NUGGET
-    escala: 0.8
-    drops:
-      - {material: IRON_NUGGET, min: 1, max: 3, chance: 1.0}
-      - {material: RAW_COPPER, min: 1, max: 1, chance: 0.25}
+      - {material: STICK, min: 2, max: 4, chance: 0.85}
+      - {material: OAK_PLANKS, min: 1, max: 2, chance: 0.6}
+      - {material: IRON_NUGGET, min: 1, max: 2, chance: 0.4}
+      - {material: OAK_LEAVES, min: 1, max: 2, chance: 0.35}
+      - {material: DIRT, min: 1, max: 2, chance: 0.3}
+      - {material: FLINT, min: 1, max: 1, chance: 0.2}
+      - {material: STRING, min: 1, max: 1, chance: 0.15}
+      - {material: RAW_COPPER, min: 1, max: 1, chance: 0.1}
+      - {material: OAK_SAPLING, min: 1, max: 1, chance: 0.08}
   barril:
     peso: 8
     exibicao: BARREL
@@ -69,5 +61,34 @@ detritos:
       - {material: KELP, min: 2, max: 4, chance: 0.5}
       - {material: OAK_SAPLING, min: 1, max: 1, chance: 0.3}
       - {material: COD, min: 1, max: 2, chance: 0.4}
-      - {material: IRON_INGOT, min: 1, max: 1, chance: 0.1}
+      - {material: IRON_INGOT, min: 1, max: 1, chance: 0.05}
       - {material: NAME_TAG, min: 1, max: 1, chance: 0.02}
+      - {material: NAUTILUS_SHELL, min: 1, max: 1, chance: 0.05}
+  barril_ferro:
+    peso: 1
+    exibicao: IRON_BLOCK
+    escala: 0.6
+    afundamento: 0.12
+    drops:
+      - {material: IRON_INGOT, min: 2, max: 4, chance: 1.0}
+      - {material: COPPER_INGOT, min: 2, max: 4, chance: 0.6}
+      - {material: GOLD_INGOT, min: 1, max: 2, chance: 0.5}
+      - {material: REDSTONE, min: 2, max: 6, chance: 0.4}
+      - {material: NAUTILUS_SHELL, min: 1, max: 1, chance: 0.25}
+      - {material: EMERALD, min: 1, max: 1, chance: 0.15}
+      - {material: NAME_TAG, min: 1, max: 1, chance: 0.1}
+      - {material: DIAMOND, min: 1, max: 1, chance: 0.08}
+  rede_rasgada:
+    peso: 6
+    exibicao: COBWEB
+    escala: 0.7
+    drops:
+      - {material: STRING, min: 2, max: 4, chance: 1.0}
+      - {material: STICK, min: 1, max: 2, chance: 0.4}
+  recife:
+    peso: 3
+    exibicao: BRAIN_CORAL_BLOCK
+    escala: 0.6
+    drops:
+      - {material: PRISMARINE_SHARD, min: 1, max: 3, chance: 1.0}
+      - {material: PRISMARINE_CRYSTALS, min: 1, max: 1, chance: 0.4}

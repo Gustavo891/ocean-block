@@ -1,10 +1,11 @@
 detritos:
   padrao: 4
   tipos:
-    tabua: 4
-    folhas: 3
-    sucata: 6
+    sucata: 4
     barril: 10
+    barril_ferro: 25
+    rede_rasgada: 5
+    recife: 8
 gerador:
   COBBLESTONE: 1
   STONE: 1

@@ -53,10 +53,11 @@ class DriftConfigParserTest : StringSpec({
 
         config.types.map { it.id to it.weight } shouldBe
             listOf(
-                "tabua" to 50,
-                "folhas" to 25,
-                "sucata" to 17,
+                "sucata" to 80,
                 "barril" to 8,
+                "barril_ferro" to 1,
+                "rede_rasgada" to 6,
+                "recife" to 3,
             )
         config.settings.direction shouldBe CurrentDirection.EAST
         config.settings.speed shouldBe 0.05
@@ -66,10 +67,11 @@ class DriftConfigParserTest : StringSpec({
         config.settings.streaksPerSecond shouldBe 6.0
         config.settings.animation shouldBe DEFAULT_ANIMATION
         config.types.associate { it.id to it.sink } shouldBe mapOf(
-            "tabua" to 0.0,
-            "folhas" to 0.0,
             "sucata" to 0.0,
             "barril" to 0.12,
+            "barril_ferro" to 0.12,
+            "rede_rasgada" to 0.0,
+            "recife" to 0.0,
         )
         config.settings.laneLength shouldBe 40.0
         config.settings.laneWidth shouldBe 13.0
@@ -82,22 +84,23 @@ class DriftConfigParserTest : StringSpec({
         config.settings.netRadius shouldBe 3.0
 
         config.types.associate { it.id to it.display } shouldBe mapOf(
-            "tabua" to Material.OAK_PLANKS,
-            "folhas" to Material.OAK_LEAVES,
-            "sucata" to Material.IRON_NUGGET,
+            "sucata" to Material.OAK_PLANKS,
             "barril" to Material.BARREL,
+            "barril_ferro" to Material.IRON_BLOCK,
+            "rede_rasgada" to Material.COBWEB,
+            "recife" to Material.BRAIN_CORAL_BLOCK,
         )
         val drops = config.types.associate { it.id to it.drops }
-        drops["tabua"] shouldBe listOf(DropEntry(Material.OAK_PLANKS, 1, 2, 1.0))
-        drops["folhas"] shouldBe listOf(
-            DropEntry(Material.OAK_LEAVES, 1, 2, 1.0),
-            DropEntry(Material.STICK, 1, 2, 0.5),
-            DropEntry(Material.OAK_SAPLING, 1, 1, 0.1),
-            DropEntry(Material.STRING, 1, 1, 0.3),
-        )
         drops["sucata"] shouldBe listOf(
-            DropEntry(Material.IRON_NUGGET, 1, 3, 1.0),
-            DropEntry(Material.RAW_COPPER, 1, 1, 0.25),
+            DropEntry(Material.STICK, 2, 4, 0.85),
+            DropEntry(Material.OAK_PLANKS, 1, 2, 0.6),
+            DropEntry(Material.IRON_NUGGET, 1, 2, 0.4),
+            DropEntry(Material.OAK_LEAVES, 1, 2, 0.35),
+            DropEntry(Material.DIRT, 1, 2, 0.3),
+            DropEntry(Material.FLINT, 1, 1, 0.2),
+            DropEntry(Material.STRING, 1, 1, 0.15),
+            DropEntry(Material.RAW_COPPER, 1, 1, 0.1),
+            DropEntry(Material.OAK_SAPLING, 1, 1, 0.08),
         )
         drops["barril"] shouldBe listOf(
             DropEntry(Material.BREAD, 1, 2, 0.6),
@@ -105,9 +108,34 @@ class DriftConfigParserTest : StringSpec({
             DropEntry(Material.KELP, 2, 4, 0.5),
             DropEntry(Material.OAK_SAPLING, 1, 1, 0.3),
             DropEntry(Material.COD, 1, 2, 0.4),
-            DropEntry(Material.IRON_INGOT, 1, 1, 0.1),
+            DropEntry(Material.IRON_INGOT, 1, 1, 0.05),
             DropEntry(Material.NAME_TAG, 1, 1, 0.02),
+            DropEntry(Material.NAUTILUS_SHELL, 1, 1, 0.05),
         )
+        drops["barril_ferro"] shouldBe listOf(
+            DropEntry(Material.IRON_INGOT, 2, 4, 1.0),
+            DropEntry(Material.COPPER_INGOT, 2, 4, 0.6),
+            DropEntry(Material.GOLD_INGOT, 1, 2, 0.5),
+            DropEntry(Material.REDSTONE, 2, 6, 0.4),
+            DropEntry(Material.NAUTILUS_SHELL, 1, 1, 0.25),
+            DropEntry(Material.EMERALD, 1, 1, 0.15),
+            DropEntry(Material.NAME_TAG, 1, 1, 0.1),
+            DropEntry(Material.DIAMOND, 1, 1, 0.08),
+        )
+        drops["rede_rasgada"] shouldBe listOf(
+            DropEntry(Material.STRING, 2, 4, 1.0),
+            DropEntry(Material.STICK, 1, 2, 0.4),
+        )
+        drops["recife"] shouldBe listOf(
+            DropEntry(Material.PRISMARINE_SHARD, 1, 3, 1.0),
+            DropEntry(Material.PRISMARINE_CRYSTALS, 1, 1, 0.4),
+        )
+    }
+
+    "yaml padrao nao traz mais tabua e folhas como detritos separados" {
+        val config = parse(defaultYaml())!!
+
+        config.types.none { it.id == "tabua" || it.id == "folhas" } shouldBe true
     }
 
     "min maior que max e chance fora do intervalo geram aviso" {

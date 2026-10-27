@@ -24,7 +24,10 @@ object MachineRecipes {
     private fun gold(n: Int) = material(Material.GOLD_INGOT, "Lingote de ouro", n, "Lingotes de ouro")
     private fun copper(n: Int) = material(Material.COPPER_INGOT, "Lingote de cobre", n, "Lingotes de cobre")
     private fun redstone(n: Int) = material(Material.REDSTONE, "Redstone", n)
-    private fun lapis(n: Int) = material(Material.LAPIS_LAZULI, "Lápis-lazúli", n)
+    private fun prismarineShard(n: Int) =
+        material(Material.PRISMARINE_SHARD, "Fragmento de prismarinho", n, "Fragmentos de prismarinho")
+    private fun prismarineCrystal(n: Int) =
+        material(Material.PRISMARINE_CRYSTALS, "Cristal de prismarinho", n, "Cristais de prismarinho")
     private fun coal(n: Int) = material(Material.COAL, "Carvão", n, "Carvões")
     private fun diamond(n: Int) = material(Material.DIAMOND, "Diamante", n, "Diamantes")
     private fun furnace(n: Int) = material(Material.FURNACE, "Fornalha", n, "Fornalhas")
@@ -41,7 +44,7 @@ object MachineRecipes {
         )
         Recipes.register(
             block(SolarBlock, 20, "Painel solar", "Gera um pouco de energia de dia, sem combustível.",
-                copper(6), lapis(4), redstone(2), iron(2)),
+                copper(6), prismarineCrystal(2), prismarineShard(4), redstone(2), iron(2)),
         )
         Recipes.register(
             block(FurnaceBlock, 22, "Fornalha elétrica", "Derrete 4 itens ao mesmo tempo, 4 vezes mais rápido.",

@@ -17,7 +17,7 @@ data class LevelConfig(
     companion object {
         val DEFAULT = LevelConfig(
             debrisDefault = 4,
-            debris = mapOf("tabua" to 4, "folhas" to 3, "sucata" to 6, "barril" to 10),
+            debris = mapOf("sucata" to 4, "barril" to 10, "barril_ferro" to 25, "rede_rasgada" to 5, "recife" to 8),
             generator = mapOf(
                 "COBBLESTONE" to 1, "STONE" to 1, "COAL_ORE" to 3, "COPPER_ORE" to 4, "IRON_ORE" to 5,
                 "REDSTONE_ORE" to 6, "GOLD_ORE" to 8, "LAPIS_ORE" to 8, "EMERALD_ORE" to 15, "DIAMOND_ORE" to 20,

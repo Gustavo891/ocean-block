@@ -17,6 +17,7 @@ import ocean_block.system.drift.net.NetFullNotifier
 import ocean_block.system.drift.net.NetListener
 import ocean_block.system.drift.net.view.NetStorageView
 import ocean_block.system.drift.recipe.DriftRecipes
+import ocean_block.system.drift.seaonly.LandStringListener
 import one_block.textura.api.NotificationApi
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
@@ -34,6 +35,7 @@ object DriftSystem {
         registerNet(plugin, viewFrame)
         DriftRecipes.register()
         plugin.server.pluginManager.registerEvents(FirstJoinListener(), plugin)
+        plugin.server.pluginManager.registerEvents(LandStringListener(), plugin)
 
         config = runCatching { DriftFile.load(plugin) }
             .onFailure { Instance.logger.severe("[deriva] falha ao carregar drift.yml: ${it.message}") }
