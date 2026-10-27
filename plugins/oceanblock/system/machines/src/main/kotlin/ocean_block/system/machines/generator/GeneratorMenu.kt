@@ -20,7 +20,7 @@ class GeneratorMenu : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title(MachineMenus.title("Gerador Marinho"))
+        config.title(MachineMenus.title("Gerador de energia"))
         config.scheduleUpdate(MachineMenus.UPDATE_TICKS)
         config.layout(
             "         ",
@@ -91,7 +91,7 @@ class GeneratorMenu : View() {
         val burning = state.burnTicks > 0
         return MachineMenus.icon(
             if (burning) Material.BLAZE_POWDER else Material.GUNPOWDER,
-            "<yellow>Gerador Marinho",
+            "<yellow>Gerador de energia",
             listOf(
                 MachineItems.energyLine(state.energy, GeneratorRules.CAPACITY),
                 if (burning) "<green>Queimando: <white>${state.burnTicks / 20}s" else "<red>Parado",

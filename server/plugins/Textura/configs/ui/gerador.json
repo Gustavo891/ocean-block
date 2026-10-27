@@ -1,5 +1,5 @@
 {
-  "title": "Gerador Marinho",
+  "title": "Gerador de energia",
   "close": "Fechar",
   "theme": "maquina",
   "column": [
@@ -8,7 +8,7 @@
         {
           "row": [
             { "space": 4 },
-            { "text": "Gerador Marinho", "style": "heading", "align": "left", "w": "grow" },
+            { "text": "Gerador de Energia", "style": "heading", "align": "left", "w": "grow" },
             { "text": "{estado}", "style": "{estado_estilo}", "align": "right", "w": "fit" },
             { "space": 4 }
           ],

@@ -26,7 +26,7 @@ class MissionTrailTest : StringSpec({
             "Compre o upgrade do gerador nível 1" to 200,
             "Quebre 10 minérios de ferro" to 150,
             "Faça uma Fornalha elétrica" to 300,
-            "Faça um Gerador Marinho" to 600,
+            "Faça um Gerador de energia" to 600,
             "Faça um Minerador" to 1000,
         )
     }
