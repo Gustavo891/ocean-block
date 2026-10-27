@@ -17,7 +17,7 @@ object MissionTrail {
         Mission("upgrade_gerador", "Compre o upgrade do gerador nível 1", MissionObjective.IslandUpgrade("Generator", 1), 200, "anvil"),
         Mission("ferro_10", "Quebre 10 minérios de ferro", MissionObjective.BreakGeneratorBlocks(10, "IRON_ORE"), 150, "iron_ore"),
         Mission("fornalha_eletrica", "Faça uma Fornalha elétrica", MissionObjective.Craft("fornalha_eletrica"), 300, "blast_furnace"),
-        Mission("gerador_energia", "Faça um Gerador de energia", MissionObjective.Craft("gerador_energia"), 600, "furnace"),
+        Mission("gerador_energia", "Faça um Gerador Marinho", MissionObjective.Craft("gerador_energia"), 600, "furnace"),
         Mission("minerador", "Faça um Minerador", MissionObjective.Craft("minerador"), 1000, "observer"),
     )
 

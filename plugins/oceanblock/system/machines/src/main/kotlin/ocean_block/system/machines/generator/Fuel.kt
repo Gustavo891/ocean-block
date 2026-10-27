@@ -2,16 +2,11 @@ package ocean_block.system.machines.generator
 
 object Fuel {
 
-    private val EXACT = mapOf(
-        "STICK" to 100,
-        "COAL" to 1600,
-        "CHARCOAL" to 1600,
+    private val TICKS = mapOf(
+        "DRIED_KELP" to 400,
         "DRIED_KELP_BLOCK" to 4000,
+        "PRISMARINE_SHARD" to 1600,
     )
 
-    fun ticks(material: String): Int? = EXACT[material] ?: when {
-        material.endsWith("_PLANKS") -> 300
-        material.endsWith("_LOG") || material.endsWith("_WOOD") -> 1200
-        else -> null
-    }
+    fun ticks(material: String): Int? = TICKS[material]
 }

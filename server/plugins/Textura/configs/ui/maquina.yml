@@ -67,7 +67,7 @@ maquina:
     text-style: body-bare
     height: 20
   icons:
-    gerador_item: ui:stone/icons/gerador_item
+    gerador_item: ui:stone/icons/gerador_marinho_item
     fornalha_eletrica: ui:stone/icons/fornalha_eletrica
     minerador: ui:stone/icons/minerador
     bateria_0: ui:stone/icons/bateria_0

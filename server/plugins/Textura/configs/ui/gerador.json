@@ -1,5 +1,5 @@
 {
-  "title": "Gerador de energia",
+  "title": "Gerador Marinho",
   "close": "Fechar",
   "theme": "maquina",
   "column": [
@@ -8,7 +8,7 @@
         {
           "row": [
             { "space": 4 },
-            { "text": "Gerador de Energia", "style": "heading", "align": "left", "w": "grow" },
+            { "text": "Gerador Marinho", "style": "heading", "align": "left", "w": "grow" },
             { "text": "{estado}", "style": "{estado_estilo}", "align": "right", "w": "fit" },
             { "space": 4 }
           ],
@@ -78,7 +78,7 @@
         {
           "row": [
             { "space": 4 },
-            { "text": "Combustível", "style": "heading", "align": "left", "icon": "item:coal", "w": "grow" },
+            { "text": "Combustível", "style": "heading", "align": "left", "icon": "item:dried_kelp", "w": "grow" },
             { "text": "{autonomia}", "style": "muted", "align": "right", "w": "fit" },
             { "space": 4 }
           ],

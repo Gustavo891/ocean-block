@@ -105,7 +105,7 @@ stone:
     fornalha_eletrica: ui:stone/icons/fornalha_eletrica
     minerador: ui:stone/icons/minerador
     painel_solar: ui:stone/icons/painel_solar
-    gerador_item: ui:stone/icons/gerador_item
+    gerador_item: ui:stone/icons/gerador_marinho_item
     bateria_0: ui:stone/icons/bateria_0
     bateria_1: ui:stone/icons/bateria_1
     bateria_2: ui:stone/icons/bateria_2

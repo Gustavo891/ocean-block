@@ -6,6 +6,7 @@ import me.devnatan.inventoryframework.context.RenderContext
 import me.devnatan.inventoryframework.context.SlotClickContext
 import ocean_block.system.custom_items.block.PlacedBlock
 import ocean_block.system.custom_items.block.PlacedBlockManager
+import ocean_block.system.machines.ItemLabels
 import ocean_block.system.machines.MachineItems
 import ocean_block.system.machines.MachineMenus
 import ocean_block.system.machines.energy.EnergyEffects
@@ -19,7 +20,7 @@ class GeneratorMenu : View() {
 
     override fun onInit(config: ViewConfigBuilder) {
         config.cancelInteractions()
-        config.title(MachineMenus.title("Gerador de energia"))
+        config.title(MachineMenus.title("Gerador Marinho"))
         config.scheduleUpdate(MachineMenus.UPDATE_TICKS)
         config.layout(
             "         ",
@@ -79,9 +80,9 @@ class GeneratorMenu : View() {
             ?: return MachineMenus.icon(
                 Material.GRAY_STAINED_GLASS_PANE,
                 "<gray>Sem combustível",
-                listOf("<gray>Clique num combustível do", "<gray>seu inventário para colocar."),
+                listOf("<gray>Clique em alga seca ou", "<gray>prismarinho do seu inventário."),
             )
-        val lines = stacks.map { "<gray>${it.amount}x <white>${it.material.lowercase().replace('_', ' ')}" }
+        val lines = stacks.map { "<gray>${it.amount}x <white>${ItemLabels.name(it.material)}" }
         return MachineMenus.icon(first.type, "<white>Combustível", lines + listOf("", "<yellow>Clique para retirar tudo."))
             .also { it.amount = first.amount }
     }
@@ -90,7 +91,7 @@ class GeneratorMenu : View() {
         val burning = state.burnTicks > 0
         return MachineMenus.icon(
             if (burning) Material.BLAZE_POWDER else Material.GUNPOWDER,
-            "<yellow>Gerador de energia",
+            "<yellow>Gerador Marinho",
             listOf(
                 MachineItems.energyLine(state.energy, GeneratorRules.CAPACITY),
                 if (burning) "<green>Queimando: <white>${state.burnTicks / 20}s" else "<red>Parado",

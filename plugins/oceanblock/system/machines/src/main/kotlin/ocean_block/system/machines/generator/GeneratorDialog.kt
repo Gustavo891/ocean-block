@@ -68,7 +68,7 @@ object GeneratorDialog {
     private fun fuelEntry(stack: FuelStack?): Map<String, String> = mapOf(
         "item" to (stack?.let { ItemLabels.icon(it.material) } ?: ""),
         "qtd" to (stack?.amount ?: 1).toString(),
-        "nome" to (stack?.let { fuelName(it.material) } ?: ""),
+        "nome" to (stack?.let { ItemLabels.name(it.material) } ?: ""),
         "info" to (stack?.let(::fuelInfo) ?: ""),
     )
 
@@ -93,7 +93,7 @@ object GeneratorDialog {
             state.energy >= GeneratorRules.CAPACITY -> "Bateria cheia, esperando gasto"
             state.burnTicks > 0 -> "Queima por mais ${duration(GeneratorView.burnSeconds(state, Fuel::ticks))}"
             state.hasFuel -> "Pronto para queimar"
-            else -> "Coloque combustível para gerar"
+            else -> "Coloque alga seca ou prismarinho"
         }
     }
 
@@ -109,21 +109,11 @@ object GeneratorDialog {
     }
 
     private fun fuelInfo(stack: FuelStack): String {
-        val ticks = Fuel.ticks(stack.material) ?: return ""
+        val ticks = Fuel.ticks(stack.material) ?: return "Não queima mais."
         return "${stack.amount}/${GeneratorRules.MAX_STACK} - ${ticks * GeneratorRules.RATE} E cada"
     }
 
     private fun duration(seconds: Int): String =
         if (seconds >= 60) "${seconds / 60}m ${seconds % 60}s" else "${seconds}s"
 
-    private fun fuelName(material: String): String = when {
-        material == "COAL" -> "Carvão"
-        material == "CHARCOAL" -> "Carvão vegetal"
-        material == "STICK" -> "Graveto"
-        material == "DRIED_KELP_BLOCK" -> "Bloco de alga seca"
-        material.endsWith("_PLANKS") -> "Tábuas"
-        material.endsWith("_LOG") -> "Tronco"
-        material.endsWith("_WOOD") -> "Madeira"
-        else -> material.lowercase().replace('_', ' ')
-    }
 }

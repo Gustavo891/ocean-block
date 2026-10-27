@@ -39,7 +39,7 @@ object MachineRecipes {
                 { SmelterPickaxeItem.build() }, iron(4), gold(2), coal(8)),
         )
         Recipes.register(
-            block(GeneratorBlock, 18, "Gerador de energia", "Queima combustível e alimenta máquinas a até 8 blocos.",
+            block(GeneratorBlock, 18, "Gerador Marinho", "Queima alga seca e prismarinho e alimenta máquinas a até 8 blocos.",
                 furnace(1), iron(8), copper(6), redstone(4)),
         )
         Recipes.register(

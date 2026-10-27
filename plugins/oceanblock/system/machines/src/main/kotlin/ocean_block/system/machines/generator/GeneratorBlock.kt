@@ -17,9 +17,10 @@ import org.bukkit.Sound
 object GeneratorBlock : MachineBlock() {
 
     override val id: String = MachineIds.GENERATOR
-    override val displayName: String = "<white>Gerador de energia"
+    override val displayName: String = "<white>Gerador Marinho"
     override val lore: List<String> = listOf(
-        "<gray>Queima combustível e gera <yellow>40 E/s<gray>.",
+        "<gray>Queima <white>alga seca<gray> e <white>prismarinho<gray>.",
+        "<gray>Gera <yellow>40 E/s<gray> enquanto queima.",
         "<gray>Guarda até <yellow>10.000 E<gray>.",
         "<gray>Alimenta máquinas a até <white>8 blocos<gray>.",
     )
