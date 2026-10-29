@@ -23,7 +23,7 @@ O jogador novo escolhe com que cara começa: a ilha de sempre, uma versão de de
 ## Escolhas minhas (o usuário pode trocar)
 
 - Ids dos tipos: `padrao`, `deserto`, `gelo`, `jangada`. Nome na tela: PADRÃO, DESERTO, GELO, JANGADA (texto em pt-BR; "Raft" vira "Jangada").
-- Descrições: Padrão "A ilha de sempre: grama, árvore e lava."; Deserto "Areia, arenito e cactos sob o sol."; Gelo "Neve, abetos e gelo que não derrete."; Jangada "Só três por três de tábuas. Para quem quer o desafio.".
+- Descrições: Padrão "A ilha de sempre: grama, árvore e lava."; Deserto "Areia, arenito e cactos sob o sol."; Gelo "Neve, abetos e gelo que não derrete."; Jangada "Só tábuas no mar. Para quem quer desafio.".
 - Contagem: `1 ilha`, `N ilhas`, `nenhuma ilha` para zero. Conta as ilhas carregadas em `IslandManager` por tipo.
 - Membro convidado não escolhe nada: entra na ilha do dono, do tipo do dono. Quem já é membro de alguma ilha (`getHomeIsland` não nulo) nunca vê a tela.
 - O jogador sem ilha e sem participação vê a tela no login e no `/ilha` (no lugar da criação automática).
@@ -78,31 +78,30 @@ Um listener cancela `BlockFormEvent` cujo estado novo é `ICE` dentro de um lote
 
 - **Login sem ilha**: `PlayerListener.onPlayerSpawnLocation` deixa de criar a ilha. Quem não tem ilha nem participação nasce no ponto da câmera: mundo das ilhas, (0.5, 80, 0.5), olhando para o horizonte (yaw 0, pitch 10); no join vira espectador e recebe a marca PDC `oceanblock:escolhendo_ilha`. A tela abre quando o pack carrega (`PlayerResourcePackStatusEvent` `SUCCESSFULLY_LOADED`) ou 40 ticks depois do join, o que vier primeiro, se ainda estiver escolhendo.
 - **Saiu no meio da escolha**: no próximo login, se ainda não tem ilha, volta à câmera e à tela; se tem a marca mas já tem ilha (um admin criou, virou membro), volta a `SURVIVAL`, perde a marca e vai para a ilha. Admins em espectador sem a marca nunca são tocados.
-- **`/ilha` sem ilha**: abre a tela sem mexer no modo de jogo (o jogador já existe em algum lugar). Fechar aqui só fecha.
+- **`/ilha` sem ilha** (por exemplo um ex-membro): vai para a câmera e vê a mesma tela do login. O rodapé da tela é um só (`Sair do servidor`), então os dois fluxos se comportam igual.
 - **`/ilha resetplayer <nick>`** (permissão `screen.dev`, com prévia e `-confirm` como os outros resets): apaga a ilha do dono (regen do mar da `IslandArea`, `IslandResetHooks.fireTerrainReset`, entidades removidas, membros expulsos como no `resetProgress`, ilha removida do `IslandManager` e do Mongo). Se o dono está online, vai para a câmera e a tela abre. Se o alvo não é dono de ilha, a mensagem diz isso e nada muda.
 
 ### Tela `configs/ui/ilha_tipo.json` (tema `abismo`)
 
 ```
 ESCOLHA SUA ILHA
-+--------+----------------------------------+
-| [arte] | PADRÃO                  12 ilhas |
-|  40px  | A ilha de sempre: grama...       |
-|        |                       [ESCOLHER] |
-+--------+----------------------------------+
-| ... DESERTO, GELO, JANGADA ...            |
-+-------------------------------------------+
++------+------------------------------------+------------+
+|[arte]| PADRÃO                    12 ILHAS | [ESCOLHER] |
+| 32px | A ILHA DE SEMPRE: GRAMA...         |            |
++------+------------------------------------+------------+
+| ... DESERTO, GELO, JANGADA ...                         |
++--------------------------------------------------------+
             [ Sair do servidor ]   (rodapé vanilla)
 ```
 
-- Moldura `moldura`, `w` 330, sem título vanilla. Título `ESCOLHA SUA ILHA` no estilo `titulo`.
-- Um card por tipo, `repeat: "tipos"`, `perPage: 4`, surface `painel`: à esquerda um ícone `ui:ilha_tipo/<id>` de 40 px com `frame`; à direita a coluna com o nome (`heading`), a descrição (`muted`, uma linha), a contagem (`good`) no canto superior direito e o botão `ESCOLHER` (look `acao`, `listButton("escolher")`) embaixo à direita, onde o print diz "Clique para jogar". O botão é a área clicável; o card inteiro não é um botão porque botão do dialog tem altura fixa.
-- A altura total fica abaixo de 256 px (4 cards de 46 px).
-- Rodapé: `close` = `Sair do servidor`, `canCloseWithEscape: false`. Clicar desconecta o jogador com `Até a próxima!` (só no fluxo de login; no `/ilha` só fecha).
+- Moldura `moldura`, `w` 340, sem título vanilla. Título `ESCOLHA SUA ILHA` no estilo `titulo`.
+- Quatro cards fixos no JSON (um por tipo, sem `repeat`: um ícone por placeholder exigiria alias no tema `abismo`), surface `painel`: à esquerda o ícone `ui:ilha_tipo/<id>` de 32 px; no meio o nome (`heading`) com a contagem (`good`) à direita e a descrição (`muted`, uma linha) embaixo; à direita o botão `ESCOLHER` (look `acao`, bind `escolher_<id>`), no lugar do "Clique para jogar" do print. O botão é a área clicável; o card inteiro não é um botão porque botão do dialog tem altura fixa. Textos em maiúsculas (a fonte `pequena` só tem maiúsculas); binds `<id>_nome`, `<id>_descricao`, `<id>_contagem`.
+- Corpo de 187 px: cabe na área visível do dialog também na escala de GUI 4 (1080p).
+- Rodapé: `close` = `Sair do servidor`, `canCloseWithEscape: false`. Clicar desconecta o jogador com `Até a próxima!`.
 
 ### Confirmação `configs/ui/ilha_tipo_confirmar.json` (tema `abismo`)
 
-Mesma moldura, `w` 230: o ícone do tipo, `CRIAR ILHA <NOME>?`, a linha `Não dá para trocar depois.` (`bad`) e dois botões: `CONFIRMAR` (`acao`) e `VOLTAR` (`neutro`, reabre a lista). Mesmo rodapé e mesmo Esc da lista.
+Mesma moldura, `w` 260: o ícone do tipo (32 px, `states` pelo bind `tipo`), `CRIAR A ILHA <NOME>?`, a linha `Não dá para trocar depois.` (`bad`) e dois botões: `CONFIRMAR` (`acao`) e `VOLTAR` (`neutro`, reabre a lista). Mesmo rodapé e mesmo Esc da lista.
 
 ### Ao confirmar
 

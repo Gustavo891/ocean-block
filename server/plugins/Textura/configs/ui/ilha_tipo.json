@@ -1,0 +1,200 @@
+{
+  "close": "Sair do servidor",
+  "canCloseWithEscape": false,
+  "theme": "abismo",
+  "column": [
+    {
+      "text": "ESCOLHA SUA ILHA",
+      "style": "titulo",
+      "w": "grow"
+    },
+    {
+      "row": [
+        {
+          "icon": "ui:ilha_tipo/padrao",
+          "size": 32
+        },
+        {
+          "column": [
+            {
+              "row": [
+                {
+                  "text": "{padrao_nome}",
+                  "style": "heading",
+                  "w": "grow"
+                },
+                {
+                  "text": "{padrao_contagem}",
+                  "style": "good"
+                }
+              ],
+              "w": "grow"
+            },
+            {
+              "text": "{padrao_descricao}",
+              "style": "muted",
+              "w": "grow"
+            }
+          ],
+          "gap": 3,
+          "w": "grow"
+        },
+        {
+          "button": "ESCOLHER",
+          "look": "acao",
+          "bind": "escolher_padrao",
+          "tooltip": "Criar a ilha {padrao_nome}",
+          "w": 70
+        }
+      ],
+      "gap": 6,
+      "pad": 3,
+      "surface": "painel",
+      "w": "grow",
+      "cross": "center",
+      "name": "padrao"
+    },
+    {
+      "row": [
+        {
+          "icon": "ui:ilha_tipo/deserto",
+          "size": 32
+        },
+        {
+          "column": [
+            {
+              "row": [
+                {
+                  "text": "{deserto_nome}",
+                  "style": "heading",
+                  "w": "grow"
+                },
+                {
+                  "text": "{deserto_contagem}",
+                  "style": "good"
+                }
+              ],
+              "w": "grow"
+            },
+            {
+              "text": "{deserto_descricao}",
+              "style": "muted",
+              "w": "grow"
+            }
+          ],
+          "gap": 3,
+          "w": "grow"
+        },
+        {
+          "button": "ESCOLHER",
+          "look": "acao",
+          "bind": "escolher_deserto",
+          "tooltip": "Criar a ilha {deserto_nome}",
+          "w": 70
+        }
+      ],
+      "gap": 6,
+      "pad": 3,
+      "surface": "painel",
+      "w": "grow",
+      "cross": "center",
+      "name": "deserto"
+    },
+    {
+      "row": [
+        {
+          "icon": "ui:ilha_tipo/gelo",
+          "size": 32
+        },
+        {
+          "column": [
+            {
+              "row": [
+                {
+                  "text": "{gelo_nome}",
+                  "style": "heading",
+                  "w": "grow"
+                },
+                {
+                  "text": "{gelo_contagem}",
+                  "style": "good"
+                }
+              ],
+              "w": "grow"
+            },
+            {
+              "text": "{gelo_descricao}",
+              "style": "muted",
+              "w": "grow"
+            }
+          ],
+          "gap": 3,
+          "w": "grow"
+        },
+        {
+          "button": "ESCOLHER",
+          "look": "acao",
+          "bind": "escolher_gelo",
+          "tooltip": "Criar a ilha {gelo_nome}",
+          "w": 70
+        }
+      ],
+      "gap": 6,
+      "pad": 3,
+      "surface": "painel",
+      "w": "grow",
+      "cross": "center",
+      "name": "gelo"
+    },
+    {
+      "row": [
+        {
+          "icon": "ui:ilha_tipo/jangada",
+          "size": 32
+        },
+        {
+          "column": [
+            {
+              "row": [
+                {
+                  "text": "{jangada_nome}",
+                  "style": "heading",
+                  "w": "grow"
+                },
+                {
+                  "text": "{jangada_contagem}",
+                  "style": "good"
+                }
+              ],
+              "w": "grow"
+            },
+            {
+              "text": "{jangada_descricao}",
+              "style": "muted",
+              "w": "grow"
+            }
+          ],
+          "gap": 3,
+          "w": "grow"
+        },
+        {
+          "button": "ESCOLHER",
+          "look": "acao",
+          "bind": "escolher_jangada",
+          "tooltip": "Criar a ilha {jangada_nome}",
+          "w": 70
+        }
+      ],
+      "gap": 6,
+      "pad": 3,
+      "surface": "painel",
+      "w": "grow",
+      "cross": "center",
+      "name": "jangada"
+    }
+  ],
+  "gap": 3,
+  "pad": 7,
+  "surface": "moldura",
+  "w": 340
+}

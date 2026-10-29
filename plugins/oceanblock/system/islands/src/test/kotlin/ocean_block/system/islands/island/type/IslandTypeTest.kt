@@ -33,6 +33,6 @@ class IslandTypeTest : StringSpec({
         IslandType.PADRAO.descricao shouldBe "A ilha de sempre: grama, árvore e lava."
         IslandType.DESERTO.descricao shouldBe "Areia, arenito e cactos sob o sol."
         IslandType.GELO.descricao shouldBe "Neve, abetos e gelo que não derrete."
-        IslandType.JANGADA.descricao shouldBe "Só três por três de tábuas. Para quem quer o desafio."
+        IslandType.JANGADA.descricao shouldBe "Só tábuas no mar. Para quem quer desafio."
     }
 })

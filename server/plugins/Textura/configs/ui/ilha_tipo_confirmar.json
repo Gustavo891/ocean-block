@@ -1,0 +1,71 @@
+{
+  "close": "Sair do servidor",
+  "canCloseWithEscape": false,
+  "theme": "abismo",
+  "column": [
+    {
+      "text": "CRIAR ILHA",
+      "style": "titulo",
+      "w": "grow"
+    },
+    {
+      "row": [
+        {
+          "icon": "ui:ilha_tipo/padrao",
+          "size": 32,
+          "bind": "tipo",
+          "states": {
+            "padrao": "ui:ilha_tipo/padrao",
+            "deserto": "ui:ilha_tipo/deserto",
+            "gelo": "ui:ilha_tipo/gelo",
+            "jangada": "ui:ilha_tipo/jangada"
+          }
+        },
+        {
+          "column": [
+            {
+              "text": "{pergunta}",
+              "style": "heading",
+              "w": "grow"
+            },
+            {
+              "text": "NÃO DÁ PARA TROCAR DEPOIS.",
+              "style": "bad",
+              "w": "grow"
+            }
+          ],
+          "gap": 4,
+          "w": "grow"
+        }
+      ],
+      "gap": 6,
+      "pad": 4,
+      "surface": "painel",
+      "w": "grow",
+      "cross": "center",
+      "name": "Resumo"
+    },
+    {
+      "row": [
+        {
+          "button": "CONFIRMAR",
+          "look": "acao",
+          "bind": "confirmar",
+          "w": "grow"
+        },
+        {
+          "button": "VOLTAR",
+          "look": "neutro",
+          "bind": "voltar",
+          "w": "grow"
+        }
+      ],
+      "gap": 4,
+      "w": "grow"
+    }
+  ],
+  "gap": 5,
+  "pad": 7,
+  "surface": "moldura",
+  "w": 260
+}
