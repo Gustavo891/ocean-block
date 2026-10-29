@@ -27,6 +27,12 @@ object TextMetrics {
                 continue
             }
 
+            val known = DefaultFontWidths.of(ch.code)
+            if (known != null) {
+                advance += known
+                continue
+            }
+
             advance += when (ch) {
                 'i', '!', '\'', '.', ',', ':', ';', '|' -> 2
                 'l', '`' -> 3
