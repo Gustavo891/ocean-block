@@ -1,11 +1,14 @@
 package ocean_block.system.missions.hud
 
 import ocean_block.libs.instance.Instance
+import ocean_block.system.craft.recipe.Recipes
 import ocean_block.system.missions.data.MissionManager
 import ocean_block.system.missions.model.PlayerMissions
 import ocean_block.system.missions.rules.MissionRules
-import ocean_block.system.missions.text.MissionText
+import ocean_block.system.missions.text.MissionCard
+import ocean_block.system.missions.text.MissionCardText
 import one_block.textura.api.HudApi
+import one_block.textura.hud.HudCard
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -13,20 +16,23 @@ import java.util.UUID
 object MissionHud {
 
     private const val SLOT = "missao"
+    private const val BACKGROUND = "hud_missao"
     private const val BANNER_TICKS = 80L
 
-    private val banners = mutableMapOf<UUID, CompletionBanner>()
+    private const val BAR = "hud_mare"
+
+    private val banners = mutableMapOf<UUID, CompletionBanner<MissionCardText>>()
     private val suspended = mutableSetOf<UUID>()
 
     fun show(player: Player, state: PlayerMissions) {
         if (player.uniqueId in suspended) return HudApi.hide(player, SLOT)
-        val text = banners[player.uniqueId]?.current(now())
-            ?: MissionText.hud(MissionRules.current(state), MissionRules.trailDone(state))
-        if (text.isEmpty()) return HudApi.hide(player, SLOT)
-        HudApi.show(player, SLOT, text)
+        val card = banners[player.uniqueId]?.current(now())
+            ?: MissionCard.current(MissionRules.current(state), MissionRules.trailDone(state), ::recipeName)
+            ?: return HudApi.hide(player, SLOT)
+        HudApi.showCard(player, SLOT, HudCard(card.topLeft, card.topRight, card.bottomRight, card.progress, BAR), BACKGROUND)
     }
 
-    fun completed(player: Player, texts: List<String>) {
+    fun completed(player: Player, texts: List<MissionCardText>) {
         if (texts.isEmpty()) return
         val now = now()
         val banner = banners.getOrPut(player.uniqueId) { CompletionBanner(BANNER_TICKS) }
@@ -53,6 +59,8 @@ object MissionHud {
         suspended.remove(player.uniqueId)
         HudApi.hide(player, SLOT)
     }
+
+    private fun recipeName(id: String): String = Recipes.get(id)?.name ?: id
 
     private fun now(): Long = Bukkit.getCurrentTick().toLong()
 }

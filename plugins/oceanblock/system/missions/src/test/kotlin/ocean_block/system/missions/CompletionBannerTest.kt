@@ -7,11 +7,11 @@ import ocean_block.system.missions.hud.CompletionBanner
 class CompletionBannerTest : StringSpec({
 
     "sem conclusao nao ha faixa" {
-        CompletionBanner(80).current(0) shouldBe null
+        CompletionBanner<String>(80).current(0) shouldBe null
     }
 
     "a faixa dura o tempo configurado e depois some" {
-        val banner = CompletionBanner(80)
+        val banner = CompletionBanner<String>(80)
         banner.push(listOf("A"), 100)
 
         banner.current(100) shouldBe "A"
@@ -20,7 +20,7 @@ class CompletionBannerTest : StringSpec({
     }
 
     "varias conclusoes aparecem uma depois da outra" {
-        val banner = CompletionBanner(80)
+        val banner = CompletionBanner<String>(80)
         banner.push(listOf("A", "B"), 0)
 
         banner.current(10) shouldBe "A"
@@ -30,7 +30,7 @@ class CompletionBannerTest : StringSpec({
     }
 
     "conclusao nova entra depois da que ainda esta na tela" {
-        val banner = CompletionBanner(80)
+        val banner = CompletionBanner<String>(80)
         banner.push(listOf("A"), 0)
         banner.push(listOf("B"), 40)
 

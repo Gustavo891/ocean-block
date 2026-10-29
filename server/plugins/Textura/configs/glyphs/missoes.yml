@@ -1,0 +1,27 @@
+hud_missao_left:
+  id: hud_missao_left
+  caminho: assets/oneblock/textures/hud/missoes/missao_left.png
+  ascent: 6
+  size: 29
+  height: 24
+  default: true
+  show_in_gui: false
+  unicode: \uE039
+hud_missao_body:
+  id: hud_missao_body
+  caminho: assets/oneblock/textures/hud/missoes/missao_body.png
+  ascent: 6
+  size: 6
+  height: 24
+  default: true
+  show_in_gui: false
+  unicode: \uE03A
+hud_missao_right:
+  id: hud_missao_right
+  caminho: assets/oneblock/textures/hud/missoes/missao_right.png
+  ascent: 6
+  size: 5
+  height: 24
+  default: true
+  show_in_gui: false
+  unicode: \uE03B
