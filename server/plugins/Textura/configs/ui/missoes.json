@@ -53,7 +53,7 @@
               ],
               "w": 196
             },
-            { "space": 1, "w": "grow", "h": "grow" },
+            { "space": "grow" },
             { "button": "TRILHA {trilha}", "icon": "item:nether_star", "look": "neutro", "bind": "trilha", "selected": "{trilha_aberta}", "w": 196 }
           ],
           "gap": 4, "w": 196, "h": "grow"
@@ -86,7 +86,7 @@
               "pad": 4, "surface": "palco", "w": "grow", "cross": "center"
             },
             { "text": "{nota}", "style": "muted", "w": "grow" },
-            { "space": 1, "w": "grow", "h": "grow" },
+            { "space": "grow" },
             { "button": "{botao}", "look": "acao", "bind": "escolher", "disabled": "{bloqueado}", "tooltip": "{dica}", "w": 150 }
           ],
           "gap": 5, "pad": 6, "surface": "painel", "w": "grow", "h": "grow"
