@@ -168,9 +168,17 @@ class DialogOpener(
 
     private fun handle(player: Player, payload: String) {
         when {
-            CLOSE in payload -> close(player)
+            CLOSE in payload -> closeByButton(player)
             APPLY in payload -> applyPack(player)
             else -> handleAction(player, payload)
+        }
+    }
+
+    private fun closeByButton(player: Player) {
+        val action = current[player.uniqueId]?.session?.binds?.closed
+        close(player)
+        if (action != null) {
+            runCatching { action.run() }.onFailure { plugin.logger.log(Level.SEVERE, "[ui] Erro no handler de fechar", it) }
         }
     }
 

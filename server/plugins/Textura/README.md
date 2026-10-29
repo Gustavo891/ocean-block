@@ -178,7 +178,9 @@ moldura, o cliente desenha) e `submit` (`{"label", "bind"}`: um botão vanilla n
 rodapé ao lado do de fechar; o clique chama `binds.button(bind)` e `click.input(key)`
 devolve o texto digitado, que também vai para `binds.value(key, get, set)` e volta
 como valor inicial do campo no próximo redesenho). Cliques dentro do corpo não
-levam o texto: só o `submit` lê o campo.
+levam o texto: só o `submit` lê o campo. `binds.closed(Runnable)` roda depois que
+o jogador clica no botão de fechar do rodapé (não no Esc); com
+`"canCloseWithEscape": false` no raiz, o rodapé é a única saída da tela.
 
 Containers têm uma chave `column`, `row`, `box` ou `grid` com a lista de filhos:
 

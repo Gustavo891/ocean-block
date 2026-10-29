@@ -26,6 +26,7 @@ class DialogBinds {
     internal val listPages = mutableMapOf<String, IntSupplier>()
     internal val listButtons = mutableMapOf<String, DialogListAction>()
     internal val pixels = mutableMapOf<String, Supplier<BufferedImage>>()
+    internal var closed: Runnable? = null
 
     internal val keys: Set<String> get() = values.keys + indexes.keys + buttons.keys + lists.keys + listPages.keys + listButtons.keys + pixels.keys
 
@@ -75,5 +76,9 @@ class DialogBinds {
 
     fun pixels(key: String, image: Supplier<BufferedImage>) {
         pixels[key] = image
+    }
+
+    fun closed(action: Runnable) {
+        closed = action
     }
 }
