@@ -318,3 +318,16 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] `/piratas parar` encerra como fuga; `/piratas iniciar` numa ilha já atacada recusa.
 - [ ] Reiniciar o servidor no meio da raid não deixa piratas, barcos nem moedas no mundo.
 - [ ] Sorteio natural: com `sorteio.chance: 1` e `intervalo-ticks: 200` em `piratas.yml`, uma ilha com membro nível 10+ sofre raid em 10 s e não sofre outra no mesmo dia (coleção `pirate_raids`).
+
+### Tipo de ilha
+
+- [ ] `/textura gerar` depois do deploy; uma conta nova entra como câmera parada sobre o mar (espectador) e a tela `ESCOLHA SUA ILHA` abre com os quatro cards, as artes e a contagem `N ILHAS` de cada tipo.
+- [ ] Esc não fecha a tela; `Sair do servidor` desconecta com `Até a próxima!`.
+- [ ] `ESCOLHER` abre `CRIAR ILHA` com a arte do tipo; `VOLTAR` volta para a lista; `CONFIRMAR` cria a ilha, devolve o survival e leva o jogador até ela com `Sua ilha foi criada!`.
+- [ ] Padrão: a ilha de sempre. Deserto: areia, arenito, árvore morta, arbusto seco, cacto; sem chuva; gerador de pedra funciona. Gelo: neve, abeto, camadas de neve; neva; um balde de água no chão e o mar perto da ilha não congelam. Jangada: 3×3 de tábuas na superfície do mar.
+- [ ] `F3` mostra o bioma `desert` / `snowy_plains` no lote do Deserto e do Gelo; Padrão e Jangada ficam com o bioma do mundo.
+- [ ] Membro convidado sem ilha própria não vê a tela; `/ilha` abre o menu da ilha do dono.
+- [ ] Sair do servidor no meio da escolha e voltar: a tela abre de novo. Um admin cria a ilha nesse meio tempo: no login o jogador volta ao survival e vai para a ilha.
+- [ ] Recusar a textura: a escolha cai no baú `Escolha sua ilha`; fechar o baú reabre em 1 s.
+- [ ] `/ilha resetplayer <nick>` mostra a prévia; com `-confirm` o lote volta a ser mar, membros são expulsos e o dono online volta para a câmera e a tela; offline, vê a tela no próximo login. Num jogador que não é dono, a mensagem diz que nada mudou.
+- [ ] Ilhas antigas aparecem como Padrão (campo `tipo: padrao` no Mongo).
