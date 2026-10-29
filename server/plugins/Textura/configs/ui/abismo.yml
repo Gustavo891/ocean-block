@@ -9,6 +9,8 @@ abismo:
     good: { color: "#6fdc5a", font: pequena, shadow: false }
     bad: { color: "#ff6a5c", font: pequena, shadow: false }
     accent: { color: "#5fd6e8", font: pequena, shadow: false }
+    destaque: { color: "#f2a541", font: pequena, shadow: false }
+    ouro: { color: "#f5d142", font: pequena, shadow: false }
     selected: { color: "#ffffa0", font: pequena, shadow: false }
     count: { color: "#ffffff" }
     disabled: { color: "#8b8b8b", shadow: false, font: pequena }
@@ -46,6 +48,13 @@ abismo:
       cartao:
         art: ui:abismo/cartao
         text-style: muted
+      perigo:
+        art: ui:abismo/botao_vermelho
+        text-style: button-light
+        selected-art: ui:abismo/botao_vermelho_hover
+        selected-text-style: button-light
+        disabled-art: ui:abismo/botao_off
+        disabled-text-style: disabled
       neutro:
         art: ui:abismo/botao
         text-style: button
