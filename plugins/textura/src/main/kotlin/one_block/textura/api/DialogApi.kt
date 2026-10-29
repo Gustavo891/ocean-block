@@ -35,6 +35,10 @@ object DialogApi {
         DynamicItemIcons.register(materials)
     }
 
+    fun registerEntityIcons(names: Collection<String>) {
+        DynamicItemIcons.registerEntities(names)
+    }
+
     fun setting(player: Player, key: String): String? = opener?.setting(player, key)
 
     fun setSetting(player: Player, key: String, value: String) {

@@ -92,7 +92,7 @@ data class UiUsage(val images: Set<String>, val icons: Set<IconSize>, val surfac
             dynamicIcons(theme, compiler, dynamicItems, theme.iconSize)
 
         private fun dynamicIcons(theme: UiTheme, compiler: ScreenCompiler, dynamicItems: Set<String>, size: Int): Set<IconSize> =
-            (theme.icons.keys.map { compiler.resolveIcon(theme, UiArtCatalog.UI_PREFIX + it) } + dynamicItems.map { UiArtCatalog.ITEM_PREFIX + it })
+            (theme.icons.keys.map { compiler.resolveIcon(theme, UiArtCatalog.UI_PREFIX + it) } + dynamicItems.map { UiArtCatalog.ITEM_PREFIX + it } + DynamicItemIcons.entities().map { UiArtCatalog.ENTITY_PREFIX + it })
                 .map { IconSize(it, size) }
                 .toSet()
 

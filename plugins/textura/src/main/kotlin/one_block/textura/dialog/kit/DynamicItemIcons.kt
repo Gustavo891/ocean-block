@@ -13,4 +13,12 @@ object DynamicItemIcons {
     }
 
     fun all(): Set<String> = items.toSet()
+
+    private val entities = ConcurrentHashMap.newKeySet<String>()
+
+    fun registerEntities(names: Collection<String>) {
+        entities += names.map { it.trim().removePrefix(VANILLA).lowercase() }.filter(NAME::matches)
+    }
+
+    fun entities(): Set<String> = entities.toSet()
 }

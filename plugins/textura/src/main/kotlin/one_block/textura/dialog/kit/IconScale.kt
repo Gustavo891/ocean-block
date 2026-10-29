@@ -1,5 +1,6 @@
 package one_block.textura.dialog.kit
 
+import one_block.textura.pack.IconResample
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 
@@ -40,6 +41,7 @@ object IconScale {
     fun resize(image: BufferedImage, size: Int): BufferedImage? {
         if (size < 1) return null
         val width = width(image.width, image.height, size)
+        if (image.height >= size * 2) return IconResample.smooth(IconResample.toMax(image, size * 2), width, size)
         val result = BufferedImage(width, size, BufferedImage.TYPE_INT_ARGB)
         val graphics = result.createGraphics()
         graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)

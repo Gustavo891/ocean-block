@@ -7,6 +7,7 @@ import one_block.textura.dialog.kit.UiKit
 import one_block.textura.dialog.kit.UiTextFontLoader
 import one_block.textura.dialog.theme.UiTheme
 import one_block.textura.pack.PackAssets
+import one_block.textura.pack.IconLibrary
 import one_block.textura.pack.VanillaAssets
 import one_block.textura.pack.parseLang
 import one_block.textura.registry.UiThemeRegistry
@@ -56,9 +57,10 @@ class StudioAssets(
             val vanilla = jar?.let { VanillaAssets(vanillaFolder, GameFiles.version(it), log.logger) }
             val glyphs = glyphMeta(packAssets, log)
 
-            val catalog = UiArtCatalog(File(packAssets.resourceRoot, UI_ART_FOLDER), { glyphs[it]?.file }, log.logger) { name ->
-                vanilla?.itemTexture(name, false)
-            }
+            val library = IconLibrary(File(data, IconLibrary.FOLDER), log.logger)
+            val catalog = UiArtCatalog(File(packAssets.resourceRoot, UI_ART_FOLDER), { glyphs[it]?.file }, log.logger, { name ->
+                library.item(name) ?: vanilla?.itemTexture(name, false)
+            }, library::entity)
             val textFont = UiTextFontLoader.load(File(data, TEXT_FONT), packAssets.resourceRoot, log.logger)
             val extraNames = themes.values.flatMap { theme -> theme.styles.values.mapNotNull { it.font } }.toSortedSet()
             val extraText = extraNames.associateWith { UiTextFontLoader.load(File(data, "configs/fonts/$it.json"), packAssets.resourceRoot, log.logger) }

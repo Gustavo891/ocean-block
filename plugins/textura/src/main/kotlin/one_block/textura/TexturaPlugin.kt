@@ -22,6 +22,7 @@ import one_block.textura.notify.icon.ItemIconRegistry
 import one_block.textura.notify.region.RegionConfigParser
 import one_block.textura.notify.render.NotificationKit
 import one_block.textura.notify.service.NotificationService
+import one_block.textura.pack.IconLibrary
 import one_block.textura.pack.NotificationPackWriter
 import one_block.textura.pack.parseLang
 import one_block.textura.http.ResourcePackServer
@@ -220,8 +221,10 @@ class TexturaPlugin : JavaPlugin(), Listener {
         val vanilla = VanillaAssets(File(dataFolder, VANILLA_FOLDER), Bukkit.getMinecraftVersion(), logger)
         return UiArtCatalog(File(assets.resourceRoot, UI_ART_FOLDER), { id ->
             glyphRegistry.glyphs[id]?.takeIf { it.sheetKey == null }?.let { assets.resolveGlyph(it.caminho, glyphsFolder)?.file }
-        }, logger) { name -> vanilla.itemTexture(name, download) }
+        }, logger, { name -> library.item(name) ?: vanilla.itemTexture(name, download) }, library::entity)
     }
+
+    private val library: IconLibrary by lazy { IconLibrary(File(dataFolder, IconLibrary.FOLDER), logger) }
 
     private fun notificationWriter(): NotificationPackWriter {
         val assets = PackAssets(dataFolder)
@@ -235,7 +238,7 @@ class TexturaPlugin : JavaPlugin(), Listener {
             notifications.regionList(),
             uiTextFont(),
             ItemIconRegistry.materials(),
-            { name -> vanilla.itemTexture(name, true) },
+            { name -> library.item(name) ?: vanilla.itemTexture(name, true) },
             glyphFiles,
             File(assets.resourceRoot, HUD_PLAQUE),
             logger,

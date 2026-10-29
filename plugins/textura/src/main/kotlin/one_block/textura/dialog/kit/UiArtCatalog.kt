@@ -16,6 +16,7 @@ class UiArtCatalog(
     private val glyphFile: (String) -> File?,
     private val logger: Logger,
     private val itemTexture: (String) -> BufferedImage? = { null },
+    private val entityTexture: (String) -> BufferedImage? = { null },
 ) {
 
     private val cache = ConcurrentHashMap<String, Optional<UiArt>>()
@@ -24,6 +25,7 @@ class UiArtCatalog(
 
     private fun load(id: String): UiArt? {
         if (id.startsWith(ITEM_PREFIX)) return itemTexture(id.removePrefix(ITEM_PREFIX))?.takeIf(::fits)?.let { UiArt(id, it, null) }
+        if (id.startsWith(ENTITY_PREFIX)) return entityTexture(id.removePrefix(ENTITY_PREFIX))?.takeIf(::fits)?.let { UiArt(id, it, null) }
         val file = when {
             id.startsWith(UI_PREFIX) -> uiFile(id.removePrefix(UI_PREFIX))
             id.startsWith(GLYPH_PREFIX) -> glyphFile(id.removePrefix(GLYPH_PREFIX))
@@ -72,6 +74,7 @@ class UiArtCatalog(
         const val UI_PREFIX = "ui:"
         const val GLYPH_PREFIX = "glyph:"
         const val ITEM_PREFIX = "item:"
+        const val ENTITY_PREFIX = "entidade:"
         const val MAX_WIDTH = 399
         const val MAX_HEIGHT = 256
         private val NAME = Regex("[a-z0-9_/-]+")
