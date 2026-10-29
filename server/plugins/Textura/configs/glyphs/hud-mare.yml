@@ -1,0 +1,81 @@
+hud_mare_0:
+  id: hud_mare_0
+  caminho: assets/oneblock/textures/hud/mare/mare_0.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE02C
+hud_mare_1:
+  id: hud_mare_1
+  caminho: assets/oneblock/textures/hud/mare/mare_1.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE02D
+hud_mare_2:
+  id: hud_mare_2
+  caminho: assets/oneblock/textures/hud/mare/mare_2.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE02E
+hud_mare_3:
+  id: hud_mare_3
+  caminho: assets/oneblock/textures/hud/mare/mare_3.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE02F
+hud_mare_4:
+  id: hud_mare_4
+  caminho: assets/oneblock/textures/hud/mare/mare_4.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE034
+hud_mare_5:
+  id: hud_mare_5
+  caminho: assets/oneblock/textures/hud/mare/mare_5.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE035
+hud_mare_6:
+  id: hud_mare_6
+  caminho: assets/oneblock/textures/hud/mare/mare_6.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE036
+hud_mare_7:
+  id: hud_mare_7
+  caminho: assets/oneblock/textures/hud/mare/mare_7.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE037
+hud_mare_8:
+  id: hud_mare_8
+  caminho: assets/oneblock/textures/hud/mare/mare_8.png
+  ascent: -9
+  size: 9
+  height: 5
+  default: true
+  show_in_gui: false
+  unicode: \uE038

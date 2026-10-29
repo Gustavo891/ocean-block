@@ -6,17 +6,14 @@ import one_block.textura.hud.anchor.AnchorPalette
 import org.bukkit.Bukkit
 import one_block.textura.api.GlyphApi
 import one_block.textura.text.TextMetrics
+import java.util.concurrent.ConcurrentHashMap
 
 object HudBackground {
 
     const val DEFAULT_GLYPH_WIDTH = 6
+    const val DEFAULT_PREFIX = "hud"
 
-    private const val ID_LEFT = "hud_left"
-    private const val ID_BODY = "hud_body"
-    private const val ID_RIGHT = "hud_right"
-
-    @Volatile
-    private var warned = false
+    private val warned = ConcurrentHashMap.newKeySet<String>()
 
     data class Glyphs(
         val left: String, val body: String, val right: String,
@@ -25,25 +22,32 @@ object HudBackground {
         val available: Boolean get() = left.isNotEmpty() && body.isNotEmpty() && right.isNotEmpty()
     }
 
-    fun resolve(): Glyphs {
+    fun resolve(): Glyphs = resolve(DEFAULT_PREFIX)
+
+    fun resolve(prefix: String): Glyphs {
+        val ids = listOf("${prefix}_left", "${prefix}_body", "${prefix}_right")
         val g = Glyphs(
-            left = GlyphApi.charOrEmpty(ID_LEFT),
-            body = GlyphApi.charOrEmpty(ID_BODY),
-            right = GlyphApi.charOrEmpty(ID_RIGHT),
-            leftW = DEFAULT_GLYPH_WIDTH,
-            bodyW = DEFAULT_GLYPH_WIDTH,
-            rightW = DEFAULT_GLYPH_WIDTH,
+            left = GlyphApi.charOrEmpty(ids[0]),
+            body = GlyphApi.charOrEmpty(ids[1]),
+            right = GlyphApi.charOrEmpty(ids[2]),
+            leftW = width(ids[0]),
+            bodyW = width(ids[1]),
+            rightW = width(ids[2]),
         )
-        if (!g.available && !warned) {
-            warned = true
+        if (!g.available && prefix != DEFAULT_PREFIX) return resolve(DEFAULT_PREFIX)
+        if (!g.available && warned.add(prefix)) {
             Bukkit.getLogger().warning(
-                "[ResourcePack] Glyphs da HUD ($ID_LEFT/$ID_BODY/$ID_RIGHT) não registrados; " +
+                "[ResourcePack] Glyphs da HUD (${ids.joinToString("/")}) não registrados; " +
                     "HUDs serão renderizadas apenas com texto."
             )
         }
         return g
     }
 
+    fun textStart(width: Int, textPixels: Int, g: Glyphs): Int =
+        g.leftW + (width - g.leftW - g.rightW - textPixels) / 2
+
+    private fun width(id: String): Int = GlyphApi.getSize(id)?.takeIf { it > 0 } ?: DEFAULT_GLYPH_WIDTH
     fun build(segments: Int, g: Glyphs): Component {
         var comp: Component = Component.empty()
         for (i in 0 until segments) {

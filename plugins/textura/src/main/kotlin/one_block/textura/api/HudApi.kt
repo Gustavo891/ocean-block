@@ -1,6 +1,8 @@
 package one_block.textura.api
 
 import org.bukkit.entity.Player
+import one_block.textura.hud.HudCard
+import one_block.textura.hud.HudCardLayout
 import one_block.textura.hud.HudContent
 import one_block.textura.hud.HudManager
 import one_block.textura.hud.HudSecondary
@@ -30,6 +32,14 @@ object HudApi {
     /** Atalho de [show] para o caso comum de só texto + alinhamento. */
     fun show(player: Player, slot: String, text: String) {
         manager?.show(player, slot, HudContent(text))
+    }
+
+    fun show(player: Player, slot: String, text: String, background: String) {
+        manager?.show(player, slot, HudContent(text, background))
+    }
+
+    fun showCard(player: Player, slot: String, card: HudCard, background: String) {
+        manager?.show(player, slot, HudContent(HudCardLayout.compose(card), background))
     }
 
     /** Atualiza a HUD do [slot] se existir; caso contrário, no-op. */

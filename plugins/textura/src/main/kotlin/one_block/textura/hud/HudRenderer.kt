@@ -14,11 +14,11 @@ object HudRenderer {
     fun render(content: HudContent): Component = render(content, null)
 
     fun render(content: HudContent, secondary: HudSecondary?): Component {
-        val glyphs = HudBackground.resolve()
+        val glyphs = HudBackground.resolve(content.background)
         val main = part(content.text, glyphs)
 
         if (secondary == null) return main.component
-        val side = part(secondary.text, glyphs)
+        val side = part(secondary.text, HudBackground.resolve())
 
         return when (secondary.side) {
             HudSide.RIGHT -> composeRight(main, side, secondary.gap)
@@ -52,7 +52,7 @@ object HudRenderer {
         // Onde o texto começa e onde o cursor está quando o fundo termina. O cursor
         // passa 1px da borda: o último glyph avança largura+1 e não leva o -1 de
         // emenda que os outros levam.
-        val textStart = (width - textPixels) / 2
+        val textStart = HudBackground.textStart(width, textPixels, glyphs)
         val afterBackground = HudLayout.cursorAfterBackground(width)
 
         val component = Component.empty()
