@@ -34,6 +34,14 @@ class IconFrameTest : StringSpec({
         (icon.x - frame.x to icon.y - frame.y) shouldBe (4 to 4)
     }
 
+    "icone dinamico sem valor guarda o espaco e o quadro para o pre-render" {
+        val theme = DialogFixtures.theme.copy(surfaces = DialogFixtures.theme.surfaces + ("frame" to "ui:stone/well"))
+        val placed = images("""{"theme": "stone", "column": [{"icon": "{icone}", "size": 16, "frame": true}]}""", theme, mutableListOf())
+
+        placed.map { it.id } shouldContainExactly listOf("ui:stone/well")
+        (placed.first().width to placed.first().height) shouldBe (24 to 24)
+    }
+
     "tema sem surface frame avisa e desenha so o icone" {
         val warnings = mutableListOf<String>()
         images(json, DialogFixtures.theme, warnings).map { it.id } shouldContainExactly listOf("ui:gerador")

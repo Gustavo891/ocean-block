@@ -119,7 +119,9 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
         private fun iconNode(def: DefIcon): UiNode {
             val id = placeholders.plain(stateIcon(def)).trim()
             if (id.isEmpty() || PLACEHOLDER_MARK in id) {
-                return ContainerNode(ContainerKind.Box, emptyList(), w = UiSize.Px(def.size), h = UiSize.Px(def.size), position = def.position)
+                val art = if (def.frame) theme.surfaces[FRAME_SURFACE] else null
+                val side = if (art != null) def.size + FRAME_PAD * 2 else def.size
+                return ContainerNode(ContainerKind.Box, emptyList(), surface = art, w = UiSize.Px(side), h = UiSize.Px(side), position = def.position)
             }
             val node = IconNode(icon(id), def.size, def.position)
             return if (def.frame) framed(node, def) else node
