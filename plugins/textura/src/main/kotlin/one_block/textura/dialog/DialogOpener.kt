@@ -9,7 +9,9 @@ import io.papermc.paper.registry.data.dialog.DialogBase
 import io.papermc.paper.registry.data.dialog.action.DialogAction
 import io.papermc.paper.registry.data.dialog.body.DialogBody
 import io.papermc.paper.registry.data.dialog.input.DialogInput
+import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.data.dialog.type.DialogType
+import io.papermc.paper.registry.set.RegistrySet
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.api.BinaryTagHolder
 import net.kyori.adventure.text.Component
@@ -245,7 +247,7 @@ class DialogOpener(
                 .build()
         })
         val base = DialogBase.builder(title ?: Component.empty())
-            .canCloseWithEscape(definition.escape || definition.close == null)
+            .canCloseWithEscape(definition.escape || definition.close == null || !definition.footer)
             .pause(definition.pause)
             .afterAction(DialogBase.DialogAfterAction.NONE)
             .body(listOf(body))
@@ -262,7 +264,12 @@ class DialogOpener(
                 .action(DialogAction.customClick(CLICK_KEY, BinaryTagHolder.binaryTagHolder("{$SUBMIT_FIELD:\"$submit\"}")))
                 .build()
         }
-        factory.empty().base(base).type(if (send != null) DialogType.confirmation(send, close) else DialogType.notice(close))
+        val type = when {
+            send != null -> DialogType.confirmation(send, close)
+            !definition.footer -> DialogType.dialogList(RegistrySet.valueSet(RegistryKey.DIALOG, emptyList()), null, 1, BUTTON_WIDTH)
+            else -> DialogType.notice(close)
+        }
+        factory.empty().base(base).type(type)
     }
 
     private fun fallback(): Dialog = Dialog.create { factory ->

@@ -83,6 +83,7 @@ class ScreenParser(private val logger: Logger) {
             choices = choicesOf(containers),
             input = input,
             submit = submit,
+            footer = obj.get("footer")?.let { runCatching { it.asBoolean }.getOrNull() } ?: true,
         )
     }
 
@@ -681,7 +682,7 @@ class ScreenParser(private val logger: Logger) {
         )
         private val LEAVES = listOf("text", "button", "nav", "dropdown", "slider", "progress", "segmented", "switch", "chip", "pair", "slots", "image", "pixels", "icon", "space")
         private val COMMON = setOf("name", REPEAT)
-        private val ROOT = setOf("theme", "title", "close", "input", "submit", "canCloseWithEscape")
+        private val ROOT = setOf("theme", "title", "close", "input", "submit", "canCloseWithEscape", "footer")
         private val WRAPPER = setOf("title", "theme", "document", "pages", "hideFooter", "canCloseWithEscape", "pause", "close", "input", "submit")
         private val IGNORED = setOf(
             "nudge", "drawButtons", "contentWidth", "showWarning", "look", "compact", "accent", "face", "frame",

@@ -181,6 +181,9 @@ como valor inicial do campo no próximo redesenho). Cliques dentro do corpo não
 levam o texto: só o `submit` lê o campo. `binds.closed(Runnable)` roda depois que
 o jogador clica no botão de fechar do rodapé (não no Esc); com
 `"canCloseWithEscape": false` no raiz, o rodapé é a única saída da tela.
+`"footer": false` no raiz tira o rodapé (o diálogo vira uma lista vazia de
+diálogos, sem botões); a tela fecha com Esc ou com um botão `onClick` `close`
+do próprio corpo, e `binds.closed` não roda no Esc.
 
 Containers têm uma chave `column`, `row`, `box` ou `grid` com a lista de filhos:
 

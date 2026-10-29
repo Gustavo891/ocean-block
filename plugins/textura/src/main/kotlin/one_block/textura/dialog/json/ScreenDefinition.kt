@@ -218,6 +218,7 @@ data class ScreenDefinition(
     val choices: Map<String, List<String>> = emptyMap(),
     val input: DefInput? = null,
     val submit: DefSubmit? = null,
+    val footer: Boolean = true,
 ) {
     fun page(id: String?): DefContainer = id?.let { pages[it] } ?: root
 

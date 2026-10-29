@@ -48,9 +48,13 @@ object MissionDialog {
         binds.list("legenda") { MissionLore.legend(state()) }
         binds.listPage("legenda") { 0 }
         binds.listButton("selecionar") { _, index -> MissionLore.listed(state()).getOrNull(index)?.let { selections[player.uniqueId] = it.id } }
-        binds.list("detalhe") { listOf(MissionLore.detail(state(), selected(), ::recipeName)) }
+        val detail = { MissionLore.detail(state(), selected(), ::recipeName) }
+        binds.list("detalhe") { listOf(detail()) }
         binds.listPage("detalhe") { 0 }
-        binds.listButton("escolher") { click, _ -> selected().takeIf { it != MissionLore.TRAIL }?.let { MissionTracker.choose(click.player, it) } }
+        binds.list("recompensas") { MissionLore.rewards(state(), selected()) }
+        binds.listPage("recompensas") { 0 }
+        listOf("botao", "bloqueado", "dica", "nota").forEach { key -> binds.text(key) { detail()[key].orEmpty() } }
+        binds.button("escolher") { click -> selected().takeIf { it != MissionLore.TRAIL }?.let { MissionTracker.choose(click.player, it) } }
         binds.button("trilha") { selections[player.uniqueId] = MissionLore.TRAIL }
         binds.text("resumo") { MissionLore.summary(state()) }
         binds.text("diarias_feitas") { MissionLore.dailiesDone(state()) }

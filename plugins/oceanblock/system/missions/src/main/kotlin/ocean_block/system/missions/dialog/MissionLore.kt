@@ -16,6 +16,7 @@ object MissionLore {
     const val LOCKED_DAILIES = "Termine a trilha para liberar as diárias"
 
     private const val TRAIL_ICON = "nether_star"
+    private const val XP_ICON = "experience_bottle"
     private val MONEY = Regex("\\$([0-9][0-9.]*)")
 
     fun summary(state: PlayerMissions): String =
@@ -100,6 +101,19 @@ object MissionLore {
             },
             "bloqueado" to (daily.done || active).toString(),
             "dica" to "Só a diária escolhida avança; as outras guardam o progresso.",
+        )
+    }
+
+    fun rewards(state: PlayerMissions, selected: String): List<Map<String, String>> {
+        val daily = state.dailies.firstOrNull { it.id == selected && selected != TRAIL }
+        val xp = daily?.xp ?: MissionTrail.at(state.trailIndex)?.xp ?: return emptyList()
+        return listOf(
+            mapOf(
+                "icone" to icon(XP_ICON),
+                "nome" to "XP de nível",
+                "valor" to "+${MissionText.number(xp.toLong())}",
+                "valor_estilo" to if (daily?.done == true) "good" else "ouro",
+            ),
         )
     }
 

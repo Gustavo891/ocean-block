@@ -79,6 +79,15 @@ class MissionLoreTest : StringSpec({
         MissionLore.notice(today) shouldBe null
     }
 
+    "recompensas listam o xp da selecao" {
+        MissionLore.rewards(today, "gerador_64") shouldBe listOf(
+            mapOf("icone" to "item:experience_bottle", "nome" to "XP de nível", "valor" to "+474", "valor_estilo" to "ouro"),
+        )
+        MissionLore.rewards(today, "receitas_3").single()["valor_estilo"] shouldBe "good"
+        MissionLore.rewards(today, MissionLore.TRAIL) shouldBe emptyList()
+        MissionLore.rewards(PlayerMissions("u", 0, 0, "", emptyList()), MissionLore.TRAIL).single()["valor"] shouldBe "+50"
+    }
+
     "icone usa entidade quando a missao pede" {
         MissionLore.icon("zombie") shouldBe "item:zombie"
         MissionLore.icon("entidade:zombie") shouldBe "entidade:zombie"
