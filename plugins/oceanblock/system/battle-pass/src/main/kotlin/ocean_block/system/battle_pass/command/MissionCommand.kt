@@ -7,7 +7,7 @@ import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.system.battle_pass.view.ChallengesView
 import org.bukkit.entity.Player
 
-@CommandAlias("missao|missoes|desafios")
+@CommandAlias("desafios")
 class MissionCommand(private val viewFrame: ViewFrame) : BaseCommand() {
 
     @Default
