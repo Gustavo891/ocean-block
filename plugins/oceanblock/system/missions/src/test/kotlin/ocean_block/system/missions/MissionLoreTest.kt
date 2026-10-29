@@ -72,7 +72,9 @@ class MissionLoreTest : StringSpec({
 
     "cabecalho resume trilha e diarias" {
         MissionLore.summary(today) shouldBe "TRILHA COMPLETA"
-        MissionLore.dailiesDone(today) shouldBe "1/3 DIÁRIAS"
+        MissionLore.dailiesDone(today) shouldBe "| 1/3 DIÁRIAS"
+        MissionLore.legend(today).size shouldBe 1
+        MissionLore.legend(PlayerMissions("u", 0, 0, "", emptyList())) shouldBe emptyList()
         MissionLore.trailCount(today) shouldBe "13/13"
         MissionLore.notice(today) shouldBe null
     }

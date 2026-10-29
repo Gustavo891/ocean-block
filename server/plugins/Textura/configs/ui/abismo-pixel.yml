@@ -1,0 +1,89 @@
+abismo_pixel:
+  icon-gap: 4
+  icon-size: 9
+  text:
+    titulo: { color: "#ffffff", font: silk_titulo, shadow: false }
+    heading: { color: "#ffffff", font: silk_negrito, shadow: false }
+    body: { color: "#e2e2e2", font: silk, shadow: false }
+    branco: { color: "#ffffff", font: silk, shadow: false }
+    muted: { color: "#a3a6ab", font: silk, shadow: false }
+    nota: { color: "#8b8b8b", font: silk, shadow: false }
+    good: { color: "#6fdc5a", font: silk, shadow: false }
+    bad: { color: "#ff6a5c", font: silk, shadow: false }
+    accent: { color: "#5fd6e8", font: silk, shadow: false }
+    destaque: { color: "#f2a541", font: silk, shadow: false }
+    ouro: { color: "#f5d142", font: silk, shadow: false }
+    trilha: { color: "#3a8a3d", font: silk, shadow: false }
+    selected: { color: "#ffffa0", font: silk, shadow: false }
+    count: { color: "#ffffff" }
+    disabled: { color: "#8b8b8b", font: silk, shadow: false }
+    button: { color: "#2f3034", font: silk, shadow: false }
+    button-light: { color: "#ffffff", font: silk, shadow: false }
+    fechar: { color: "#ffffff", font: silk_negrito, shadow: false }
+    tooltip: { color: "#a8a8b3" }
+  surfaces:
+    moldura: ui:abismo/moldura
+    painel: ui:abismo/painel
+    palco: ui:abismo/palco
+    frame: ui:abismo/palco
+    pilula: ui:abismo/pilula
+    cartao: ui:abismo/cartao_diaria
+  switch:
+    labels: { on: "Ligado", off: "Desligado" }
+  segmented:
+    art: ui:stone/segment
+    selected-art: ui:stone/segment_selected
+    text-style: body
+    selected-text-style: selected
+    pad: 8
+    frame: ui:stone/segment_frame
+  button:
+    art: ui:abismo/botao
+    text-style: button
+    looks:
+      acao:
+        art: ui:abismo/botao_verde
+        text-style: button-light
+        selected-art: ui:abismo/botao_verde_hover
+        selected-text-style: button-light
+        disabled-art: ui:abismo/botao_off
+        disabled-text-style: disabled
+      fechar:
+        art: ui:abismo/botao_fechar
+        text-style: fechar
+      selecao:
+        art: ui:abismo/selecao
+        text-style: body
+        selected-art: ui:abismo/selecao_on
+        selected-text-style: body
+      neutro:
+        art: ui:abismo/botao
+        text-style: button
+        disabled-art: ui:abismo/botao_off
+        disabled-text-style: disabled
+  nav:
+    art: ui:stone/nav
+    active-art: ui:stone/nav_active
+    text-style: body
+    active-text-style: selected
+    pad: 7
+  dropdown:
+    art: ui:stone/dropdown
+    arrow: ui:stone/arrow_down
+    text-style: body
+  slider:
+    track: ui:stone/slider_track
+    fill: ui:stone/slider_fill
+    text-style: body
+  slots:
+    art: ui:abismo/slot
+    missing-art: ui:mare/slot_missing
+    text-style: count
+  chip:
+    art: ui:mare/chip
+    text-style: body
+    height: 20
+  icons:
+    faixa_laranja: ui:abismo/faixa_laranja
+    faixa_azul: ui:abismo/faixa_azul
+    faixa_verde: ui:abismo/faixa_verde

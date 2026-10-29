@@ -1,21 +1,22 @@
 {
   "close": "Fechar",
-  "theme": "abismo",
+  "theme": "abismo_pixel",
   "column": [
     {
       "row": [
         {
           "column": [
             { "text": "MISSÕES", "style": "titulo" },
-            { "row": [ { "text": "{resumo}", "style": "good" }, { "text": "{diarias_feitas}", "style": "muted" } ], "gap": 6 }
+            { "row": [ { "text": "{resumo}", "style": "good" }, { "text": "{diarias_feitas}", "style": "muted" } ], "gap": 4 }
           ],
-          "gap": 3, "w": "grow"
+          "gap": 4, "w": "grow"
         },
-        { "row": [ { "text": "{renova}", "style": "ouro" } ], "pad": 4, "surface": "palco" },
-        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "onClick": { "action": "close" }, "tooltip": "Fechar", "w": 18 }
+        { "row": [ { "text": "{renova}", "style": "ouro" } ], "pad": 5, "surface": "pilula" },
+        { "button": "X", "look": "fechar", "onClick": { "action": "close" }, "tooltip": "Fechar", "w": 18 }
       ],
-      "w": "grow", "cross": "center", "gap": 6
+      "w": "grow", "cross": "center", "gap": 5
     },
+    { "image": "ui:abismo/separador", "w": 366 },
     {
       "row": [
         {
@@ -24,20 +25,21 @@
             {
               "repeat": "aviso", "perPage": 1,
               "row": [ { "text": "{texto}", "style": "{estilo}", "w": "grow", "align": "center" } ],
-              "pad": 6, "surface": "painel", "w": "grow"
+              "pad": 6, "surface": "cartao", "w": "grow"
             },
             {
               "repeat": "diarias", "perPage": 3,
               "column": [
                 {
                   "row": [
+                    { "space": 1 },
                     { "icon": "{icone}", "size": 16 },
                     {
                       "column": [
                         { "row": [ { "text": "{texto}", "style": "body", "w": "grow" }, { "text": "{xp}", "style": "{xp_estilo}" } ], "w": "grow" },
                         {
                           "row": [
-                            { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 100 },
+                            { "progress": "{barra}", "max": "100", "track": "ui:abismo/barra_trilho", "fill": "ui:abismo/barra", "w": 84 },
                             { "text": "{contagem}", "style": "{contagem_estilo}", "w": "grow", "align": "right" }
                           ],
                           "w": "grow", "cross": "center", "gap": 4
@@ -46,54 +48,78 @@
                       "gap": 4, "w": "grow"
                     }
                   ],
-                  "w": "grow", "h": 34, "pad": 6, "gap": 6, "cross": "center", "surface": "painel"
+                  "w": "grow", "h": 26, "pad": 4, "gap": 4, "cross": "center", "surface": "cartao"
                 },
-                { "row": [ { "icon": "{faixa}", "size": 34 } ], "x": 0, "y": 0 },
-                { "row": [ { "button": "", "look": "selecao", "bind": "selecionar", "selected": "{selecionada}", "tooltip": "{dica}", "w": 196 } ], "x": 0, "y": 0 }
+                { "row": [ { "icon": "{faixa}", "size": 26 } ], "x": 0, "y": 0 },
+                { "row": [ { "button": "", "look": "selecao", "bind": "selecionar", "selected": "{selecionada}", "tooltip": "{dica}", "w": 172 } ], "x": 0, "y": 0 }
               ],
-              "w": 196
+              "w": 172
             },
-            { "space": "grow" },
-            { "button": "TRILHA {trilha}", "icon": "item:nether_star", "look": "neutro", "bind": "trilha", "selected": "{trilha_aberta}", "w": 196 }
+            {
+              "repeat": "legenda", "perPage": 1,
+              "row": [
+                { "icon": "ui:abismo/legenda_laranja", "size": 3 }, { "text": "SELECIONADA", "style": "muted" },
+                { "space": 3 },
+                { "icon": "ui:abismo/legenda_azul", "size": 3 }, { "text": "VALENDO AGORA", "style": "muted" },
+                { "space": 3 },
+                { "icon": "ui:abismo/legenda_verde", "size": 3 }, { "text": "FEITA", "style": "muted" }
+              ],
+              "gap": 2, "cross": "center"
+            },
+            {
+              "x": 0, "y": 158,
+              "box": [
+                { "button": "", "look": "neutro", "bind": "trilha", "tooltip": "Ver a trilha", "w": 172 },
+                {
+                  "row": [
+                    { "icon": "item:nether_star", "size": 10 },
+                    { "text": "TRILHA", "style": "button", "w": "grow" },
+                    { "text": "{trilha}", "style": "trilha" }
+                  ],
+                  "w": 172, "h": 18, "pad": 5, "gap": 5, "cross": "center"
+                }
+              ],
+              "w": 172
+            }
           ],
-          "gap": 4, "w": 196, "h": "grow"
+          "gap": 4, "w": 172, "h": 176
         },
         {
           "repeat": "detalhe", "perPage": 1,
           "column": [
             {
               "row": [
-                { "icon": "{icone}", "size": 24, "frame": true },
+                { "icon": "{icone}", "size": 28, "frame": true },
                 {
                   "column": [
                     { "text": "{titulo}", "style": "heading", "w": "grow" },
                     { "text": "{subtitulo}", "style": "{subtitulo_estilo}", "w": "grow" }
                   ],
-                  "gap": 4, "w": "grow"
+                  "gap": 5, "w": "grow"
                 }
               ],
               "gap": 6, "w": "grow", "cross": "center"
             },
+            { "image": "ui:abismo/separador", "w": 174 },
             { "text": "REQUISITO", "style": "muted" },
             { "text": "{requisito}", "style": "body", "w": "grow" },
             {
-              "row": [ { "text": "PROGRESSO", "style": "muted", "w": "grow" }, { "text": "{progresso}", "style": "body" } ],
+              "row": [ { "text": "PROGRESSO", "style": "muted", "w": "grow" }, { "text": "{progresso}", "style": "branco" } ],
               "w": "grow"
             },
-            { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 150 },
+            { "progress": "{barra}", "max": "100", "track": "ui:abismo/barra_grande_trilho", "fill": "ui:abismo/barra_grande", "w": 174 },
             {
               "row": [ { "text": "RECOMPENSA", "style": "muted", "w": "grow" }, { "text": "{recompensa}", "style": "ouro" } ],
-              "pad": 4, "surface": "palco", "w": "grow", "cross": "center"
+              "pad": 5, "surface": "pilula", "w": "grow", "cross": "center"
             },
-            { "text": "{nota}", "style": "muted", "w": "grow" },
-            { "space": "grow" },
-            { "button": "{botao}", "look": "acao", "bind": "escolher", "disabled": "{bloqueado}", "tooltip": "{dica}", "w": 150 }
+            { "text": "{nota}", "style": "nota", "w": "grow" },
+            { "row": [ { "button": "{botao}", "look": "acao", "bind": "escolher", "disabled": "{bloqueado}", "tooltip": "{dica}", "w": 174 } ], "x": 7, "y": 151 }
           ],
-          "gap": 5, "pad": 6, "surface": "painel", "w": "grow", "h": "grow"
+          "gap": 5, "pad": 7, "surface": "painel", "w": "grow", "h": 176
         }
       ],
       "gap": 6, "w": "grow"
     }
   ],
-  "gap": 6, "pad": 7, "surface": "moldura", "w": 380
+  "gap": 5, "pad": 7, "surface": "moldura", "w": 380
 }

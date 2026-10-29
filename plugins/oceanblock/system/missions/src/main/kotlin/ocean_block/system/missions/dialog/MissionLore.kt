@@ -22,7 +22,7 @@ object MissionLore {
         if (MissionRules.trailDone(state)) "TRILHA COMPLETA" else "TRILHA ${state.trailIndex}/${MissionTrail.size}"
 
     fun dailiesDone(state: PlayerMissions): String =
-        if (!MissionRules.trailDone(state)) "" else "${state.dailies.count { it.done }}/${state.dailies.size} DIÁRIAS"
+        if (!MissionRules.trailDone(state)) "" else "| ${state.dailies.count { it.done }}/${state.dailies.size} DIÁRIAS"
 
     fun trailCount(state: PlayerMissions): String = "${state.trailIndex.coerceAtMost(MissionTrail.size)}/${MissionTrail.size}"
 
@@ -31,6 +31,9 @@ object MissionLore {
 
     fun listed(state: PlayerMissions): List<DailyMission> =
         if (MissionRules.trailDone(state)) state.dailies else emptyList()
+
+    fun legend(state: PlayerMissions): List<Map<String, String>> =
+        if (listed(state).isEmpty()) emptyList() else listOf(mapOf("legenda" to "sim"))
 
     fun selection(state: PlayerMissions, chosen: String?): String {
         if (chosen == TRAIL) return TRAIL
@@ -89,7 +92,7 @@ object MissionLore {
             "progresso" to count(mission.objective, progress),
             "barra" to percent(mission.objective, progress),
             "recompensa" to "+${MissionText.number(daily.xp.toLong())} XP",
-            "nota" to "Só a escolhida avança",
+            "nota" to "Só a diária escolhida avança",
             "botao" to when {
                 daily.done -> "Feita"
                 active -> "Valendo agora"

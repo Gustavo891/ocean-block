@@ -45,6 +45,8 @@ object MissionDialog {
         binds.listPage("aviso") { 0 }
         binds.list("diarias") { state().let { now -> MissionLore.listed(now).map { MissionLore.row(it, now, selected()) } } }
         binds.listPage("diarias") { 0 }
+        binds.list("legenda") { MissionLore.legend(state()) }
+        binds.listPage("legenda") { 0 }
         binds.listButton("selecionar") { _, index -> MissionLore.listed(state()).getOrNull(index)?.let { selections[player.uniqueId] = it.id } }
         binds.list("detalhe") { listOf(MissionLore.detail(state(), selected(), ::recipeName)) }
         binds.listPage("detalhe") { 0 }
