@@ -24,7 +24,7 @@ class ChoiceListener : Listener {
     @EventHandler
     fun onPack(event: PlayerResourcePackStatusEvent) {
         val player = event.player
-        if (!ChoiceCamera.isMarked(player) || !IslandChoice.needsChoice(player)) return
+        if (!IslandManager.loaded || !ChoiceCamera.isMarked(player) || !IslandChoice.needsChoice(player)) return
         when (event.status) {
             Status.SUCCESSFULLY_LOADED -> runNextTask { if (player.isOnline) IslandTypeDialog.open(player) }
             in failedPack -> runNextTask { if (player.isOnline) IslandTypeMenu.open(player) }
