@@ -9,10 +9,10 @@ import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.libs.coordinate.SimpleLocation
+import ocean_block.system.islands.choice.IslandChoice
 import ocean_block.system.islands.dialog.IslandDialog
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
-import ocean_block.system.islands.island.type.IslandType
 import ocean_block.system.islands.member.IslandMembership
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.reset.IslandResetService
@@ -38,24 +38,6 @@ class IslandCommand(
         return island
     }
 
-    private fun enterNewIsland(sender: Player, island: Island) {
-        if (!sender.isOnline) return
-
-        sender.sendRichMessage("<green>Sua ilha foi criada com sucesso!")
-        val spawn = island.spawn.toBukkit()
-
-        if (spawn == null) {
-            sender.sendRichMessage("<red>Erro: mundo não carregado.")
-            return
-        }
-
-        sender.teleport(spawn.add(0.0, 2.0, 0.0))
-        sender.fallDistance = 0f
-        island.onJoin(sender)
-
-        sender.sendRichMessage("<green>Teleportado para sua ilha!")
-    }
-
     @Default
     fun onDefault(sender: Player, @Optional targetName: String?) {
         if (targetName != null) {
@@ -63,8 +45,8 @@ class IslandCommand(
             return
         }
 
-        if (IslandManager.getIslandByOwnerUUID(sender.uniqueId) == null) {
-            createAndEnter(sender)
+        if (IslandManager.getHomeIsland(sender) == null) {
+            IslandChoice.begin(sender)
             return
         }
         val island = IslandMembership.menuIsland(sender) ?: return openMenu(sender)
@@ -84,15 +66,6 @@ class IslandCommand(
         sender.sendRichMessage("<red>Você não é membro dessa ilha. Se ela for pública, use <white>/ilha visitar $targetName</white>.")
     }
 
-    private fun createAndEnter(sender: Player) {
-        sender.sendRichMessage("<green>Criando sua ilha...")
-        val created = IslandManager.createIsland(sender, IslandType.PADRAO) { ready -> enterNewIsland(sender, ready) }
-
-        if (created == null) {
-            sender.sendRichMessage("<red>As ilhas não foram carregadas. Avise a staff antes de continuar.")
-        }
-    }
-
     private fun openMenu(sender: Player) {
         val island = IslandMembership.menuIsland(sender)
         if (island == null) {
@@ -104,9 +77,9 @@ class IslandCommand(
 
     @Subcommand("ir|home")
     fun onGo(sender: Player) {
-        val island = IslandManager.getIslandByOwnerUUID(sender.uniqueId)
+        val island = IslandManager.getHomeIsland(sender)
         if (island == null) {
-            createAndEnter(sender)
+            IslandChoice.begin(sender)
             return
         }
         island.teleportTo(sender)

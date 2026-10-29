@@ -4,6 +4,7 @@ import me.devnatan.inventoryframework.ViewFrame
 import net.skinsrestorer.api.SkinsRestorerProvider
 import net.skinsrestorer.api.event.SkinApplyEvent
 import ocean_block.libs.instance.Instance
+import ocean_block.system.islands.choice.ChoiceListener
 import ocean_block.system.islands.expansion.IslandExpansion
 import ocean_block.system.islands.generator.GeneratorBreakListener
 import ocean_block.system.islands.generator.GeneratorFile
@@ -56,6 +57,7 @@ object IslandsSystem {
         plugin.server.pluginManager.registerEvents(GeneratorBreakListener(), plugin)
         plugin.server.pluginManager.registerEvents(InviteQuitListener(), plugin)
         plugin.server.pluginManager.registerEvents(IceGuardListener(), plugin)
+        plugin.server.pluginManager.registerEvents(ChoiceListener(), plugin)
 
         IslandExpansion().register()
     }

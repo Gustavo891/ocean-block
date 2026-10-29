@@ -100,7 +100,7 @@ object StarterIsland {
             val original = clipboard.getBlock(position).asString
             val swapped = IslandPalette.swap(type, original)
             if (swapped != original) {
-                clipboard.setBlock(position, cache.getOrPut(swapped) { BlockState.get(swapped) })
+                clipboard.setBlock(position.x(), position.y(), position.z(), cache.getOrPut(swapped) { BlockState.get(swapped) })
             }
         }
     }
