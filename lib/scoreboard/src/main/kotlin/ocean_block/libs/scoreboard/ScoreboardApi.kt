@@ -14,4 +14,12 @@ object ScoreboardApi {
     }
 
     fun has(player: Player): Boolean = SidebarService.has(player)
+
+    fun suppress(player: Player) {
+        SidebarService.suppress(player)
+    }
+
+    fun release(player: Player) {
+        SidebarService.release(player)
+    }
 }

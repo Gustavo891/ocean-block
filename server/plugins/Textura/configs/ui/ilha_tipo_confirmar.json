@@ -1,46 +1,81 @@
 {
   "close": "Sair do servidor",
   "canCloseWithEscape": false,
-  "theme": "abismo",
+  "theme": "escolha",
   "column": [
-    {
-      "text": "CRIAR ILHA",
-      "style": "titulo",
-      "w": "grow"
-    },
     {
       "row": [
         {
-          "icon": "ui:ilha_tipo/padrao",
-          "size": 32,
-          "bind": "tipo",
-          "states": {
-            "padrao": "ui:ilha_tipo/padrao",
-            "deserto": "ui:ilha_tipo/deserto",
-            "gelo": "ui:ilha_tipo/gelo",
-            "jangada": "ui:ilha_tipo/jangada"
-          }
+          "icon": "ui:escolha/logo_0",
+          "size": 32
         },
         {
-          "column": [
+          "icon": "ui:escolha/logo_1",
+          "size": 32
+        },
+        {
+          "icon": "ui:escolha/logo_2",
+          "size": 32
+        },
+        {
+          "icon": "ui:escolha/logo_3",
+          "size": 32
+        },
+        {
+          "icon": "ui:escolha/logo_4",
+          "size": 32
+        }
+      ],
+      "w": "grow",
+      "align": "center",
+      "name": "Logo"
+    },
+    {
+      "box": [
+        {
+          "image": "ui:escolha/cartao",
+          "w": "grow"
+        },
+        {
+          "row": [
             {
-              "text": "{pergunta}",
-              "style": "heading",
-              "w": "grow"
+              "space": 8
             },
             {
-              "text": "NÃO DÁ PARA TROCAR DEPOIS.",
-              "style": "bad",
+              "icon": "ui:ilha_tipo/padrao",
+              "size": 36,
+              "bind": "tipo",
+              "states": {
+                "padrao": "ui:ilha_tipo/padrao",
+                "deserto": "ui:ilha_tipo/deserto",
+                "gelo": "ui:ilha_tipo/gelo",
+                "jangada": "ui:ilha_tipo/jangada"
+              }
+            },
+            {
+              "space": 10
+            },
+            {
+              "column": [
+                {
+                  "text": "{pergunta}",
+                  "style": "titulo",
+                  "w": "grow"
+                },
+                {
+                  "text": "NÃO DÁ PARA TROCAR DEPOIS.",
+                  "style": "bad",
+                  "w": "grow"
+                }
+              ],
+              "gap": 4,
               "w": "grow"
             }
           ],
-          "gap": 4,
-          "w": "grow"
+          "w": "grow",
+          "cross": "center"
         }
       ],
-      "gap": 6,
-      "pad": 4,
-      "surface": "painel",
       "w": "grow",
       "cross": "center",
       "name": "Resumo"
@@ -64,8 +99,6 @@
       "w": "grow"
     }
   ],
-  "gap": 5,
-  "pad": 7,
-  "surface": "moldura",
-  "w": 260
+  "gap": 4,
+  "w": 300
 }

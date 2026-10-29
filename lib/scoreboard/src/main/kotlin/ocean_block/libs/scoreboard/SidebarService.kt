@@ -16,11 +16,13 @@ internal object SidebarService {
 
     private val boards = ConcurrentHashMap<UUID, FastBoard>()
     private val listening = AtomicBoolean()
+    private val suppressed = ConcurrentHashMap.newKeySet<UUID>()
 
     fun has(player: Player): Boolean = boards.containsKey(player.uniqueId)
 
     fun render(player: Player, title: Component, lines: List<SidebarLine>, hideNumbers: Boolean) {
         listen()
+        if (player.uniqueId in suppressed) return
 
         val board = boardOf(player)
 
@@ -40,8 +42,19 @@ internal object SidebarService {
         if (!board.isDeleted) board.delete()
     }
 
+    fun suppress(player: Player) {
+        listen()
+        suppressed.add(player.uniqueId)
+        hide(player)
+    }
+
+    fun release(player: Player) {
+        suppressed.remove(player.uniqueId)
+    }
+
     fun forget(uuid: UUID) {
         boards.remove(uuid)
+        suppressed.remove(uuid)
     }
 
     private fun boardOf(player: Player): FastBoard {

@@ -1,200 +1,296 @@
 {
   "close": "Sair do servidor",
   "canCloseWithEscape": false,
-  "theme": "abismo",
+  "theme": "escolha",
   "column": [
-    {
-      "text": "ESCOLHA SUA ILHA",
-      "style": "titulo",
-      "w": "grow"
-    },
     {
       "row": [
         {
-          "icon": "ui:ilha_tipo/padrao",
+          "icon": "ui:escolha/logo_0",
           "size": 32
         },
         {
-          "column": [
-            {
-              "row": [
-                {
-                  "text": "{padrao_nome}",
-                  "style": "heading",
-                  "w": "grow"
-                },
-                {
-                  "text": "{padrao_contagem}",
-                  "style": "good"
-                }
-              ],
-              "w": "grow"
-            },
-            {
-              "text": "{padrao_descricao}",
-              "style": "muted",
-              "w": "grow"
-            }
-          ],
-          "gap": 3,
+          "icon": "ui:escolha/logo_1",
+          "size": 32
+        },
+        {
+          "icon": "ui:escolha/logo_2",
+          "size": 32
+        },
+        {
+          "icon": "ui:escolha/logo_3",
+          "size": 32
+        },
+        {
+          "icon": "ui:escolha/logo_4",
+          "size": 32
+        }
+      ],
+      "w": "grow",
+      "align": "center",
+      "name": "Logo"
+    },
+    {
+      "box": [
+        {
+          "button": "",
+          "look": "tipo_padrao",
+          "bind": "escolher_padrao",
+          "tooltip": "Escolher a ilha {padrao_nome}",
           "w": "grow"
         },
         {
-          "button": "ESCOLHER",
-          "look": "acao",
-          "bind": "escolher_padrao",
-          "tooltip": "Criar a ilha {padrao_nome}",
-          "w": 70
+          "row": [
+            {
+              "space": 8
+            },
+            {
+              "icon": "ui:ilha_tipo/padrao",
+              "size": 36
+            },
+            {
+              "space": 10
+            },
+            {
+              "column": [
+                {
+                  "text": "{padrao_nome}",
+                  "style": "titulo",
+                  "w": "grow"
+                },
+                {
+                  "text": "{padrao_descricao}",
+                  "style": "descricao",
+                  "w": "grow"
+                }
+              ],
+              "gap": 4,
+              "w": "grow"
+            },
+            {
+              "column": [
+                {
+                  "text": "{padrao_contagem}",
+                  "style": "good",
+                  "align": "right"
+                },
+                {
+                  "text": "CLIQUE PARA ESCOLHER",
+                  "style": "clique",
+                  "align": "right"
+                }
+              ],
+              "gap": 10,
+              "cross": "end"
+            },
+            {
+              "space": 8
+            }
+          ],
+          "w": "grow",
+          "cross": "center"
         }
       ],
-      "gap": 6,
-      "pad": 3,
-      "surface": "painel",
       "w": "grow",
       "cross": "center",
       "name": "padrao"
     },
     {
-      "row": [
+      "box": [
         {
-          "icon": "ui:ilha_tipo/deserto",
-          "size": 32
-        },
-        {
-          "column": [
-            {
-              "row": [
-                {
-                  "text": "{deserto_nome}",
-                  "style": "heading",
-                  "w": "grow"
-                },
-                {
-                  "text": "{deserto_contagem}",
-                  "style": "good"
-                }
-              ],
-              "w": "grow"
-            },
-            {
-              "text": "{deserto_descricao}",
-              "style": "muted",
-              "w": "grow"
-            }
-          ],
-          "gap": 3,
+          "button": "",
+          "look": "tipo_deserto",
+          "bind": "escolher_deserto",
+          "tooltip": "Escolher a ilha {deserto_nome}",
           "w": "grow"
         },
         {
-          "button": "ESCOLHER",
-          "look": "acao",
-          "bind": "escolher_deserto",
-          "tooltip": "Criar a ilha {deserto_nome}",
-          "w": 70
+          "row": [
+            {
+              "space": 8
+            },
+            {
+              "icon": "ui:ilha_tipo/deserto",
+              "size": 36
+            },
+            {
+              "space": 10
+            },
+            {
+              "column": [
+                {
+                  "text": "{deserto_nome}",
+                  "style": "titulo",
+                  "w": "grow"
+                },
+                {
+                  "text": "{deserto_descricao}",
+                  "style": "descricao",
+                  "w": "grow"
+                }
+              ],
+              "gap": 4,
+              "w": "grow"
+            },
+            {
+              "column": [
+                {
+                  "text": "{deserto_contagem}",
+                  "style": "good",
+                  "align": "right"
+                },
+                {
+                  "text": "CLIQUE PARA ESCOLHER",
+                  "style": "clique",
+                  "align": "right"
+                }
+              ],
+              "gap": 10,
+              "cross": "end"
+            },
+            {
+              "space": 8
+            }
+          ],
+          "w": "grow",
+          "cross": "center"
         }
       ],
-      "gap": 6,
-      "pad": 3,
-      "surface": "painel",
       "w": "grow",
       "cross": "center",
       "name": "deserto"
     },
     {
-      "row": [
+      "box": [
         {
-          "icon": "ui:ilha_tipo/gelo",
-          "size": 32
-        },
-        {
-          "column": [
-            {
-              "row": [
-                {
-                  "text": "{gelo_nome}",
-                  "style": "heading",
-                  "w": "grow"
-                },
-                {
-                  "text": "{gelo_contagem}",
-                  "style": "good"
-                }
-              ],
-              "w": "grow"
-            },
-            {
-              "text": "{gelo_descricao}",
-              "style": "muted",
-              "w": "grow"
-            }
-          ],
-          "gap": 3,
+          "button": "",
+          "look": "tipo_gelo",
+          "bind": "escolher_gelo",
+          "tooltip": "Escolher a ilha {gelo_nome}",
           "w": "grow"
         },
         {
-          "button": "ESCOLHER",
-          "look": "acao",
-          "bind": "escolher_gelo",
-          "tooltip": "Criar a ilha {gelo_nome}",
-          "w": 70
+          "row": [
+            {
+              "space": 8
+            },
+            {
+              "icon": "ui:ilha_tipo/gelo",
+              "size": 36
+            },
+            {
+              "space": 10
+            },
+            {
+              "column": [
+                {
+                  "text": "{gelo_nome}",
+                  "style": "titulo",
+                  "w": "grow"
+                },
+                {
+                  "text": "{gelo_descricao}",
+                  "style": "descricao",
+                  "w": "grow"
+                }
+              ],
+              "gap": 4,
+              "w": "grow"
+            },
+            {
+              "column": [
+                {
+                  "text": "{gelo_contagem}",
+                  "style": "good",
+                  "align": "right"
+                },
+                {
+                  "text": "CLIQUE PARA ESCOLHER",
+                  "style": "clique",
+                  "align": "right"
+                }
+              ],
+              "gap": 10,
+              "cross": "end"
+            },
+            {
+              "space": 8
+            }
+          ],
+          "w": "grow",
+          "cross": "center"
         }
       ],
-      "gap": 6,
-      "pad": 3,
-      "surface": "painel",
       "w": "grow",
       "cross": "center",
       "name": "gelo"
     },
     {
-      "row": [
+      "box": [
         {
-          "icon": "ui:ilha_tipo/jangada",
-          "size": 32
-        },
-        {
-          "column": [
-            {
-              "row": [
-                {
-                  "text": "{jangada_nome}",
-                  "style": "heading",
-                  "w": "grow"
-                },
-                {
-                  "text": "{jangada_contagem}",
-                  "style": "good"
-                }
-              ],
-              "w": "grow"
-            },
-            {
-              "text": "{jangada_descricao}",
-              "style": "muted",
-              "w": "grow"
-            }
-          ],
-          "gap": 3,
+          "button": "",
+          "look": "tipo_jangada",
+          "bind": "escolher_jangada",
+          "tooltip": "Escolher a ilha {jangada_nome}",
           "w": "grow"
         },
         {
-          "button": "ESCOLHER",
-          "look": "acao",
-          "bind": "escolher_jangada",
-          "tooltip": "Criar a ilha {jangada_nome}",
-          "w": 70
+          "row": [
+            {
+              "space": 8
+            },
+            {
+              "icon": "ui:ilha_tipo/jangada",
+              "size": 36
+            },
+            {
+              "space": 10
+            },
+            {
+              "column": [
+                {
+                  "text": "{jangada_nome}",
+                  "style": "titulo",
+                  "w": "grow"
+                },
+                {
+                  "text": "{jangada_descricao}",
+                  "style": "descricao",
+                  "w": "grow"
+                }
+              ],
+              "gap": 4,
+              "w": "grow"
+            },
+            {
+              "column": [
+                {
+                  "text": "{jangada_contagem}",
+                  "style": "good",
+                  "align": "right"
+                },
+                {
+                  "text": "CLIQUE PARA ESCOLHER",
+                  "style": "clique",
+                  "align": "right"
+                }
+              ],
+              "gap": 10,
+              "cross": "end"
+            },
+            {
+              "space": 8
+            }
+          ],
+          "w": "grow",
+          "cross": "center"
         }
       ],
-      "gap": 6,
-      "pad": 3,
-      "surface": "painel",
       "w": "grow",
       "cross": "center",
       "name": "jangada"
     }
   ],
-  "gap": 3,
-  "pad": 7,
-  "surface": "moldura",
-  "w": 340
+  "gap": 2,
+  "w": 360
 }

@@ -134,3 +134,12 @@ O lado Bukkit (paste, bioma, espectador, câmera, kick, `resetplayer`) fica no c
 - Trocar de tipo sem admin.
 - Schematics feitos à mão (o código aceita `templates/<id>.schem` quando o usuário quiser).
 - Mudar a ilha Padrão.
+
+## Revisão de 2026-10-28 (depois do primeiro teste no jogo)
+
+O usuário pediu: arte da ilha sem a água, tela mais no estilo do Hoplite, sidebar desligada e dia durante a escolha.
+
+- Tema próprio `escolha` (cópia do `abismo` com as looks dos cards). Sem moldura: o logo do OceanBlock no topo e quatro cards largos.
+- Cada card é um botão sem rótulo com arte de 36 px (degradê da cor do tipo para o corpo escuro translúcido), então o card inteiro é clicável; por cima ficam a ilha, o nome grande, a descrição, a contagem verde e `CLIQUE PARA ESCOLHER`, como o "Click to play" do print.
+- Artes das ilhas sem água, fundo transparente, 144 px.
+- Durante a escolha o jogador vê meio-dia e tempo limpo (tempo e clima por jogador) e não vê a sidebar; tudo volta ao sair da câmera.

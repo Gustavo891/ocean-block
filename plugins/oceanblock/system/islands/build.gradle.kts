@@ -13,6 +13,7 @@ dependencies {
     compileOnly(projects.lib.instance)
     compileOnly(projects.lib.itemBuilder)
     compileOnly(projects.lib.rewards)
+    compileOnly(projects.lib.scoreboard)
     compileOnly(projects.lib.toast)
     compileOnly(projects.lib.translation)
     compileOnly(projects.plugins.textura)

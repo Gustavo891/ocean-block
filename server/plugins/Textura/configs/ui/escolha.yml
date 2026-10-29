@@ -1,0 +1,92 @@
+escolha:
+  icon-gap: 4
+  icon-size: 9
+  text:
+    titulo: { color: "#ffffff", font: titulo, shadow: false }
+    heading: { color: "#ffffff", font: cabecalho, shadow: false }
+    body: { color: "#e2e2e2", font: pequena, shadow: false }
+    muted: { color: "#a7a9ad", font: pequena, shadow: false }
+    good: { color: "#6fdc5a", font: pequena, shadow: false }
+    bad: { color: "#ff6a5c", font: pequena, shadow: false }
+    accent: { color: "#5fd6e8", font: pequena, shadow: false }
+    selected: { color: "#ffffa0", font: pequena, shadow: false }
+    count: { color: "#ffffff" }
+    disabled: { color: "#8b8b8b", shadow: false, font: pequena }
+    button: { color: "#2f3034", shadow: false, font: pequena }
+    button-light: { color: "#ffffff", font: pequena, shadow: false }
+    tooltip: { color: "#a8a8b3" }
+    clique: { color: "#8d8f96", font: pequena, shadow: false }
+    descricao: { color: "#d0d2d6", font: pequena, shadow: false }
+  surfaces:
+    moldura: ui:abismo/moldura
+    painel: ui:abismo/painel
+    palco: ui:abismo/palco
+    frame: ui:abismo/palco
+  switch:
+    labels: { on: "Ligado", off: "Desligado" }
+  segmented:
+    art: ui:stone/segment
+    selected-art: ui:stone/segment_selected
+    text-style: body
+    selected-text-style: selected
+    pad: 8
+    frame: ui:stone/segment_frame
+  button:
+    art: ui:abismo/botao
+    text-style: button
+    looks:
+      acao:
+        art: ui:abismo/botao_verde
+        text-style: button-light
+        selected-art: ui:abismo/botao_verde_hover
+        selected-text-style: button-light
+        disabled-art: ui:abismo/botao_off
+        disabled-text-style: disabled
+      fechar:
+        art: ui:abismo/botao_fechar
+        text-style: button-light
+      cartao:
+        art: ui:abismo/cartao
+        text-style: muted
+      cartao_tipo:
+        art: ui:escolha/cartao
+        text-style: button-light
+      tipo_padrao:
+        art: ui:escolha/cartao_padrao
+        text-style: button-light
+      tipo_deserto:
+        art: ui:escolha/cartao_deserto
+        text-style: button-light
+      tipo_gelo:
+        art: ui:escolha/cartao_gelo
+        text-style: button-light
+      tipo_jangada:
+        art: ui:escolha/cartao_jangada
+        text-style: button-light
+      neutro:
+        art: ui:abismo/botao
+        text-style: button
+        disabled-art: ui:abismo/botao_off
+        disabled-text-style: disabled
+  nav:
+    art: ui:stone/nav
+    active-art: ui:stone/nav_active
+    text-style: body
+    active-text-style: selected
+    pad: 7
+  dropdown:
+    art: ui:stone/dropdown
+    arrow: ui:stone/arrow_down
+    text-style: body
+  slider:
+    track: ui:stone/slider_track
+    fill: ui:stone/slider_fill
+    text-style: body
+  slots:
+    art: ui:abismo/slot
+    missing-art: ui:mare/slot_missing
+    text-style: count
+  chip:
+    art: ui:mare/chip
+    text-style: body
+    height: 20
