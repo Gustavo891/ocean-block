@@ -15,10 +15,13 @@ import java.time.LocalDateTime
 object MissionDialog {
 
     private const val SCREEN = "missoes"
+    private const val ENTITY = "entidade:"
     private val EXTRA_ICONS = listOf("nether_star", "experience_bottle", "map")
 
     fun registerIcons() {
-        DialogApi.registerItemIcons(((MissionTrail.all + DailyPool.all).map { it.icon } + EXTRA_ICONS).distinct())
+        val icons = ((MissionTrail.all + DailyPool.all).map { it.icon } + EXTRA_ICONS).distinct()
+        DialogApi.registerItemIcons(icons.filter { !it.contains(':') })
+        DialogApi.registerEntityIcons(icons.filter { it.startsWith(ENTITY) }.map { it.removePrefix(ENTITY) })
     }
 
     fun open(player: Player): Boolean {
@@ -29,14 +32,18 @@ object MissionDialog {
 
     private fun bind(binds: DialogBinds, player: Player) {
         val state = { MissionManager.get(player.uniqueId) }
-        binds.list("trilha") { listOf(MissionLore.trail(state(), ::recipeName)) }
-        binds.listPage("trilha") { 0 }
-        binds.list("diarias") { state().let { now -> now.dailies.map { MissionLore.daily(it, it.id == now.activeDaily, ::recipeName) } } }
-        binds.listButton("escolher") { click, index -> state().dailies.getOrNull(index)?.let { MissionTracker.choose(click.player, it.id) } }
+        binds.list("ativa") { listOfNotNull(MissionLore.active(state(), ::recipeName)) }
+        binds.listPage("ativa") { 0 }
+        binds.list("aviso") { listOfNotNull(MissionLore.notice(state())) }
+        binds.listPage("aviso") { 0 }
+        binds.list("titulo_diarias") { if (MissionLore.listed(state()).isEmpty()) emptyList() else listOf(emptyMap()) }
+        binds.listPage("titulo_diarias") { 0 }
+        binds.list("diarias") { MissionLore.listed(state()).map { MissionLore.row(it, ::recipeName) } }
         binds.listPage("diarias") { 0 }
+        binds.listButton("escolher") { click, index -> MissionLore.listed(state()).getOrNull(index)?.let { MissionTracker.choose(click.player, it.id) } }
+        binds.text("resumo") { MissionLore.summary(state()) }
         binds.text("renova") {
-            if (MissionRules.trailDone(state())) MissionLore.resetIn(LocalDateTime.now(MissionTracker.zone))
-            else MissionLore.LOCKED_DAILIES
+            if (MissionRules.trailDone(state())) MissionLore.resetIn(LocalDateTime.now(MissionTracker.zone)) else ""
         }
     }
 

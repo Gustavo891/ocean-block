@@ -15,8 +15,8 @@ object DailyPool {
         Mission("receitas_3", "Fabrique 3 receitas", MissionObjective.CraftAny(3), 0, "crafting_table"),
         Mission("venda_2000", "Venda $2.000 em itens", MissionObjective.Sell(2000), 0, "emerald"),
         Mission("venda_5000", "Venda $5.000 em itens", MissionObjective.Sell(5000), 0, "emerald_block"),
-        Mission("mobs_20", "Mate 20 mobs", MissionObjective.KillMobs(20), 0, "iron_sword"),
-        Mission("mobs_50", "Mate 50 mobs", MissionObjective.KillMobs(50), 0, "diamond_sword"),
+        Mission("mobs_20", "Mate 20 mobs", MissionObjective.KillMobs(20), 0, "entidade:zombie"),
+        Mission("mobs_50", "Mate 50 mobs", MissionObjective.KillMobs(50), 0, "entidade:skeleton"),
     )
 
     private val byId: Map<String, Mission> = all.associateBy { it.id }

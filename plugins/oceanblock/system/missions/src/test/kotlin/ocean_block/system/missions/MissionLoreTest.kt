@@ -1,6 +1,7 @@
 package ocean_block.system.missions
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.dialog.MissionLore
@@ -10,39 +11,79 @@ import java.time.LocalDateTime
 
 class MissionLoreTest : StringSpec({
 
-    "trilha no inicio mostra a missao 1 com contador e xp" {
-        val trail = MissionLore.trail(PlayerMissions("u", 0, 3, "", emptyList()))
+    val done = MissionTrail.size
+    val dailies = listOf(
+        DailyMission("gerador_64", 16, 474, false),
+        DailyMission("venda_2000", 0, 474, false),
+        DailyMission("receitas_3", 3, 474, true),
+    )
 
-        trail["titulo"] shouldBe "Missão 1 de 13"
-        trail["texto"] shouldBe "Colete 10 detritos usando o gancho"
-        trail["contador"] shouldBe "3/10"
-        trail["xp"] shouldBe "+50 XP"
-        trail["barra"] shouldBe "30"
+    "na trilha o cartao mostra a missao atual e as diarias ficam bloqueadas" {
+        val state = PlayerMissions("u", 0, 3, "", emptyList())
+        val card = MissionLore.active(state).shouldNotBeNull()
+
+        card["rotulo"] shouldBe "Missão 1 de 13"
+        card["texto"] shouldBe "Colete 10 detritos usando o gancho"
+        card["requisito"] shouldBe "Puxe 10 detritos com o Gancho"
+        card["situacao"] shouldBe "3/10"
+        card["xp"] shouldBe "+50 XP"
+        card["barra"] shouldBe "30"
+        MissionLore.summary(state) shouldBe "TRILHA 0/13"
+        MissionLore.notice(state)?.get("texto") shouldBe MissionLore.LOCKED_DAILIES
+        MissionLore.listed(state) shouldBe emptyList()
     }
 
-    "trilha completa avisa que acabou" {
-        val trail = MissionLore.trail(PlayerMissions("u", MissionTrail.size, 0, "2026-10-25", emptyList()))
-
-        trail["titulo"] shouldBe "Trilha concluída!"
-        trail["barra"] shouldBe "100"
+    "requisito igual ao texto some" {
+        val nivel = MissionTrail.all.indexOfFirst { it.id == "nivel_3" }
+        MissionLore.active(PlayerMissions("u", nivel, 0, "", emptyList()))?.get("requisito") shouldBe ""
     }
 
-    "diaria em andamento mostra o progresso" {
-        val daily = MissionLore.daily(DailyMission("gerador_64", 16, 474, false))
+    "depois da trilha a escolhida vai para o destaque e sai da lista" {
+        val state = PlayerMissions("u", done, 0, "2026-10-28", dailies, "gerador_64")
+        val card = MissionLore.active(state).shouldNotBeNull()
 
-        daily["texto"] shouldBe "Quebre 64 blocos do gerador"
-        daily["contador"] shouldBe "16/64"
-        daily["xp"] shouldBe "+474 XP"
-        daily["barra"] shouldBe "25"
-        daily["feito"] shouldBe "false"
+        card["rotulo"] shouldBe "Valendo agora"
+        card["situacao"] shouldBe "16/64"
+        card["xp"] shouldBe "+474 XP"
+        MissionLore.listed(state).map { it.id } shouldBe listOf("venda_2000", "receitas_3")
+        MissionLore.notice(state) shouldBe null
+        MissionLore.summary(state) shouldBe "TRILHA COMPLETA"
     }
 
-    "diaria feita fica cheia" {
-        val daily = MissionLore.daily(DailyMission("receitas_3", 3, 40, true))
+    "sem escolhida pede para escolher e lista todas" {
+        val state = PlayerMissions("u", done, 0, "2026-10-28", dailies)
 
-        daily["feito"] shouldBe "true"
-        daily["barra"] shouldBe "100"
-        daily["estado"] shouldBe "Concluída"
+        MissionLore.active(state) shouldBe null
+        MissionLore.notice(state)?.get("texto") shouldBe MissionLore.CHOOSE_DAILY
+        MissionLore.listed(state).size shouldBe 3
+    }
+
+    "todas feitas avisa que voltam amanha" {
+        val state = PlayerMissions("u", done, 0, "2026-10-28", dailies.map { it.copy(done = true) })
+        MissionLore.notice(state)?.get("texto") shouldBe MissionLore.DAILIES_DONE
+    }
+
+    "linha da diaria mostra estado, botao e dinheiro sem cifrao" {
+        val paused = MissionLore.row(dailies[0])
+        paused["situacao"] shouldBe "16/64  Pausada"
+        paused["acao"] shouldBe "Escolher"
+        paused["bloqueado"] shouldBe "false"
+
+        val sale = MissionLore.row(dailies[1])
+        sale["texto"] shouldBe "Venda 2.000 coins em itens"
+        sale["situacao"] shouldBe "0/2.000"
+
+        val finished = MissionLore.row(dailies[2])
+        finished["situacao"] shouldBe "Concluída"
+        finished["situacao_estilo"] shouldBe "good"
+        finished["acao"] shouldBe "Feita"
+        finished["bloqueado"] shouldBe "true"
+    }
+
+    "icone usa entidade quando a missao pede" {
+        MissionLore.icon("zombie") shouldBe "item:zombie"
+        MissionLore.icon("entidade:zombie") shouldBe "entidade:zombie"
+        MissionLore.row(DailyMission("mobs_20", 0, 40, false))["icone"] shouldBe "entidade:zombie"
     }
 
     "renovacao conta ate a meia-noite" {

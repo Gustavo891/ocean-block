@@ -1,97 +1,71 @@
 {
-  "title": "Missões",
   "close": "Fechar",
-  "theme": "mare",
+  "theme": "abismo",
   "column": [
     {
-      "repeat": "trilha", "perPage": 1,
-      "column": [
-        {
-          "row": [
-            { "space": 4 },
-            { "text": "{titulo}", "style": "heading", "align": "left", "icon": "item:map", "w": "grow" },
-            { "space": 4 }
-          ],
-          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
-        },
-        {
-          "row": [
-            { "icon": "{icone}", "size": 32, "frame": true, "name": "Icone" },
-            {
-              "column": [
-                { "text": "{texto}", "style": "body", "align": "left", "w": "grow" },
-                {
-                  "row": [
-                    { "text": "Requisitos", "style": "muted", "align": "left", "w": "grow" },
-                    { "text": "{contador}", "style": "muted", "align": "right", "w": "fit" }
-                  ],
-                  "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
-                },
-                { "text": "{requisito}", "style": "body", "align": "left", "w": "grow" },
-                { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 204 }
-              ],
-              "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start", "name": "Detalhes"
-            }
-          ],
-          "w": "grow", "h": "fit", "gap": 6, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
-        },
-        {
-          "row": [
-            { "text": "Recompensas", "style": "muted", "align": "left", "w": "grow" },
-            { "text": "{recompensa}", "style": "good", "align": "right", "icon": "item:experience_bottle", "w": "fit" }
-          ],
-          "w": "grow", "h": "fit", "gap": 4, "pad": 5, "align": "start", "cross": "center", "surface": "well", "name": "Recompensas"
-        }
-      ],
-      "w": 270, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Trilha"
-    },
-    {
-      "column": [
-        {
-          "row": [
-            { "space": 4 },
-            { "text": "Diárias", "style": "heading", "align": "left", "w": "grow" },
-            { "space": 4 }
-          ],
-          "w": "grow", "h": 15, "gap": 3, "pad": 0, "align": "start", "cross": "center", "surface": "head", "name": "Cabecalho"
-        },
+      "row": [
         {
           "column": [
-            {
-              "repeat": "diarias", "perPage": 3,
-              "row": [
-                { "icon": "{icone}", "size": 16, "frame": true, "name": "Icone" },
-                {
-                  "column": [
-                    {
-                      "row": [
-                        { "text": "{texto}", "style": "body", "align": "left", "w": "grow" },
-                        { "text": "{xp}", "style": "good", "align": "right", "w": "fit" }
-                      ],
-                      "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
-                    },
-                    {
-                      "row": [
-                        { "text": "{requisito}", "style": "muted", "align": "left", "w": "grow" },
-                        { "text": "{situacao}", "style": "{situacao_estilo}", "align": "right", "w": "fit" }
-                      ],
-                      "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
-                    },
-                    { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 160 }
-                  ],
-                  "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
-                },
-                { "button": "{acao}", "bind": "escolher", "look": "light", "disabled": "{bloqueado}", "w": 50, "tooltip": "{dica}" }
-              ],
-              "w": "grow", "h": "fit", "gap": 5, "pad": 4, "align": "start", "cross": "start", "surface": "well", "name": "Diaria"
-            },
-            { "text": "{renova}", "style": "muted", "align": "left", "w": "grow" }
+            { "text": "MISSÕES", "style": "titulo" },
+            { "row": [ { "text": "{resumo}", "style": "good" }, { "text": "{renova}", "style": "muted" } ], "gap": 6 }
           ],
-          "w": "grow", "h": "fit", "gap": 4, "pad": 5, "align": "start", "cross": "start", "name": "Corpo"
+          "gap": 3, "w": "grow"
+        },
+        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "onClick": { "action": "close" }, "tooltip": "Fechar", "w": 18 }
+      ],
+      "w": "grow", "cross": "start"
+    },
+    {
+      "repeat": "ativa", "perPage": 1,
+      "column": [
+        { "text": "{rotulo}", "style": "destaque" },
+        {
+          "row": [
+            { "icon": "{icone}", "size": 32, "frame": true },
+            {
+              "column": [
+                { "row": [ { "text": "{texto}", "style": "heading", "w": "grow" }, { "text": "{xp}", "style": "ouro" } ], "w": "grow" },
+                { "text": "{requisito}", "style": "muted", "w": "grow" },
+                {
+                  "row": [
+                    { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 180 },
+                    { "text": "{situacao}", "style": "accent", "w": "grow", "align": "right" }
+                  ],
+                  "w": "grow", "cross": "center", "gap": 6
+                }
+              ],
+              "gap": 4, "w": "grow"
+            }
+          ],
+          "gap": 7, "pad": 7, "surface": "painel", "w": "grow", "cross": "center"
         }
       ],
-      "w": 270, "h": "fit", "gap": 0, "pad": 1, "align": "start", "cross": "start", "surface": "sheet", "name": "Diarias"
+      "gap": 3, "w": "grow"
+    },
+    {
+      "repeat": "aviso", "perPage": 1,
+      "row": [ { "text": "{texto}", "style": "{estilo}", "w": "grow", "align": "center" } ],
+      "pad": 7, "surface": "painel", "w": "grow"
+    },
+    {
+      "repeat": "titulo_diarias", "perPage": 1,
+      "text": "DIÁRIAS DE HOJE", "style": "heading"
+    },
+    {
+      "repeat": "diarias", "perPage": 3,
+      "row": [
+        { "icon": "{icone}", "size": 16, "frame": true },
+        {
+          "column": [
+            { "text": "{texto}", "style": "body", "w": "grow" },
+            { "row": [ { "text": "{situacao}", "style": "{situacao_estilo}" }, { "text": "{xp}", "style": "ouro" } ], "gap": 6 }
+          ],
+          "gap": 3, "w": "grow"
+        },
+        { "button": "{acao}", "look": "acao", "bind": "escolher", "disabled": "{bloqueado}", "w": 62, "tooltip": "{dica}" }
+      ],
+      "gap": 7, "pad": 5, "surface": "painel", "w": "grow", "cross": "center"
     }
   ],
-  "w": "fit", "h": "fit", "gap": 8, "pad": 0, "align": "start", "cross": "start"
+  "gap": 4, "pad": 8, "surface": "moldura", "w": 320
 }

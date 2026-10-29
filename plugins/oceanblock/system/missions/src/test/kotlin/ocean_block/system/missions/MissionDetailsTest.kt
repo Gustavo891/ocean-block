@@ -36,42 +36,18 @@ class MissionDetailsTest : StringSpec({
         MissionTrail.all[0].icon shouldBe "fishing_rod"
     }
 
-    "a trilha traz icone, requisito e recompensa" {
-        val trail = MissionLore.trail(PlayerMissions("u", 0, 3, "", emptyList())) { names[it] ?: it }
+    "a trilha traz icone e requisito com o nome da receita" {
+        val trail = MissionLore.active(PlayerMissions("u", 0, 3, "", emptyList())) { names[it] ?: it }
 
-        trail["icone"] shouldBe "item:fishing_rod"
-        trail["requisito"] shouldBe "Puxe 10 detritos com o Gancho"
-        trail["recompensa"] shouldBe "+50 XP de nível"
+        trail?.get("icone") shouldBe "item:fishing_rod"
+        trail?.get("requisito") shouldBe "Puxe 10 detritos com o Gancho"
     }
 
-    "a diaria traz icone, requisito e recompensa" {
-        val daily = MissionLore.daily(DailyMission("gerador_64", 16, 474, false)) { it }
+    "a diaria traz icone, xp e requisito na dica" {
+        val daily = MissionLore.row(DailyMission("gerador_64", 16, 474, false)) { it }
 
         daily["icone"] shouldBe "item:cobblestone"
-        daily["requisito"] shouldBe "Quebre 64 blocos do gerador à mão"
-        daily["recompensa"] shouldBe "+474 XP de nível"
-        daily["situacao"] shouldBe "16/64"
-        daily["situacao_estilo"] shouldBe "muted"
-    }
-
-    "diaria aberta mostra escolher, a escolhida mostra ativa e a feita trava o botao" {
-        val open = MissionLore.daily(DailyMission("gerador_64", 16, 474, false)) { it }
-        open["acao"] shouldBe "Escolher"
-        open["bloqueado"] shouldBe "false"
-
-        val active = MissionLore.daily(DailyMission("gerador_64", 16, 474, false), true) { it }
-        active["acao"] shouldBe "Ativa"
-        active["bloqueado"] shouldBe "true"
-
-        val done = MissionLore.daily(DailyMission("receitas_3", 3, 40, true)) { it }
-        done["acao"] shouldBe "Feita"
-        done["bloqueado"] shouldBe "true"
-    }
-
-    "diaria feita troca o contador por concluida em verde" {
-        val daily = MissionLore.daily(DailyMission("receitas_3", 3, 40, true)) { it }
-
-        daily["situacao"] shouldBe "Concluída"
-        daily["situacao_estilo"] shouldBe "good"
+        daily["xp"] shouldBe "+474 XP"
+        daily["dica"]?.contains("Quebre 64 blocos do gerador à mão") shouldBe true
     }
 })
