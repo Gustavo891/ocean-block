@@ -1,5 +1,6 @@
 package ocean_block.system.pirate_raid.notify
 
+import ocean_block.system.pirate_raid.text.RaidHudText
 import one_block.textura.api.HudApi
 import one_block.textura.api.NotificationApi
 import one_block.textura.notify.NotificationLine
@@ -24,7 +25,7 @@ object RaidNotifier {
 
     fun horn(player: Player) = player.playSound(player.location, Sound.EVENT_RAID_HORN, 0.8f, 1f)
 
-    fun hud(player: Player, text: String) = HudApi.show(player, HUD_SLOT, text)
+    fun hud(player: Player, text: String) = HudApi.show(player, HUD_SLOT, text, RaidHudText.BACKGROUND)
 
     fun hideHud(player: Player) = HudApi.hide(player, HUD_SLOT)
 

@@ -7,21 +7,24 @@ import ocean_block.system.pirate_raid.notify.ToastLine
 
 class RaidTextTest : FunSpec({
 
-    val sep = " <gray>-</gray> "
+    val done = "<glyph:hud_pirata_onda_feita>"
+    val next = "<glyph:hud_pirata_onda_vazia>"
+    val swords = "<glyph:hud_pirata_espadas>"
+    val clock = "<glyph:hud_pirata_ampulheta>"
 
-    test("linha do HUD") {
+    test("linha do HUD com bolinhas das ondas, vivos e tempo") {
         RaidHudText.line(2, 3, 5, 192) shouldBe
-            "<red>Invasão pirata</red>$sep<white>Onda 2/3</white>$sep<white>5 piratas</white>$sep<yellow>3:12</yellow>"
+            "<red>Invasão</red>   <white>$done $done $next</white>   <white>$swords 5</white>   <white>$clock</white> <yellow>3:12</yellow>"
     }
 
-    test("singular e segundos com zero") {
+    test("última onda enche todas as bolinhas e segundos ganham zero") {
         RaidHudText.line(3, 3, 1, 5) shouldBe
-            "<red>Invasão pirata</red>$sep<white>Onda 3/3</white>$sep<white>1 pirata</white>$sep<yellow>0:05</yellow>"
+            "<red>Invasão</red>   <white>$done $done $done</white>   <white>$swords 1</white>   <white>$clock</white> <yellow>0:05</yellow>"
     }
 
     test("tempo negativo vira zero") {
         RaidHudText.line(1, 3, 4, -3) shouldBe
-            "<red>Invasão pirata</red>$sep<white>Onda 1/3</white>$sep<white>4 piratas</white>$sep<yellow>0:00</yellow>"
+            "<red>Invasão</red>   <white>$done $next $next</white>   <white>$swords 4</white>   <white>$clock</white> <yellow>0:00</yellow>"
     }
 
     test("vida no nome arredonda para cima e não fica negativa") {

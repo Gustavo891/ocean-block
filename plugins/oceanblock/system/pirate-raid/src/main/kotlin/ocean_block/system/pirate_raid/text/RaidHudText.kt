@@ -4,14 +4,19 @@ import kotlin.math.ceil
 
 object RaidHudText {
 
-    private const val SEPARATOR = " <gray>-</gray> "
+    const val BACKGROUND = "hud_invasao"
+
+    private const val WAVE_DONE = "<glyph:hud_pirata_onda_feita>"
+    private const val WAVE_NEXT = "<glyph:hud_pirata_onda_vazia>"
+    private const val SWORDS = "<glyph:hud_pirata_espadas>"
+    private const val HOURGLASS = "<glyph:hud_pirata_ampulheta>"
+    private const val GAP = "   "
 
     fun line(wave: Int, waves: Int, alive: Int, secondsLeft: Int): String {
         val seconds = secondsLeft.coerceAtLeast(0)
         val clock = "${seconds / 60}:${(seconds % 60).toString().padStart(2, '0')}"
-        val pirates = if (alive == 1) "1 pirata" else "$alive piratas"
-        return listOf("<red>Invasão pirata</red>", "<white>Onda $wave/$waves</white>", "<white>$pirates</white>", "<yellow>$clock</yellow>")
-            .joinToString(SEPARATOR)
+        val dots = (1..waves).joinToString(" ") { if (it <= wave) WAVE_DONE else WAVE_NEXT }
+        return "<red>Invasão</red>$GAP<white>$dots</white>$GAP<white>$SWORDS $alive</white>$GAP<white>$HOURGLASS</white> <yellow>$clock</yellow>"
     }
 
     fun health(current: Double, max: Double, gold: Boolean): String {
