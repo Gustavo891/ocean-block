@@ -147,6 +147,21 @@ object IslandManager {
         return island
     }
 
+    fun deleteIsland(island: Island) {
+        islandsById.remove(island.uuid)
+        islandsByOwnerUuid.remove(island.ownerUuid)
+        islandsByOwnerName.remove(island.ownerName.lowercase())
+        islandsByGrid.remove(island.position.gridX to island.position.gridZ)
+        playerIsland.values.removeAll { it == island.uuid }
+        dirtyIslands.remove(island.uuid)
+
+        ScheduledExecutor.execute {
+            runCatching { repository.remove(island.uuid) }.onFailure {
+                Instance.logger.severe("[islands] Falha ao apagar a ilha ${island.uuid} do banco: ${it.message}")
+            }
+        }
+    }
+
     private fun index(island: Island) {
         islandsById[island.uuid] = island
         islandsByOwnerUuid[island.ownerUuid] = island

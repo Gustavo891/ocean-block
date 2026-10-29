@@ -194,6 +194,23 @@ class IslandCommand(
         IslandResetService.resetTerrain(sender, island)
     }
 
+    @Subcommand("resetplayer")
+    @CommandPermission("screen.dev")
+    fun onResetPlayer(sender: Player, targetName: String, @Optional flag: String?) {
+        val island = IslandManager.getIslandByOwnerName(targetName.lowercase())
+        if (island == null) {
+            sender.sendRichMessage("<red>Esse jogador não é dono de uma ilha. Nada foi alterado.")
+            return
+        }
+
+        if (!flag.equals("-confirm", true)) {
+            IslandResetService.previewDelete(sender, island)
+            return
+        }
+
+        IslandResetService.deleteIsland(sender, island)
+    }
+
     @Subcommand("reset progress")
     @CommandPermission("screen.dev")
     fun onResetProgress(sender: Player, targetName: String, @Optional flag: String?) {

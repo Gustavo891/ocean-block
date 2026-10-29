@@ -1,5 +1,6 @@
 package ocean_block.system.islands.reset
 
+import ocean_block.system.islands.choice.IslandChoice
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
@@ -94,6 +95,57 @@ object IslandResetService {
                 returnPlayers(island, area)
                 sender.sendRichMessage("<green>Ilha de <white>${island.ownerName}</white> resetada.")
             }
+        }
+    }
+
+    fun previewDelete(sender: CommandSender, island: Island) {
+        sender.sendRichMessage("<gold>Preview do resetplayer de <white>${island.ownerName}</white>:")
+        sender.sendRichMessage("<gray>- tipo: <white>${island.type().nome}</white>")
+        sender.sendRichMessage("<gray>- membros expulsos: <white>${island.members.size}</white>")
+        sender.sendRichMessage("<gray>- os blocos do lote voltam a ser mar e a ilha some do banco")
+        sender.sendRichMessage("<gray>- o dono escolhe o tipo de novo (agora, se estiver online)")
+        sender.sendRichMessage("<yellow>Nada foi alterado. Use <white>-confirm</white> para executar.")
+    }
+
+    fun deleteIsland(sender: CommandSender, island: Island) {
+        val area = IslandArea.of(island)
+
+        if (area == null) {
+            sender.sendRichMessage("<red>Erro: mundo <white>${island.center.world}</white> não carregado.")
+            return
+        }
+
+        if (!running.add(island.uuid)) {
+            sender.sendRichMessage("<red>Já existe um reset em andamento nessa ilha.")
+            return
+        }
+
+        sender.sendRichMessage("<gray>Apagando a ilha de <white>${island.ownerName}</white>...")
+
+        OceanRegen.regenerate(area) { ok ->
+            running.remove(island.uuid)
+
+            if (!ok) {
+                sender.sendRichMessage("<red>Falha ao restaurar o mar da ilha de <white>${island.ownerName}</white>. Nada foi alterado.")
+                return@regenerate
+            }
+
+            IslandResetHooks.fireTerrainReset(island, area)
+
+            area.world.entities
+                .filter { it !is Player && area.contains(it.location) }
+                .forEach { it.remove() }
+
+            val visitors = area.world.players.filter { area.contains(it.location) }
+            expelMembers(island)
+            IslandManager.deleteIsland(island)
+
+            Bukkit.getPlayer(island.ownerUuid)?.let { IslandChoice.begin(it) }
+            visitors.filter { it.uniqueId != island.ownerUuid && it.isOnline }.forEach { visitor ->
+                IslandManager.getHomeIsland(visitor)?.teleportTo(visitor) ?: IslandChoice.begin(visitor)
+            }
+
+            sender.sendRichMessage("<green>Ilha de <white>${island.ownerName}</white> apagada. O dono vai escolher o tipo de novo.")
         }
     }
 
