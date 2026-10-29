@@ -36,7 +36,6 @@
           "button": "",
           "look": "tipo_padrao",
           "bind": "escolher_padrao",
-          "tooltip": "Escolher a ilha {padrao_nome}",
           "w": "grow"
         },
         {
@@ -101,7 +100,6 @@
           "button": "",
           "look": "tipo_deserto",
           "bind": "escolher_deserto",
-          "tooltip": "Escolher a ilha {deserto_nome}",
           "w": "grow"
         },
         {
@@ -166,7 +164,6 @@
           "button": "",
           "look": "tipo_gelo",
           "bind": "escolher_gelo",
-          "tooltip": "Escolher a ilha {gelo_nome}",
           "w": "grow"
         },
         {
@@ -231,7 +228,6 @@
           "button": "",
           "look": "tipo_jangada",
           "bind": "escolher_jangada",
-          "tooltip": "Escolher a ilha {jangada_nome}",
           "w": "grow"
         },
         {
