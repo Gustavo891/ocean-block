@@ -3,6 +3,7 @@ package ocean_block.system.islands.listener
 import ocean_block.system.islands.ext.runNextTask
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
+import ocean_block.system.islands.island.type.IslandType
 import ocean_block.system.islands.reward.PhaseRewarder
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -28,7 +29,7 @@ class PlayerListener : Listener {
             return
         }
 
-        val created = IslandManager.createIsland(player) { ready -> runNextTask { enterNewIsland(player, ready) } } ?: return
+        val created = IslandManager.createIsland(player, IslandType.PADRAO) { ready -> runNextTask { enterNewIsland(player, ready) } } ?: return
         val spawn = created.spawn.add(.0, 2.0, .0).toBukkit() ?: return
 
         event.spawnLocation = spawn

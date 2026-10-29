@@ -12,6 +12,7 @@ import ocean_block.libs.coordinate.SimpleLocation
 import ocean_block.system.islands.dialog.IslandDialog
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
+import ocean_block.system.islands.island.type.IslandType
 import ocean_block.system.islands.member.IslandMembership
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.reset.IslandResetService
@@ -85,7 +86,7 @@ class IslandCommand(
 
     private fun createAndEnter(sender: Player) {
         sender.sendRichMessage("<green>Criando sua ilha...")
-        val created = IslandManager.createIsland(sender) { ready -> enterNewIsland(sender, ready) }
+        val created = IslandManager.createIsland(sender, IslandType.PADRAO) { ready -> enterNewIsland(sender, ready) }
 
         if (created == null) {
             sender.sendRichMessage("<red>As ilhas não foram carregadas. Avise a staff antes de continuar.")

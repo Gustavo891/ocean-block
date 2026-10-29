@@ -25,6 +25,7 @@ class IslandRepository {
             "currentPhaseId" to "planicie",
             "size" to Island.BORDER_SIZE.first(),
             "isPublic" to false,
+            "tipo" to "padrao",
         )
 
         var repaired = 0L

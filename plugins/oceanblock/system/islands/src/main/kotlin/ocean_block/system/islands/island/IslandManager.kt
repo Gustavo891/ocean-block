@@ -2,6 +2,7 @@ package ocean_block.system.islands.island
 
 import ocean_block.libs.instance.Instance
 import ocean_block.libs.instance.ScheduledExecutor
+import ocean_block.system.islands.island.type.IslandType
 import ocean_block.system.islands.member.MemberRules
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.position.Position
@@ -90,7 +91,12 @@ object IslandManager {
     }
 
 
-    fun createIsland(player: Player, onReady: (Island) -> Unit = {}): Island? {
+    fun createIsland(player: Player, type: IslandType, onReady: (Island) -> Unit = {}): Island? {
+        if (islandsByOwnerUuid.containsKey(player.uniqueId)) {
+            Instance.logger.warning("[islands] ${player.name} já tem ilha; criação ignorada.")
+            return null
+        }
+
         if (!loaded) {
             Instance.logger.severe(
                 "[islands] Criação de ilha para ${player.name} recusada: as ilhas não foram carregadas."
@@ -127,7 +133,8 @@ object IslandManager {
             center,
             grid,
             spawn,
-            isPublic = false
+            isPublic = false,
+            tipo = type.id,
         )
 
         index(island)

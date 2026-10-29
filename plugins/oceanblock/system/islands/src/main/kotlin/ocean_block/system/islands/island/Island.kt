@@ -4,6 +4,7 @@ import ocean_block.libs.coordinate.SimpleLocation
 import ocean_block.system.islands.phase.Phase
 import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.position.Position
+import ocean_block.system.islands.island.type.IslandType
 import org.bukkit.Bukkit
 import org.bukkit.WorldBorder
 import org.bukkit.entity.Player
@@ -25,6 +26,7 @@ data class Island(
     var size: Int = 50,
     var isPublic: Boolean,
     var settings: MutableMap<String, Boolean>? = null,
+    var tipo: String = IslandType.PADRAO.id,
 ) {
 
     companion object {
@@ -77,6 +79,8 @@ data class Island(
     fun addTrustedMember(playerName: String): Boolean {
         return trustedNames.add(playerName.lowercase())
     }
+
+    fun type(): IslandType = IslandType.fromId(tipo)
 
     fun maxMembers(): Int = (getUpgradeLevel(IslandUpgrade.Members) + 1) * MEMBERS_PER_LEVEL
 
