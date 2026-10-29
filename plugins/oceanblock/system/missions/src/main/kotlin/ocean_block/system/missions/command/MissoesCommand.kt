@@ -26,6 +26,13 @@ class MissoesCommand : BaseCommand() {
         summary(player).forEach(player::sendRichMessage)
     }
 
+    @Subcommand("escolher")
+    fun onChoose(player: Player, number: Int) {
+        val daily = MissionManager.get(player.uniqueId).dailies.getOrNull(number - 1)
+        if (daily == null || !MissionTracker.choose(player, daily.id)) return player.sendRichMessage("<red>Essa diária não pode ser escolhida.")
+        player.sendRichMessage("<green>Diária escolhida.")
+    }
+
     @Subcommand("pular")
     @CommandPermission("oneblock.admin")
     @CommandCompletion("@players")
@@ -59,7 +66,12 @@ class MissoesCommand : BaseCommand() {
                 DailyPool.byId(daily.id)?.let { mission ->
                     val mark = if (daily.done) "<green>✔</green>" else "<gray>${index + 1}.</gray>"
                     val counter = MissionText.counter(mission.objective, daily.progress)
-                    "$mark <white>${mission.text}</white> <gray>$counter</gray> <gold>+${daily.xp} XP"
+                    val choice = when {
+                        daily.done -> ""
+                        daily.id == state.activeDaily -> " <aqua>[ATIVA]</aqua>"
+                        else -> " <green><click:run_command:'/missoes escolher ${index + 1}'>[ESCOLHER]</click></green>"
+                    }
+                    "$mark <white>${mission.text}</white> <gray>$counter</gray> <gold>+${daily.xp} XP</gold>$choice"
                 }
             }
             return listOf("<aqua>Trilha concluída!", "<aqua>Diárias:") + dailies

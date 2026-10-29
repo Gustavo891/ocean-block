@@ -44,18 +44,33 @@ object MissionRules {
 
     fun current(state: PlayerMissions): Current? {
         MissionTrail.at(state.trailIndex)?.let { return Current(it, state.trailProgress, null) }
-        state.dailies.forEachIndexed { index, daily ->
-            if (!daily.done) DailyPool.byId(daily.id)?.let { return Current(it, daily.progress, index) }
-        }
-        return null
+        val index = activeIndex(state)
+        if (index < 0) return null
+        val daily = state.dailies[index]
+        return DailyPool.byId(daily.id)?.let { Current(it, daily.progress, index) }
     }
+
+    fun choose(state: PlayerMissions, id: String): PlayerMissions? {
+        if (!trailDone(state)) return null
+        if (state.dailies.none { it.id == id && !it.done }) return null
+        return state.copy(activeDaily = id)
+    }
+
+    fun needsChoice(state: PlayerMissions): Boolean =
+        trailDone(state) && activeIndex(state) < 0 && state.dailies.any { !it.done }
 
     fun skip(state: PlayerMissions): PlayerMissions {
         if (!trailDone(state)) return state.copy(trailIndex = state.trailIndex + 1, trailProgress = 0)
-        val index = state.dailies.indexOfFirst { !it.done }
+        val index = activeIndex(state)
         if (index < 0) return state
-        return state.copy(dailies = state.dailies.mapIndexed { i, daily -> if (i == index) daily.copy(done = true) else daily })
+        return state.copy(
+            dailies = state.dailies.mapIndexed { i, daily -> if (i == index) daily.copy(done = true) else daily },
+            activeDaily = null,
+        )
     }
+
+    private fun activeIndex(state: PlayerMissions): Int =
+        state.dailies.indexOfFirst { it.id == state.activeDaily && !it.done }
 
     fun credit(objective: MissionObjective, signal: MissionSignal): Long = when (objective) {
         is MissionObjective.CollectDebris ->
@@ -99,17 +114,19 @@ object MissionRules {
     }
 
     private fun applyDailies(state: PlayerMissions, signal: MissionSignal): Pair<PlayerMissions, List<Completed>> {
-        state.dailies.forEachIndexed { index, daily ->
-            if (daily.done) return@forEachIndexed
-            val mission = DailyPool.byId(daily.id) ?: return@forEachIndexed
-            val gained = credit(mission.objective, signal)
-            if (gained <= 0) return@forEachIndexed
-            val progress = minOf(daily.progress + gained, mission.objective.goal)
-            val done = progress >= mission.objective.goal
-            val updated = daily.copy(progress = progress, done = done)
-            val next = state.copy(dailies = state.dailies.mapIndexed { i, it -> if (i == index) updated else it })
-            return next to if (done) listOf(Completed(mission, daily.xp)) else emptyList()
-        }
-        return state to emptyList()
+        val index = activeIndex(state)
+        if (index < 0) return state to emptyList()
+        val daily = state.dailies[index]
+        val mission = DailyPool.byId(daily.id) ?: return state to emptyList()
+        val gained = credit(mission.objective, signal)
+        if (gained <= 0) return state to emptyList()
+        val progress = minOf(daily.progress + gained, mission.objective.goal)
+        val done = progress >= mission.objective.goal
+        val updated = daily.copy(progress = progress, done = done)
+        val next = state.copy(
+            dailies = state.dailies.mapIndexed { i, it -> if (i == index) updated else it },
+            activeDaily = if (done) null else state.activeDaily,
+        )
+        return next to if (done) listOf(Completed(mission, daily.xp)) else emptyList()
     }
 }

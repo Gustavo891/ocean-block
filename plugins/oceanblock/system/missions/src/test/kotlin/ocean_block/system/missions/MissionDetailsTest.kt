@@ -54,6 +54,20 @@ class MissionDetailsTest : StringSpec({
         daily["situacao_estilo"] shouldBe "muted"
     }
 
+    "diaria aberta mostra escolher, a escolhida mostra ativa e a feita trava o botao" {
+        val open = MissionLore.daily(DailyMission("gerador_64", 16, 474, false)) { it }
+        open["acao"] shouldBe "Escolher"
+        open["bloqueado"] shouldBe "false"
+
+        val active = MissionLore.daily(DailyMission("gerador_64", 16, 474, false), true) { it }
+        active["acao"] shouldBe "Ativa"
+        active["bloqueado"] shouldBe "true"
+
+        val done = MissionLore.daily(DailyMission("receitas_3", 3, 40, true)) { it }
+        done["acao"] shouldBe "Feita"
+        done["bloqueado"] shouldBe "true"
+    }
+
     "diaria feita troca o contador por concluida em verde" {
         val daily = MissionLore.daily(DailyMission("receitas_3", 3, 40, true)) { it }
 

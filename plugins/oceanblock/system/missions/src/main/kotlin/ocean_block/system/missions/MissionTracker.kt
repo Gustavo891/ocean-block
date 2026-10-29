@@ -1,5 +1,6 @@
 package ocean_block.system.missions
 
+import ocean_block.libs.instance.Instance
 import ocean_block.system.islands.island.IslandManager
 import ocean_block.system.islands.island.IslandUpgrade
 import ocean_block.system.level.PlayerLevels
@@ -10,6 +11,7 @@ import ocean_block.system.missions.model.PlayerMissions
 import ocean_block.system.missions.notify.MissionNotifier
 import ocean_block.system.missions.rules.MissionRules
 import ocean_block.system.missions.text.MissionCard
+import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import java.time.LocalDate
@@ -17,6 +19,8 @@ import java.time.ZoneId
 import kotlin.random.Random
 
 object MissionTracker {
+
+    private const val JOIN_REMINDER_TICKS = 60L
 
     val zone: ZoneId = ZoneId.of("America/Sao_Paulo")
 
@@ -40,12 +44,23 @@ object MissionTracker {
         MissionHud.completed(player, completed.map { MissionCard.completed(it.mission, it.xp) })
         completed.forEach { PlayerLevels.award(player, it.xp) }
         MissionHud.show(player, MissionManager.get(uuid))
+        if (completed.isNotEmpty() && MissionRules.needsChoice(state)) MissionNotifier.chooseDaily(player)
+    }
+
+    fun choose(player: Player, id: String): Boolean {
+        val chosen = MissionRules.choose(refreshed(player, MissionManager.get(player.uniqueId)), id) ?: return false
+        MissionManager.set(player.uniqueId, chosen)
+        MissionHud.show(player, chosen)
+        return true
     }
 
     fun join(player: Player) {
         refresh(player)
         signal(player, stateOf(player))
         MissionHud.show(player, MissionManager.get(player.uniqueId))
+        Bukkit.getScheduler().runTaskLater(Instance, Runnable {
+            if (player.isOnline && MissionRules.needsChoice(MissionManager.get(player.uniqueId))) MissionNotifier.chooseDaily(player)
+        }, JOIN_REMINDER_TICKS)
     }
 
     fun refresh(player: Player): Boolean {
@@ -54,6 +69,7 @@ object MissionTracker {
         if (next == current) return false
         MissionManager.set(player.uniqueId, next)
         MissionHud.show(player, next)
+        if (MissionRules.needsChoice(next)) MissionNotifier.chooseDaily(player)
         return true
     }
 
@@ -82,6 +98,7 @@ object MissionTracker {
         return state.copy(
             dailyDate = today.toString(),
             dailies = MissionRules.rollDailies(today, PlayerLevels.levelOf(player), Random.Default),
+            activeDaily = null,
         )
     }
 }

@@ -77,10 +77,11 @@
                       ],
                       "w": "grow", "h": "fit", "gap": 4, "pad": 0, "align": "start", "cross": "center"
                     },
-                    { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 220 }
+                    { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 160 }
                   ],
                   "w": "grow", "h": "fit", "gap": 3, "pad": 0, "align": "start", "cross": "start"
-                }
+                },
+                { "button": "{acao}", "bind": "escolher", "look": "light", "disabled": "{bloqueado}", "w": 50, "tooltip": "{dica}" }
               ],
               "w": "grow", "h": "fit", "gap": 5, "pad": 4, "align": "start", "cross": "start", "surface": "well", "name": "Diaria"
             },

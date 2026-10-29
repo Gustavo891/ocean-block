@@ -12,7 +12,7 @@ class MissionCardTest : StringSpec({
     val names: (String) -> String = { if (it == "fornalha_eletrica") "Fornalha elétrica" else it }
 
     "trilha mostra a tarefa com o XP em cima e o progresso embaixo" {
-        MissionCard.current(MissionRules.Current(MissionTrail.all[0], 3, null), false, names) shouldBe
+        MissionCard.current(MissionRules.Current(MissionTrail.all[0], 3, null), names) shouldBe
             MissionCardText(
                 "<white>Puxe 10 detritos com o Gancho</white>",
                 "<gold>+50 XP</gold>",
@@ -23,7 +23,7 @@ class MissionCardTest : StringSpec({
 
     "missão de fabricar mostra 0/1 e o nome da receita" {
         val fornalha = MissionTrail.all.first { it.id == "fornalha_eletrica" }
-        MissionCard.current(MissionRules.Current(fornalha, 0, null), false, names) shouldBe
+        MissionCard.current(MissionRules.Current(fornalha, 0, null), names) shouldBe
             MissionCardText(
                 "<white>Fabrique em /receitas: Fornalha elétrica</white>",
                 "<gold>+300 XP</gold>",
@@ -33,23 +33,21 @@ class MissionCardTest : StringSpec({
     }
 
     "venda mostra o progresso em dinheiro" {
-        MissionCard.current(MissionRules.Current(MissionTrail.all[7], 350, null), false, names)?.bottomRight shouldBe
+        MissionCard.current(MissionRules.Current(MissionTrail.all[7], 350, null), names)?.bottomRight shouldBe
             "<aqua>$350/$1.000</aqua>"
     }
 
     "diária troca o XP pela posição da diária" {
-        MissionCard.current(MissionRules.Current(MissionTrail.all[6], 20, 1), true, names)?.topRight shouldBe
+        MissionCard.current(MissionRules.Current(MissionTrail.all[6], 20, 1), names)?.topRight shouldBe
             "<gray>Diária 2/3</gray>"
     }
 
     "progresso acima da meta fica cheio" {
-        MissionCard.current(MissionRules.Current(MissionTrail.all[0], 99, null), false, names)?.progress shouldBe 1f
+        MissionCard.current(MissionRules.Current(MissionTrail.all[0], 99, null), names)?.progress shouldBe 1f
     }
 
-    "sem missão: diárias concluídas ou nada" {
-        MissionCard.current(null, true, names) shouldBe
-            MissionCardText("<gray>Diárias concluídas. Volte amanhã!</gray>", "", "<green>3/3</green>", 1f)
-        MissionCard.current(null, false, names) shouldBe null
+    "sem missão ativa não há cartão" {
+        MissionCard.current(null, names) shouldBe null
     }
 
     "conclusão mostra a missão, o XP e a barra cheia" {

@@ -27,7 +27,7 @@ object MissionHud {
     fun show(player: Player, state: PlayerMissions) {
         if (player.uniqueId in suspended) return HudApi.hide(player, SLOT)
         val card = banners[player.uniqueId]?.current(now())
-            ?: MissionCard.current(MissionRules.current(state), MissionRules.trailDone(state), ::recipeName)
+            ?: MissionCard.current(MissionRules.current(state), ::recipeName)
             ?: return HudApi.hide(player, SLOT)
         HudApi.showCard(player, SLOT, HudCard(card.topLeft, card.topRight, card.bottomRight, card.progress, BAR), BACKGROUND)
     }

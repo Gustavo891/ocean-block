@@ -2,6 +2,7 @@ package ocean_block.system.missions
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import ocean_block.system.missions.catalog.DailyPool
 import ocean_block.system.missions.catalog.MissionTrail
@@ -111,23 +112,31 @@ class MissionRulesTest : StringSpec({
         state.trailProgress shouldBe 1
     }
 
-    "com a trilha feita o sinal conta so na primeira diaria aberta que aceita" {
-        val start = PlayerMissions(
-            "u", trailDone, 0, "2026-10-25",
-            listOf(
-                DailyMission("receitas_3", 0, 40, false),
-                DailyMission("detritos_30", 0, 40, false),
-                DailyMission("gancho_15", 0, 40, false),
-            ),
-        )
+    val three = listOf(
+        DailyMission("receitas_3", 0, 40, false),
+        DailyMission("detritos_30", 0, 40, false),
+        DailyMission("gancho_15", 0, 40, false),
+    )
+
+    "sem diaria escolhida nenhum sinal conta" {
+        val start = PlayerMissions("u", trailDone, 0, "2026-10-25", three)
 
         val (state, done) = MissionRules.apply(start, MissionSignal.Debris(byHook = true))
 
         done.shouldBeEmpty()
-        state.dailies.map { it.progress } shouldBe listOf(0L, 1L, 0L)
+        state shouldBe start
     }
 
-    "diaria concluida fica feita e devolve o xp guardado" {
+    "so a diaria escolhida avanca" {
+        val start = PlayerMissions("u", trailDone, 0, "2026-10-25", three, "gancho_15")
+
+        val (state, done) = MissionRules.apply(start, MissionSignal.Debris(byHook = true))
+
+        done.shouldBeEmpty()
+        state.dailies.map { it.progress } shouldBe listOf(0L, 0L, 1L)
+    }
+
+    "diaria concluida fica feita, devolve o xp guardado e libera a escolha" {
         val start = PlayerMissions(
             "u", trailDone, 0, "2026-10-25",
             listOf(
@@ -135,15 +144,47 @@ class MissionRulesTest : StringSpec({
                 DailyMission("detritos_30", 0, 474, false),
                 DailyMission("gancho_15", 0, 474, false),
             ),
+            "receitas_3",
         )
 
         val (state, done) = MissionRules.apply(start, MissionSignal.Crafted("rede"))
 
         done.map { it.mission.id to it.xp } shouldBe listOf("receitas_3" to 474)
         state.dailies[0] shouldBe DailyMission("receitas_3", 3, 474, true)
+        state.activeDaily shouldBe null
 
         val (again, _) = MissionRules.apply(state, MissionSignal.Crafted("rede"))
         again.dailies[0].progress shouldBe 3
+    }
+
+    "escolher so aceita diaria aberta de hoje com a trilha feita" {
+        val start = PlayerMissions(
+            "u", trailDone, 0, "2026-10-25",
+            listOf(DailyMission("receitas_3", 3, 40, true), DailyMission("detritos_30", 4, 40, false)),
+        )
+
+        MissionRules.choose(start, "detritos_30")?.activeDaily shouldBe "detritos_30"
+        MissionRules.choose(start, "receitas_3") shouldBe null
+        MissionRules.choose(start, "gancho_15") shouldBe null
+        MissionRules.choose(at(2), "detritos_30") shouldBe null
+    }
+
+    "trocar a escolhida guarda o progresso da anterior" {
+        val start = PlayerMissions("u", trailDone, 0, "2026-10-25", three, "detritos_30")
+        val (progressed, _) = MissionRules.apply(start, MissionSignal.Debris(byHook = false))
+
+        val switched = MissionRules.choose(progressed, "receitas_3").shouldNotBeNull()
+
+        switched.activeDaily shouldBe "receitas_3"
+        switched.dailies.map { it.progress } shouldBe listOf(0L, 1L, 0L)
+        MissionRules.choose(switched, "detritos_30")?.let { MissionRules.current(it)?.progress } shouldBe 1
+    }
+
+    "precisa escolher quando a trilha acabou, nao ha escolhida e sobra diaria" {
+        MissionRules.needsChoice(PlayerMissions("u", trailDone, 0, "2026-10-25", three)) shouldBe true
+        MissionRules.needsChoice(PlayerMissions("u", trailDone, 0, "2026-10-25", three, "gancho_15")) shouldBe false
+        MissionRules.needsChoice(PlayerMissions("u", trailDone, 0, "2026-10-25", three.map { it.copy(done = true) })) shouldBe false
+        MissionRules.needsChoice(at(2)) shouldBe false
     }
 
     "troca de dia so depois da trilha" {
@@ -155,26 +196,28 @@ class MissionRulesTest : StringSpec({
         MissionRules.needsReset(PlayerMissions("u", trailDone, 0, "", emptyList()), today) shouldBe true
     }
 
-    "missao atual aponta para a trilha e depois para a primeira diaria aberta" {
+    "missao atual aponta para a trilha e depois para a diaria escolhida" {
         MissionRules.current(at(2, 5)) shouldBe MissionRules.Current(MissionTrail.all[2], 5, null)
 
-        val dailies = PlayerMissions(
-            "u", trailDone, 0, "2026-10-25",
-            listOf(DailyMission("receitas_3", 3, 40, true), DailyMission("detritos_30", 7, 40, false)),
-        )
-        val current = MissionRules.current(dailies)
+        val list = listOf(DailyMission("receitas_3", 3, 40, true), DailyMission("detritos_30", 7, 40, false))
+        val chosen = PlayerMissions("u", trailDone, 0, "2026-10-25", list, "detritos_30")
+        val current = MissionRules.current(chosen)
         current?.mission?.id shouldBe "detritos_30"
         current?.progress shouldBe 7
         current?.dailyIndex shouldBe 1
 
+        MissionRules.current(chosen.copy(activeDaily = null)) shouldBe null
         MissionRules.current(PlayerMissions("u", trailDone, 0, "2026-10-25", emptyList())) shouldBe null
     }
 
     "pular conclui a atual sem xp" {
         MissionRules.skip(at(3, 0)).trailIndex shouldBe 4
 
-        val dailies = PlayerMissions("u", trailDone, 0, "2026-10-25", listOf(DailyMission("receitas_3", 1, 40, false)))
-        MissionRules.skip(dailies).dailies[0].done shouldBe true
+        val dailies = PlayerMissions("u", trailDone, 0, "2026-10-25", listOf(DailyMission("receitas_3", 1, 40, false)), "receitas_3")
+        val skipped = MissionRules.skip(dailies)
+        skipped.dailies[0].done shouldBe true
+        skipped.activeDaily shouldBe null
+        MissionRules.skip(dailies.copy(activeDaily = null)) shouldBe dailies.copy(activeDaily = null)
     }
 
     "matar mobs conta um por morte so para o objetivo de mobs" {

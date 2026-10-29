@@ -14,12 +14,8 @@ data class MissionCardText(
 
 object MissionCard {
 
-    fun current(current: MissionRules.Current?, trailDone: Boolean, recipeName: (String) -> String): MissionCardText? {
-        if (current == null) {
-            if (!trailDone) return null
-            val all = DailyPool.DAILY_COUNT
-            return MissionCardText("<gray>Diárias concluídas. Volte amanhã!</gray>", "", "<green>$all/$all</green>", 1f)
-        }
+    fun current(current: MissionRules.Current?, recipeName: (String) -> String): MissionCardText? {
+        if (current == null) return null
         val objective = current.mission.objective
         val corner = current.dailyIndex?.let { "<gray>Diária ${it + 1}/${DailyPool.DAILY_COUNT}</gray>" }
             ?: xp(current.mission.xp)

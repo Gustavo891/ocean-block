@@ -6,4 +6,5 @@ data class PlayerMissions(
     val trailProgress: Long,
     val dailyDate: String,
     val dailies: List<DailyMission>,
+    val activeDaily: String? = null,
 )

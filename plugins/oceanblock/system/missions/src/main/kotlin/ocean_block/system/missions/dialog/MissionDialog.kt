@@ -31,7 +31,8 @@ object MissionDialog {
         val state = { MissionManager.get(player.uniqueId) }
         binds.list("trilha") { listOf(MissionLore.trail(state(), ::recipeName)) }
         binds.listPage("trilha") { 0 }
-        binds.list("diarias") { state().dailies.map { MissionLore.daily(it, ::recipeName) } }
+        binds.list("diarias") { state().let { now -> now.dailies.map { MissionLore.daily(it, it.id == now.activeDaily, ::recipeName) } } }
+        binds.listButton("escolher") { click, index -> state().dailies.getOrNull(index)?.let { MissionTracker.choose(click.player, it.id) } }
         binds.listPage("diarias") { 0 }
         binds.text("renova") {
             if (MissionRules.trailDone(state())) MissionLore.resetIn(LocalDateTime.now(MissionTracker.zone))

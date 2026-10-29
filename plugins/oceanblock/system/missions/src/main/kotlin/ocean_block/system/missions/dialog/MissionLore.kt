@@ -36,7 +36,7 @@ object MissionLore {
         )
     }
 
-    fun daily(daily: DailyMission, recipeName: (String) -> String = { it }): Map<String, String> {
+    fun daily(daily: DailyMission, active: Boolean = false, recipeName: (String) -> String = { it }): Map<String, String> {
         val mission = DailyPool.byId(daily.id)
         val progress = if (daily.done) mission?.objective?.goal ?: 1 else daily.progress
         return mapOf(
@@ -52,6 +52,17 @@ object MissionLore {
             "estado_estilo" to if (daily.done) "good" else "muted",
             "situacao" to if (daily.done) "Concluída" else (mission?.let { MissionText.counter(it.objective, progress) } ?: ""),
             "situacao_estilo" to if (daily.done) "good" else "muted",
+            "acao" to when {
+                daily.done -> "Feita"
+                active -> "Ativa"
+                else -> "Escolher"
+            },
+            "bloqueado" to (daily.done || active).toString(),
+            "dica" to when {
+                daily.done -> "Diária concluída"
+                active -> "Esta é a diária que está valendo agora"
+                else -> "Escolher esta diária\n\nSó a diária escolhida avança; as outras guardam o progresso."
+            },
         )
     }
 
