@@ -37,17 +37,18 @@ class MissionDetailsTest : StringSpec({
     }
 
     "a trilha traz icone e requisito com o nome da receita" {
-        val trail = MissionLore.active(PlayerMissions("u", 0, 3, "", emptyList())) { names[it] ?: it }
+        val trail = MissionLore.detail(PlayerMissions("u", 0, 3, "", emptyList()), MissionLore.TRAIL) { names[it] ?: it }
 
-        trail?.get("icone") shouldBe "item:fishing_rod"
-        trail?.get("requisito") shouldBe "Puxe 10 detritos com o Gancho"
+        trail["icone"] shouldBe "item:fishing_rod"
+        trail["requisito"] shouldBe "Puxe 10 detritos com o Gancho"
     }
 
-    "a diaria traz icone, xp e requisito na dica" {
-        val daily = MissionLore.row(DailyMission("gerador_64", 16, 474, false)) { it }
+    "a diaria traz icone, xp e requisito" {
+        val state = PlayerMissions("u", MissionTrail.size, 0, "", listOf(DailyMission("gerador_64", 16, 474, false)))
+        val daily = MissionLore.detail(state, "gerador_64") { it }
 
         daily["icone"] shouldBe "item:cobblestone"
-        daily["xp"] shouldBe "+474 XP"
-        daily["dica"]?.contains("Quebre 64 blocos do gerador à mão") shouldBe true
+        daily["recompensa"] shouldBe "+474 XP"
+        daily["requisito"] shouldBe "Quebre 64 blocos do gerador à mão"
     }
 })

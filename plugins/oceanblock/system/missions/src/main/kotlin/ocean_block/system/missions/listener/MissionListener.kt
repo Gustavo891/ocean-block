@@ -8,6 +8,7 @@ import ocean_block.system.islands.generator.GeneratorFormedEvent
 import ocean_block.system.islands.island.IslandUpgradeEvent
 import ocean_block.system.level.PlayerLevelUpEvent
 import ocean_block.system.missions.MissionTracker
+import ocean_block.system.missions.dialog.MissionDialog
 import ocean_block.system.missions.hud.MissionHud
 import ocean_block.system.missions.model.MissionSignal
 import ocean_block.system.sell.listener.SellEvent
@@ -82,6 +83,7 @@ class MissionListener : Listener {
     @EventHandler
     fun onQuit(event: PlayerQuitEvent) {
         MissionHud.hide(event.player)
+        MissionDialog.forget(event.player)
     }
 }
 

@@ -48,6 +48,11 @@ abismo:
       cartao:
         art: ui:abismo/cartao
         text-style: muted
+      selecao:
+        art: ui:abismo/selecao
+        text-style: body
+        selected-art: ui:abismo/selecao_on
+        selected-text-style: body
       perigo:
         art: ui:abismo/botao_vermelho
         text-style: button-light
@@ -82,3 +87,7 @@ abismo:
     art: ui:mare/chip
     text-style: body
     height: 20
+  icons:
+    faixa_laranja: ui:abismo/faixa_laranja
+    faixa_azul: ui:abismo/faixa_azul
+    faixa_verde: ui:abismo/faixa_verde

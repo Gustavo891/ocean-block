@@ -7,65 +7,93 @@
         {
           "column": [
             { "text": "MISSÕES", "style": "titulo" },
-            { "row": [ { "text": "{resumo}", "style": "good" }, { "text": "{renova}", "style": "muted" } ], "gap": 6 }
+            { "row": [ { "text": "{resumo}", "style": "good" }, { "text": "{diarias_feitas}", "style": "muted" } ], "gap": 6 }
           ],
           "gap": 3, "w": "grow"
         },
+        { "row": [ { "text": "{renova}", "style": "ouro" } ], "pad": 4, "surface": "palco" },
         { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "onClick": { "action": "close" }, "tooltip": "Fechar", "w": 18 }
       ],
-      "w": "grow", "cross": "start"
+      "w": "grow", "cross": "center", "gap": 6
     },
     {
-      "repeat": "ativa", "perPage": 1,
-      "column": [
-        { "text": "{rotulo}", "style": "destaque" },
-        {
-          "row": [
-            { "icon": "{icone}", "size": 32, "frame": true },
-            {
-              "column": [
-                { "row": [ { "text": "{texto}", "style": "heading", "w": "grow" }, { "text": "{xp}", "style": "ouro" } ], "w": "grow" },
-                { "text": "{requisito}", "style": "muted", "w": "grow" },
-                {
-                  "row": [
-                    { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 180 },
-                    { "text": "{situacao}", "style": "accent", "w": "grow", "align": "right" }
-                  ],
-                  "w": "grow", "cross": "center", "gap": 6
-                }
-              ],
-              "gap": 4, "w": "grow"
-            }
-          ],
-          "gap": 7, "pad": 7, "surface": "painel", "w": "grow", "cross": "center"
-        }
-      ],
-      "gap": 3, "w": "grow"
-    },
-    {
-      "repeat": "aviso", "perPage": 1,
-      "row": [ { "text": "{texto}", "style": "{estilo}", "w": "grow", "align": "center" } ],
-      "pad": 7, "surface": "painel", "w": "grow"
-    },
-    {
-      "repeat": "titulo_diarias", "perPage": 1,
-      "text": "DIÁRIAS DE HOJE", "style": "heading"
-    },
-    {
-      "repeat": "diarias", "perPage": 3,
       "row": [
-        { "icon": "{icone}", "size": 16, "frame": true },
         {
           "column": [
-            { "text": "{texto}", "style": "body", "w": "grow" },
-            { "row": [ { "text": "{situacao}", "style": "{situacao_estilo}" }, { "text": "{xp}", "style": "ouro" } ], "gap": 6 }
+            { "text": "DIÁRIAS DE HOJE", "style": "muted" },
+            {
+              "repeat": "aviso", "perPage": 1,
+              "row": [ { "text": "{texto}", "style": "{estilo}", "w": "grow", "align": "center" } ],
+              "pad": 6, "surface": "painel", "w": "grow"
+            },
+            {
+              "repeat": "diarias", "perPage": 3,
+              "column": [
+                {
+                  "row": [
+                    { "icon": "{icone}", "size": 16 },
+                    {
+                      "column": [
+                        { "row": [ { "text": "{texto}", "style": "body", "w": "grow" }, { "text": "{xp}", "style": "{xp_estilo}" } ], "w": "grow" },
+                        {
+                          "row": [
+                            { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 100 },
+                            { "text": "{contagem}", "style": "{contagem_estilo}", "w": "grow", "align": "right" }
+                          ],
+                          "w": "grow", "cross": "center", "gap": 4
+                        }
+                      ],
+                      "gap": 4, "w": "grow"
+                    }
+                  ],
+                  "w": "grow", "h": 34, "pad": 6, "gap": 6, "cross": "center", "surface": "painel"
+                },
+                { "row": [ { "icon": "{faixa}", "size": 34 } ], "x": 0, "y": 0 },
+                { "row": [ { "button": "", "look": "selecao", "bind": "selecionar", "selected": "{selecionada}", "tooltip": "{dica}", "w": 196 } ], "x": 0, "y": 0 }
+              ],
+              "w": 196
+            },
+            { "space": 1, "w": "grow", "h": "grow" },
+            { "button": "TRILHA {trilha}", "icon": "item:nether_star", "look": "neutro", "bind": "trilha", "selected": "{trilha_aberta}", "w": 196 }
           ],
-          "gap": 3, "w": "grow"
+          "gap": 4, "w": 196, "h": "grow"
         },
-        { "button": "{acao}", "look": "acao", "bind": "escolher", "disabled": "{bloqueado}", "w": 62, "tooltip": "{dica}" }
+        {
+          "repeat": "detalhe", "perPage": 1,
+          "column": [
+            {
+              "row": [
+                { "icon": "{icone}", "size": 24, "frame": true },
+                {
+                  "column": [
+                    { "text": "{titulo}", "style": "heading", "w": "grow" },
+                    { "text": "{subtitulo}", "style": "{subtitulo_estilo}", "w": "grow" }
+                  ],
+                  "gap": 4, "w": "grow"
+                }
+              ],
+              "gap": 6, "w": "grow", "cross": "center"
+            },
+            { "text": "REQUISITO", "style": "muted" },
+            { "text": "{requisito}", "style": "body", "w": "grow" },
+            {
+              "row": [ { "text": "PROGRESSO", "style": "muted", "w": "grow" }, { "text": "{progresso}", "style": "body" } ],
+              "w": "grow"
+            },
+            { "progress": "{barra}", "max": "100", "track": "ui:mare/progress_track", "fill": "ui:mare/progress_fill", "w": 150 },
+            {
+              "row": [ { "text": "RECOMPENSA", "style": "muted", "w": "grow" }, { "text": "{recompensa}", "style": "ouro" } ],
+              "pad": 4, "surface": "palco", "w": "grow", "cross": "center"
+            },
+            { "text": "{nota}", "style": "muted", "w": "grow" },
+            { "space": 1, "w": "grow", "h": "grow" },
+            { "button": "{botao}", "look": "acao", "bind": "escolher", "disabled": "{bloqueado}", "tooltip": "{dica}", "w": 150 }
+          ],
+          "gap": 5, "pad": 6, "surface": "painel", "w": "grow", "h": "grow"
+        }
       ],
-      "gap": 7, "pad": 5, "surface": "painel", "w": "grow", "cross": "center"
+      "gap": 6, "w": "grow"
     }
   ],
-  "gap": 4, "pad": 8, "surface": "moldura", "w": 320
+  "gap": 6, "pad": 7, "surface": "moldura", "w": 380
 }

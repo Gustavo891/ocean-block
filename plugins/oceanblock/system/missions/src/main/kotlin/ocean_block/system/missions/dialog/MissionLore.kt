@@ -3,7 +3,6 @@ package ocean_block.system.missions.dialog
 import ocean_block.system.missions.catalog.DailyPool
 import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.model.DailyMission
-import ocean_block.system.missions.model.Mission
 import ocean_block.system.missions.model.MissionObjective
 import ocean_block.system.missions.model.PlayerMissions
 import ocean_block.system.missions.rules.MissionRules
@@ -13,53 +12,91 @@ import java.time.LocalDateTime
 
 object MissionLore {
 
+    const val TRAIL = "trilha"
     const val LOCKED_DAILIES = "Termine a trilha para liberar as diárias"
-    const val CHOOSE_DAILY = "Escolha uma diária abaixo"
-    const val DAILIES_DONE = "Diárias concluídas. Voltam amanhã!"
 
+    private const val TRAIL_ICON = "nether_star"
     private val MONEY = Regex("\\$([0-9][0-9.]*)")
 
     fun summary(state: PlayerMissions): String =
         if (MissionRules.trailDone(state)) "TRILHA COMPLETA" else "TRILHA ${state.trailIndex}/${MissionTrail.size}"
 
-    fun active(state: PlayerMissions, recipeName: (String) -> String = { it }): Map<String, String>? {
-        MissionTrail.at(state.trailIndex)?.let { mission ->
-            return card("Missão ${state.trailIndex + 1} de ${MissionTrail.size}", mission, state.trailProgress, mission.xp, recipeName)
-        }
-        val current = MissionRules.current(state) ?: return null
-        val xp = current.dailyIndex?.let { state.dailies.getOrNull(it)?.xp } ?: current.mission.xp
-        return card("Valendo agora", current.mission, current.progress, xp, recipeName)
-    }
+    fun dailiesDone(state: PlayerMissions): String =
+        if (!MissionRules.trailDone(state)) "" else "${state.dailies.count { it.done }}/${state.dailies.size} DIÁRIAS"
 
-    fun notice(state: PlayerMissions): Map<String, String>? = when {
-        !MissionRules.trailDone(state) -> mapOf("texto" to LOCKED_DAILIES, "estilo" to "muted")
-        MissionRules.needsChoice(state) -> mapOf("texto" to CHOOSE_DAILY, "estilo" to "accent")
-        state.dailies.isNotEmpty() && state.dailies.all { it.done } -> mapOf("texto" to DAILIES_DONE, "estilo" to "good")
-        else -> null
-    }
+    fun trailCount(state: PlayerMissions): String = "${state.trailIndex.coerceAtMost(MissionTrail.size)}/${MissionTrail.size}"
+
+    fun notice(state: PlayerMissions): Map<String, String>? =
+        if (MissionRules.trailDone(state)) null else mapOf("texto" to LOCKED_DAILIES, "estilo" to "muted")
 
     fun listed(state: PlayerMissions): List<DailyMission> =
-        if (!MissionRules.trailDone(state)) emptyList()
-        else state.dailies.filter { it.done || it.id != state.activeDaily }
+        if (MissionRules.trailDone(state)) state.dailies else emptyList()
 
-    fun row(daily: DailyMission, recipeName: (String) -> String = { it }): Map<String, String> {
+    fun selection(state: PlayerMissions, chosen: String?): String {
+        if (chosen == TRAIL) return TRAIL
+        val dailies = listed(state)
+        dailies.firstOrNull { it.id == chosen }?.let { return it.id }
+        return dailies.firstOrNull { it.id == state.activeDaily && !it.done }?.id
+            ?: dailies.firstOrNull { !it.done }?.id
+            ?: TRAIL
+    }
+
+    fun row(daily: DailyMission, state: PlayerMissions, selected: String): Map<String, String> {
         val mission = DailyPool.byId(daily.id)
-        val count = mission?.let { count(it.objective, if (daily.done) it.objective.goal else daily.progress) }.orEmpty()
-        val requirement = mission?.let { plain(MissionText.requirement(it.objective, recipeName)) }.orEmpty()
+        val active = daily.id == state.activeDaily && !daily.done
         return mapOf(
-            "texto" to plain(mission?.text ?: daily.id),
             "icone" to icon(mission?.icon ?: "map"),
+            "texto" to plain(mission?.text ?: daily.id),
             "xp" to "+${MissionText.number(daily.xp.toLong())} XP",
-            "situacao" to when {
-                daily.done -> "Concluída"
-                daily.progress > 0 -> "$count  Pausada"
-                else -> count
+            "xp_estilo" to if (daily.done) "good" else "ouro",
+            "barra" to if (daily.done || mission == null) "100" else percent(mission.objective, daily.progress),
+            "contagem" to if (daily.done) "Feita" else mission?.let { count(it.objective, daily.progress) }.orEmpty(),
+            "contagem_estilo" to when {
+                daily.done -> "good"
+                active -> "accent"
+                else -> "muted"
             },
-            "situacao_estilo" to if (daily.done) "good" else "muted",
-            "acao" to if (daily.done) "Feita" else "Escolher",
-            "bloqueado" to daily.done.toString(),
-            "dica" to if (daily.done) "Diária concluída"
-            else "Escolher esta diária\n\n$requirement\n\nSó a diária escolhida avança; as outras guardam o progresso.",
+            "faixa" to when {
+                daily.done -> "ui:faixa_verde"
+                active -> "ui:faixa_azul"
+                daily.id == selected -> "ui:faixa_laranja"
+                else -> ""
+            },
+            "selecionada" to (daily.id == selected).toString(),
+            "dica" to "Ver esta diária",
+        )
+    }
+
+    fun detail(state: PlayerMissions, selected: String, recipeName: (String) -> String = { it }): Map<String, String> {
+        if (selected == TRAIL) return trailDetail(state, recipeName)
+        val index = state.dailies.indexOfFirst { it.id == selected }
+        val daily = state.dailies.getOrNull(index) ?: return trailDetail(state, recipeName)
+        val mission = DailyPool.byId(daily.id) ?: return trailDetail(state, recipeName)
+        val active = daily.id == state.activeDaily && !daily.done
+        val progress = if (daily.done) mission.objective.goal else daily.progress
+        val (status, style) = when {
+            daily.done -> "concluída" to "good"
+            active -> "valendo agora" to "accent"
+            daily.progress > 0 -> "pausada" to "destaque"
+            else -> "disponível" to "destaque"
+        }
+        return mapOf(
+            "icone" to icon(mission.icon),
+            "titulo" to plain(mission.text),
+            "subtitulo" to "Diária ${index + 1} de ${state.dailies.size} · $status",
+            "subtitulo_estilo" to style,
+            "requisito" to plain(MissionText.requirement(mission.objective, recipeName)),
+            "progresso" to count(mission.objective, progress),
+            "barra" to percent(mission.objective, progress),
+            "recompensa" to "+${MissionText.number(daily.xp.toLong())} XP",
+            "nota" to "Só a escolhida avança",
+            "botao" to when {
+                daily.done -> "Feita"
+                active -> "Valendo agora"
+                else -> "Escolher esta diária"
+            },
+            "bloqueado" to (daily.done || active).toString(),
+            "dica" to "Só a diária escolhida avança; as outras guardam o progresso.",
         )
     }
 
@@ -72,17 +109,37 @@ object MissionLore {
 
     fun plain(text: String): String = MONEY.replace(text) { "${it.groupValues[1]} coins" }
 
-    private fun card(label: String, mission: Mission, progress: Long, xp: Int, recipeName: (String) -> String): Map<String, String> {
-        val text = plain(mission.text)
-        val requirement = plain(MissionText.requirement(mission.objective, recipeName))
+    private fun trailDetail(state: PlayerMissions, recipeName: (String) -> String): Map<String, String> {
+        val mission = MissionTrail.at(state.trailIndex)
+        if (mission == null) {
+            return mapOf(
+                "icone" to icon(TRAIL_ICON),
+                "titulo" to "Trilha completa",
+                "subtitulo" to "${MissionTrail.size} de ${MissionTrail.size} missões",
+                "subtitulo_estilo" to "good",
+                "requisito" to "Você fez todas as missões da trilha",
+                "progresso" to "${MissionTrail.size}/${MissionTrail.size}",
+                "barra" to "100",
+                "recompensa" to "Recebida",
+                "nota" to "Agora valem as diárias",
+                "botao" to "Concluída",
+                "bloqueado" to "true",
+                "dica" to "Trilha completa",
+            )
+        }
         return mapOf(
-            "rotulo" to label,
-            "texto" to text,
             "icone" to icon(mission.icon),
-            "requisito" to if (requirement.equals(text, ignoreCase = true)) "" else requirement,
-            "xp" to "+${MissionText.number(xp.toLong())} XP",
-            "barra" to percent(mission.objective, progress),
-            "situacao" to count(mission.objective, progress),
+            "titulo" to plain(mission.text),
+            "subtitulo" to "Missão ${state.trailIndex + 1} de ${MissionTrail.size}",
+            "subtitulo_estilo" to "destaque",
+            "requisito" to plain(MissionText.requirement(mission.objective, recipeName)),
+            "progresso" to count(mission.objective, state.trailProgress),
+            "barra" to percent(mission.objective, state.trailProgress),
+            "recompensa" to "+${MissionText.number(mission.xp.toLong())} XP",
+            "nota" to "A trilha avança sozinha",
+            "botao" to "Em andamento",
+            "bloqueado" to "true",
+            "dica" to "A trilha segue em ordem; não precisa escolher.",
         )
     }
 
