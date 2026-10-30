@@ -56,50 +56,59 @@ class MissionRulesTest : StringSpec({
         state.trailIndex shouldBe 2
     }
 
-    "missao 10 so conta minerio de ferro" {
-        val (state, _) = feed(at(9), MissionSignal.GeneratorBlock("COBBLESTONE"), MissionSignal.GeneratorBlock("IRON_ORE"))
+    "veio de ferro so conta minerio de ferro" {
+        val (state, _) = feed(at(12), MissionSignal.GeneratorBlock("COBBLESTONE"), MissionSignal.GeneratorBlock("IRON_ORE"))
 
-        state.trailIndex shouldBe 9
+        state.trailIndex shouldBe 12
         state.trailProgress shouldBe 1
     }
 
-    "missao 8 soma as vendas" {
-        val (state, done) = feed(at(7), MissionSignal.Sold(350), MissionSignal.Sold(700))
+    "primeiro comercio soma as vendas" {
+        val (state, done) = feed(at(8), MissionSignal.Sold(350), MissionSignal.Sold(700))
 
         done.map { it.xp } shouldBe listOf(150)
-        state.trailIndex shouldBe 8
+        state.trailIndex shouldBe 9
     }
 
-    "derreter soma os lingotes ate 10 e o estado seguinte conclui a 5" {
-        val (afterCraft, craftDone) = feed(at(3), MissionSignal.Smelted(4), MissionSignal.Smelted(6))
-        craftDone.size shouldBe 1
-        afterCraft.trailIndex shouldBe 4
+    "caca ao tesouro so conta barris" {
+        val (state, done) = feed(
+            at(9),
+            MissionSignal.Debris(byHook = true, type = "sucata"),
+            MissionSignal.Debris(byHook = false, type = "barril"),
+            MissionSignal.Debris(byHook = true, type = "barril"),
+        )
 
-        val (afterState, stateDone) = MissionRules.apply(afterCraft, MissionSignal.State(level = 4, upgrades = emptyMap(), hasGenerator = false))
-        stateDone.map { it.mission.id } shouldBe listOf(MissionTrail.all[4].id)
-        afterState.trailIndex shouldBe 5
+        done.map { it.mission.id } shouldBe listOf("barril_2")
+        state.trailIndex shouldBe 10
+    }
+
+    "derreter soma os lingotes ate 10" {
+        val (state, done) = feed(at(5), MissionSignal.Smelted(4), MissionSignal.Smelted(6))
+
+        done.map { it.mission.id } shouldBe listOf("derreter_10")
+        state.trailIndex shouldBe 6
     }
 
     "estado cumprido conclui so a missao de estado e para na de receita" {
-        val (state, done) = MissionRules.apply(at(4), MissionSignal.State(level = 30, upgrades = mapOf("Generator" to 1), hasGenerator = false))
+        val (state, done) = MissionRules.apply(at(3), MissionSignal.State(level = 30, upgrades = mapOf("Generator" to 1), hasGenerator = false))
 
-        done.map { it.mission.id } shouldBe listOf(MissionTrail.all[4].id)
-        state.trailIndex shouldBe 5
+        done.map { it.mission.id } shouldBe listOf(MissionTrail.all[3].id)
+        state.trailIndex shouldBe 4
         state.trailProgress shouldBe 0
     }
 
-    "sem ilha a missao do upgrade segue aberta" {
-        val (state, done) = MissionRules.apply(at(8), noIsland)
+    "nivel abaixo do pedido segue aberto" {
+        val (state, done) = MissionRules.apply(at(10), MissionSignal.State(level = 4, upgrades = null, hasGenerator = false))
 
         done.shouldBeEmpty()
-        state shouldBe at(8)
+        state shouldBe at(10)
     }
 
-    "ilha que ja tem o upgrade conclui a missao 9" {
-        val (state, done) = MissionRules.apply(at(8), MissionSignal.State(level = 30, upgrades = mapOf("Generator" to 1), hasGenerator = false))
+    "marinheiro conclui ao chegar no nivel 5 mesmo sem ilha" {
+        val (state, done) = MissionRules.apply(at(10), noIsland)
 
-        done.map { it.xp } shouldBe listOf(200)
-        state.trailIndex shouldBe 9
+        done.map { it.xp } shouldBe listOf(150)
+        state.trailIndex shouldBe 11
     }
 
     "diarias nao contam antes do fim da trilha" {

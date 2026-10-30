@@ -29,7 +29,7 @@ object MissionCard {
 
     fun completed(mission: Mission, xp: Int): MissionCardText =
         MissionCardText(
-            "<green>Concluída:</green> <white>${mission.text}</white>",
+            "<green>Concluída:</green> <white>${mission.name}</white>",
             xp(xp),
             "<green>${count(mission.objective, mission.objective.goal)}</green>",
             1f,

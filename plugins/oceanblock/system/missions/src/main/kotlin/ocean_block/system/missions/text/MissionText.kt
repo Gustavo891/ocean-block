@@ -21,12 +21,14 @@ object MissionText {
     }
 
     fun completed(mission: Mission, xp: Int): String =
-        "<green>Missão concluída:</green> <white>${mission.text}</white>" + if (xp > 0) " <gold>+$xp XP" else ""
+        "<green>Missão concluída:</green> <white>${mission.name}</white>" + if (xp > 0) " <gold>+$xp XP" else ""
 
     fun requirement(objective: MissionObjective, recipeName: (String) -> String): String = when (objective) {
-        is MissionObjective.CollectDebris ->
-            if (objective.hookOnly) "Puxe ${objective.amount} detritos com o Gancho"
-            else "Colete ${objective.amount} detritos (Gancho ou toque)"
+        is MissionObjective.CollectDebris -> {
+            val what = objective.type?.let { DEBRIS[it] ?: it } ?: "detritos"
+            if (objective.hookOnly) "Puxe ${objective.amount} $what com o Gancho"
+            else "Colete ${objective.amount} $what (Gancho ou toque)"
+        }
         MissionObjective.BuildGenerator -> "Monte um gerador de pedra na sua ilha"
         is MissionObjective.BreakGeneratorBlocks -> objective.material
             ?.let { "Quebre ${objective.amount} ${ORES[it] ?: it.lowercase()} do gerador" }
@@ -51,6 +53,14 @@ object MissionText {
         "LAPIS_ORE" to "minérios de lápis-lazúli",
         "EMERALD_ORE" to "minérios de esmeralda",
         "DIAMOND_ORE" to "minérios de diamante",
+    )
+
+    private val DEBRIS = mapOf(
+        "barril" to "barris",
+        "barril_ferro" to "barris de ferro",
+        "recife" to "recifes",
+        "rede_rasgada" to "redes rasgadas",
+        "sucata" to "sucatas",
     )
 
     private val UPGRADES = mapOf("Generator" to "Gerador", "Members" to "Membros", "Size" to "Borda", "CropGrowth" to "Plantação")

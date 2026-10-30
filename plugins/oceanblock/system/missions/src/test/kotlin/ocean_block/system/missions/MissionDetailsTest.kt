@@ -29,6 +29,8 @@ class MissionDetailsTest : StringSpec({
         requirement(MissionObjective.Sell(1000)) shouldBe "Venda $1.000 em itens no /sell"
         requirement(MissionObjective.IslandUpgrade("Generator", 1)) shouldBe "Compre o Gerador nível 1 em /ilha"
         requirement(MissionObjective.KillMobs(20)) shouldBe "Mate 20 mobs"
+        requirement(MissionObjective.CollectDebris(3, false, "barril")) shouldBe "Colete 3 barris (Gancho ou toque)"
+        requirement(MissionObjective.CollectDebris(2, true, "recife")) shouldBe "Puxe 2 recifes com o Gancho"
     }
 
     "toda missao tem um icone proprio" {

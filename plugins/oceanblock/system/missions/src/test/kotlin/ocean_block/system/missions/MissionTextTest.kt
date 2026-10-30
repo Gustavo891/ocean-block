@@ -17,16 +17,16 @@ class MissionTextTest : StringSpec({
 
     "venda mostra o contador em dinheiro" {
         MissionText.counter(MissionObjective.Sell(1000), 350) shouldBe "$350/$1.000"
-        MissionText.hud(MissionRules.Current(MissionTrail.all[7], 350, null), trailDone = false) shouldBe
+        MissionText.hud(MissionRules.Current(MissionTrail.all[8], 350, null), trailDone = false) shouldBe
             "<aqua>Missão:</aqua> <white>Venda $1.000 em itens</white> <gray>$350/$1.000"
     }
 
     "missao de um passo nao tem contador" {
         MissionText.hud(MissionRules.Current(MissionTrail.all[1], 0, null), trailDone = false) shouldBe
             "<aqua>Missão:</aqua> <white>Faça um gerador de pedra</white>"
-        MissionText.hud(MissionRules.Current(MissionTrail.all[10], 0, null), trailDone = false) shouldBe
-            "<aqua>Missão:</aqua> <white>Faça uma Fornalha elétrica</white>"
-        MissionText.hud(MissionRules.Current(MissionTrail.all[3], 4, null), trailDone = false) shouldBe
+        MissionText.hud(MissionRules.Current(MissionTrail.all[4], 0, null), trailDone = false) shouldBe
+            "<aqua>Missão:</aqua> <white>Faça uma Rede de Detritos</white>"
+        MissionText.hud(MissionRules.Current(MissionTrail.all[5], 4, null), trailDone = false) shouldBe
             "<aqua>Missão:</aqua> <white>Derreta 10 minérios brutos</white> <gray>4/10"
     }
 
@@ -40,10 +40,10 @@ class MissionTextTest : StringSpec({
         MissionText.hud(null, trailDone = true) shouldBe "<gray>Diárias concluídas. Volte amanhã!"
     }
 
-    "missao concluida mostra o texto e o xp" {
+    "missao concluida mostra o nome e o xp" {
         MissionText.completed(MissionTrail.all[0], 50) shouldBe
-            "<green>Missão concluída:</green> <white>Colete 10 detritos usando o gancho</white> <gold>+50 XP"
+            "<green>Missão concluída:</green> <white>Primeira pescaria</white> <gold>+50 XP"
         MissionText.completed(MissionTrail.all[0], 0) shouldBe
-            "<green>Missão concluída:</green> <white>Colete 10 detritos usando o gancho</white>"
+            "<green>Missão concluída:</green> <white>Primeira pescaria</white>"
     }
 })

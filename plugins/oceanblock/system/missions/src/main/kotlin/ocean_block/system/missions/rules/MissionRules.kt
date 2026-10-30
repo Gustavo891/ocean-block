@@ -74,7 +74,7 @@ object MissionRules {
 
     fun credit(objective: MissionObjective, signal: MissionSignal): Long = when (objective) {
         is MissionObjective.CollectDebris ->
-            if (signal is MissionSignal.Debris && (signal.byHook || !objective.hookOnly)) 1 else 0
+            if (signal is MissionSignal.Debris && (signal.byHook || !objective.hookOnly) && (objective.type == null || objective.type == signal.type)) 1 else 0
         MissionObjective.BuildGenerator -> when (signal) {
             MissionSignal.GeneratorFormed, is MissionSignal.GeneratorBlock -> 1
             is MissionSignal.State -> if (signal.hasGenerator) 1 else 0

@@ -27,7 +27,7 @@ class MissionListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     fun onDebris(event: DebrisCollectedEvent) {
-        MissionTracker.signal(event.player, MissionSignal.Debris(event.byHook))
+        MissionTracker.signal(event.player, MissionSignal.Debris(event.byHook, event.typeId))
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

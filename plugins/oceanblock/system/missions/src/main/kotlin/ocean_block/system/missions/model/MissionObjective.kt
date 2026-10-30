@@ -4,7 +4,7 @@ sealed interface MissionObjective {
 
     val goal: Long
 
-    data class CollectDebris(val amount: Int, val hookOnly: Boolean) : MissionObjective {
+    data class CollectDebris(val amount: Int, val hookOnly: Boolean, val type: String? = null) : MissionObjective {
         override val goal: Long get() = amount.toLong()
     }
 

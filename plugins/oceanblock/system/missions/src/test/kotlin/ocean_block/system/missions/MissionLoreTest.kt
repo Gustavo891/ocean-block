@@ -23,13 +23,13 @@ class MissionLoreTest : StringSpec({
         MissionLore.selection(state, null) shouldBe MissionLore.TRAIL
         val detail = MissionLore.detail(state, MissionLore.TRAIL)
 
-        detail["titulo"] shouldBe "Colete 10 detritos usando o gancho"
-        detail["subtitulo"] shouldBe "Missão 1 de 13"
+        detail["titulo"] shouldBe "Primeira pescaria"
+        detail["subtitulo"] shouldBe "Missão 1 de 15"
         detail["requisito"] shouldBe "Puxe 10 detritos com o Gancho"
         detail["progresso"] shouldBe "3/10"
         detail["recompensa"] shouldBe "+50 XP"
         detail["bloqueado"] shouldBe "true"
-        MissionLore.summary(state) shouldBe "TRILHA 0/13"
+        MissionLore.summary(state) shouldBe "TRILHA 0/15"
         MissionLore.notice(state)?.get("texto") shouldBe MissionLore.LOCKED_DAILIES
         MissionLore.listed(state) shouldBe emptyList()
     }
@@ -49,7 +49,7 @@ class MissionLoreTest : StringSpec({
         rows.map { it["selecionada"] } shouldBe listOf("true", "false", "false")
         rows[0]["contagem"] shouldBe "16/64"
         rows[0]["xp"] shouldBe "+474 XP"
-        rows[1]["texto"] shouldBe "Venda 2.000 coins em itens"
+        rows[1]["texto"] shouldBe "Feirante"
         rows[1]["contagem_estilo"] shouldBe "accent"
         rows[2]["contagem"] shouldBe "Feita"
         rows[2]["xp_estilo"] shouldBe "good"
@@ -62,6 +62,8 @@ class MissionLoreTest : StringSpec({
             it["bloqueado"] shouldBe "false"
         }
         MissionLore.detail(today, "venda_2000").let {
+            it["titulo"] shouldBe "Feirante"
+            it["requisito"] shouldBe "Venda 2.000 coins em itens no /sell"
             it["botao"] shouldBe "Valendo agora"
             it["bloqueado"] shouldBe "true"
             it["progresso"] shouldBe "0/2.000"
@@ -75,7 +77,7 @@ class MissionLoreTest : StringSpec({
         MissionLore.dailiesDone(today) shouldBe "| 1/3 DIÁRIAS"
         MissionLore.legend(today).size shouldBe 1
         MissionLore.legend(PlayerMissions("u", 0, 0, "", emptyList())) shouldBe emptyList()
-        MissionLore.trailCount(today) shouldBe "13/13"
+        MissionLore.trailCount(today) shouldBe "15/15"
         MissionLore.notice(today) shouldBe null
     }
 

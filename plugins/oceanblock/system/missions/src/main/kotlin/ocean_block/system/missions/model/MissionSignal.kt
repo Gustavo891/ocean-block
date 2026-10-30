@@ -2,7 +2,7 @@ package ocean_block.system.missions.model
 
 sealed interface MissionSignal {
 
-    data class Debris(val byHook: Boolean) : MissionSignal
+    data class Debris(val byHook: Boolean, val type: String = "") : MissionSignal
 
     data class GeneratorBlock(val material: String) : MissionSignal
 

@@ -9,7 +9,7 @@ import ocean_block.system.missions.text.MissionCardText
 
 class MissionCardTest : StringSpec({
 
-    val names: (String) -> String = { if (it == "fornalha_eletrica") "Fornalha elétrica" else it }
+    val names: (String) -> String = { if (it == "rede") "Rede de Detritos" else it }
 
     "trilha mostra a tarefa com o XP em cima e o progresso embaixo" {
         MissionCard.current(MissionRules.Current(MissionTrail.all[0], 3, null), names) shouldBe
@@ -22,18 +22,18 @@ class MissionCardTest : StringSpec({
     }
 
     "missão de fabricar mostra 0/1 e o nome da receita" {
-        val fornalha = MissionTrail.all.first { it.id == "fornalha_eletrica" }
-        MissionCard.current(MissionRules.Current(fornalha, 0, null), names) shouldBe
+        val rede = MissionTrail.all.first { it.id == "rede" }
+        MissionCard.current(MissionRules.Current(rede, 0, null), names) shouldBe
             MissionCardText(
-                "<white>Fabrique em /receitas: Fornalha elétrica</white>",
-                "<gold>+300 XP</gold>",
+                "<white>Fabrique em /receitas: Rede de Detritos</white>",
+                "<gold>+100 XP</gold>",
                 "<aqua>0/1</aqua>",
                 0f,
             )
     }
 
     "venda mostra o progresso em dinheiro" {
-        MissionCard.current(MissionRules.Current(MissionTrail.all[7], 350, null), names)?.bottomRight shouldBe
+        MissionCard.current(MissionRules.Current(MissionTrail.all[8], 350, null), names)?.bottomRight shouldBe
             "<aqua>$350/$1.000</aqua>"
     }
 
@@ -53,7 +53,7 @@ class MissionCardTest : StringSpec({
     "conclusão mostra a missão, o XP e a barra cheia" {
         MissionCard.completed(MissionTrail.all[0], 50) shouldBe
             MissionCardText(
-                "<green>Concluída:</green> <white>Colete 10 detritos usando o gancho</white>",
+                "<green>Concluída:</green> <white>Primeira pescaria</white>",
                 "<gold>+50 XP</gold>",
                 "<green>10/10</green>",
                 1f,

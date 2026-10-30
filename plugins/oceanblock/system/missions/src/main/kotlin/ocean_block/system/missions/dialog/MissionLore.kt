@@ -50,7 +50,7 @@ object MissionLore {
         val active = daily.id == state.activeDaily && !daily.done
         return mapOf(
             "icone" to icon(mission?.icon ?: "map"),
-            "texto" to plain(mission?.text ?: daily.id),
+            "texto" to plain(mission?.name ?: daily.id),
             "xp" to "+${MissionText.number(daily.xp.toLong())} XP",
             "xp_estilo" to if (daily.done) "good" else "ouro",
             "barra" to if (daily.done || mission == null) "100" else percent(mission.objective, daily.progress),
@@ -86,7 +86,7 @@ object MissionLore {
         }
         return mapOf(
             "icone" to icon(mission.icon),
-            "titulo" to plain(mission.text),
+            "titulo" to plain(mission.name),
             "subtitulo" to "Diária ${index + 1} de ${state.dailies.size} · $status",
             "subtitulo_estilo" to style,
             "requisito" to plain(MissionText.requirement(mission.objective, recipeName)),
@@ -146,7 +146,7 @@ object MissionLore {
         }
         return mapOf(
             "icone" to icon(mission.icon),
-            "titulo" to plain(mission.text),
+            "titulo" to plain(mission.name),
             "subtitulo" to "Missão ${state.trailIndex + 1} de ${MissionTrail.size}",
             "subtitulo_estilo" to "destaque",
             "requisito" to plain(MissionText.requirement(mission.objective, recipeName)),
