@@ -54,6 +54,11 @@ reino:
       fechar:
         art: ui:reino/botao_fechar
         text-style: button-light
+      pagina:
+        art: ui:reino/botao_fechar
+        text-style: button-light
+        disabled-art: ui:reino/botao_fechar_off
+        disabled-text-style: disabled
       no_trilha:
         art: ui:reino/no
         text-style: body
@@ -100,3 +105,7 @@ reino:
     ponto_feito: ui:reino/ponto_feito
     ponto_ativo: ui:reino/ponto_ativo
     ponto_vazio: ui:reino/ponto_vazio
+    pagina_esq: ui:reino/pagina_esq
+    pagina_esq_off: ui:reino/pagina_esq_off
+    pagina_dir: ui:reino/pagina_dir
+    pagina_dir_off: ui:reino/pagina_dir_off

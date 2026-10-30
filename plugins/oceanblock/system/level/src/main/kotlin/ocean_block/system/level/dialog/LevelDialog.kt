@@ -22,7 +22,7 @@ object LevelDialog : Listener {
 
     private const val SCREEN = "niveis"
     private val HEADER_KEYS = listOf("nivel", "nivel_de", "xp", "barra", "faltam")
-    private val PAGER_KEYS = listOf("faixa", "pagina1_estilo", "pagina2_estilo")
+    private val PAGER_KEYS = listOf("faixa", "pagina1_estilo", "pagina2_estilo", "anterior_off", "anterior_icone", "proxima_off", "proxima_icone")
 
     private val pages = ConcurrentHashMap<UUID, Int>()
 

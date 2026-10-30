@@ -108,8 +108,13 @@ object LevelScreenLore {
             "faixa" to "NÍVEIS $first A $last",
             "pagina1_estilo" to if (page == 0) "branco" else "muted",
             "pagina2_estilo" to if (page == 1) "branco" else "muted",
-        )
+        ) + arrow("anterior", "ui:pagina_esq", page > 0) + arrow("proxima", "ui:pagina_dir", page < pages() - 1)
     }
+
+    private fun arrow(key: String, icon: String, enabled: Boolean): Map<String, String> = mapOf(
+        "${key}_off" to (!enabled).toString(),
+        "${key}_icone" to if (enabled) icon else "${icon}_off",
+    )
 
     fun number(value: Long): String = NumberFormat.getIntegerInstance(LOCALE).format(value)
 

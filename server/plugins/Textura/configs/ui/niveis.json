@@ -139,7 +139,7 @@
             {
               "x": 0, "y": 160,
               "row": [
-                { "button": "", "icon": "ui:reino/seta_esquerda", "look": "fechar", "bind": "anterior", "tooltip": "Níveis 1 a 25", "w": 18 },
+                { "button": "", "icon": "{anterior_icone}", "look": "pagina", "bind": "anterior", "disabled": "{anterior_off}", "tooltip": "Página anterior", "w": 18 },
                 {
                   "row": [
                     { "text": "1 A 25", "style": "{pagina1_estilo}" },
@@ -148,7 +148,7 @@
                   ],
                   "w": "grow", "h": 18, "gap": 4, "align": "center", "cross": "center", "surface": "faixa"
                 },
-                { "button": "", "icon": "ui:reino/seta", "look": "fechar", "bind": "proxima", "tooltip": "Níveis 26 a 50", "w": 18 }
+                { "button": "", "icon": "{proxima_icone}", "look": "pagina", "bind": "proxima", "disabled": "{proxima_off}", "tooltip": "Próxima página", "w": 18 }
               ],
               "w": 196, "gap": 4, "cross": "center"
             }

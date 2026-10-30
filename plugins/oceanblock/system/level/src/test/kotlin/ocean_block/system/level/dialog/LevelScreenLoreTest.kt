@@ -132,4 +132,18 @@ class LevelScreenLoreTest : StringSpec({
         pager["pagina1_estilo"] shouldBe "muted"
         pager["pagina2_estilo"] shouldBe "branco"
     }
+
+    "seta some a acao quando nao ha pagina para aquele lado" {
+        val first = LevelScreenLore.pager(0)
+        val last = LevelScreenLore.pager(1)
+
+        first["anterior_off"] shouldBe "true"
+        first["anterior_icone"] shouldBe "ui:pagina_esq_off"
+        first["proxima_off"] shouldBe "false"
+        first["proxima_icone"] shouldBe "ui:pagina_dir"
+        last["anterior_off"] shouldBe "false"
+        last["anterior_icone"] shouldBe "ui:pagina_esq"
+        last["proxima_off"] shouldBe "true"
+        last["proxima_icone"] shouldBe "ui:pagina_dir_off"
+    }
 })
