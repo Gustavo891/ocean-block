@@ -160,12 +160,12 @@ object MissionLore {
         )
     }
 
-    private fun count(objective: MissionObjective, progress: Long): String {
+    internal fun count(objective: MissionObjective, progress: Long): String {
         val goal = objective.goal.coerceAtLeast(1)
         return "${MissionText.number(progress.coerceIn(0, goal))}/${MissionText.number(goal)}"
     }
 
-    private fun percent(objective: MissionObjective, progress: Long): String {
+    internal fun percent(objective: MissionObjective, progress: Long): String {
         val goal = objective.goal.coerceAtLeast(1)
         return (progress.coerceIn(0, goal) * 100 / goal).toString()
     }

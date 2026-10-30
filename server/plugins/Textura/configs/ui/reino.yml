@@ -52,6 +52,11 @@ reino:
       fechar:
         art: ui:reino/botao_fechar
         text-style: button-light
+      no_trilha:
+        art: ui:reino/no
+        text-style: body
+        selected-art: ui:reino/no_sel
+        selected-text-style: body
       selecao:
         art: ui:reino/selecao
         text-style: body

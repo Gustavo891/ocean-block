@@ -5,6 +5,7 @@ import ocean_block.system.missions.MissionTracker
 import ocean_block.system.missions.catalog.DailyPool
 import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.data.MissionManager
+import ocean_block.system.missions.rules.MissionRules
 import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
 import one_block.textura.api.DialogOpenResult
@@ -28,6 +29,12 @@ object MissionDialog {
     private val selections = ConcurrentHashMap<UUID, String>()
 
     fun open(player: Player): Boolean {
+        MissionTracker.refresh(player)
+        if (!MissionRules.trailDone(MissionManager.get(player.uniqueId))) return TrailDialog.open(player)
+        return openDailies(player)
+    }
+
+    fun openDailies(player: Player): Boolean {
         MissionTracker.refresh(player)
         selections.remove(player.uniqueId)
         val result = DialogApi.openResult(player, SCREEN) { binds -> bind(binds, player) }
@@ -55,7 +62,7 @@ object MissionDialog {
         binds.listPage("recompensas") { 0 }
         listOf("botao", "bloqueado", "dica", "nota").forEach { key -> binds.text(key) { detail()[key].orEmpty() } }
         binds.button("escolher") { click -> selected().takeIf { it != MissionLore.TRAIL }?.let { MissionTracker.choose(click.player, it) } }
-        binds.button("trilha") { selections[player.uniqueId] = MissionLore.TRAIL }
+        binds.button("trilha") { click -> TrailDialog.open(click.player) }
         binds.text("resumo") { MissionLore.summary(state()) }
         binds.text("diarias_feitas") { MissionLore.dailiesDone(state()) }
         binds.text("trilha") { MissionLore.trailCount(state()) }
