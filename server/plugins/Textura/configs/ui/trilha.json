@@ -25,6 +25,7 @@
             { "space": 2 },
             {
               "row": [
+                { "row": [], "w": 10, "h": 1 },
                 {
                   "repeat": "fileira1", "perPage": 5,
                   "row": [
@@ -43,9 +44,10 @@
                 }
               ]
             },
-            { "repeat": "desce1", "perPage": 1, "row": [ { "row": [], "w": 152, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
+            { "repeat": "desce1", "perPage": 1, "row": [ { "row": [], "w": 162, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
             {
               "row": [
+                { "row": [], "w": 10, "h": 1 },
                 {
                   "repeat": "fileira2", "perPage": 5,
                   "row": [
@@ -64,9 +66,10 @@
                 }
               ]
             },
-            { "repeat": "desce2", "perPage": 1, "row": [ { "icon": "{liga}", "size": 6 } ] },
+            { "repeat": "desce2", "perPage": 1, "row": [ { "row": [], "w": 10, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
             {
               "row": [
+                { "row": [], "w": 10, "h": 1 },
                 {
                   "repeat": "fileira3", "perPage": 5,
                   "row": [

@@ -54,14 +54,12 @@ class MissoesCommand : BaseCommand() {
     companion object {
         fun summary(player: Player): List<String> {
             val state = MissionManager.get(player.uniqueId)
-            if (!MissionRules.trailDone(state)) {
-                val current = MissionRules.current(state)
-                return listOfNotNull(
+            val trail = MissionTrail.at(state.trailIndex)?.let { mission ->
+                listOf(
                     "<aqua>Missão ${state.trailIndex + 1} de ${MissionTrail.size}",
-                    current?.let { MissionText.hud(it, false) },
-                    "<gray>Termine a trilha para liberar as diárias.",
+                    MissionText.hud(MissionRules.Current(mission, state.trailProgress, null), false),
                 )
-            }
+            } ?: listOf("<aqua>Trilha concluída!")
             val dailies = state.dailies.mapIndexedNotNull { index, daily ->
                 DailyPool.byId(daily.id)?.let { mission ->
                     val mark = if (daily.done) "<green>✔</green>" else "<gray>${index + 1}.</gray>"
@@ -74,7 +72,7 @@ class MissoesCommand : BaseCommand() {
                     "$mark <white>${mission.text}</white> <gray>$counter</gray> <gold>+${daily.xp} XP</gold>$choice"
                 }
             }
-            return listOf("<aqua>Trilha concluída!", "<aqua>Diárias:") + dailies
+            return trail + "<aqua>Diárias:" + dailies
         }
     }
 }

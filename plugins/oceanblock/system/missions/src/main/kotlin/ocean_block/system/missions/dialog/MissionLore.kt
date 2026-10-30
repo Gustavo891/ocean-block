@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 object MissionLore {
 
     const val TRAIL = "trilha"
-    const val LOCKED_DAILIES = "Termine a trilha para liberar as diárias"
+    const val NO_DAILIES = "As diárias chegam em instantes"
 
     private const val TRAIL_ICON = "nether_star"
     private const val XP_ICON = "experience_bottle"
@@ -23,15 +23,15 @@ object MissionLore {
         if (MissionRules.trailDone(state)) "TRILHA COMPLETA" else "TRILHA ${state.trailIndex}/${MissionTrail.size}"
 
     fun dailiesDone(state: PlayerMissions): String =
-        if (!MissionRules.trailDone(state)) "" else "| ${state.dailies.count { it.done }}/${state.dailies.size} DIÁRIAS"
+        "| ${state.dailies.count { it.done }}/${state.dailies.size} DIÁRIAS"
 
     fun trailCount(state: PlayerMissions): String = "${state.trailIndex.coerceAtMost(MissionTrail.size)}/${MissionTrail.size}"
 
     fun notice(state: PlayerMissions): Map<String, String>? =
-        if (MissionRules.trailDone(state)) null else mapOf("texto" to LOCKED_DAILIES, "estilo" to "muted")
+        if (state.dailies.isEmpty()) mapOf("texto" to NO_DAILIES, "estilo" to "muted") else null
 
     fun listed(state: PlayerMissions): List<DailyMission> =
-        if (MissionRules.trailDone(state)) state.dailies else emptyList()
+        state.dailies
 
     fun legend(state: PlayerMissions): List<Map<String, String>> =
         if (listed(state).isEmpty()) emptyList() else listOf(mapOf("legenda" to "sim"))

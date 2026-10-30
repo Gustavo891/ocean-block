@@ -44,17 +44,17 @@ object TrailLore {
         return "| ${MissionText.number(earned)} DE ${MissionText.number(total)} XP"
     }
 
-    fun unlock(state: PlayerMissions): String =
-        if (MissionRules.trailDone(state)) "Diárias liberadas" else "Libera as diárias"
-
-    fun dailies(state: PlayerMissions): String {
+    fun remaining(state: PlayerMissions): String {
         val left = (MissionTrail.size - state.trailIndex).coerceAtLeast(0)
         return when (left) {
-            0 -> "Liberadas"
+            0 -> "Trilha completa"
             1 -> "Falta 1 missão"
             else -> "Faltam $left missões"
         }
     }
+
+    fun dailies(state: PlayerMissions): String =
+        if (state.dailies.isEmpty()) "Ver diárias" else "${state.dailies.count { it.done }}/${state.dailies.size} feitas"
 
     fun detail(state: PlayerMissions, index: Int, recipeName: (String) -> String = { it }): Map<String, String> {
         val mission = MissionTrail.at(index) ?: return emptyMap()

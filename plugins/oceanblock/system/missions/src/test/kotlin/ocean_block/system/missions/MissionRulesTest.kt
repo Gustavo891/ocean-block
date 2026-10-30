@@ -111,7 +111,7 @@ class MissionRulesTest : StringSpec({
         state.trailIndex shouldBe 11
     }
 
-    "diarias nao contam antes do fim da trilha" {
+    "sem diaria escolhida, na trilha so a trilha conta" {
         val dailies = listOf(DailyMission("detritos_30", 0, 40, false))
         val start = PlayerMissions("u", 0, 0, "2026-10-25", dailies)
 
@@ -119,6 +119,29 @@ class MissionRulesTest : StringSpec({
 
         state.dailies shouldBe dailies
         state.trailProgress shouldBe 1
+    }
+
+    "na trilha a diaria escolhida avanca junto e aparece no hud" {
+        val dailies = listOf(DailyMission("gancho_15", 0, 40, false), DailyMission("receitas_3", 0, 40, false))
+        val start = PlayerMissions("u", 0, 0, "2026-10-25", dailies, "gancho_15")
+
+        val (state, _) = MissionRules.apply(start, MissionSignal.Debris(byHook = true))
+
+        state.trailProgress shouldBe 1
+        state.dailies[0].progress shouldBe 1
+        MissionRules.current(state)?.mission?.id shouldBe "gancho_15"
+        MissionRules.current(state.copy(activeDaily = null))?.mission?.id shouldBe MissionTrail.all[0].id
+        MissionRules.choose(start.copy(activeDaily = null), "receitas_3")?.activeDaily shouldBe "receitas_3"
+    }
+
+    "pular conclui a diaria escolhida antes da trilha" {
+        val start = PlayerMissions("u", 2, 0, "2026-10-25", listOf(DailyMission("gancho_15", 0, 40, false)), "gancho_15")
+
+        MissionRules.skip(start).let {
+            it.trailIndex shouldBe 2
+            it.dailies[0].done shouldBe true
+        }
+        MissionRules.skip(start.copy(activeDaily = null)).trailIndex shouldBe 3
     }
 
     val three = listOf(
@@ -196,12 +219,12 @@ class MissionRulesTest : StringSpec({
         MissionRules.needsChoice(at(2)) shouldBe false
     }
 
-    "troca de dia so depois da trilha" {
+    "troca de dia vale mesmo durante a trilha" {
         val today = LocalDate.of(2026, 10, 25)
 
         MissionRules.needsReset(PlayerMissions("u", trailDone, 0, "2026-10-24", emptyList()), today) shouldBe true
         MissionRules.needsReset(PlayerMissions("u", trailDone, 0, "2026-10-25", emptyList()), today) shouldBe false
-        MissionRules.needsReset(PlayerMissions("u", 12, 0, "2026-10-24", emptyList()), today) shouldBe false
+        MissionRules.needsReset(PlayerMissions("u", 12, 0, "2026-10-24", emptyList()), today) shouldBe true
         MissionRules.needsReset(PlayerMissions("u", trailDone, 0, "", emptyList()), today) shouldBe true
     }
 

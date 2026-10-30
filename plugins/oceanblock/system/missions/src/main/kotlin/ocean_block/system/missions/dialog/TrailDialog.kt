@@ -51,7 +51,7 @@ object TrailDialog {
         binds.button("diarias") { click -> MissionDialog.openDailies(click.player) }
         binds.text("resumo") { TrailLore.summary(state()) }
         binds.text("xp") { TrailLore.xp(state()) }
-        binds.text("libera") { TrailLore.unlock(state()) }
+        binds.text("libera") { TrailLore.remaining(state()) }
         binds.text("diarias_estado") { TrailLore.dailies(state()) }
     }
 

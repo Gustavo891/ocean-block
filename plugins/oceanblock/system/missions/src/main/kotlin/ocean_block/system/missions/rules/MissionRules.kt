@@ -26,11 +26,13 @@ object MissionRules {
 
     fun trailDone(state: PlayerMissions): Boolean = state.trailIndex >= MissionTrail.size
 
-    fun apply(state: PlayerMissions, signal: MissionSignal): Pair<PlayerMissions, List<Completed>> =
-        if (trailDone(state)) applyDailies(state, signal) else applyTrail(state, signal)
+    fun apply(state: PlayerMissions, signal: MissionSignal): Pair<PlayerMissions, List<Completed>> {
+        val (afterTrail, trail) = applyTrail(state, signal)
+        val (afterDailies, dailies) = applyDailies(afterTrail, signal)
+        return afterDailies to trail + dailies
+    }
 
-    fun needsReset(state: PlayerMissions, today: LocalDate): Boolean =
-        trailDone(state) && state.dailyDate != today.toString()
+    fun needsReset(state: PlayerMissions, today: LocalDate): Boolean = state.dailyDate != today.toString()
 
     fun rollDailies(today: LocalDate, level: Int, random: Random): List<DailyMission> {
         val xp = max(DAILY_XP_MIN, (DAILY_XP_SHARE * LevelCurve.toNext(level)).roundToInt())
@@ -43,26 +45,27 @@ object MissionRules {
     }
 
     fun current(state: PlayerMissions): Current? {
-        MissionTrail.at(state.trailIndex)?.let { return Current(it, state.trailProgress, null) }
         val index = activeIndex(state)
-        if (index < 0) return null
-        val daily = state.dailies[index]
-        return DailyPool.byId(daily.id)?.let { Current(it, daily.progress, index) }
+        if (index >= 0) {
+            val daily = state.dailies[index]
+            DailyPool.byId(daily.id)?.let { return Current(it, daily.progress, index) }
+        }
+        return MissionTrail.at(state.trailIndex)?.let { Current(it, state.trailProgress, null) }
     }
 
     fun choose(state: PlayerMissions, id: String): PlayerMissions? {
-        if (!trailDone(state)) return null
         if (state.dailies.none { it.id == id && !it.done }) return null
         return state.copy(activeDaily = id)
     }
 
     fun needsChoice(state: PlayerMissions): Boolean =
-        trailDone(state) && activeIndex(state) < 0 && state.dailies.any { !it.done }
+        activeIndex(state) < 0 && state.dailies.any { !it.done }
 
     fun skip(state: PlayerMissions): PlayerMissions {
-        if (!trailDone(state)) return state.copy(trailIndex = state.trailIndex + 1, trailProgress = 0)
         val index = activeIndex(state)
-        if (index < 0) return state
+        if (index < 0) {
+            return if (trailDone(state)) state else state.copy(trailIndex = state.trailIndex + 1, trailProgress = 0)
+        }
         return state.copy(
             dailies = state.dailies.mapIndexed { i, daily -> if (i == index) daily.copy(done = true) else daily },
             activeDaily = null,

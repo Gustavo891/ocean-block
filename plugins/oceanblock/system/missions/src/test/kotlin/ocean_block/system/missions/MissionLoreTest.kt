@@ -18,7 +18,16 @@ class MissionLoreTest : StringSpec({
     )
     val today = PlayerMissions("u", done, 0, "2026-10-29", dailies, "venda_2000")
 
-    "na trilha o detalhe mostra a missao atual e as diarias ficam bloqueadas" {
+    "na trilha as diarias ja aparecem" {
+        val midTrail = PlayerMissions("u", 3, 0, "2026-10-29", dailies)
+
+        MissionLore.listed(midTrail) shouldBe dailies
+        MissionLore.notice(midTrail) shouldBe null
+        MissionLore.dailiesDone(midTrail) shouldBe "| 1/3 DIÁRIAS"
+        MissionLore.selection(midTrail, null) shouldBe "gerador_64"
+    }
+
+    "na trilha sem diarias sorteadas o detalhe mostra a missao atual" {
         val state = PlayerMissions("u", 0, 3, "", emptyList())
         MissionLore.selection(state, null) shouldBe MissionLore.TRAIL
         val detail = MissionLore.detail(state, MissionLore.TRAIL)
@@ -30,7 +39,7 @@ class MissionLoreTest : StringSpec({
         detail["recompensa"] shouldBe "+50 XP"
         detail["bloqueado"] shouldBe "true"
         MissionLore.summary(state) shouldBe "TRILHA 0/15"
-        MissionLore.notice(state)?.get("texto") shouldBe MissionLore.LOCKED_DAILIES
+        MissionLore.notice(state)?.get("texto") shouldBe MissionLore.NO_DAILIES
         MissionLore.listed(state) shouldBe emptyList()
     }
 

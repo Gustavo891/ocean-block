@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.dialog.TrailLore
+import ocean_block.system.missions.model.DailyMission
 import ocean_block.system.missions.model.PlayerMissions
 
 class TrailLoreTest : StringSpec({
@@ -60,9 +61,11 @@ class TrailLoreTest : StringSpec({
     "cabecalho resume a trilha e o que falta para as diarias" {
         TrailLore.summary(midway) shouldBe "13/15 FEITAS"
         TrailLore.xp(midway) shouldBe "| 1.280 DE 1.780 XP"
-        TrailLore.dailies(midway) shouldBe "Faltam 2 missões"
-        TrailLore.dailies(PlayerMissions("u", 14, 0, "", emptyList())) shouldBe "Falta 1 missão"
-        TrailLore.dailies(PlayerMissions("u", 15, 0, "", emptyList())) shouldBe "Liberadas"
+        TrailLore.remaining(midway) shouldBe "Faltam 2 missões"
+        TrailLore.remaining(PlayerMissions("u", 14, 0, "", emptyList())) shouldBe "Falta 1 missão"
+        TrailLore.remaining(PlayerMissions("u", 15, 0, "", emptyList())) shouldBe "Trilha completa"
+        TrailLore.dailies(midway) shouldBe "Ver diárias"
+        TrailLore.dailies(PlayerMissions("u", 13, 0, "", listOf(DailyMission("gancho_15", 15, 40, true), DailyMission("receitas_3", 0, 40, false)))) shouldBe "1/2 feitas"
         TrailLore.summary(PlayerMissions("u", 15, 0, "", emptyList())) shouldBe "TRILHA COMPLETA"
     }
 })
