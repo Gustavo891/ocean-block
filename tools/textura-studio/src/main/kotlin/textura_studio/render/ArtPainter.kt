@@ -36,7 +36,7 @@ class ArtPainter(private val canvas: Canvas, private val catalog: UiArtCatalog, 
             canvas.draw(art.image, originX + placed.x, originY + placed.y)
             return
         }
-        sliced(placed.id, art.image, slice.left, slice.right, placed, originX, originY)
+        sliced(placed.id, art.image, slice.left, slice.right, 1, placed, originX, originY)
     }
 
     private fun icon(placed: PlacedImage, size: Int, originX: Int, originY: Int) {
@@ -51,40 +51,35 @@ class ArtPainter(private val canvas: Canvas, private val catalog: UiArtCatalog, 
         val art = catalog.art(placed.id) ?: return warn("Surface '${placed.id}' não existe")
         val slice = art.slice?.takeIf { it.nine } ?: return warn("Surface '${placed.id}' precisa de .slice com 'esquerda direita topo base'")
         if (placed.height > UiArtCatalog.MAX_HEIGHT) return warn("Surface '${placed.id}' com ${placed.height} px de altura passa de ${UiArtCatalog.MAX_HEIGHT}")
-        val strip = SurfaceComposer.compose(art.image, slice, art.image.width, placed.height)
+        val strip = SurfaceComposer.compose(art.image, slice, art.image.width, placed.height * slice.detail)
             ?: return warn("Surface '${placed.id}' com ${placed.height} px é menor que as tampas")
-        sliced("surface:${placed.id}@${placed.height}", strip, slice.left, slice.right, placed, originX, originY)
+        sliced("surface:${placed.id}@${placed.height}", strip, slice.left, slice.right, slice.detail, placed, originX, originY)
     }
 
-    private fun sliced(name: String, image: BufferedImage, left: Int, right: Int, placed: PlacedImage, originX: Int, originY: Int) {
-        if (placed.width < left + right) return warn("Imagem '${placed.id}' mais estreita que as tampas")
-        val x0 = originX + placed.x
-        val y0 = originY + placed.y
-        if (left > 0) canvas.draw(image.getSubimage(0, 0, left, image.height), x0, y0)
+    private fun sliced(name: String, image: BufferedImage, left: Int, right: Int, detail: Int, placed: PlacedImage, originX: Int, originY: Int) {
+        val leftWidth = left / detail
+        val rightWidth = right / detail
+        if (placed.width < leftWidth + rightWidth) return warn("Imagem '${placed.id}' mais estreita que as tampas")
+        val x0 = (originX + placed.x).toDouble()
+        val y0 = (originY + placed.y).toDouble()
+        val height = image.height.toDouble() / detail
+        if (left > 0) canvas.draw(image.getSubimage(0, 0, left, image.height), x0, y0, leftWidth.toDouble(), height)
 
-        var x = placed.x + left
-        var remaining = placed.width - left - right
+        var x = placed.x + leftWidth
+        var remaining = placed.width - leftWidth - rightWidth
         val sizes = UiPieces.MIDDLE_SIZES.sortedDescending()
         while (remaining > 0) {
             val size = sizes.firstOrNull { it <= remaining } ?: break
-            canvas.draw(middle(name, image, left, right, size), originX + x, y0)
+            canvas.draw(middle(name, image, left, right, size * detail), (originX + x).toDouble(), y0, size.toDouble(), height)
             x += size
             remaining -= size
         }
-        if (right > 0) canvas.draw(image.getSubimage(image.width - right, 0, right, image.height), x0 + placed.width - right, y0)
+        if (right > 0) {
+            val cap = image.getSubimage(image.width - right, 0, right, image.height)
+            canvas.draw(cap, x0 + placed.width - rightWidth, y0, rightWidth.toDouble(), height)
+        }
     }
 
-    private fun middle(name: String, image: BufferedImage, left: Int, right: Int, size: Int): BufferedImage =
-        middles.getOrPut("$name#$size") {
-            val source = image.getSubimage(left, 0, image.width - left - right, image.height)
-            val result = BufferedImage(size, source.height, BufferedImage.TYPE_INT_ARGB)
-            val graphics = result.createGraphics()
-            var x = 0
-            while (x < size) {
-                graphics.drawImage(source, x, 0, null)
-                x += source.width
-            }
-            graphics.dispose()
-            result
-        }
+    private fun middle(name: String, image: BufferedImage, left: Int, right: Int, width: Int): BufferedImage =
+        middles.getOrPut("$name#$width") { UiPieces.tiledMiddle(image, left, right, width) }
 }

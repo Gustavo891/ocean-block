@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Logger
 import javax.imageio.ImageIO
 
-data class ArtSlice(val left: Int, val right: Int, val top: Int, val bottom: Int, val nine: Boolean)
+data class ArtSlice(val left: Int, val right: Int, val top: Int, val bottom: Int, val nine: Boolean, val detail: Int = 1)
 
 data class UiArt(val id: String, val image: BufferedImage, val slice: ArtSlice?)
 
@@ -58,13 +58,15 @@ class UiArtCatalog(
         val slice = when (parts.size) {
             2 -> ArtSlice(parts[0], parts[1], 0, 0, nine = false)
             4 -> ArtSlice(parts[0], parts[1], parts[2], parts[3], nine = true)
+            5 -> ArtSlice(parts[0], parts[1], parts[2], parts[3], nine = true, detail = parts[4])
             else -> null
         }
-        val valid = slice != null && parts.all { it >= 0 } &&
+        val valid = slice != null && parts.all { it >= 0 } && slice.detail >= 1 &&
+            slice.left % slice.detail == 0 && slice.right % slice.detail == 0 &&
             slice.left + slice.right < image.width &&
             (!slice.nine || slice.top + slice.bottom < image.height)
         if (!valid) {
-            logger.warning("[ui] '${sliceFile.name}' de '$id': esperado 'esquerda direita' ou 'esquerda direita topo base' com tampas menores que ${image.width}x${image.height}")
+            logger.warning("[ui] '${sliceFile.name}' de '$id': esperado 'esquerda direita', 'esquerda direita topo base' ou 'esquerda direita topo base detalhe' (tampas laterais múltiplas do detalhe) com tampas menores que ${image.width}x${image.height}")
             return null
         }
         return slice

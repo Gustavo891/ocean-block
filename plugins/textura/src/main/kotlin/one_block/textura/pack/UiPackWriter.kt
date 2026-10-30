@@ -124,18 +124,18 @@ class UiPackWriter(
             logger.warning("[ui] Surface '${size.id}' com ${size.height} px de altura passa de ${UiArtCatalog.MAX_HEIGHT}; fundo não será desenhado")
             return null
         }
-        val middle = art.image.width - slice.left - slice.right
+        val middle = (art.image.width - slice.left - slice.right) / slice.detail
         if (middle <= 0) {
             logger.warning("[ui] Surface '${size.id}' precisa de ao menos 1 px de meio entre as tampas esquerda e direita")
             return null
         }
-        val strip = SurfaceComposer.compose(art.image, slice, art.image.width, size.height) ?: run {
+        val strip = SurfaceComposer.compose(art.image, slice, art.image.width, size.height * slice.detail) ?: run {
             logger.warning("[ui] Surface '${size.id}' com ${size.height} px é menor que as tampas")
             return null
         }
         val name = "surface:${size.id}@${size.height}"
-        val pieces = UiPieces.slices(name, strip, slice.left, slice.right)
-        return SurfacePieces(name, slice.left, slice.right, pieces)
+        val pieces = UiPieces.slices(name, strip, slice.left, slice.right, slice.detail)
+        return SurfacePieces(name, slice.left / slice.detail, slice.right / slice.detail, pieces)
     }
 
     private fun surfaceImage(surface: SurfacePieces, height: Int, packed: Map<String, Packed>): UiImage {

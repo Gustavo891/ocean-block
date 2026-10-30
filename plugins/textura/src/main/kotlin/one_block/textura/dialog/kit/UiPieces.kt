@@ -20,14 +20,17 @@ object UiPieces {
         return result
     }
 
-    fun slices(id: String, image: BufferedImage, left: Int, right: Int): List<UiPieceSource> {
+    fun slices(id: String, image: BufferedImage, left: Int, right: Int, detail: Int = 1): List<UiPieceSource> {
         val middle = image.getSubimage(left, 0, image.width - left - right, image.height)
         val caps = listOfNotNull(
-            if (left > 0) UiPieceSource("$id#left", image.getSubimage(0, 0, left, image.height)) else null,
-            if (right > 0) UiPieceSource("$id#right", image.getSubimage(image.width - right, 0, right, image.height)) else null,
+            if (left > 0) UiPieceSource("$id#left", image.getSubimage(0, 0, left, image.height), detail) else null,
+            if (right > 0) UiPieceSource("$id#right", image.getSubimage(image.width - right, 0, right, image.height), detail) else null,
         )
-        return caps + MIDDLE_SIZES.map { size -> UiPieceSource("$id#mid$size", tiled(middle, size)) }
+        return caps + MIDDLE_SIZES.map { size -> UiPieceSource("$id#mid$size", tiled(middle, size * detail), detail) }
     }
+
+    fun tiledMiddle(image: BufferedImage, left: Int, right: Int, width: Int): BufferedImage =
+        tiled(image.getSubimage(left, 0, image.width - left - right, image.height), width)
 
     private fun tiled(middle: BufferedImage, size: Int): BufferedImage {
         val result = BufferedImage(size, middle.height, BufferedImage.TYPE_INT_ARGB)

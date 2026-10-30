@@ -17,9 +17,9 @@ reino:
     trilha: { color: "#2f7a24", font: pequena_justa, shadow: false }
     selected: { color: "#ffffa0", font: pequena_justa, shadow: false }
     count: { color: "#ffffff" }
-    disabled: { color: "#898b8d", font: pequena_justa, shadow: false }
-    button: { color: "#2f3034", font: pequena_justa, shadow: false }
-    button-light: { color: "#ffffff", font: pequena_justa, shadow: false }
+    disabled: { color: "#898b8d", font: pequena_botao, shadow: false }
+    button: { color: "#1f1f21", font: pequena_botao, shadow: false }
+    button-light: { color: "#ffffff", font: pequena_botao, shadow: false }
     tooltip: { color: "#a8a8b3" }
   surfaces:
     moldura: ui:reino/moldura

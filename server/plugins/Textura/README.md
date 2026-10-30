@@ -276,7 +276,11 @@ até 399×256 px, nomes em `[a-z0-9_/-]`.
 `<nome>.png.slice` ao lado do PNG (não entra no pack):
 
 - `esquerda direita` — a imagem estica na largura (botões, segmentos);
-- `esquerda direita topo base` — nine-slice, obrigatório para surfaces.
+- `esquerda direita topo base` — nine-slice, obrigatório para surfaces;
+- `esquerda direita topo base detalhe` — surface desenhada em `detalhe`× (por
+  exemplo `12 12 12 12 3`: 3 px de arte por px da interface, para linhas e cantos
+  mais finos que 1 px). Os números são em px da arte e as tampas laterais têm de
+  ser múltiplas do detalhe.
 
 **Surfaces são pré-renderizadas por altura e ícones com `size` por tamanho**, no
 `/textura gerar`. A largura de uma surface é livre em runtime; a altura não. Mudou

@@ -38,6 +38,7 @@
                       "column": [
                         { "row": [ { "text": "{texto}", "style": "body", "w": "grow" }, { "text": "{xp}", "style": "{xp_estilo}" } ], "w": "grow", "gap": 4 },
                         {
+                          "x": 0, "y": 7,
                           "row": [
                             { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_trilho", "fill": "ui:reino/barra", "w": 104 },
                             { "text": "{contagem}", "style": "{contagem_estilo}", "w": "grow", "align": "right" }
@@ -45,7 +46,7 @@
                           "w": "grow", "cross": "center", "gap": 4
                         }
                       ],
-                      "gap": 4, "w": "grow"
+                      "w": "grow"
                     }
                   ],
                   "w": "grow", "h": 26, "pad": 3, "gap": 4, "cross": "center", "surface": "faixa"
