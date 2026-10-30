@@ -8,6 +8,7 @@ import one_block.textura.dialog.kit.IconScale
 import one_block.textura.dialog.kit.IconSize
 import one_block.textura.dialog.kit.PackedUiKit
 import one_block.textura.dialog.kit.SurfaceComposer
+import one_block.textura.dialog.kit.UiSegment
 import one_block.textura.dialog.kit.SurfaceHeight
 import one_block.textura.dialog.kit.UiArt
 import one_block.textura.dialog.kit.UiArtCatalog
@@ -53,7 +54,7 @@ class UiPackWriter(
         val hit = UiPieceSource(HIT, BufferedImage(1, HIT_HEIGHT, BufferedImage.TYPE_INT_ARGB))
 
         val pixels = pixelSources()
-        val sources = arts.values.flatMap(::artSources) + surfaces.values.flatMap { it.pieces } + icons.values + hit + pixels
+        val sources = arts.values.flatMap(::artSources) + surfaces.values.flatMap { surface -> surface.segments.flatMap { it.pieces } } + icons.values + hit + pixels
         val chars = UiCodepoints.assign(sources.map { it.name })
         val packed = sources.associate { it.name to texture(builder, it, chars.getValue(it.name)) }
 
@@ -112,7 +113,9 @@ class UiPackWriter(
         return listOf(main) + UiPieces.slices(art.id, art.image, slice.left, slice.right)
     }
 
-    private class SurfacePieces(val name: String, val left: Int, val right: Int, val pieces: List<UiPieceSource>)
+    private class SegmentPieces(val name: String, val offset: Int, val height: Int, val pieces: List<UiPieceSource>)
+
+    private class SurfacePieces(val left: Int, val right: Int, val segments: List<SegmentPieces>)
 
     private fun surface(size: SurfaceHeight): SurfacePieces? {
         val art = catalog.art(size.id) ?: return missing(size.id)
@@ -134,19 +137,27 @@ class UiPackWriter(
             return null
         }
         val name = "surface:${size.id}@${size.height}"
-        val pieces = UiPieces.slices(name, strip, slice.left, slice.right, slice.detail)
-        return SurfacePieces(name, slice.left / slice.detail, slice.right / slice.detail, pieces)
+        val rows = SurfaceComposer.segments(size.height, slice.detail, MAX_TEXTURE_HEIGHT)
+        val segments = rows.mapIndexed { index, (offset, height) ->
+            val part = strip.getSubimage(0, offset * slice.detail, strip.width, height * slice.detail)
+            val segmentName = if (rows.size == 1) name else "$name#seg$index"
+            SegmentPieces(segmentName, offset, height, UiPieces.slices(segmentName, part, slice.left, slice.right, slice.detail))
+        }
+        return SurfacePieces(slice.left / slice.detail, slice.right / slice.detail, segments)
     }
 
     private fun surfaceImage(surface: SurfacePieces, height: Int, packed: Map<String, Packed>): UiImage {
-        val slice = UiSlice(
-            left = surface.left,
-            right = surface.right,
-            leftCap = packed["${surface.name}#left"]?.piece,
-            rightCap = packed["${surface.name}#right"]?.piece,
-            middles = UiPieces.MIDDLE_SIZES.mapNotNull { size -> packed["${surface.name}#mid$size"]?.let { size to it.piece } }.toMap(),
-        )
-        return UiImage("", 0, 0, height, slice)
+        val segments = surface.segments.map { segment ->
+            val slice = UiSlice(
+                left = surface.left,
+                right = surface.right,
+                leftCap = packed["${segment.name}#left"]?.piece,
+                rightCap = packed["${segment.name}#right"]?.piece,
+                middles = UiPieces.MIDDLE_SIZES.mapNotNull { size -> packed["${segment.name}#mid$size"]?.let { size to it.piece } }.toMap(),
+            )
+            UiSegment(segment.offset, segment.height, slice)
+        }
+        return UiImage("", 0, 0, height, segments.first().slice, if (segments.size > 1) segments else emptyList())
     }
 
     private fun icon(size: IconSize): UiPieceSource? {
@@ -215,6 +226,7 @@ class UiPackWriter(
         private const val NAMESPACE = "oneblock"
         private const val HIT = "ui:#hit"
         private const val HIT_HEIGHT = 9
+        private const val MAX_TEXTURE_HEIGHT = 256
         private const val WHITE = 0xFFFFFFFF.toInt()
         private val SHADERS = listOf("gui.vsh", "gui.fsh")
     }

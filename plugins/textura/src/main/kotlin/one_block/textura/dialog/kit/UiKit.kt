@@ -12,7 +12,16 @@ data class UiSlice(
     val middles: Map<Int, UiPiece>,
 )
 
-data class UiImage(val char: String, val advance: Int, val width: Int, val height: Int, val slice: UiSlice? = null)
+data class UiSegment(val offset: Int, val height: Int, val slice: UiSlice)
+
+data class UiImage(
+    val char: String,
+    val advance: Int,
+    val width: Int,
+    val height: Int,
+    val slice: UiSlice? = null,
+    val segments: List<UiSegment> = emptyList(),
+)
 
 data class SurfaceSize(val id: String, val width: Int, val height: Int)
 

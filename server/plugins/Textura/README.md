@@ -280,7 +280,9 @@ até 399×256 px, nomes em `[a-z0-9_/-]`.
 - `esquerda direita topo base detalhe` — surface desenhada em `detalhe`× (por
   exemplo `12 12 12 12 3`: 3 px de arte por px da interface, para linhas e cantos
   mais finos que 1 px). Os números são em px da arte e as tampas laterais têm de
-  ser múltiplas do detalhe.
+  ser múltiplas do detalhe. O cliente não carrega glyph com textura acima de 256 px
+  de altura, então uma surface com detalhe é gravada em faixas empilhadas de até
+  256 px de textura (85 px de interface em 3×).
 
 **Surfaces são pré-renderizadas por altura e ícones com `size` por tamanho**, no
 `/textura gerar`. A largura de uma surface é livre em runtime; a altura não. Mudou

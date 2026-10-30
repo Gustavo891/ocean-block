@@ -47,6 +47,11 @@ object UiPieces {
 
 object SurfaceComposer {
 
+    fun segments(height: Int, detail: Int, maxTexture: Int): List<Pair<Int, Int>> {
+        val step = maxOf(1, maxTexture / detail)
+        return (0 until height step step).map { offset -> offset to minOf(step, height - offset) }
+    }
+
     fun compose(image: BufferedImage, slice: ArtSlice, width: Int, height: Int): BufferedImage? {
         if (width < 1 || height < 1) return null
         if (width < slice.left + slice.right || height < slice.top + slice.bottom) return null

@@ -53,7 +53,7 @@ class UiRenderer(
         val margin = (body - laid.width) / 2
         val count = maxOf(1, (laid.height + LINE - 1) / LINE)
 
-        val imagesByLine = laid.images.groupBy { it.y / LINE }
+        val imagesByLine = laid.images.flatMap(::drawn).groupBy { it.placed.y / LINE }
         val textsByLine = laid.texts.groupBy { it.y / LINE }
         val pixelsByLine = pixelRows(laid).groupBy { it.y / LINE }
 
@@ -63,7 +63,7 @@ class UiRenderer(
             spans.forEach { hotspot(line, margin, it) }
             markers(line, margin, spans)
             line.moveTo(0)
-            imagesByLine[n].orEmpty().forEach { image(line, margin, it, laid.width) }
+            imagesByLine[n].orEmpty().forEach { image(line, margin, it.placed, it.image, laid.width) }
             pixelsByLine[n].orEmpty().forEach { pixelRow(line, margin, it) }
             textsByLine[n].orEmpty().sortedBy { it.x }.forEach { text(line, margin, it, laid.width) }
             line.moveTo(body)
@@ -158,8 +158,17 @@ class UiRenderer(
         line.append(Component.text(hit.char).font(font), hit.advance)
     }
 
-    private fun image(line: Line, margin: Int, placed: PlacedImage, width: Int) {
-        val image = resolve(placed) ?: return
+    private class Drawn(val placed: PlacedImage, val image: UiImage)
+
+    private fun drawn(placed: PlacedImage): List<Drawn> {
+        val image = resolve(placed) ?: return emptyList()
+        if (image.segments.isEmpty()) return listOf(Drawn(placed, image))
+        return image.segments.map { segment ->
+            Drawn(placed.copy(y = placed.y + segment.offset, height = segment.height), image.copy(height = segment.height, slice = segment.slice, segments = emptyList()))
+        }
+    }
+
+    private fun image(line: Line, margin: Int, placed: PlacedImage, image: UiImage, width: Int) {
         val drawWidth = if (image.slice != null) placed.width else image.width
 
         if (placed.x < 0 || placed.x + drawWidth > width) {
