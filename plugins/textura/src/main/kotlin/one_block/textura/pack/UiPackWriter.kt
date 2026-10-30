@@ -137,7 +137,7 @@ class UiPackWriter(
             return null
         }
         val name = "surface:${size.id}@${size.height}"
-        val rows = SurfaceComposer.segments(size.height, slice.detail, MAX_TEXTURE_HEIGHT)
+        val rows = SurfaceComposer.segments(size.height, slice.detail, UiPieces.MAX_TEXTURE)
         val segments = rows.mapIndexed { index, (offset, height) ->
             val part = strip.getSubimage(0, offset * slice.detail, strip.width, height * slice.detail)
             val segmentName = if (rows.size == 1) name else "$name#seg$index"
@@ -226,7 +226,6 @@ class UiPackWriter(
         private const val NAMESPACE = "oneblock"
         private const val HIT = "ui:#hit"
         private const val HIT_HEIGHT = 9
-        private const val MAX_TEXTURE_HEIGHT = 256
         private const val WHITE = 0xFFFFFFFF.toInt()
         private val SHADERS = listOf("gui.vsh", "gui.fsh")
     }

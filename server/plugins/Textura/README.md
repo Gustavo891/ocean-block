@@ -282,7 +282,8 @@ até 399×256 px, nomes em `[a-z0-9_/-]`.
   mais finos que 1 px). Os números são em px da arte e as tampas laterais têm de
   ser múltiplas do detalhe. O cliente não carrega glyph com textura acima de 256 px
   de altura, então uma surface com detalhe é gravada em faixas empilhadas de até
-  256 px de textura (85 px de interface em 3×).
+  256 px de textura (85 px de interface em 3×), e os pedaços do meio só vão até
+  256 px de textura de largura (64 px de interface em 3×).
 
 **Surfaces são pré-renderizadas por altura e ícones com `size` por tamanho**, no
 `/textura gerar`. A largura de uma surface é livre em runtime; a altura não. Mudou

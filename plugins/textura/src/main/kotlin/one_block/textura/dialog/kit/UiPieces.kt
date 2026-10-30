@@ -8,6 +8,8 @@ object UiPieces {
 
     private const val MIN_HEIGHT = 8
 
+    const val MAX_TEXTURE = 256
+
     val MIDDLE_SIZES: List<Int> = (0..8).map { 1 shl it }
 
     fun padded(image: BufferedImage): BufferedImage {
@@ -26,7 +28,7 @@ object UiPieces {
             if (left > 0) UiPieceSource("$id#left", image.getSubimage(0, 0, left, image.height), detail) else null,
             if (right > 0) UiPieceSource("$id#right", image.getSubimage(image.width - right, 0, right, image.height), detail) else null,
         )
-        return caps + MIDDLE_SIZES.map { size -> UiPieceSource("$id#mid$size", tiled(middle, size * detail), detail) }
+        return caps + MIDDLE_SIZES.filter { it * detail <= MAX_TEXTURE }.map { size -> UiPieceSource("$id#mid$size", tiled(middle, size * detail), detail) }
     }
 
     fun tiledMiddle(image: BufferedImage, left: Int, right: Int, width: Int): BufferedImage =
