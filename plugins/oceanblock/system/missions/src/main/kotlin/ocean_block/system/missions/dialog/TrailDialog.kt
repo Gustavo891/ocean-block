@@ -7,6 +7,7 @@ import one_block.textura.api.DialogApi
 import one_block.textura.api.DialogBinds
 import one_block.textura.api.DialogOpenResult
 import org.bukkit.entity.Player
+import java.time.LocalDateTime
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
@@ -51,8 +52,11 @@ object TrailDialog {
         binds.button("diarias") { click -> MissionDialog.openDailies(click.player) }
         binds.text("resumo") { TrailLore.summary(state()) }
         binds.text("xp") { TrailLore.xp(state()) }
-        binds.text("libera") { TrailLore.remaining(state()) }
+        binds.list("mini") { TrailLore.mini(state()) }
+        binds.listPage("mini") { 0 }
+        binds.text("renova") { MissionLore.resetIn(LocalDateTime.now(MissionTracker.zone)) }
         binds.text("diarias_estado") { TrailLore.dailies(state()) }
+        binds.text("diarias_estilo") { TrailLore.dailiesStyle(state()) }
     }
 
     private fun recipeName(id: String): String = Recipes.get(id)?.name ?: id

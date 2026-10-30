@@ -203,7 +203,7 @@ Folhas:
 | Forma | Campos |
 |---|---|
 | `{"space": n}` | — |
-| `{"text": "…"}` | `style` (aceita `"{chave}"`, ex.: `good`/`bad` por entrada), `align` (`left`/`center`/`right`), `w`, `icon`, `color`, `bold`, `tooltip`; `scale` só aceita 1 |
+| `{"text": "…"}` | `style` (aceita `"{chave}"`, ex.: `good`/`bad` por entrada), `align` (`left`/`center`/`right`), `w`, `icon`, `color`, `bold`, `tooltip`, `wrap` (`true` quebra por palavras em quantas linhas de 9 px precisar, na largura do nó); `scale` só aceita 1 |
 | `{"icon": "ui:x"}` | `size` (px, default 8); `"frame": true` desenha a surface `frame` do tema (no `stone`, o `well`, fundo de slot do inventário) em volta, com 4 px de folga |
 | `{"image": "ui:x"}` | `w` (estica se a imagem tiver `.slice`) |
 | `{"pixels": "chave"}` | `w`, `h` (px, 1..399, obrigatórios), `scale` (1..4, px de tela por pixel da imagem), `detail` (2 ou 3: cada px da GUI recebe N×N pixels da imagem, para desenhos mais finos que a grade da GUI; `w`/`h` continuam em px da GUI e a imagem tem `w×N` por `h×N`). Desenha a imagem que o código passa em `binds.pixels("chave") { bufferedImage }`, gerada na hora (mapa, skin); sem imagem, o nó só ocupa o espaço |
@@ -318,7 +318,7 @@ tira o botão de fechar.
 | `{"slots": [7, 1], "items": [{"at": 0, "item": "diamond_sword", "count": 1}]}` | grade de slots (arte `slots.art` do tema) com ícone do item, quantidade e nome traduzido no tooltip; `align` posiciona a grade. Por item, `item` e `count` aceitam `{chave}`; `name` (MiniMessage) e `lore` (lista de linhas MiniMessage) trocam o tooltip do item por um texto sem itálico. Item vazio ou sem valor deixa o slot vazio. Um `item` que começa com `ui:` desenha esse ícone do tema no slot (assado no tamanho do slot quando o item tem `{chave}`). `missing` (`true`, `false` ou `"{chave}"`) por item troca a moldura pela arte `slots.missing-art` do tema (no `stone`, o slot vermelho). `"hideEmpty": true` não desenha os slots vazios (a linha mantém a altura). `"bind": "chave"` torna cada slot com item clicável: dentro de um `repeat` chama `listButton(chave)` com o índice da entrada, fora dele `button(chave)`. Com `align` `start` (o padrão) a grade ocupa só a própria largura, então cabe numa `row` ao lado de outros nós |
 | `{"dropdown": "Inicial"}` | `options`, `bind`, `w`, `tooltip`. Cada clique avança para a próxima opção |
 | `{"slider": 40}` | `min`, `max`, `step`, `unit`, `bind`, `w`, `tooltip`. Metade esquerda −step, direita +step |
-| `{"progress": "{valor}"}` | `max` (padrão 100; aceita `{campo}`), `track`, `fill` (ids `ui:` com `.png.slice`, assados no gerar), `w` em px (padrão 100). Barra só de leitura: o preenchimento tem `w * valor / max` px |
+| `{"progress": "{valor}"}` | `max` (padrão 100; aceita `{campo}`), `track`, `fill` (ids `ui:` com `.png.slice`, assados no gerar), `w` em px (padrão 100) ou `"grow"` (ocupa o que sobra na linha). Barra só de leitura: o preenchimento tem `w * valor / max` px |
 | `{"icon": "ui:x", "bind": "k", "states": {"a": "ui:y"}}` | troca o ícone pelo valor de `k` |
 | `{"button": "Rótulo", "onClick": {...}}` | executa ações; com `bind` também chama o código antes. `selected` e `disabled` aceitam `true`, `false` ou `"{chave}"` (só o texto `true` liga) |
 | `{"space": "grow"}` | ocupa o espaço que sobra na linha |

@@ -61,11 +61,12 @@ class TrailLoreTest : StringSpec({
     "cabecalho resume a trilha e o que falta para as diarias" {
         TrailLore.summary(midway) shouldBe "13/15 FEITAS"
         TrailLore.xp(midway) shouldBe "| 1.280 DE 1.780 XP"
-        TrailLore.remaining(midway) shouldBe "Faltam 2 missões"
-        TrailLore.remaining(PlayerMissions("u", 14, 0, "", emptyList())) shouldBe "Falta 1 missão"
-        TrailLore.remaining(PlayerMissions("u", 15, 0, "", emptyList())) shouldBe "Trilha completa"
-        TrailLore.dailies(midway) shouldBe "Ver diárias"
-        TrailLore.dailies(PlayerMissions("u", 13, 0, "", listOf(DailyMission("gancho_15", 15, 40, true), DailyMission("receitas_3", 0, 40, false)))) shouldBe "1/2 feitas"
+        val withDailies = PlayerMissions("u", 13, 0, "", listOf(DailyMission("gancho_15", 15, 40, true), DailyMission("mobs_20", 0, 40, false)))
+        TrailLore.dailies(midway) shouldBe "--"
+        TrailLore.dailies(withDailies) shouldBe "1/2"
+        TrailLore.dailiesStyle(withDailies) shouldBe "muted"
+        TrailLore.dailiesStyle(withDailies.copy(dailies = withDailies.dailies.map { it.copy(done = true) })) shouldBe "good"
+        TrailLore.mini(withDailies) shouldBe listOf(mapOf("icone" to "item:fishing_rod"), mapOf("icone" to "entidade:zombie"))
         TrailLore.summary(PlayerMissions("u", 15, 0, "", emptyList())) shouldBe "TRILHA COMPLETA"
     }
 })

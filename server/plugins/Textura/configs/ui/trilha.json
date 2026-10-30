@@ -11,7 +11,6 @@
           ],
           "gap": 3, "w": "grow"
         },
-        { "row": [ { "text": "{libera}", "style": "ouro" } ], "pad": 5, "surface": "faixa" },
         { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "onClick": { "action": "close" }, "tooltip": "Fechar", "w": 18 }
       ],
       "w": "grow", "cross": "center", "gap": 5
@@ -25,7 +24,6 @@
             { "space": 2 },
             {
               "row": [
-                { "row": [], "w": 10, "h": 1 },
                 {
                   "repeat": "fileira1", "perPage": 5,
                   "row": [
@@ -38,16 +36,15 @@
                       ],
                       "w": 24
                     },
-                    { "icon": "{liga}", "size": 14 }
+                    { "icon": "{liga}", "size": 19 }
                   ],
                   "cross": "center"
                 }
               ]
             },
-            { "repeat": "desce1", "perPage": 1, "row": [ { "row": [], "w": 162, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
+            { "repeat": "desce1", "perPage": 1, "row": [ { "row": [], "w": 172, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
             {
               "row": [
-                { "row": [], "w": 10, "h": 1 },
                 {
                   "repeat": "fileira2", "perPage": 5,
                   "row": [
@@ -60,16 +57,15 @@
                       ],
                       "w": 24
                     },
-                    { "icon": "{liga}", "size": 14 }
+                    { "icon": "{liga}", "size": 19 }
                   ],
                   "cross": "center"
                 }
               ]
             },
-            { "repeat": "desce2", "perPage": 1, "row": [ { "row": [], "w": 10, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
+            { "repeat": "desce2", "perPage": 1, "row": [ { "icon": "{liga}", "size": 6 } ] },
             {
               "row": [
-                { "row": [], "w": 10, "h": 1 },
                 {
                   "repeat": "fileira3", "perPage": 5,
                   "row": [
@@ -82,7 +78,7 @@
                       ],
                       "w": 24
                     },
-                    { "icon": "{liga}", "size": 14 }
+                    { "icon": "{liga}", "size": 19 }
                   ],
                   "cross": "center"
                 }
@@ -100,18 +96,20 @@
               "gap": 3, "cross": "center"
             },
             {
-              "x": 0, "y": 142,
+              "x": 0, "y": 134,
               "box": [
-                { "button": "", "look": "claro", "bind": "diarias", "tooltip": "Ver as diárias", "w": 196 },
+                { "button": "", "look": "selecao", "bind": "diarias", "tooltip": "Ver as diárias", "w": 196 },
                 {
                   "row": [
-                    { "space": 2 },
-                    { "icon": "item:nether_star", "size": 10 },
-                    { "text": "DIÁRIAS", "style": "button", "w": "grow" },
-                    { "text": "{diarias_estado}", "style": "disabled" },
-                    { "space": 2 }
+                    {
+                      "column": [ { "text": "DIÁRIAS DE HOJE", "style": "body" }, { "text": "{renova}", "style": "ouro" } ],
+                      "gap": 1, "w": "grow"
+                    },
+                    { "repeat": "mini", "perPage": 3, "row": [ { "icon": "{icone}", "size": 16 } ] },
+                    { "text": "{diarias_estado}", "style": "{diarias_estilo}" },
+                    { "icon": "ui:reino/seta", "size": 7 }
                   ],
-                  "w": 196, "h": 18, "gap": 5, "cross": "center"
+                  "w": 196, "h": 26, "pad": 5, "gap": 4, "cross": "center", "surface": "faixa"
                 }
               ],
               "w": 196
@@ -130,7 +128,7 @@
                     {
                       "column": [
                         { "text": "{titulo}", "style": "heading", "w": "grow" },
-                        { "text": "{requisito}", "style": "claro", "w": "grow" }
+                        { "text": "{requisito}", "style": "claro", "w": "grow", "wrap": true }
                       ],
                       "gap": 4, "w": "grow"
                     }
@@ -139,8 +137,8 @@
                 },
                 {
                   "row": [
-                    { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_grande_trilho", "fill": "ui:reino/barra_grande", "w": 124 },
-                    { "text": "{progresso}", "style": "branco", "w": "grow", "align": "right" }
+                    { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_grande_trilho", "fill": "ui:reino/barra_grande", "w": "grow" },
+                    { "text": "{progresso}", "style": "branco" }
                   ],
                   "w": "grow", "cross": "center", "gap": 4
                 }

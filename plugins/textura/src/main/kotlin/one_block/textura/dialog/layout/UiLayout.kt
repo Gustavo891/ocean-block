@@ -70,6 +70,7 @@ class UiLayout(private val kit: UiKit) {
         is UiSize.Px -> w.value
         UiSize.Grow -> available
         UiSize.Fit -> intrinsicWidth(child).coerceAtMost(available)
+        is UiSize.Share -> Math.round(available * w.fraction).toInt().coerceIn(minOf(w.minimum, available), available)
     }
 
     private fun measureHeight(node: UiNode, y: Int, width: Int, parentHeight: Int?): Int {
@@ -107,6 +108,15 @@ class UiLayout(private val kit: UiKit) {
     }
 
     private fun placeText(node: TextNode, x: Int, y: Int, width: Int, sink: Sink): Int {
+        if (node.wrap) {
+            val lines = TextWrap.lines(node.text, width) { measurer.width(it, node.bold, node.font) }
+            lines.forEachIndexed { index, line -> placeLine(node.copy(text = line, wrap = false), x, y + index * TextNode.LINE_HEIGHT, width, sink) }
+            return maxOf(1, lines.size) * TextNode.LINE_HEIGHT
+        }
+        return placeLine(node, x, y, width, sink)
+    }
+
+    private fun placeLine(node: TextNode, x: Int, y: Int, width: Int, sink: Sink): Int {
         val textWidth = measurer.width(node.text, node.bold, node.font)
         val offset = when (node.align) {
             UiTextAlign.Left -> 0
@@ -136,7 +146,7 @@ class UiLayout(private val kit: UiKit) {
         val fixedHeight = when (val h = node.h) {
             is UiSize.Px -> h.value
             UiSize.Grow -> parentHeight
-            UiSize.Fit -> null
+            UiSize.Fit, is UiSize.Share -> null
         }
         val surfaceAt = sink.images.size
         val area = Area(

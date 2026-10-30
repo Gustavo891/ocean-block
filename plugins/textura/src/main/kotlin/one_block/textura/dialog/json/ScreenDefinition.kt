@@ -40,6 +40,7 @@ data class DefText(
     val tooltip: String?,
     val position: UiPosition?,
     override val path: String,
+    val wrap: Boolean = false,
 ) : DefNode
 
 data class DefIcon(

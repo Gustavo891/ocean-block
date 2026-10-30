@@ -424,6 +424,7 @@ class ScreenParser(private val logger: Logger) {
                 tooltip = obj.string("tooltip"),
                 position = position(obj, path),
                 path = path,
+                wrap = obj.get("wrap")?.let { runCatching { it.asBoolean }.getOrNull() } == true,
             )
         }
 
@@ -692,7 +693,7 @@ class ScreenParser(private val logger: Logger) {
         private val CONTAINER_KEYS = setOf("w", "h", "gap", "pad", "align", "cross", "snap", "columns", "surface", "x", "y")
         private val KNOWN: Map<String, Set<String>> = CONTAINERS.keys.associateWith { CONTAINER_KEYS + it } + mapOf(
             "space" to setOf("space"),
-            "text" to setOf("text", "style", "align", "w", "icon", "color", "bold", "scale", "tooltip", "x", "y"),
+            "text" to setOf("text", "style", "align", "w", "icon", "color", "bold", "scale", "tooltip", "x", "y", "wrap"),
             "icon" to setOf("icon", "size", "x", "y", "bind", "states", "frame"),
             "image" to setOf("image", "w", "x", "y"),
             "pixels" to setOf("pixels", "w", "h", "scale", "detail", "x", "y"),

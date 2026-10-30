@@ -11,6 +11,7 @@ sealed interface UiSize {
     data class Px(val value: Int) : UiSize
     data object Grow : UiSize
     data object Fit : UiSize
+    data class Share(val fraction: Double, val minimum: Int) : UiSize
 }
 
 enum class UiAlign { Start, Center, End }
@@ -68,6 +69,7 @@ data class TextNode(
     val shadow: Boolean = true,
     override val tag: String? = null,
     val font: String? = null,
+    val wrap: Boolean = false,
 ) : UiNode {
     override val h: UiSize get() = UiSize.Px(LINE_HEIGHT)
 

@@ -42,6 +42,24 @@ class ProgressTest : StringSpec({
         widths("20000", "10000") shouldBe mapOf("ui:trilho" to 200, "ui:cheio" to 200)
     }
 
+    "barra com grow ocupa a largura que sobra e enche na proporcao" {
+        val grow = """
+            {"theme": "stone", "column": [
+              {"progress": "{valor}", "max": "{maximo}", "track": "ui:trilho", "fill": "ui:cheio", "w": "grow"}
+            ], "w": 160}
+        """.trimIndent()
+        val (definition, _) = DialogFixtures.parse(grow)
+        val binds = DialogBinds().apply {
+            text("valor") { "1" }
+            text("maximo") { "4" }
+        }
+        val session = DialogSession(definition!!.id, binds, player = DialogFixtures.player())
+        val screen = ScreenCompiler(DialogFixtures.kit) { }.compile(definition, DialogFixtures.theme, session)
+        val placed = UiLayout(DialogFixtures.kit).layout(screen).images.associate { it.id to it.width }
+
+        placed shouldBe mapOf("ui:trilho" to 160, "ui:cheio" to 40)
+    }
+
     "o gerar assa o trilho e o preenchimento mesmo sem valor" {
         val definition = DialogFixtures.parse(json).first!!
 

@@ -53,6 +53,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             is UiSize.Px -> w.value
             UiSize.Grow -> MAX_WIDTH
             UiSize.Fit -> layout.intrinsicWidth(compiled)
+            is UiSize.Share -> MAX_WIDTH
         }
         if (wanted > MAX_WIDTH) warn("largura $wanted passa de $MAX_WIDTH px e foi limitada")
         val width = wanted.coerceIn(1, MAX_WIDTH)
@@ -330,6 +331,13 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val max = placeholders.plain(def.max).trim().toDoubleOrNull() ?: 0.0
             val fraction = if (max > 0) (value / max).coerceIn(0.0, 1.0) else 0.0
             val minimumFill = kit.image(def.fill)?.slice?.let { it.left + it.right + 1 } ?: 1
+            if (def.w == UiSize.Grow) {
+                val grown = listOfNotNull(
+                    ImageNode(def.track, w = UiSize.Grow),
+                    if (fraction > 0) ImageNode(def.fill, w = UiSize.Share(fraction, minimumFill)) else null,
+                )
+                return ContainerNode(ContainerKind.Box, grown, cross = UiAlign.Center, w = UiSize.Grow)
+            }
             val fillWidth = Math.round(width * fraction).toInt().let { if (fraction > 0) it.coerceIn(minimumFill, width) else 0 }
             val children = listOfNotNull(
                 ImageNode(def.track, w = UiSize.Grow),
@@ -371,7 +379,7 @@ class ScreenCompiler(private val kit: UiKit, private val warn: (String) -> Unit)
             val bold = def.bold ?: style.bold
             val value = placeholders.plain(def.text)
             val iconNode = def.icon?.let(::labelIcon)
-            if (iconNode == null) return TextNode(value, color, bold, def.align, def.w, position, style.shadow, font = style.font)
+            if (iconNode == null) return TextNode(value, color, bold, def.align, def.w, position, style.shadow, font = style.font, wrap = def.wrap)
 
             val label = TextNode(value, color, bold, def.align, if (def.w == UiSize.Grow) UiSize.Grow else UiSize.Fit, shadow = style.shadow, font = style.font)
             return ContainerNode(

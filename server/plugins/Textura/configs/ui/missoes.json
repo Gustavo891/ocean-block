@@ -40,8 +40,8 @@
                         {
                           "x": 0, "y": 7,
                           "row": [
-                            { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_trilho", "fill": "ui:reino/barra", "w": 104 },
-                            { "text": "{contagem}", "style": "{contagem_estilo}", "w": "grow", "align": "right" }
+                            { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_trilho", "fill": "ui:reino/barra", "w": "grow" },
+                            { "text": "{contagem}", "style": "{contagem_estilo}" }
                           ],
                           "w": "grow", "cross": "center", "gap": 4
                         }
@@ -98,7 +98,7 @@
                     {
                       "column": [
                         { "text": "{titulo}", "style": "heading", "w": "grow" },
-                        { "text": "{requisito}", "style": "claro", "w": "grow" }
+                        { "text": "{requisito}", "style": "claro", "w": "grow", "wrap": true }
                       ],
                       "gap": 4, "w": "grow"
                     }
@@ -107,8 +107,8 @@
                 },
                 {
                   "row": [
-                    { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_grande_trilho", "fill": "ui:reino/barra_grande", "w": 124 },
-                    { "text": "{progresso}", "style": "branco", "w": "grow", "align": "right" }
+                    { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_grande_trilho", "fill": "ui:reino/barra_grande", "w": "grow" },
+                    { "text": "{progresso}", "style": "branco" }
                   ],
                   "w": "grow", "cross": "center", "gap": 4
                 }
