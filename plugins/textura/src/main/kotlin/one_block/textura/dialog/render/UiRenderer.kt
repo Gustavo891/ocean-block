@@ -63,7 +63,7 @@ class UiRenderer(
             spans.forEach { hotspot(line, margin, it) }
             markers(line, margin, spans)
             line.moveTo(0)
-            imagesByLine[n].orEmpty().forEach { image(line, margin, it.placed, it.image, laid.width) }
+            imagesByLine[n].orEmpty().forEach { image(line, margin, it.placed, it.image, it.shift, laid.width) }
             pixelsByLine[n].orEmpty().forEach { pixelRow(line, margin, it) }
             textsByLine[n].orEmpty().sortedBy { it.x }.forEach { text(line, margin, it, laid.width) }
             line.moveTo(body)
@@ -158,17 +158,17 @@ class UiRenderer(
         line.append(Component.text(hit.char).font(font), hit.advance)
     }
 
-    private class Drawn(val placed: PlacedImage, val image: UiImage)
+    private class Drawn(val placed: PlacedImage, val image: UiImage, val shift: Int = 0)
 
     private fun drawn(placed: PlacedImage): List<Drawn> {
         val image = resolve(placed) ?: return emptyList()
         if (image.segments.isEmpty()) return listOf(Drawn(placed, image))
         return image.segments.map { segment ->
-            Drawn(placed.copy(y = placed.y + segment.offset, height = segment.height), image.copy(height = segment.height, slice = segment.slice, segments = emptyList()))
+            Drawn(placed.copy(height = segment.height), image.copy(height = segment.height, slice = segment.slice, segments = emptyList()), segment.offset)
         }
     }
 
-    private fun image(line: Line, margin: Int, placed: PlacedImage, image: UiImage, width: Int) {
+    private fun image(line: Line, margin: Int, placed: PlacedImage, image: UiImage, shift: Int, width: Int) {
         val drawWidth = if (image.slice != null) placed.width else image.width
 
         if (placed.x < 0 || placed.x + drawWidth > width) {
@@ -176,7 +176,7 @@ class UiRenderer(
             return
         }
 
-        val font = kit.imageFont(placed.y % LINE)
+        val font = kit.imageFont(placed.y % LINE + shift)
         line.moveTo(margin + placed.x)
 
         val slice = image.slice

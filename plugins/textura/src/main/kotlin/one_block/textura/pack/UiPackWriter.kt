@@ -58,7 +58,10 @@ class UiPackWriter(
         val chars = UiCodepoints.assign(sources.map { it.name })
         val packed = sources.associate { it.name to texture(builder, it, chars.getValue(it.name)) }
 
-        writeFonts(builder, packed.values)
+        val shifted = surfaces.values.flatMap { surface ->
+            surface.segments.filter { it.offset > 0 }.flatMap { segment -> segment.pieces.map { packed.getValue(it.name) to segment.offset } }
+        }
+        writeFonts(builder, packed.values, shifted)
         if (shader) writeShaders(builder)
         logger.info("[ui] ${sources.size} peça(s), ${surfaces.size} surface(s), ${icons.size} ícone(s), ${screens.size} tela(s).")
 
@@ -183,7 +186,12 @@ class UiPackWriter(
         return Packed(key, padded.height / source.detail, UiPiece(char, GlyphAdvance.of(source.image, source.detail)))
     }
 
-    private fun writeFonts(builder: PackBuilder, pieces: Collection<Packed>) {
+    private fun writeFonts(builder: PackBuilder, pieces: Collection<Packed>, shifted: List<Pair<Packed, Int>>) {
+        shifted.flatMap { (piece, offset) -> (0 until UiFonts.VARIANTS).map { k -> (offset + k) to piece } }
+            .groupBy({ it.first }, { it.second })
+            .forEach { (offset, group) ->
+                builder.addFont(UiFonts.image(offset), group.map { FontProvider.bitMap(it.texture, it.height, UiFonts.BASE_ASCENT - offset, listOf(it.piece.char)) })
+            }
         val textSpace = FontProvider.space(mapOf(" " to UiTextFont.SPACE_ADVANCE, Char(0x200C).toString() to 0))
 
         for (k in 0 until UiFonts.VARIANTS) {
