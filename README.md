@@ -36,7 +36,7 @@ Cada jogador começa numa ilha pequena no mar aberto. Ele puxa detritos que pass
 
 ### Escolha da ilha
 
-No primeiro login o jogador fica como espectador sobre o mar e escolhe o tipo da ilha numa tela própria, no estilo dos seletores de modo de jogo. A escolha é permanente: só um admin troca, com `/ilha resetplayer`.
+No primeiro login o jogador fica como espectador sobre o mar e escolhe o tipo da ilha numa tela própria, no estilo dos seletores de modo de jogo. A escolha é permanente: só um admin troca, com `/ilha resetplayer`, que zera a conta inteira do jogador (ilha, nível, missões, moedas, inventário e o resto) e o manda escolher de novo.
 
 | Tipo | Como é |
 |---|---|
@@ -47,7 +47,8 @@ No primeiro login o jogador fica como espectador sobre o mar e escolhe o tipo da
 
 Os tipos mudam só a aparência. Detritos, gerador, XP e missões são iguais em todos.
 
-![Tela de escolha da ilha](docs/imagens/escolha-ilha.png)
+![Tela de escolha da ilha](docs/imagens/escolha-ilha.jpg)
+![Confirmação do tipo de ilha](docs/imagens/escolha-confirmar.jpg)
 
 ### A ilha
 
@@ -58,7 +59,7 @@ Os tipos mudam só a aparência. Detritos, gerador, XP e missões são iguais em
 - **Melhorias:** compradas com Coins. A principal é o **Gerador**.
 - **Gerador de pedra:** lava + água viram um sorteio de blocos. No nível 0 saem pedregulho, pedra, carvão, cobre e ferro; os níveis 1 a 4 (25k, 100k, 400k e 1,5M de Coins) liberam lápis, redstone, ouro, esmeralda e diamante. A tabela fica em `gerador.yml`.
 
-![Painel da ilha](docs/imagens/ilha-menu.png)
+![Painel da ilha](docs/imagens/ilha-menu.jpg)
 
 ### Deriva, Gancho e Rede de Detritos
 
@@ -77,8 +78,8 @@ Uma correnteza passa ao lado de cada ilha trazendo detritos que boiam, balançam
 | Recife | 3 | fragmentos e cristais de prismarinho |
 | Barril de ferro | 1 | lingotes, redstone, esmeralda e 8% de chance de diamante |
 
-![Detritos e Gancho](docs/imagens/deriva-gancho.png)
-![Rede de Detritos](docs/imagens/rede-detritos.png)
+![Detritos boiando](docs/imagens/deriva-gancho.jpg)
+![Rede de Detritos](docs/imagens/rede-detritos.jpg)
 
 ### Recursos do mar
 
@@ -87,9 +88,6 @@ Alguns recursos só existem no mar. A **linha** não cai de aranha, teia, baú d
 ### Receitas
 
 Os itens do OceanBlock são feitos no **`/receitas`**, e não na bancada. O menu separa as receitas por categoria (Ferramentas, Coleta, Estações, Máquinas), mostra quantos itens você tem de cada ingrediente e libera cada receita num nível do jogador. As únicas receitas de bancada são os **paxels** (machado, picareta e pá do mesmo material em cima, dois gravetos no meio), de ferro, diamante e netherite.
-
-![Receitas](docs/imagens/receitas.png)
-
 ### Máquinas e energia
 
 As máquinas trocam energia pelo ar: um consumidor puxa de qualquer fonte da mesma ilha num raio de 8 blocos, e um feixe de luz amarela mostra de onde veio.
@@ -103,9 +101,10 @@ As máquinas trocam energia pelo ar: um consumidor puxa de qualquer fonte da mes
 | **Brocas** | 28 a 40 | Ouro, diamante, obsidiana e netherite deixam o Minerador mais rápido. |
 | **Picareta fundidora** | 12 | Já entrega os minérios derretidos e funciona com Fortuna. |
 
-![Gerador de energia](docs/imagens/gerador.png)
-![Fornalha elétrica](docs/imagens/fornalha.png)
-![Minerador](docs/imagens/minerador.png)
+![Gerador de energia](docs/imagens/gerador.jpg)
+![Fornalha elétrica](docs/imagens/fornalha.jpg)
+![Feixe de energia do Gerador para a Fornalha elétrica](docs/imagens/energia.jpg)
+![Minerador, Painel solar e Gerador](docs/imagens/minerador.jpg)
 
 ### Nível
 
@@ -115,9 +114,9 @@ O jogador vai do nível 1 ao 50. O XP vem de:
 - receitas feitas no `/receitas`;
 - mobs mortos (passivos 1, zumbi 3, creeper 5, enderman 8…).
 
-Cada subida dá 100 Coins por nível e libera receitas. **`/nivel`** mostra o caminho dos 50 níveis com o que cada um libera.
+Cada subida dá Coins e libera receitas. **`/nivel`** mostra os 50 níveis como uma torre a subir, com o XP que falta, os Coins ao chegar e a próxima receita.
 
-![Nível](docs/imagens/nivel.png)
+![Nível](docs/imagens/nivel.jpg)
 
 ### Missões
 
@@ -125,15 +124,12 @@ Cada subida dá 100 Coins por nível e libera receitas. **`/nivel`** mostra o ca
 - **Diárias:** 3 por dia, renovadas à meia-noite (horário de Brasília) e liberadas desde o início, junto com a trilha. O jogador escolhe qual vale agora, e só essa conta. Trocar de diária guarda o progresso da anterior.
 - A missão ativa aparece num cartão no topo da tela, com barra de progresso. Ele some quando não há diária escolhida.
 
-![Missões](docs/imagens/missoes.png)
-![HUD de missão](docs/imagens/missao-hud.png)
+![Trilha de missões](docs/imagens/missoes.jpg)
+![Diárias](docs/imagens/missoes-diarias.jpg)
 
 ### Recompensas por tempo online
 
 Marcos de tempo jogado, de 30 minutos a 100 horas, dão Coins, Pérolas, XP e itens. Ao atingir um marco aparece um aviso, e o resgate é feito no **`/recompensas`**.
-
-![Recompensas](docs/imagens/recompensas.png)
-
 ### Raid de piratas
 
 A partir do nível 10, a cada 10 minutos uma ilha com jogador presente tem 3% de chance de ser invadida, no máximo uma vez por dia.
@@ -142,15 +138,9 @@ A partir do nível 10, a cada 10 minutos uma ilha com jogador presente tem 3% de
 - Piratas derrubam moedas e pérolas que viram Coins e Pérolas ao serem pegas.
 - Vencer dá Coins e XP a todos os membros na ilha. Se o tempo acaba, os piratas fogem.
 - Durante a raid, um HUD próprio no topo mostra as ondas, os piratas vivos e o tempo.
-
-![Raid de piratas](docs/imagens/raid.png)
-
 ### Venda
 
 **`/sell`** abre um baú: o que tiver preço é vendido por Coins, e o resto volta para o inventário. `/sell inventario` vende tudo o que você carrega, e `/valores` mostra a tabela de preços.
-
-![Venda](docs/imagens/venda.png)
-
 ### Notificações e HUD
 
 Tudo usa o mesmo padrão visual: um selo colorido com ícone e um corpo escuro translúcido.
@@ -158,9 +148,6 @@ Tudo usa o mesmo padrão visual: um selo colorido com ícone e um corpo escuro t
 - **Avisos (toasts):** subida de nível, marco de tempo e invasão no canto superior direito; vendas no canto superior esquerdo. Eles entram deslizando, empilham e somem sozinhos.
 - **Coleta e XP:** `+N item` ao coletar e `+N XP` ao lado da mira.
 - **HUD fixo:** o cartão de missão e o HUD da raid no topo da tela.
-
-![Notificações](docs/imagens/toasts.png)
-
 ### Pequenas comodidades
 
 - **F no baú:** com um baú, barril ou shulker aberto, apertar F sobre um slot junta os itens iguais e ordena do mais numeroso para o menos.
@@ -190,7 +177,7 @@ Comandos de admin:
 
 | Comando | O que faz |
 |---|---|
-| `/ilha resetplayer <nick>` | Apaga a ilha e manda o jogador escolher de novo |
+| `/ilha resetplayer <nick>` | Zera a conta inteira do jogador e o manda escolher a ilha de novo, mesmo offline |
 | `/nivel dar <jogador> <xp>`, `/nivel definir <jogador> <nível>` | Ajusta o nível |
 | `/missoes pular <jogador>`, `/missoes resetar <jogador>` | Ajusta as missões |
 | `/recompensas resetar <jogador>` | Zera as recompensas por tempo |
@@ -213,9 +200,6 @@ Comandos de admin:
 Os formatos de cada config estão em [`server/plugins/Textura/README.md`](server/plugins/Textura/README.md).
 
 O **Textura Studio** (`tools/textura-studio`) é um editor local dessas telas, com prévia idêntica ao jogo, editor de glyphs, temas, regiões de notificação e um editor pixel a pixel de texturas de blocos e itens.
-
-![Textura Studio](docs/imagens/studio.png)
-
 ## Rodando o projeto
 
 Requisitos:
