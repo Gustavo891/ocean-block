@@ -88,3 +88,10 @@ reino:
     faixa_laranja: ui:reino/faixa_laranja
     faixa_azul: ui:reino/faixa_azul
     faixa_verde: ui:reino/faixa_verde
+    no_atual: ui:reino/no_atual
+    no_trancada: ui:reino/no_trancada
+    no_feita: ui:reino/no_feita
+    liga_verde: ui:reino/liga_verde
+    liga_cinza: ui:reino/liga_cinza
+    desce_verde: ui:reino/desce_verde
+    desce_cinza: ui:reino/desce_cinza

@@ -20,8 +20,8 @@ class TrailLoreTest : StringSpec({
     "cada no mostra feita, atual ou trancada" {
         val last = TrailLore.row(midway, 2, 13)
 
-        last.map { it["selo"] } shouldBe listOf("ui:reino/no_feita", "ui:reino/no_feita", "ui:reino/no_feita", "", "")
-        last.map { it["estado"] } shouldBe listOf("", "", "", "ui:reino/no_atual", "ui:reino/no_trancada")
+        last.map { it["selo"] } shouldBe listOf("ui:no_feita", "ui:no_feita", "ui:no_feita", "", "")
+        last.map { it["estado"] } shouldBe listOf("", "", "", "ui:no_atual", "ui:no_trancada")
         last.map { it["selecionada"] } shouldBe listOf("false", "false", "false", "false", "false")
         TrailLore.row(midway, 2, 11).map { it["selecionada"] } shouldBe listOf("false", "true", "false", "false", "false")
         last[3]["dica"] shouldBe "14. Mercador"
@@ -29,11 +29,11 @@ class TrailLoreTest : StringSpec({
 
     "ligacoes ficam verdes ate a missao atual" {
         TrailLore.row(midway, 2, 13).map { it["liga"] } shouldBe
-            listOf("ui:reino/liga_verde", "ui:reino/liga_verde", "ui:reino/liga_verde", "ui:reino/liga_cinza", "")
+            listOf("ui:liga_verde", "ui:liga_verde", "ui:liga_verde", "ui:liga_cinza", "")
         TrailLore.row(midway, 1, 13).map { it["liga"] } shouldBe
-            listOf("ui:reino/liga_verde", "ui:reino/liga_verde", "ui:reino/liga_verde", "ui:reino/liga_verde", "")
-        TrailLore.drop(midway, 0)["liga"] shouldBe "ui:reino/desce_verde"
-        TrailLore.drop(PlayerMissions("u", 4, 0, "", emptyList()), 0)["liga"] shouldBe "ui:reino/desce_cinza"
+            listOf("ui:liga_verde", "ui:liga_verde", "ui:liga_verde", "ui:liga_verde", "")
+        TrailLore.drop(midway, 0)["liga"] shouldBe "ui:desce_verde"
+        TrailLore.drop(PlayerMissions("u", 4, 0, "", emptyList()), 0)["liga"] shouldBe "ui:desce_cinza"
     }
 
     "selecao padrao e a missao atual" {

@@ -30,7 +30,7 @@ object TrailLore {
 
     fun drop(state: PlayerMissions, row: Int): Map<String, String> {
         val reached = (row + 1) * PER_ROW
-        return mapOf("liga" to if (reached <= state.trailIndex) "ui:reino/desce_verde" else "ui:reino/desce_cinza")
+        return mapOf("liga" to if (reached <= state.trailIndex) "ui:desce_verde" else "ui:desce_cinza")
     }
 
     fun indexAt(row: Int, position: Int): Int? = order().getOrNull(row)?.getOrNull(position)
@@ -99,15 +99,15 @@ object TrailLore {
             "icone" to MissionLore.icon(mission.icon),
             "estado" to when {
                 index < state.trailIndex -> ""
-                index == state.trailIndex -> "ui:reino/no_atual"
-                else -> "ui:reino/no_trancada"
+                index == state.trailIndex -> "ui:no_atual"
+                else -> "ui:no_trancada"
             },
-            "selo" to if (index < state.trailIndex) "ui:reino/no_feita" else "",
+            "selo" to if (index < state.trailIndex) "ui:no_feita" else "",
             "selecionada" to (index == selected && index != state.trailIndex).toString(),
             "dica" to "${index + 1}. ${mission.name}",
         )
     }
 
     private fun link(state: PlayerMissions, later: Int): String =
-        if (later <= state.trailIndex) "ui:reino/liga_verde" else "ui:reino/liga_cinza"
+        if (later <= state.trailIndex) "ui:liga_verde" else "ui:liga_cinza"
 }
