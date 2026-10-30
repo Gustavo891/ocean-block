@@ -62,11 +62,9 @@ class TrailLoreTest : StringSpec({
         TrailLore.summary(midway) shouldBe "13/15 FEITAS"
         TrailLore.xp(midway) shouldBe "| 1.280 DE 1.780 XP"
         val withDailies = PlayerMissions("u", 13, 0, "", listOf(DailyMission("gancho_15", 15, 40, true), DailyMission("mobs_20", 0, 40, false)))
-        TrailLore.dailies(midway) shouldBe "--"
-        TrailLore.dailies(withDailies) shouldBe "1/2"
-        TrailLore.dailiesStyle(withDailies) shouldBe "muted"
-        TrailLore.dailiesStyle(withDailies.copy(dailies = withDailies.dailies.map { it.copy(done = true) })) shouldBe "good"
-        TrailLore.mini(withDailies) shouldBe listOf(mapOf("icone" to "item:fishing_rod"), mapOf("icone" to "entidade:zombie"))
+        TrailLore.dots(midway) shouldBe emptyList()
+        TrailLore.dots(withDailies) shouldBe listOf(mapOf("ponto" to "ui:ponto_feito"), mapOf("ponto" to "ui:ponto_vazio"))
+        TrailLore.dots(withDailies.copy(activeDaily = "mobs_20")).last() shouldBe mapOf("ponto" to "ui:ponto_ativo")
         TrailLore.summary(PlayerMissions("u", 15, 0, "", emptyList())) shouldBe "TRILHA COMPLETA"
     }
 })

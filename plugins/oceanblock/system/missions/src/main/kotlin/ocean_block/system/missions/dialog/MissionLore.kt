@@ -117,9 +117,11 @@ object MissionLore {
         )
     }
 
-    fun resetIn(now: LocalDateTime): String {
+    fun resetIn(now: LocalDateTime): String = "Renovam em ${resetClock(now)}"
+
+    fun resetClock(now: LocalDateTime): String {
         val minutes = Duration.between(now, now.toLocalDate().plusDays(1).atStartOfDay()).toMinutes()
-        return "Renovam em %02d:%02d".format(minutes / 60, minutes % 60)
+        return "%02d:%02d".format(minutes / 60, minutes % 60)
     }
 
     fun icon(name: String): String = if (name.contains(':')) name else "item:$name"

@@ -102,14 +102,24 @@
                 {
                   "row": [
                     {
-                      "column": [ { "text": "DIÁRIAS DE HOJE", "style": "body" }, { "text": "{renova}", "style": "ouro" } ],
-                      "gap": 1, "w": "grow"
+                      "column": [
+                        { "text": "DIÁRIAS DE HOJE", "style": "body" },
+                        {
+                          "x": 0, "y": 7,
+                          "row": [
+                            { "repeat": "pontos", "perPage": 3, "row": [ { "icon": "{ponto}", "size": 5 } ] },
+                            { "row": [], "w": 2, "h": 1 },
+                            { "icon": "ui:reino/ampulheta", "size": 8 },
+                            { "text": "{renova}", "style": "ouro" }
+                          ],
+                          "gap": 3, "cross": "center"
+                        }
+                      ],
+                      "w": "grow"
                     },
-                    { "repeat": "mini", "perPage": 3, "row": [ { "icon": "{icone}", "size": 16 } ] },
-                    { "text": "{diarias_estado}", "style": "{diarias_estilo}" },
                     { "icon": "ui:reino/seta", "size": 7 }
                   ],
-                  "w": 196, "h": 26, "pad": 5, "gap": 4, "cross": "center", "surface": "faixa"
+                  "w": 196, "h": 26, "pad": 5, "gap": 4, "cross": "center", "surface": "cartao"
                 }
               ],
               "w": 196

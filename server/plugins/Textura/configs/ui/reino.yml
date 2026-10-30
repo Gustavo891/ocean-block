@@ -95,3 +95,6 @@ reino:
     liga_cinza: ui:reino/liga_cinza
     desce_verde: ui:reino/desce_verde
     desce_cinza: ui:reino/desce_cinza
+    ponto_feito: ui:reino/ponto_feito
+    ponto_ativo: ui:reino/ponto_ativo
+    ponto_vazio: ui:reino/ponto_vazio

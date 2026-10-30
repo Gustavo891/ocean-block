@@ -52,11 +52,9 @@ object TrailDialog {
         binds.button("diarias") { click -> MissionDialog.openDailies(click.player) }
         binds.text("resumo") { TrailLore.summary(state()) }
         binds.text("xp") { TrailLore.xp(state()) }
-        binds.list("mini") { TrailLore.mini(state()) }
-        binds.listPage("mini") { 0 }
-        binds.text("renova") { MissionLore.resetIn(LocalDateTime.now(MissionTracker.zone)) }
-        binds.text("diarias_estado") { TrailLore.dailies(state()) }
-        binds.text("diarias_estilo") { TrailLore.dailiesStyle(state()) }
+        binds.list("pontos") { TrailLore.dots(state()) }
+        binds.listPage("pontos") { 0 }
+        binds.text("renova") { MissionLore.resetClock(LocalDateTime.now(MissionTracker.zone)) }
     }
 
     private fun recipeName(id: String): String = Recipes.get(id)?.name ?: id

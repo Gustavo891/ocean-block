@@ -1,6 +1,5 @@
 package ocean_block.system.missions.dialog
 
-import ocean_block.system.missions.catalog.DailyPool
 import ocean_block.system.missions.catalog.MissionTrail
 import ocean_block.system.missions.model.PlayerMissions
 import ocean_block.system.missions.rules.MissionRules
@@ -45,14 +44,16 @@ object TrailLore {
         return "| ${MissionText.number(earned)} DE ${MissionText.number(total)} XP"
     }
 
-    fun dailies(state: PlayerMissions): String =
-        if (state.dailies.isEmpty()) "--" else "${state.dailies.count { it.done }}/${state.dailies.size}"
-
-    fun dailiesStyle(state: PlayerMissions): String =
-        if (state.dailies.isNotEmpty() && state.dailies.all { it.done }) "good" else "muted"
-
-    fun mini(state: PlayerMissions): List<Map<String, String>> =
-        state.dailies.map { daily -> mapOf("icone" to MissionLore.icon(DailyPool.byId(daily.id)?.icon ?: "map")) }
+    fun dots(state: PlayerMissions): List<Map<String, String>> =
+        state.dailies.map { daily ->
+            mapOf(
+                "ponto" to when {
+                    daily.done -> "ui:ponto_feito"
+                    daily.id == state.activeDaily -> "ui:ponto_ativo"
+                    else -> "ui:ponto_vazio"
+                },
+            )
+        }
 
     fun detail(state: PlayerMissions, index: Int, recipeName: (String) -> String = { it }): Map<String, String> {
         val mission = MissionTrail.at(index) ?: return emptyMap()
