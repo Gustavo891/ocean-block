@@ -1,0 +1,85 @@
+reino:
+  icon-gap: 4
+  icon-size: 9
+  text:
+    titulo: { color: "#ffffff", font: titulo_ten, shadow: false }
+    heading: { color: "#ffffff", font: cabecalho, shadow: false }
+    body: { color: "#c4c6cb", font: pequena_justa, shadow: false }
+    claro: { color: "#aeafb6", font: pequena_justa, shadow: false }
+    branco: { color: "#ffffff", font: pequena_justa, shadow: false }
+    muted: { color: "#aeafb6", font: pequena_justa, shadow: false }
+    nota: { color: "#8b8d93", font: pequena_justa, shadow: false }
+    good: { color: "#66b84a", font: pequena_justa, shadow: false }
+    bad: { color: "#ff6a5c", font: pequena_justa, shadow: false }
+    accent: { color: "#5fd6e8", font: pequena_justa, shadow: false }
+    destaque: { color: "#f2a541", font: pequena_justa, shadow: false }
+    ouro: { color: "#f5d142", font: pequena_justa, shadow: false }
+    trilha: { color: "#2f7a24", font: pequena_justa, shadow: false }
+    selected: { color: "#ffffa0", font: pequena_justa, shadow: false }
+    count: { color: "#ffffff" }
+    disabled: { color: "#898b8d", font: pequena_justa, shadow: false }
+    button: { color: "#2f3034", font: pequena_justa, shadow: false }
+    button-light: { color: "#ffffff", font: pequena_justa, shadow: false }
+    tooltip: { color: "#a8a8b3" }
+  surfaces:
+    moldura: ui:reino/moldura
+    cartao: ui:reino/moldura
+    faixa: ui:reino/faixa
+    frame: ui:reino/faixa
+  switch:
+    labels: { on: "Ligado", off: "Desligado" }
+  segmented:
+    art: ui:stone/segment
+    selected-art: ui:stone/segment_selected
+    text-style: body
+    selected-text-style: selected
+    pad: 8
+    frame: ui:stone/segment_frame
+  button:
+    art: ui:reino/botao
+    text-style: button
+    looks:
+      claro:
+        art: ui:reino/botao
+        text-style: button
+        disabled-art: ui:reino/botao_off
+        disabled-text-style: disabled
+      acao:
+        art: ui:reino/botao_verde
+        text-style: button-light
+        disabled-art: ui:reino/botao_off
+        disabled-text-style: disabled
+      fechar:
+        art: ui:reino/botao_fechar
+        text-style: button-light
+      selecao:
+        art: ui:reino/selecao
+        text-style: body
+        selected-art: ui:reino/selecao_on
+        selected-text-style: body
+  nav:
+    art: ui:stone/nav
+    active-art: ui:stone/nav_active
+    text-style: body
+    active-text-style: selected
+    pad: 7
+  dropdown:
+    art: ui:stone/dropdown
+    arrow: ui:stone/arrow_down
+    text-style: body
+  slider:
+    track: ui:stone/slider_track
+    fill: ui:stone/slider_fill
+    text-style: body
+  slots:
+    art: ui:abismo/slot
+    missing-art: ui:mare/slot_missing
+    text-style: count
+  chip:
+    art: ui:mare/chip
+    text-style: body
+    height: 20
+  icons:
+    faixa_laranja: ui:reino/faixa_laranja
+    faixa_azul: ui:reino/faixa_azul
+    faixa_verde: ui:reino/faixa_verde

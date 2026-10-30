@@ -1,5 +1,5 @@
 {
-  "theme": "abismo",
+  "theme": "reino",
   "footer": false,
   "column": [
     {
@@ -11,12 +11,12 @@
           ],
           "gap": 3, "w": "grow"
         },
-        { "row": [ { "text": "{renova}", "style": "ouro" } ], "pad": 5, "surface": "pilula" },
+        { "row": [ { "text": "{renova}", "style": "ouro" } ], "pad": 5, "surface": "faixa" },
         { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "onClick": { "action": "close" }, "tooltip": "Fechar", "w": 18 }
       ],
       "w": "grow", "cross": "center", "gap": 5
     },
-    { "image": "ui:abismo/separador", "w": 386 },
+    { "image": "ui:reino/separador", "w": 386 },
     {
       "row": [
         {
@@ -25,7 +25,7 @@
             {
               "repeat": "aviso", "perPage": 1,
               "row": [ { "text": "{texto}", "style": "{estilo}", "w": "grow", "align": "center" } ],
-              "pad": 6, "surface": "cartao", "w": "grow"
+              "pad": 6, "surface": "faixa", "w": "grow"
             },
             {
               "repeat": "diarias", "perPage": 3,
@@ -39,7 +39,7 @@
                         { "row": [ { "text": "{texto}", "style": "body", "w": "grow" }, { "text": "{xp}", "style": "{xp_estilo}" } ], "w": "grow", "gap": 4 },
                         {
                           "row": [
-                            { "progress": "{barra}", "max": "100", "track": "ui:abismo/barra_trilho", "fill": "ui:abismo/barra", "w": 104 },
+                            { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_trilho", "fill": "ui:reino/barra", "w": 104 },
                             { "text": "{contagem}", "style": "{contagem_estilo}", "w": "grow", "align": "right" }
                           ],
                           "w": "grow", "cross": "center", "gap": 4
@@ -48,7 +48,7 @@
                       "gap": 4, "w": "grow"
                     }
                   ],
-                  "w": "grow", "h": 26, "pad": 3, "gap": 4, "cross": "center", "surface": "cartao"
+                  "w": "grow", "h": 26, "pad": 3, "gap": 4, "cross": "center", "surface": "faixa"
                 },
                 { "row": [ { "icon": "{faixa}", "size": 26 } ], "x": 0, "y": 0 },
                 { "row": [ { "button": "", "look": "selecao", "bind": "selecionar", "selected": "{selecionada}", "tooltip": "{dica}", "w": 196 } ], "x": 0, "y": 0 }
@@ -58,18 +58,18 @@
             {
               "repeat": "legenda", "perPage": 1,
               "row": [
-                { "icon": "ui:abismo/legenda_laranja", "size": 3 }, { "text": "SELECIONADA", "style": "muted" },
+                { "icon": "ui:reino/legenda_laranja", "size": 3 }, { "text": "SELECIONADA", "style": "muted" },
                 { "space": 3 },
-                { "icon": "ui:abismo/legenda_azul", "size": 3 }, { "text": "VALENDO", "style": "muted" },
+                { "icon": "ui:reino/legenda_azul", "size": 3 }, { "text": "VALENDO", "style": "muted" },
                 { "space": 3 },
-                { "icon": "ui:abismo/legenda_verde", "size": 3 }, { "text": "FEITA", "style": "muted" }
+                { "icon": "ui:reino/legenda_verde", "size": 3 }, { "text": "FEITA", "style": "muted" }
               ],
               "gap": 3, "cross": "center"
             },
             {
-              "x": 0, "y": 140,
+              "x": 0, "y": 142,
               "box": [
-                { "button": "", "look": "claro_trilha", "bind": "trilha", "tooltip": "Ver a trilha", "w": 196 },
+                { "button": "", "look": "claro", "bind": "trilha", "tooltip": "Ver a trilha", "w": 196 },
                 {
                   "row": [
                     { "space": 2 },
@@ -78,7 +78,7 @@
                     { "text": "{trilha}", "style": "trilha" },
                     { "space": 2 }
                   ],
-                  "w": 196, "h": 20, "gap": 5, "cross": "center"
+                  "w": 196, "h": 18, "gap": 5, "cross": "center"
                 }
               ],
               "w": 196
@@ -106,7 +106,7 @@
                 },
                 {
                   "row": [
-                    { "progress": "{barra}", "max": "100", "track": "ui:abismo/barra_grande_trilho", "fill": "ui:abismo/barra_grande", "w": 124 },
+                    { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_grande_trilho", "fill": "ui:reino/barra_grande", "w": 124 },
                     { "text": "{progresso}", "style": "branco", "w": "grow", "align": "right" }
                   ],
                   "w": "grow", "cross": "center", "gap": 4
@@ -114,7 +114,7 @@
               ],
               "gap": 6, "w": "grow"
             },
-            { "image": "ui:abismo/separador_ficha", "w": 170 },
+            { "image": "ui:reino/separador", "w": 170 },
             { "text": "RECOMPENSAS", "style": "muted" },
             {
               "repeat": "recompensas", "perPage": 3,
@@ -123,12 +123,12 @@
                 { "text": "{nome}", "style": "claro", "w": "grow" },
                 { "text": "{valor}", "style": "{valor_estilo}" }
               ],
-              "w": "grow", "pad": 3, "gap": 4, "cross": "center", "surface": "recompensa"
+              "w": "grow", "pad": 3, "gap": 4, "cross": "center", "surface": "faixa"
             },
             { "text": "{nota}", "style": "nota", "w": "grow" },
-            { "row": [ { "button": "{botao}", "look": "claro", "bind": "escolher", "disabled": "{bloqueado}", "tooltip": "{dica}", "w": 170 } ], "x": 7, "y": 133 }
+            { "row": [ { "button": "{botao}", "look": "claro", "bind": "escolher", "disabled": "{bloqueado}", "tooltip": "{dica}", "w": 170 } ], "x": 7, "y": 135 }
           ],
-          "gap": 5, "pad": 7, "surface": "ficha", "w": "grow", "h": 160
+          "gap": 5, "pad": 7, "surface": "cartao", "w": "grow", "h": 160
         }
       ],
       "gap": 6, "w": "grow"
