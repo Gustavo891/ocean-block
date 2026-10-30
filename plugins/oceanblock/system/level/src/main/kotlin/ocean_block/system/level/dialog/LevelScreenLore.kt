@@ -19,20 +19,20 @@ object LevelScreenLore {
     private const val COINS_ICON = "gold_nugget"
 
     private val RECIPE_ICONS = mapOf(
-        "gancho" to "fishing_rod",
-        "rede" to "cobweb",
-        "picareta_fundidora" to "iron_pickaxe",
-        "gerador_energia" to "blast_furnace",
-        "painel_solar" to "daylight_detector",
-        "fornalha_eletrica" to "furnace",
-        "minerador" to "piston",
-        "broca_ouro" to "golden_pickaxe",
-        "broca_diamante" to "diamond_pickaxe",
-        "broca_obsidiana" to "obsidian",
-        "broca_netherite" to "netherite_pickaxe",
+        "gancho" to "item:fishing_rod",
+        "rede" to "ui:icone_rede",
+        "picareta_fundidora" to "item:iron_pickaxe",
+        "gerador_energia" to "ui:icone_gerador",
+        "painel_solar" to "item:daylight_detector",
+        "fornalha_eletrica" to "ui:icone_fornalha",
+        "minerador" to "ui:icone_minerador",
+        "broca_ouro" to "item:golden_pickaxe",
+        "broca_diamante" to "item:diamond_pickaxe",
+        "broca_obsidiana" to "item:obsidian",
+        "broca_netherite" to "item:netherite_pickaxe",
     )
 
-    val ICONS: List<String> = (RECIPE_ICONS.values + listOf(FALLBACK_RECIPE_ICON, COINS_ICON)).distinct()
+    val ICONS: List<String> = (RECIPE_ICONS.values.filter { it.startsWith(ITEM) }.map { it.removePrefix(ITEM) } + listOf(FALLBACK_RECIPE_ICON, COINS_ICON)).distinct()
 
     fun pages(): Int = (LevelCurve.MAX_LEVEL + PER_PAGE - 1) / PER_PAGE
 
@@ -94,7 +94,7 @@ object LevelScreenLore {
         val recipe = recipes[target].orEmpty().firstOrNull() ?: return emptyList()
         return listOf(
             mapOf(
-                "icone" to ITEM + (RECIPE_ICONS[recipe.id] ?: FALLBACK_RECIPE_ICON),
+                "icone" to (RECIPE_ICONS[recipe.id] ?: ITEM + FALLBACK_RECIPE_ICON),
                 "nivel" to "NÍVEL $target",
                 "nome" to recipe.name,
             ),
@@ -120,15 +120,16 @@ object LevelScreenLore {
 
     private fun node(level: Int, xp: Long, recipes: List<OceanRecipe>): Map<String, String> {
         val current = LevelCurve.levelOf(xp)
-        val icon = recipes.firstNotNullOfOrNull { RECIPE_ICONS[it.id] }?.let { ITEM + it }.orEmpty()
+        val icon = recipes.firstNotNullOfOrNull { RECIPE_ICONS[it.id] }.orEmpty()
         return mapOf(
             "icone" to icon,
-            "numero" to if (icon.isEmpty()) level.toString() else "",
-            "canto" to if (icon.isEmpty()) "" else level.toString(),
+            "veu" to if (icon.isEmpty()) "" else "ui:icone_veu",
+            "numero" to level.toString(),
             "estado" to when {
                 level < current -> ""
                 level == current -> "ui:no_atual"
-                else -> "ui:no_trancada"
+                icon.isEmpty() -> "ui:no_trancada"
+                else -> ""
             },
             "selo" to if (level < current) "ui:no_feita" else "",
             "dica" to tooltip(level, xp, recipes),

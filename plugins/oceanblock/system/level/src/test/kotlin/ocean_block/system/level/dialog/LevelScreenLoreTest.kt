@@ -61,22 +61,35 @@ class LevelScreenLoreTest : StringSpec({
         LevelScreenLore.drop(0, 1, 9)["liga"] shouldBe "ui:desce_cinza"
     }
 
-    "nivel com receita mostra o icone e o numero no canto" {
+    "nivel com receita mostra o item apagado com o numero por cima" {
         val row = LevelScreenLore.row(0, 0, xpAt(9), RECIPES)
 
         row[0]["icone"] shouldBe "item:fishing_rod"
-        row[0]["numero"] shouldBe ""
-        row[0]["canto"] shouldBe "1"
+        row[0]["veu"] shouldBe "ui:icone_veu"
+        row[0]["numero"] shouldBe "1"
         row[1]["icone"] shouldBe ""
-        row[1]["canto"] shouldBe ""
+        row[1]["veu"] shouldBe ""
+        row[1]["numero"] shouldBe "2"
         row[2]["dica"] shouldBe "Nível 3\n∙ Rede de Detritos\n\n✔ Alcançado"
     }
 
-    "receita sem icone conhecido volta a mostrar o numero" {
+    "a rede usa o icone do proprio bloco" {
+        LevelScreenLore.row(0, 0, xpAt(9), RECIPES)[2]["icone"] shouldBe "ui:icone_rede"
+    }
+
+    "nivel trancado com item nao ganha o veu cinza por cima do item" {
+        val row = LevelScreenLore.row(0, 2, xpAt(9), RECIPES)
+
+        row[1]["estado"] shouldBe ""
+        row[0]["estado"] shouldBe "ui:no_trancada"
+    }
+
+    "receita sem icone conhecido mostra so o numero" {
         val node = LevelScreenLore.row(0, 2, xpAt(9), RECIPES)[3]
 
         node["numero"] shouldBe "14"
         node["icone"] shouldBe ""
+        node["veu"] shouldBe ""
     }
 
     "dica do nivel trancado diz quanto XP falta" {

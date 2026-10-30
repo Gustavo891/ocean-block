@@ -29,9 +29,8 @@
                   "row": [
                     {
                       "box": [
-                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "box": [ { "icon": "{icone}", "size": 16 }, { "icon": "{veu}", "size": 16 } ], "w": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
                         { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
-                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
                         { "icon": "{estado}", "size": 24 },
                         { "icon": "{selo}", "size": 24 },
                         { "button": "", "look": "no_trilha", "bind": "ver1", "tooltip": "{dica}", "w": 24 }
@@ -52,9 +51,8 @@
                   "row": [
                     {
                       "box": [
-                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "box": [ { "icon": "{icone}", "size": 16 }, { "icon": "{veu}", "size": 16 } ], "w": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
                         { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
-                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
                         { "icon": "{estado}", "size": 24 },
                         { "icon": "{selo}", "size": 24 },
                         { "button": "", "look": "no_trilha", "bind": "ver2", "tooltip": "{dica}", "w": 24 }
@@ -75,9 +73,8 @@
                   "row": [
                     {
                       "box": [
-                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "box": [ { "icon": "{icone}", "size": 16 }, { "icon": "{veu}", "size": 16 } ], "w": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
                         { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
-                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
                         { "icon": "{estado}", "size": 24 },
                         { "icon": "{selo}", "size": 24 },
                         { "button": "", "look": "no_trilha", "bind": "ver3", "tooltip": "{dica}", "w": 24 }
@@ -98,9 +95,8 @@
                   "row": [
                     {
                       "box": [
-                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "box": [ { "icon": "{icone}", "size": 16 }, { "icon": "{veu}", "size": 16 } ], "w": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
                         { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
-                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
                         { "icon": "{estado}", "size": 24 },
                         { "icon": "{selo}", "size": 24 },
                         { "button": "", "look": "no_trilha", "bind": "ver4", "tooltip": "{dica}", "w": 24 }
@@ -121,9 +117,8 @@
                   "row": [
                     {
                       "box": [
-                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "box": [ { "icon": "{icone}", "size": 16 }, { "icon": "{veu}", "size": 16 } ], "w": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
                         { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
-                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
                         { "icon": "{estado}", "size": 24 },
                         { "icon": "{selo}", "size": 24 },
                         { "button": "", "look": "no_trilha", "bind": "ver5", "tooltip": "{dica}", "w": 24 }

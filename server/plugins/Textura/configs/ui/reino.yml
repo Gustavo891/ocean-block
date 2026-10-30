@@ -109,3 +109,8 @@ reino:
     pagina_esq_off: ui:reino/pagina_esq_off
     pagina_dir: ui:reino/pagina_dir
     pagina_dir_off: ui:reino/pagina_dir_off
+    icone_veu: ui:reino/icone_veu
+    icone_rede: glyph:rede_icone
+    icone_gerador: ui:stone/icons/gerador_item
+    icone_fornalha: ui:stone/icons/fornalha_item
+    icone_minerador: ui:stone/icons/minerador
