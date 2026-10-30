@@ -13,9 +13,15 @@ class SurfaceSegmentsTest : StringSpec({
     "surface em 3x e cortada em segmentos de no maximo 256 px de textura" {
         val segments = SurfaceComposer.segments(176, 3, 256)
 
-        segments shouldBe listOf(0 to 85, 85 to 85, 170 to 6)
+        segments shouldBe listOf(0 to 59, 59 to 59, 118 to 58)
         segments.forEach { (_, height) -> height * 3 shouldBeLessThanOrEqual 256 }
         segments.sumOf { it.second } shouldBe 176
+    }
+
+    "nenhum segmento fica baixo demais para o ascent da fonte" {
+        (8..256).forEach { height ->
+            SurfaceComposer.segments(height, 3, 256).forEach { (_, size) -> (size >= 8) shouldBe true }
+        }
     }
 
     "pecas de surface em 3x nunca passam de 256 px de textura na largura" {

@@ -12,10 +12,11 @@ object UiPieces {
 
     val MIDDLE_SIZES: List<Int> = (0..8).map { 1 shl it }
 
-    fun padded(image: BufferedImage): BufferedImage {
-        if (image.height >= MIN_HEIGHT) return image
+    fun padded(image: BufferedImage, detail: Int = 1): BufferedImage {
+        val minimum = MIN_HEIGHT * detail
+        if (image.height >= minimum) return image
 
-        val result = BufferedImage(image.width, MIN_HEIGHT, BufferedImage.TYPE_INT_ARGB)
+        val result = BufferedImage(image.width, minimum, BufferedImage.TYPE_INT_ARGB)
         val graphics = result.createGraphics()
         graphics.drawImage(image, 0, 0, null)
         graphics.dispose()
@@ -51,7 +52,14 @@ object SurfaceComposer {
 
     fun segments(height: Int, detail: Int, maxTexture: Int): List<Pair<Int, Int>> {
         val step = maxOf(1, maxTexture / detail)
-        return (0 until height step step).map { offset -> offset to minOf(step, height - offset) }
+        val count = maxOf(1, (height + step - 1) / step)
+        val base = height / count
+        val extra = height % count
+        var offset = 0
+        return (0 until count).map { index ->
+            val size = base + if (index < extra) 1 else 0
+            (offset to size).also { offset += size }
+        }
     }
 
     fun compose(image: BufferedImage, slice: ArtSlice, width: Int, height: Int): BufferedImage? {

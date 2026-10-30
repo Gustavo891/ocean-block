@@ -180,7 +180,7 @@ class UiPackWriter(
     }
 
     private fun texture(builder: PackBuilder, source: UiPieceSource, char: String): Packed {
-        val padded = UiPieces.padded(source.image)
+        val padded = UiPieces.padded(source.image, source.detail)
         val key = Key.key(NAMESPACE, "ui_gen/${hash(source.name)}.png")
         builder.pack.texture(Texture.texture(key, Writable.bytes(png(padded))))
         return Packed(key, padded.height / source.detail, UiPiece(char, GlyphAdvance.of(source.image, source.detail)))
