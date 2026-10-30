@@ -4,6 +4,8 @@ reino:
   text:
     titulo: { color: "#ffffff", font: titulo_ten, shadow: false }
     heading: { color: "#ffffff", font: cabecalho, shadow: false }
+    heading_ouro: { color: "#f5d142", font: cabecalho, shadow: false }
+    titulo_ouro: { color: "#f5d142", font: titulo_ten, shadow: false }
     body: { color: "#c4c6cb", font: pequena_justa, shadow: false }
     claro: { color: "#aeafb6", font: pequena_justa, shadow: false }
     branco: { color: "#ffffff", font: pequena_justa, shadow: false }

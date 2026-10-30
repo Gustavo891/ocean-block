@@ -10,6 +10,7 @@ import ocean_block.system.craft.recipe.Recipes
 import ocean_block.system.level.PlayerLevels
 import ocean_block.system.level.curve.LevelCurve
 import ocean_block.system.level.data.LevelManager
+import ocean_block.system.level.dialog.LevelDialog
 import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.system.level.menu.LevelMenu
 import ocean_block.system.level.menu.LevelPath
@@ -22,7 +23,7 @@ class NivelCommand(private val viewFrame: ViewFrame) : BaseCommand() {
 
     @Default
     fun onDefault(player: Player) {
-        viewFrame.open(LevelMenu::class.java, player, LevelPath.pageOf(PlayerLevels.levelOf(player)))
+        LevelDialog.open(player) { viewFrame.open(LevelMenu::class.java, it, LevelPath.pageOf(PlayerLevels.levelOf(it))) }
     }
 
     @Subcommand("dar")

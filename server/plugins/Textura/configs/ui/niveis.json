@@ -1,0 +1,232 @@
+{
+  "theme": "reino",
+  "footer": false,
+  "column": [
+    {
+      "row": [
+        {
+          "column": [
+            { "text": "NÍVEIS", "style": "titulo" },
+            { "row": [ { "text": "{nivel_de}", "style": "good" }, { "text": "| SUBA A TORRE", "style": "muted" } ], "gap": 4 }
+          ],
+          "gap": 3, "w": "grow"
+        },
+        { "button": "", "icon": "ui:abismo/fechar", "look": "fechar", "onClick": { "action": "close" }, "tooltip": "Fechar", "w": 18 }
+      ],
+      "w": "grow", "cross": "center", "gap": 5
+    },
+    { "image": "ui:reino/separador", "w": 386 },
+    {
+      "row": [
+        {
+          "column": [
+            { "text": "{faixa}", "style": "muted" },
+            { "space": 2 },
+            {
+              "row": [
+                {
+                  "repeat": "fileira1", "perPage": 5,
+                  "row": [
+                    {
+                      "box": [
+                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
+                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
+                        { "icon": "{estado}", "size": 24 },
+                        { "icon": "{selo}", "size": 24 },
+                        { "button": "", "look": "no_trilha", "bind": "ver1", "tooltip": "{dica}", "w": 24 }
+                      ],
+                      "w": 24
+                    },
+                    { "icon": "{liga}", "size": 19 }
+                  ],
+                  "cross": "center"
+                }
+              ]
+            },
+            { "repeat": "desce1", "perPage": 1, "row": [ { "row": [], "w": 172, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
+            {
+              "row": [
+                {
+                  "repeat": "fileira2", "perPage": 5,
+                  "row": [
+                    {
+                      "box": [
+                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
+                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
+                        { "icon": "{estado}", "size": 24 },
+                        { "icon": "{selo}", "size": 24 },
+                        { "button": "", "look": "no_trilha", "bind": "ver2", "tooltip": "{dica}", "w": 24 }
+                      ],
+                      "w": 24
+                    },
+                    { "icon": "{liga}", "size": 19 }
+                  ],
+                  "cross": "center"
+                }
+              ]
+            },
+            { "repeat": "desce2", "perPage": 1, "row": [ { "icon": "{liga}", "size": 6 } ] },
+            {
+              "row": [
+                {
+                  "repeat": "fileira3", "perPage": 5,
+                  "row": [
+                    {
+                      "box": [
+                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
+                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
+                        { "icon": "{estado}", "size": 24 },
+                        { "icon": "{selo}", "size": 24 },
+                        { "button": "", "look": "no_trilha", "bind": "ver3", "tooltip": "{dica}", "w": 24 }
+                      ],
+                      "w": 24
+                    },
+                    { "icon": "{liga}", "size": 19 }
+                  ],
+                  "cross": "center"
+                }
+              ]
+            },
+            { "repeat": "desce3", "perPage": 1, "row": [ { "row": [], "w": 172, "h": 1 }, { "icon": "{liga}", "size": 6 } ] },
+            {
+              "row": [
+                {
+                  "repeat": "fileira4", "perPage": 5,
+                  "row": [
+                    {
+                      "box": [
+                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
+                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
+                        { "icon": "{estado}", "size": 24 },
+                        { "icon": "{selo}", "size": 24 },
+                        { "button": "", "look": "no_trilha", "bind": "ver4", "tooltip": "{dica}", "w": 24 }
+                      ],
+                      "w": 24
+                    },
+                    { "icon": "{liga}", "size": 19 }
+                  ],
+                  "cross": "center"
+                }
+              ]
+            },
+            { "repeat": "desce4", "perPage": 1, "row": [ { "icon": "{liga}", "size": 6 } ] },
+            {
+              "row": [
+                {
+                  "repeat": "fileira5", "perPage": 5,
+                  "row": [
+                    {
+                      "box": [
+                        { "row": [ { "icon": "{icone}", "size": 16 } ], "w": 24, "h": 24, "pad": 4, "surface": "faixa" },
+                        { "row": [ { "text": "{numero}", "style": "heading" } ], "w": 24, "h": 24, "align": "center", "cross": "center" },
+                        { "row": [ { "text": "{canto}", "style": "branco" } ], "x": 1, "y": 0 },
+                        { "icon": "{estado}", "size": 24 },
+                        { "icon": "{selo}", "size": 24 },
+                        { "button": "", "look": "no_trilha", "bind": "ver5", "tooltip": "{dica}", "w": 24 }
+                      ],
+                      "w": 24
+                    },
+                    { "icon": "{liga}", "size": 19 }
+                  ],
+                  "cross": "center"
+                }
+              ]
+            },
+            {
+              "x": 0, "y": 160,
+              "row": [
+                { "button": "", "icon": "ui:reino/seta_esquerda", "look": "fechar", "bind": "anterior", "tooltip": "Níveis 1 a 25", "w": 18 },
+                {
+                  "row": [
+                    { "text": "1 A 25", "style": "{pagina1_estilo}" },
+                    { "text": "|", "style": "nota" },
+                    { "text": "26 A 50", "style": "{pagina2_estilo}" }
+                  ],
+                  "w": "grow", "h": 18, "gap": 4, "align": "center", "cross": "center", "surface": "faixa"
+                },
+                { "button": "", "icon": "ui:reino/seta", "look": "fechar", "bind": "proxima", "tooltip": "Níveis 26 a 50", "w": 18 }
+              ],
+              "w": 196, "gap": 4, "cross": "center"
+            }
+          ],
+          "w": 196, "h": 178
+        },
+        {
+          "column": [
+            {
+              "row": [
+                { "pixels": "jogador", "w": 40, "h": 49, "detail": 3 },
+                {
+                  "column": [
+                    { "row": [ { "text": "NÍVEL", "style": "heading" }, { "text": "{nivel}", "style": "heading_ouro" } ], "gap": 3 },
+                    {
+                      "row": [
+                        { "progress": "{barra}", "max": "100", "track": "ui:reino/barra_grande_trilho", "fill": "ui:reino/barra_grande", "w": "grow" },
+                        { "text": "{xp}", "style": "branco" }
+                      ],
+                      "w": "grow", "cross": "center", "gap": 4
+                    },
+                    { "text": "{faltam}", "style": "claro", "w": "grow", "wrap": true }
+                  ],
+                  "gap": 5, "w": "grow"
+                }
+              ],
+              "gap": 7, "w": "grow", "cross": "center"
+            },
+            { "image": "ui:reino/separador", "w": 170 },
+            {
+              "repeat": "proximo", "perPage": 1,
+              "column": [
+                { "text": "PRÓXIMO NÍVEL", "style": "muted" },
+                {
+                  "row": [
+                    {
+                      "box": [
+                        { "row": [ { "text": "{numero}", "style": "titulo_ouro" } ], "w": 24, "h": 24, "align": "center", "cross": "center", "surface": "faixa" },
+                        { "icon": "ui:reino/no_atual", "size": 24 }
+                      ],
+                      "w": 24
+                    },
+                    {
+                      "column": [
+                        { "text": "{titulo}", "style": "heading" },
+                        { "text": "{faltam}", "style": "claro" }
+                      ],
+                      "gap": 4
+                    }
+                  ],
+                  "gap": 6, "cross": "center"
+                },
+                {
+                  "row": [
+                    { "icon": "{coins_icone}", "size": 8 },
+                    { "text": "COINS AO CHEGAR", "style": "claro", "w": "grow" },
+                    { "text": "{coins}", "style": "ouro" }
+                  ],
+                  "w": "grow", "pad": 3, "gap": 4, "cross": "center", "surface": "faixa"
+                }
+              ],
+              "gap": 5, "w": "grow"
+            },
+            {
+              "repeat": "receita", "perPage": 1,
+              "row": [
+                { "icon": "{icone}", "size": 8 },
+                { "text": "PRÓXIMA RECEITA", "style": "nota", "w": "grow", "tooltip": "{nome}" },
+                { "text": "{nivel}", "style": "nota" }
+              ],
+              "w": "grow", "pad": 3, "gap": 4, "cross": "center", "surface": "faixa"
+            }
+          ],
+          "gap": 5, "pad": 7, "surface": "cartao", "w": "grow", "h": 178
+        }
+      ],
+      "gap": 6, "w": "grow"
+    }
+  ],
+  "gap": 5, "pad": 7, "surface": "moldura", "w": 400, "canCloseWithEscape": true
+}

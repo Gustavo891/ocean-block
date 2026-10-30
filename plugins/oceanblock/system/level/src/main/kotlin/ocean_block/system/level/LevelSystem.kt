@@ -9,6 +9,7 @@ import ocean_block.system.level.command.NivelCommand
 import ocean_block.system.level.config.LevelFile
 import ocean_block.system.level.curve.LevelCurve
 import ocean_block.system.level.data.LevelManager
+import ocean_block.system.level.dialog.LevelDialog
 import ocean_block.system.level.listener.XpListener
 import ocean_block.system.level.menu.LevelMenu
 import ocean_block.system.level.notify.LevelNotifier
@@ -32,6 +33,8 @@ object LevelSystem {
         NotificationApi.registerSample("nivel") { LevelNotifier.levelUp(it, PlayerLevels.levelOf(it) + 1, SAMPLE_COINS, emptyList()) }
         NotificationApi.registerSample("xp") { LevelNotifier.xp(it, SAMPLE_XP) }
         viewFrame.with(LevelMenu())
+        LevelDialog.registerIcons()
+        plugin.server.pluginManager.registerEvents(LevelDialog, plugin)
         plugin.server.pluginManager.registerEvents(XpListener(), plugin)
         plugin.server.pluginManager.registerEvents(LevelNotifier, plugin)
         paperCommandManager.registerCommand(NivelCommand(viewFrame))
