@@ -27,6 +27,8 @@ object CurrencyManager {
 
     fun find(id: String) = currencies[id.lowercase()]
 
+    fun all(): Collection<WalletManager> = currencies.values
+
     fun load(commandManager: PaperCommandManager) {
         val folder = File(Instance.dataFolder, "currencies")
         if (!folder.exists()) {

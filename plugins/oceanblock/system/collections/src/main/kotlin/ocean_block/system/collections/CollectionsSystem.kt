@@ -4,6 +4,7 @@ import co.aikar.commands.PaperCommandManager
 import me.devnatan.inventoryframework.ViewFrame
 import ocean_block.system.collections.collection.CollectionManager
 import ocean_block.system.collections.command.CollectionCommand
+import ocean_block.system.collections.listener.AccountResetListener
 import ocean_block.system.collections.listener.CollectionListener
 import ocean_block.system.collections.listener.PlayerListener
 import ocean_block.system.collections.view.CollectionsView
@@ -25,6 +26,7 @@ object CollectionsSystem {
 
     private fun setupListeners(plugin: JavaPlugin) = with(plugin.server.pluginManager) {
         registerEvents(PlayerListener(), plugin)
+        registerEvents(AccountResetListener(), plugin)
         registerEvents(CollectionListener(), plugin)
     }
 }

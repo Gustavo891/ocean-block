@@ -18,6 +18,7 @@ import ocean_block.system.islands.phase.PhaseManager
 import ocean_block.system.islands.reset.IslandResetService
 import ocean_block.system.islands.view.IslandView
 import ocean_block.system.islands.view.IslandsView
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 @CommandAlias("ilha|island|is")
@@ -198,17 +199,20 @@ class IslandCommand(
     @CommandPermission("screen.dev")
     fun onResetPlayer(sender: Player, targetName: String, @Optional flag: String?) {
         val island = IslandManager.getIslandByOwnerName(targetName.lowercase())
-        if (island == null) {
-            sender.sendRichMessage("<red>Esse jogador não é dono de uma ilha. Nada foi alterado.")
+        val target = Bukkit.getPlayerExact(targetName) ?: Bukkit.getOfflinePlayerIfCached(targetName)
+        val uuid = island?.ownerUuid ?: target?.uniqueId
+        if (uuid == null) {
+            sender.sendRichMessage("<red>Jogador <white>$targetName</white> desconhecido. Nada foi alterado.")
             return
         }
+        val name = target?.name ?: island?.ownerName ?: targetName
 
         if (!flag.equals("-confirm", true)) {
-            IslandResetService.previewDelete(sender, island)
+            IslandResetService.previewResetPlayer(sender, name, island)
             return
         }
 
-        IslandResetService.deleteIsland(sender, island)
+        IslandResetService.resetPlayer(sender, uuid, name)
     }
 
     @Subcommand("reset progress")

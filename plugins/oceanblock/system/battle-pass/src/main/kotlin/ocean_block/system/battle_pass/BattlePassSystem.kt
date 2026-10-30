@@ -7,6 +7,7 @@ import ocean_block.system.battle_pass.listener.PlayerListener
 import ocean_block.system.battle_pass.challenge.ProgressManager
 import ocean_block.system.battle_pass.command.BattlePassCommand
 import ocean_block.system.battle_pass.command.MissionCommand
+import ocean_block.system.battle_pass.listener.AccountResetListener
 import ocean_block.system.battle_pass.player.BattlePassManager
 import ocean_block.system.battle_pass.listener.ChallengeListener
 import ocean_block.system.battle_pass.view.ChallengesView
@@ -32,6 +33,7 @@ object BattlePassSystem {
         with(Instance.server.pluginManager) {
             registerEvents(listener, Instance)
             registerEvents(PlayerListener(), Instance)
+            registerEvents(AccountResetListener(), Instance)
         }
     }
 }

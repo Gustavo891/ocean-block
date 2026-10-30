@@ -5,6 +5,9 @@ import co.aikar.commands.PaperCommandManager
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.Default
 import me.devnatan.inventoryframework.ViewFrame
+import ocean_block.libs.instance.Instance
+import ocean_block.system.preferences.listener.AccountResetListener
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 object PreferencesSystem {
@@ -12,6 +15,7 @@ object PreferencesSystem {
     fun init(viewFrame: ViewFrame, paperCommandManager: PaperCommandManager) {
         viewFrame.with(PreferencesMenu())
         paperCommandManager.registerCommand(PrefCommand(viewFrame))
+        Bukkit.getPluginManager().registerEvents(AccountResetListener(), Instance)
     }
 
     @CommandAlias("pref|prefs|preferencias")

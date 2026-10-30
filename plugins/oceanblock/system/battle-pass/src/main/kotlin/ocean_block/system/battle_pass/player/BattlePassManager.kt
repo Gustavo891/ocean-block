@@ -29,6 +29,12 @@ object BattlePassManager {
         }
     }
 
+    fun reset(uuid: UUID) {
+        val fresh = PlayerPassData(playerUuid = uuid)
+        players[uuid] = fresh
+        repository.update(fresh)
+    }
+
     internal fun save(bp: PlayerPassData) {
         repository.update(bp)
     }

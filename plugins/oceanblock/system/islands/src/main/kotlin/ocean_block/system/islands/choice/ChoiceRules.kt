@@ -4,6 +4,12 @@ import ocean_block.system.islands.island.type.IslandType
 
 object ChoiceRules {
 
+    const val SEA_Y = 62
+    const val CAMERA_Y = 63.0
+    const val EYE_HEIGHT = 1.62
+    const val CAMERA_PITCH = 0f
+    const val CHAT_CLEAR_LINES = 100
+
     enum class LoginAction { CHOOSE, RESTORE, NOTHING }
 
     fun needsChoice(ownsIsland: Boolean, memberSomewhere: Boolean): Boolean = !ownsIsland && !memberSomewhere

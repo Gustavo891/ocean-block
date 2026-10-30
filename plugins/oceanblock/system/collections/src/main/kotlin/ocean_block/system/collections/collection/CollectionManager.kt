@@ -37,6 +37,11 @@ object CollectionManager {
 
     fun get(uuid: UUID): CollectionData? = dataByUuid[uuid]
 
+    fun reset(uuid: UUID, name: String) {
+        dataByUuid[uuid] = CollectionData(uuid, name.lowercase())
+        markDirty(uuid)
+    }
+
     fun markDirty(uuid: UUID) {
         dirtyIds.add(uuid)
     }

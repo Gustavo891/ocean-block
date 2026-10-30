@@ -18,5 +18,10 @@ data class PlayerPlaytime(
         startTime = now
     }
 
+    fun reset() {
+        playtime = 0L
+        startTime = Instant.now()
+    }
+
     fun getElapsedSeconds() = playtime + Duration.between(startTime, Instant.now()).seconds
 }

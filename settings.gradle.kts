@@ -11,6 +11,7 @@ include(
     ":plugins:textura",
     ":tools:textura-studio",
 
+    ":lib:account",
     ":lib:actionbar",
     ":lib:connection",
     ":lib:coordinate",

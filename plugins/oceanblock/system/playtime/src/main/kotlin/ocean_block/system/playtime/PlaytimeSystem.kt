@@ -1,6 +1,7 @@
 package ocean_block.system.playtime
 
 import ocean_block.system.playtime.expansion.PlayerPlaytimeExpansion
+import ocean_block.system.playtime.listener.AccountResetListener
 import ocean_block.system.playtime.listener.PlayerListener
 import ocean_block.system.playtime.player_playtime.PlayerPlaytimeManager
 import org.bukkit.plugin.java.JavaPlugin
@@ -16,5 +17,6 @@ object PlaytimeSystem {
 
     private fun setupListeners(plugin: JavaPlugin) = with(plugin.server.pluginManager) {
         registerEvents(PlayerListener(), plugin)
+        registerEvents(AccountResetListener(), plugin)
     }
 }

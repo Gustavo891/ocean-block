@@ -4,6 +4,7 @@ import co.aikar.commands.PaperCommandManager
 import ocean_block.system.missions.command.MissoesCommand
 import ocean_block.system.missions.data.MissionManager
 import ocean_block.system.missions.dialog.MissionDialog
+import ocean_block.system.missions.listener.AccountResetListener
 import ocean_block.system.missions.listener.MissionListener
 import ocean_block.system.missions.notify.MissionNotifier
 import one_block.textura.api.NotificationApi
@@ -18,6 +19,7 @@ object MissionsSystem {
         NotificationApi.registerItemIcons(listOf(MissionNotifier.ICON_MATERIAL))
         MissionDialog.registerIcons()
         plugin.server.pluginManager.registerEvents(MissionListener(), plugin)
+        plugin.server.pluginManager.registerEvents(AccountResetListener(), plugin)
         paperCommandManager.registerCommand(MissoesCommand())
         plugin.server.scheduler.runTaskTimer(plugin, Runnable {
             plugin.server.onlinePlayers.forEach { MissionTracker.refresh(it) }

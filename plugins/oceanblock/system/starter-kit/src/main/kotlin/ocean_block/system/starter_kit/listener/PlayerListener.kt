@@ -1,7 +1,9 @@
 package ocean_block.system.starter_kit.listener
 
+import ocean_block.libs.account.AccountResetEvent
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -22,6 +24,15 @@ class PlayerListener : Listener {
         val player = event.player
         if (player.hasPlayedBefore()) return
 
+        give(player)
+    }
+
+    @EventHandler
+    fun onReset(event: AccountResetEvent) {
+        give(event.player)
+    }
+
+    private fun give(player: Player) {
         val inventory = player.inventory
         inventory.addItem(createItemStack(Material.STONE_SWORD, SWORD_KEY))
         inventory.addItem(createItemStack(Material.STONE_PICKAXE, PICKAXE_KEY))

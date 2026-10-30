@@ -5,6 +5,7 @@ plugins {
 dependencies {
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.instance)
+    compileOnly(projects.lib.account)
     compileOnly(projects.lib.itemBuilder)
 
     testImplementation(libs.paperApi)

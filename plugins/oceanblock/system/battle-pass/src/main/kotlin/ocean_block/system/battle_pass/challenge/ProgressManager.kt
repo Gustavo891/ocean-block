@@ -29,6 +29,12 @@ object ProgressManager {
         }
     }
 
+    fun reset(playerUuid: UUID) {
+        val fresh = PlayerChallengeData(playerUuid = playerUuid)
+        playerChallenges[playerUuid] = fresh
+        repository.update(fresh)
+    }
+
     fun getOrCreate(playerUuid: UUID, challenge: Challenges): ChallengeProgress {
         val data = getPlayerData(playerUuid)
         return data.progresses.getOrPut(challenge.id) {

@@ -5,6 +5,7 @@ import ocean_block.system.playtime_rewards.command.RecompensasCommand
 import ocean_block.system.playtime_rewards.config.RewardsFile
 import ocean_block.system.playtime_rewards.data.PlaytimeRewardManager
 import ocean_block.system.playtime_rewards.dialog.RewardDialog
+import ocean_block.system.playtime_rewards.listener.AccountResetListener
 import ocean_block.system.playtime_rewards.model.Milestone
 import ocean_block.system.playtime_rewards.notify.RewardNotifier
 import one_block.textura.api.NotificationApi
@@ -24,6 +25,7 @@ object PlaytimeRewardsSystem {
         RewardDialog.registerIcons()
         val watcher = PlaytimeWatcher(plugin)
         plugin.server.pluginManager.registerEvents(watcher, plugin)
+        plugin.server.pluginManager.registerEvents(AccountResetListener(), plugin)
         watcher.start()
         paperCommandManager.registerCommand(RecompensasCommand())
     }

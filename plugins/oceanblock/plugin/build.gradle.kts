@@ -20,6 +20,7 @@ dependencies {
 
     implementation(libs.fastboard)
 
+    implementation(projects.lib.account)
     implementation(projects.lib.actionbar)
     implementation(projects.lib.connection)
     implementation(projects.lib.coordinate)

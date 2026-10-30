@@ -19,5 +19,9 @@ object Preferences {
         return next != 0.toByte()
     }
 
+    fun reset(player: Player) {
+        Preference.entries.forEach { player.persistentDataContainer.remove(keyOf(it)) }
+    }
+
     private fun keyOf(preference: Preference) = NamespacedKey(NAMESPACE, PREFIX + preference.key)
 }

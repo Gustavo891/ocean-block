@@ -12,4 +12,5 @@ dependencies {
     compileOnly(projects.lib.coordinate)
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.instance)
+    compileOnly(projects.lib.account)
 }

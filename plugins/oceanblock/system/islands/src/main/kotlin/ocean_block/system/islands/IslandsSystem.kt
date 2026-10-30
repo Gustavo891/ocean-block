@@ -4,6 +4,8 @@ import me.devnatan.inventoryframework.ViewFrame
 import net.skinsrestorer.api.SkinsRestorerProvider
 import net.skinsrestorer.api.event.SkinApplyEvent
 import ocean_block.libs.instance.Instance
+import ocean_block.system.islands.account.AccountReset
+import ocean_block.system.islands.account.AccountResetListener
 import ocean_block.system.islands.choice.ChoiceListener
 import ocean_block.system.islands.expansion.IslandExpansion
 import ocean_block.system.islands.generator.GeneratorBreakListener
@@ -27,6 +29,7 @@ object IslandsSystem {
         this.plugin = plugin
         Bukkit.getScheduler().runTaskLater(plugin, Runnable {
             IslandManager.onInit()
+            AccountReset.load()
             SkinsRestorerProvider.get().eventBus.subscribe(Instance, SkinApplyEvent::class.java) { event ->
                 val player = event.getPlayer(Player::class.java) ?: return@subscribe
 
@@ -58,6 +61,7 @@ object IslandsSystem {
         plugin.server.pluginManager.registerEvents(InviteQuitListener(), plugin)
         plugin.server.pluginManager.registerEvents(IceGuardListener(), plugin)
         plugin.server.pluginManager.registerEvents(ChoiceListener(), plugin)
+        plugin.server.pluginManager.registerEvents(AccountResetListener(), plugin)
 
         IslandExpansion().register()
     }

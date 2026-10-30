@@ -143,3 +143,11 @@ O usuário pediu: arte da ilha sem a água, tela mais no estilo do Hoplite, side
 - Cada card é um botão sem rótulo com arte de 36 px (degradê da cor do tipo para o corpo escuro translúcido), então o card inteiro é clicável; por cima ficam a ilha, o nome grande, a descrição, a contagem verde e `CLIQUE PARA ESCOLHER`, como o "Click to play" do print.
 - Artes das ilhas sem água, fundo transparente, 144 px.
 - Durante a escolha o jogador vê meio-dia e tempo limpo (tempo e clima por jogador) e não vê a sidebar; tudo volta ao sair da câmera.
+
+## Revisão de 2026-10-29: resetplayer zera a conta e escolha limpa
+
+Pedido do usuário: "no resetplayer, faça resetar toda conta do cara, para não mostrar hud de missão caso tenha, efeitos, chat, e deixe o jogador mais baixo e perto da agua". Ele confirmou: toda a conta, incluindo nível e missões, recompensas de tempo, tempo jogado, passe e coleções, Coins e Pérolas, inventário e status, leilões dele; recebe o kit inicial de novo.
+
+- `/ilha resetplayer` funciona também em quem não é dono (sai das ilhas em que é membro). A conta é zerada na hora se ele estiver online, senão no próximo login (fila `account_resets`).
+- Cada sistema zera os próprios dados ouvindo `AccountResetEvent` (`lib:account`). Preferências entram também, porque o usuário pediu a conta inteira (minha leitura).
+- Na escolha: câmera em Y 63, olhando o horizonte; sem efeitos, sem HUD de missão, sem sidebar e com o chat empurrado por 100 linhas vazias.

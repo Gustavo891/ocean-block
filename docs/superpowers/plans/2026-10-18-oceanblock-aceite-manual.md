@@ -331,3 +331,7 @@ Pré-requisito: resource pack aceito (o shader do pack é quem posiciona as noti
 - [ ] Recusar a textura: a escolha cai no baú `Escolha sua ilha`; fechar o baú reabre em 1 s.
 - [ ] `/ilha resetplayer <nick>` mostra a prévia; com `-confirm` o lote volta a ser mar, membros são expulsos e o dono online volta para a câmera e a tela; offline, vê a tela no próximo login. Num jogador que não é dono, a mensagem diz que nada mudou.
 - [ ] Ilhas antigas aparecem como Padrão (campo `tipo: padrao` no Mongo).
+- [ ] `/ilha resetplayer <nick> -confirm` num jogador online com nível, missões, Coins, Pérolas, itens, efeitos, passe, coleções e um leilão: tudo zera na hora, recebe o kit inicial e o Gancho de novo, `/nivel` mostra nível 1, `/missoes` a primeira missão, `/recompensas` todos os marcos de novo, o leilão some.
+- [ ] Na escolha depois do reset: câmera logo acima do mar olhando o horizonte, sem cartão de missão, sem efeitos, sem sidebar e com o chat limpo; ao criar a ilha o cartão de missão e a sidebar voltam.
+- [ ] Mesmo comando com o jogador offline: nada muda até ele entrar; no login a conta zera e a escolha abre.
+- [ ] Num membro sem ilha própria: sai da ilha do dono e vai para a escolha.

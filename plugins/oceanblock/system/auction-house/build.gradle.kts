@@ -10,6 +10,7 @@ dependencies {
     compileOnly(projects.lib.connection)
     compileOnly(projects.lib.coordinate)
     compileOnly(projects.lib.instance)
+    compileOnly(projects.lib.account)
     compileOnly(projects.lib.itemBuilder)
     compileOnly(projects.lib.formatter)
 

@@ -1,5 +1,6 @@
 package ocean_block.system.islands.reset
 
+import ocean_block.system.islands.account.AccountReset
 import ocean_block.system.islands.choice.IslandChoice
 import ocean_block.system.islands.island.Island
 import ocean_block.system.islands.island.IslandManager
@@ -98,13 +99,38 @@ object IslandResetService {
         }
     }
 
-    fun previewDelete(sender: CommandSender, island: Island) {
-        sender.sendRichMessage("<gold>Preview do resetplayer de <white>${island.ownerName}</white>:")
-        sender.sendRichMessage("<gray>- tipo: <white>${island.type().nome}</white>")
-        sender.sendRichMessage("<gray>- membros expulsos: <white>${island.members.size}</white>")
-        sender.sendRichMessage("<gray>- os blocos do lote voltam a ser mar e a ilha some do banco")
-        sender.sendRichMessage("<gray>- o dono escolhe o tipo de novo (agora, se estiver online)")
+    fun previewResetPlayer(sender: CommandSender, name: String, island: Island?) {
+        sender.sendRichMessage("<gold>Preview do resetplayer de <white>$name</white>:")
+        if (island != null) {
+            sender.sendRichMessage("<gray>- ilha <white>${island.type().nome}</white> apagada, o lote volta a ser mar")
+            sender.sendRichMessage("<gray>- membros expulsos: <white>${island.members.size}</white>")
+        } else {
+            sender.sendRichMessage("<gray>- sem ilha própria; sai das ilhas em que é membro")
+        }
+        sender.sendRichMessage("<gray>- conta zerada: nível, missões, recompensas e tempo jogado, passe, coleções, Coins, Pérolas, leilões, preferências")
+        sender.sendRichMessage("<gray>- inventário, ender chest, XP, vida, fome e efeitos limpos; recebe o kit inicial de novo")
+        sender.sendRichMessage("<gray>- escolhe o tipo de ilha de novo (agora, se estiver online, senão no próximo login)")
         sender.sendRichMessage("<yellow>Nada foi alterado. Use <white>-confirm</white> para executar.")
+    }
+
+    fun resetPlayer(sender: CommandSender, uuid: UUID, name: String) {
+        IslandManager.getIslandByOwnerUUID(uuid)?.let {
+            deleteIsland(sender, it)
+            return
+        }
+
+        IslandManager.islandsById.values.filter { it.isMember(name) }.forEach { island ->
+            island.members.remove(name.lowercase())
+            island.markDirty()
+        }
+        IslandManager.playerIsland.remove(uuid)
+        resetAccount(uuid)
+        sender.sendRichMessage("<green>Conta de <white>$name</white> resetada.")
+    }
+
+    private fun resetAccount(uuid: UUID) {
+        AccountReset.reset(uuid)
+        Bukkit.getPlayer(uuid)?.let { IslandChoice.begin(it) }
     }
 
     fun deleteIsland(sender: CommandSender, island: Island) {
@@ -140,12 +166,12 @@ object IslandResetService {
             expelMembers(island)
             IslandManager.deleteIsland(island)
 
-            Bukkit.getPlayer(island.ownerUuid)?.let { IslandChoice.begin(it) }
+            resetAccount(island.ownerUuid)
             visitors.filter { it.uniqueId != island.ownerUuid && it.isOnline }.forEach { visitor ->
                 IslandManager.getHomeIsland(visitor)?.teleportTo(visitor) ?: IslandChoice.begin(visitor)
             }
 
-            sender.sendRichMessage("<green>Ilha de <white>${island.ownerName}</white> apagada. O dono vai escolher o tipo de novo.")
+            sender.sendRichMessage("<green>Ilha de <white>${island.ownerName}</white> apagada e conta resetada. O dono vai escolher o tipo de novo.")
         }
     }
 

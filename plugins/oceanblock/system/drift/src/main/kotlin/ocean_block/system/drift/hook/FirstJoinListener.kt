@@ -1,5 +1,6 @@
 package ocean_block.system.drift.hook
 
+import ocean_block.libs.account.AccountResetEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -12,5 +13,10 @@ class FirstJoinListener : Listener {
         if (player.hasPlayedBefore()) return
 
         player.inventory.addItem(GanchoItem.build())
+    }
+
+    @EventHandler
+    fun onReset(event: AccountResetEvent) {
+        event.player.inventory.addItem(GanchoItem.build())
     }
 }

@@ -10,6 +10,7 @@ import ocean_block.system.level.config.LevelFile
 import ocean_block.system.level.curve.LevelCurve
 import ocean_block.system.level.data.LevelManager
 import ocean_block.system.level.dialog.LevelDialog
+import ocean_block.system.level.listener.AccountResetListener
 import ocean_block.system.level.listener.XpListener
 import ocean_block.system.level.menu.LevelMenu
 import ocean_block.system.level.notify.LevelNotifier
@@ -36,6 +37,7 @@ object LevelSystem {
         LevelDialog.registerIcons()
         plugin.server.pluginManager.registerEvents(LevelDialog, plugin)
         plugin.server.pluginManager.registerEvents(XpListener(), plugin)
+        plugin.server.pluginManager.registerEvents(AccountResetListener(), plugin)
         plugin.server.pluginManager.registerEvents(LevelNotifier, plugin)
         paperCommandManager.registerCommand(NivelCommand(viewFrame))
         dropOldResearch(plugin)

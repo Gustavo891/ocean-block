@@ -8,6 +8,7 @@ dependencies {
     compileOnly(projects.lib.connection)
     compileOnly(projects.lib.formatter)
     compileOnly(projects.lib.instance)
+    compileOnly(projects.lib.account)
     compileOnly(projects.lib.itemBuilder)
 
     compileOnly(projects.plugins.oceanblock.system.craft)
