@@ -66,7 +66,8 @@ object MissionDialog {
         binds.text("resumo") { MissionLore.summary(state()) }
         binds.text("diarias_feitas") { MissionLore.dailiesDone(state()) }
         binds.text("trilha") { MissionLore.trailCount(state()) }
-        binds.text("trilha_aberta") { (selected() == MissionLore.TRAIL).toString() }
+        binds.text("trilha_barra") { MissionLore.trailPercent(state()) }
+        binds.text("trilha_estilo") { MissionLore.trailStyle(state()) }
         binds.text("renova") { MissionLore.resetIn(LocalDateTime.now(MissionTracker.zone)) }
     }
 

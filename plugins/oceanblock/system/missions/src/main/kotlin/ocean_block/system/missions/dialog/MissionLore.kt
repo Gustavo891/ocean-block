@@ -27,6 +27,10 @@ object MissionLore {
 
     fun trailCount(state: PlayerMissions): String = "${state.trailIndex.coerceAtMost(MissionTrail.size)}/${MissionTrail.size}"
 
+    fun trailPercent(state: PlayerMissions): String = (state.trailIndex.coerceAtMost(MissionTrail.size) * 100 / MissionTrail.size).toString()
+
+    fun trailStyle(state: PlayerMissions): String = if (MissionRules.trailDone(state)) "good" else "muted"
+
     fun notice(state: PlayerMissions): Map<String, String>? =
         if (state.dailies.isEmpty()) mapOf("texto" to NO_DAILIES, "estilo" to "muted") else null
 

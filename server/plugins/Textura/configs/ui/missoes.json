@@ -68,18 +68,18 @@
               "gap": 3, "cross": "center"
             },
             {
-              "x": 0, "y": 142,
+              "x": 0, "y": 134,
               "box": [
-                { "button": "", "look": "claro", "bind": "trilha", "tooltip": "Ver a trilha", "w": 196 },
+                { "button": "", "look": "selecao", "bind": "trilha", "tooltip": "Ver a trilha", "w": 196 },
                 {
                   "row": [
-                    { "space": 2 },
-                    { "icon": "item:nether_star", "size": 10 },
-                    { "text": "TRILHA", "style": "button", "w": "grow" },
-                    { "text": "{trilha}", "style": "trilha" },
-                    { "space": 2 }
+                    { "text": "TRILHA", "style": "body" },
+                    { "row": [], "w": 2, "h": 1 },
+                    { "progress": "{trilha_barra}", "max": "100", "track": "ui:reino/barra_trilho", "fill": "ui:reino/barra", "w": "grow" },
+                    { "text": "{trilha}", "style": "{trilha_estilo}" },
+                    { "icon": "ui:reino/seta", "size": 7 }
                   ],
-                  "w": 196, "h": 18, "gap": 5, "cross": "center"
+                  "w": 196, "h": 26, "pad": 6, "gap": 3, "cross": "center", "surface": "cartao"
                 }
               ],
               "w": 196

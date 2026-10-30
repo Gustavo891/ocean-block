@@ -87,6 +87,10 @@ class MissionLoreTest : StringSpec({
         MissionLore.legend(today).size shouldBe 1
         MissionLore.legend(PlayerMissions("u", 0, 0, "", emptyList())) shouldBe emptyList()
         MissionLore.trailCount(today) shouldBe "15/15"
+        MissionLore.trailPercent(today) shouldBe "100"
+        MissionLore.trailStyle(today) shouldBe "good"
+        MissionLore.trailPercent(PlayerMissions("u", 3, 0, "", emptyList())) shouldBe "20"
+        MissionLore.trailStyle(PlayerMissions("u", 3, 0, "", emptyList())) shouldBe "muted"
         MissionLore.notice(today) shouldBe null
     }
 
